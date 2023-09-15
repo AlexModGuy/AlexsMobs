@@ -4,6 +4,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 
 
 import com.github.alexthe666.alexsmobs.entity.EntityKomodoDragon;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -104,8 +105,8 @@ public class ModelKomodoDragon extends AdvancedEntityModel<EntityKomodoDragon> {
 		right_hip.addChild(right_leg);
 		right_leg.setTextureOffset(0, 0).addBox(-3.0F, -3.0F, -2.0F, 4.0F, 12.0F, 5.0F, scale, true);
 		right_leg.setTextureOffset(33, 33).addBox(-5.0F, 8.99F, -5.0F, 8.0F, 0.0F, 7.0F, scale, true);
-		this.setRotationAngle(tail1, (float)Math.toRadians(-23F), 0, 0);
-		this.setRotationAngle(tail2, (float)Math.toRadians(23F), 0, 0);
+		this.setRotationAngle(tail1, Maths.rad(-23F), 0, 0);
+		this.setRotationAngle(tail2, Maths.rad(23F), 0, 0);
 		this.updateDefaultPose();
 	}
 
@@ -122,31 +123,31 @@ public class ModelKomodoDragon extends AdvancedEntityModel<EntityKomodoDragon> {
 		float jostleAngle = entityIn.prevJostleAngle + (entityIn.getJostleAngle() - entityIn.prevJostleAngle) * partialTick;
 		float toungeF = (float) Math.min(Math.sin(ageInTicks * 0.3F), 0) * 9F;
 		float toungeMinus = (float) Math.max(Math.sin(ageInTicks * 0.3F), 0);
-		progressRotationPrev(tail1, limbSwingAmount, (float) Math.toRadians(13), 0,  0, 1F);
-		progressRotationPrev(tail2, limbSwingAmount, (float) Math.toRadians(-13), 0,  0, 1F);
+		progressRotationPrev(tail1, limbSwingAmount, Maths.rad(13), 0,  0, 1F);
+		progressRotationPrev(tail2, limbSwingAmount, Maths.rad(-13), 0,  0, 1F);
 		progressPositionPrev(body, sitProgress, 0, 1, 0, 5F);
 		progressPositionPrev(right_leg, sitProgress, 0, 3, 0, 5F);
 		progressPositionPrev(left_leg, sitProgress, 0, 3, 0, 5F);
 		progressPositionPrev(left_arm, sitProgress, 0, 1.5F, 0, 5F);
 		progressPositionPrev(right_arm, sitProgress, 0, 1.5F, 0, 5F);
-		progressRotationPrev(body, sitProgress, (float) Math.toRadians(-25), 0, 0, 5F);
-		progressRotationPrev(head, sitProgress, (float) Math.toRadians(8), 0, 0, 5F);
-		progressRotationPrev(tail1, sitProgress, (float) Math.toRadians(35),  (float) Math.toRadians(15), 0, 5F);
-		progressRotationPrev(right_leg, sitProgress, (float) Math.toRadians(25), (float) Math.toRadians(-25), (float) Math.toRadians(70), 5F);
-		progressRotationPrev(left_leg, sitProgress, (float) Math.toRadians(25), (float) Math.toRadians(25), (float) Math.toRadians(-70), 5F);
-		progressRotationPrev(right_arm, sitProgress, (float) Math.toRadians(25),  (float) Math.toRadians(-15), 0, 5F);
-		progressRotationPrev(left_arm, sitProgress, (float) Math.toRadians(25),  (float) Math.toRadians(15), 0, 5F);
-		progressRotationPrev(body, jostleProgress, (float) Math.toRadians(-55), 0, 0, 5F);
+		progressRotationPrev(body, sitProgress, Maths.rad(-25), 0, 0, 5F);
+		progressRotationPrev(head, sitProgress, Maths.rad(8), 0, 0, 5F);
+		progressRotationPrev(tail1, sitProgress, Maths.rad(35),  Maths.rad(15), 0, 5F);
+		progressRotationPrev(right_leg, sitProgress, Maths.rad(25), Maths.rad(-25), Maths.rad(70), 5F);
+		progressRotationPrev(left_leg, sitProgress, Maths.rad(25), Maths.rad(25), Maths.rad(-70), 5F);
+		progressRotationPrev(right_arm, sitProgress, Maths.rad(25),  Maths.rad(-15), 0, 5F);
+		progressRotationPrev(left_arm, sitProgress, Maths.rad(25),  Maths.rad(15), 0, 5F);
+		progressRotationPrev(body, jostleProgress, Maths.rad(-55), 0, 0, 5F);
 		progressPositionPrev(body, jostleProgress, 0, -6, -3, 5F);
-		progressRotationPrev(right_leg, jostleProgress, (float) Math.toRadians(55),  -(float) Math.toRadians(15), 0, 5F);
-		progressRotationPrev(left_leg, jostleProgress, (float) Math.toRadians(55),  (float) Math.toRadians(15), 0, 5F);
-		progressRotationPrev(tail1, jostleProgress, (float) Math.toRadians(60), 0, 0, 5F);
-		progressRotationPrev(neck, jostleProgress, (float) Math.toRadians(2), 0, 0, 5F);
-		progressRotationPrev(head, jostleProgress, (float) Math.toRadians(14), 0, 0, 5F);
+		progressRotationPrev(right_leg, jostleProgress, Maths.rad(55),  -Maths.rad(15), 0, 5F);
+		progressRotationPrev(left_leg, jostleProgress, Maths.rad(55),  Maths.rad(15), 0, 5F);
+		progressRotationPrev(tail1, jostleProgress, Maths.rad(60), 0, 0, 5F);
+		progressRotationPrev(neck, jostleProgress, Maths.rad(2), 0, 0, 5F);
+		progressRotationPrev(head, jostleProgress, Maths.rad(14), 0, 0, 5F);
 		progressPositionPrev(right_arm, jostleProgress, 0, 0, -2, 5F);
 		progressPositionPrev(left_arm, jostleProgress, 0, 0, -2, 5F);
-		progressRotationPrev(right_arm, jostleProgress, (float) Math.toRadians(-10), (float) Math.toRadians(90), 0, 5F);
-		progressRotationPrev(left_arm, jostleProgress, (float) Math.toRadians(-10), (float) Math.toRadians(-90), 0, 5F);
+		progressRotationPrev(right_arm, jostleProgress, Maths.rad(-10), Maths.rad(90), 0, 5F);
+		progressRotationPrev(left_arm, jostleProgress, Maths.rad(-10), Maths.rad(-90), 0, 5F);
 
 
 		this.flap(body, walkSpeed, walkDegree * 0.5F, false, 0F, 0F, limbSwing, limbSwingAmount);

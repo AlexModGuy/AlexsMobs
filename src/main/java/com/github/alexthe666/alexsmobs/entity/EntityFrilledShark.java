@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -100,7 +101,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     }
 
     public static boolean canFrilledSharkSpawn(EntityType<EntityFrilledShark> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
+        return reason == MobSpawnType.SPAWNER || iServerWorld.isWaterAt(pos) && iServerWorld.isWaterAt(pos.above());
     }
 
     @Override
@@ -228,18 +229,12 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.animationSpeedOld = p_233629_1_.animationSpeed;
-        double d0 = p_233629_1_.getX() - p_233629_1_.xo;
-        double d1 = p_233629_1_.getY() - p_233629_1_.yo;
-        double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2)) * 8.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        p_233629_1_.animationSpeed += (f - p_233629_1_.animationSpeed) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean p_233629_2_) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float)Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     public void tick() {
@@ -261,8 +256,8 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
         if (!isDepressurized() && !clear) {
             this.setDepressurized(true);
         }
-        if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 12) {
-            float f1 = this.getYRot() * ((float) Math.PI / 180F);
+        if (!this.level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 12) {
+            float f1 = this.getYRot() * Mth.DEG_TO_RAD;
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.06F, 0.0D, Mth.cos(f1) * 0.06F));
             if (this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
                 this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION.get(), 60, 2));
@@ -338,8 +333,8 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
             double d0 = this.random.nextGaussian() * 0.1D;
             double d1 = this.random.nextGaussian() * 0.1D;
             float radius = this.getBbWidth() * 0.8F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             double x = this.getX() + extraX + d0;
             double y = this.getY() + this.getBbHeight() * 0.15F + d1;
@@ -364,7 +359,6 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
         public void tick() {
             LivingEntity target = EntityFrilledShark.this.getTarget();
             double speed = 1.0F;
-            boolean move = true;
             if (EntityFrilledShark.this.distanceTo(target) < 10) {
                 if (EntityFrilledShark.this.distanceTo(target) < 1.9D) {
                     EntityFrilledShark.this.doHurtTarget(target);

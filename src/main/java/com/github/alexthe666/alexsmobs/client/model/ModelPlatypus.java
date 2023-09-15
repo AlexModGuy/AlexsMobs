@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityPlatypus;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -95,20 +96,20 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
         float digProgress = entity.prevDigProgress + (entity.digProgress - entity.prevDigProgress) * partialTick;
         float swimProgress = entity.prevInWaterProgress + (entity.inWaterProgress - entity.prevInWaterProgress) * partialTick;
         progressPositionPrev(body, swimProgress, 0, -3.5F, 0, 5f);
-        progressRotationPrev(arm_left, swimProgress, (float) Math.toRadians(-5), 0, (float) Math.toRadians(75), 5f);
-        progressRotationPrev(arm_right, swimProgress, (float) Math.toRadians(-5), 0, (float) Math.toRadians(-75), 5f);
-        progressRotationPrev(leg_left, swimProgress, (float) Math.toRadians(-5), 0, (float) Math.toRadians(75), 5f);
-        progressRotationPrev(leg_right, swimProgress, (float) Math.toRadians(-5), 0, (float) Math.toRadians(-75), 5f);
-        progressRotationPrev(tail, swimProgress, (float) Math.toRadians(-10), 0, 0, 5f);
+        progressRotationPrev(arm_left, swimProgress, Maths.rad(-5), 0, Maths.rad(75), 5f);
+        progressRotationPrev(arm_right, swimProgress, Maths.rad(-5), 0, Maths.rad(-75), 5f);
+        progressRotationPrev(leg_left, swimProgress, Maths.rad(-5), 0, Maths.rad(75), 5f);
+        progressRotationPrev(leg_right, swimProgress, Maths.rad(-5), 0, Maths.rad(-75), 5f);
+        progressRotationPrev(tail, swimProgress, Maths.rad(-10), 0, 0, 5f);
 
         progressPositionPrev(body, digProgress, 0, -1.5F, 0, 5f);
         progressPositionPrev(arm_right, digProgress, 1, -1, -0.5F, 5f);
         progressPositionPrev(arm_left, digProgress, -1, -1, -0.5F, 5f);
-        progressRotationPrev(body, digProgress, (float) Math.toRadians(35), 0, 0, 5f);
-        progressRotationPrev(tail, digProgress, (float) Math.toRadians(10), 0, 0, 5f);
-        progressRotationPrev(head, digProgress, (float) Math.toRadians(-20), 0, 0, 5f);
-        progressRotationPrev(arm_left, digProgress, (float) Math.toRadians(-30),  (float) Math.toRadians(10),  (float) Math.toRadians(-65), 5f);
-        progressRotationPrev(arm_right, digProgress, (float) Math.toRadians(-30), (float) Math.toRadians(-10),  (float) Math.toRadians(65), 5f);
+        progressRotationPrev(body, digProgress, Maths.rad(35), 0, 0, 5f);
+        progressRotationPrev(tail, digProgress, Maths.rad(10), 0, 0, 5f);
+        progressRotationPrev(head, digProgress, Maths.rad(-20), 0, 0, 5f);
+        progressRotationPrev(arm_left, digProgress, Maths.rad(-30),  Maths.rad(10),  Maths.rad(-65), 5f);
+        progressRotationPrev(arm_right, digProgress, Maths.rad(-30), Maths.rad(-10),  Maths.rad(65), 5f);
 
         if(digProgress > 0F){
             this.swing(body, 0.8F, idleDegree * 1.2F, false, 3F, 0F, ageInTicks, 1);

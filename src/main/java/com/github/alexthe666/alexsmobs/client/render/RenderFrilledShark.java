@@ -32,7 +32,7 @@ public class RenderFrilledShark extends MobRenderer<EntityFrilledShark, ModelFri
         return entity.isKaiju() ? (entity.isDepressurized() ? TEXTURE_KAIJU_DEPRESSURIZED : TEXTURE_KAIJU) : (entity.isDepressurized() ? TEXTURE_DEPRESSURIZED : TEXTURE);
     }
 
-    class TeethLayer extends RenderLayer<EntityFrilledShark, ModelFrilledShark> {
+    static class TeethLayer extends RenderLayer<EntityFrilledShark, ModelFrilledShark> {
 
 
         public TeethLayer(RenderFrilledShark render) {

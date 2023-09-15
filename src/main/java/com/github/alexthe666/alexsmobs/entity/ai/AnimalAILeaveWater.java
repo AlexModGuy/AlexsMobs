@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -43,7 +44,7 @@ public class AnimalAILeaveWater extends Goal {
             this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
         if (this.creature.horizontalCollision && this.creature.isInWater()) {
-            final float f1 = creature.getYRot() * Maths.piDividedBy180;
+            final float f1 = creature.getYRot() * Mth.DEG_TO_RAD;
             creature.setDeltaMovement(creature.getDeltaMovement().add(-Mth.sin(f1) * 0.2F, 0.1D, Mth.cos(f1) * 0.2F));
 
         }
@@ -71,7 +72,7 @@ public class AnimalAILeaveWater extends Goal {
             if (waterDetected) {
                 vector3d = LandRandomPos.getPos(this.creature, 23, 7);
             } else {
-                return new BlockPos(vector3d);
+                return AMBlockPos.fromVec3(vector3d);
             }
             tries++;
         }

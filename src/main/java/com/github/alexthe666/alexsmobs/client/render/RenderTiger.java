@@ -137,16 +137,16 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<EntityTiger, ModelTiger>(entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn));
     }
 
-    private <E extends Entity> void renderLeash(EntityTiger p_115462_, float p_115463_, PoseStack p_115464_, MultiBufferSource p_115465_, E p_115466_) {
+    private <E extends Entity> void renderLeash(EntityTiger tiger, float p_115463_, PoseStack p_115464_, MultiBufferSource p_115465_, E p_115466_) {
         p_115464_.pushPose();
         Vec3 vec3 = p_115466_.getRopeHoldPosition(p_115463_);
-        double d0 = (double)(Mth.lerp(p_115463_, p_115462_.yBodyRot, p_115462_.yBodyRotO) * ((float)Math.PI / 180F)) + (Math.PI / 2D);
-        Vec3 vec31 = p_115462_.getLeashOffset();
+        double d0 = (double)(Mth.lerp(p_115463_, tiger.yBodyRot, tiger.yBodyRotO) * Mth.DEG_TO_RAD) + (Math.PI / 2D);
+        Vec3 vec31 = tiger.getLeashOffset();
         double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
         double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;
-        double d3 = Mth.lerp((double)p_115463_, p_115462_.xo, p_115462_.getX()) + d1;
-        double d4 = Mth.lerp((double)p_115463_, p_115462_.yo, p_115462_.getY()) + vec31.y;
-        double d5 = Mth.lerp((double)p_115463_, p_115462_.zo, p_115462_.getZ()) + d2;
+        double d3 = Mth.lerp((double)p_115463_, tiger.xo, tiger.getX()) + d1;
+        double d4 = Mth.lerp((double)p_115463_, tiger.yo, tiger.getY()) + vec31.y;
+        double d5 = Mth.lerp((double)p_115463_, tiger.zo, tiger.getZ()) + d2;
         p_115464_.translate(d1, vec31.y, d2);
         float f = (float)(vec3.x - d3);
         float f1 = (float)(vec3.y - d4);
@@ -157,12 +157,12 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
         float f4 = Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F;
         float f5 = f2 * f4;
         float f6 = f * f4;
-        BlockPos blockpos = new BlockPos(p_115462_.getEyePosition(p_115463_));
+        BlockPos blockpos = new BlockPos(tiger.getEyePosition(p_115463_));
         BlockPos blockpos1 = new BlockPos(p_115466_.getEyePosition(p_115463_));
-        int i = this.getBlockLightLevel(p_115462_, blockpos);
-        int j = this.getBlockLightLevel(p_115462_, blockpos1);
-        int k = p_115462_.level.getBrightness(LightLayer.SKY, blockpos);
-        int l = p_115462_.level.getBrightness(LightLayer.SKY, blockpos1);
+        int i = this.getBlockLightLevel(tiger, blockpos);
+        int j = this.getBlockLightLevel(tiger, blockpos1);
+        int k = tiger.level.getBrightness(LightLayer.SKY, blockpos);
+        int l = tiger.level.getBrightness(LightLayer.SKY, blockpos1);
 
         for(int i1 = 0; i1 <= 24; ++i1) {
             addVertexPair(vertexconsumer, matrix4f, f, f1, f2, i, j, k, l, 0.025F, 0.025F, f5, f6, i1, false);

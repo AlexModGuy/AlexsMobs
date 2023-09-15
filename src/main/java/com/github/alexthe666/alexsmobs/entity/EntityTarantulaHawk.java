@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlyingAIFollowOwner;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageTarantulaHawkSting;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -256,43 +257,43 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public boolean isNether() {
-        return this.entityData.get(NETHER).booleanValue();
+        return this.entityData.get(NETHER);
     }
 
     public void setNether(boolean sit) {
-        this.entityData.set(NETHER, Boolean.valueOf(sit));
+        this.entityData.set(NETHER, sit);
     }
 
     public boolean isScared() {
-        return this.entityData.get(SCARED).booleanValue();
+        return this.entityData.get(SCARED);
     }
 
     public void setScared(boolean sit) {
-        this.entityData.set(SCARED, Boolean.valueOf(sit));
+        this.entityData.set(SCARED, sit);
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public boolean isDragging() {
-        return this.entityData.get(DRAGGING).booleanValue();
+        return this.entityData.get(DRAGGING);
     }
 
     public void setDragging(boolean sit) {
-        this.entityData.set(DRAGGING, Boolean.valueOf(sit));
+        this.entityData.set(DRAGGING, sit);
     }
 
     public boolean isDigging() {
-        return this.entityData.get(DIGGING).booleanValue();
+        return this.entityData.get(DIGGING);
     }
 
     public void setDigging(boolean sit) {
-        this.entityData.set(DIGGING, Boolean.valueOf(sit));
+        this.entityData.set(DIGGING, sit);
     }
 
     public EntityDimensions getDimensions(Pose poseIn) {
@@ -307,31 +308,45 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         prevSitProgress = sitProgress;
         prevDragProgress = dragProgress;
         prevDigProgress = digProgress;
-        if (this.isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        final boolean flying = this.isFlying();
+        final boolean sitting = this.isSitting();
+        final boolean dragging = this.isDragging();
+        final boolean digging = this.isDigging();
+
+        if (flying) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!this.isFlying() && flyProgress > 0F) {
-            flyProgress--;
+
+        if (sitting) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (this.isSitting() && sitProgress < 5F) {
-            sitProgress++;
+
+        if (dragging) {
+            if (dragProgress < 5F)
+                dragProgress++;
+        } else {
+            if (dragProgress > 0F)
+                dragProgress--;
         }
-        if (!this.isSitting() && sitProgress > 0F) {
-            sitProgress--;
+
+        if (digging) {
+            if (digProgress < 5F)
+                digProgress++;
+        } else {
+            if (digProgress > 0F)
+                digProgress--;
         }
-        if (this.isDragging() && dragProgress < 5F) {
-            dragProgress++;
-        }
-        if (!this.isDragging() && dragProgress > 0F) {
-            dragProgress--;
-        }
-        if (this.isDigging() && digProgress < 5F) {
-            digProgress++;
-        }
-        if (!this.isDigging() && digProgress > 0F) {
-            digProgress--;
-        }
-        if (flightSize && !isFlying()) {
+
+        if (flightSize && !flying) {
             this.refreshDimensions();
             flightSize = false;
         }
@@ -390,12 +405,12 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             BlockPos posit = this.getBlockPosBelowThatAffectsMyMovement();
             BlockState understate = level.getBlockState(posit);
             for (int i = 0; i < 4 + random.nextInt(2); i++) {
-                double particleX = posit.getX() + random.nextFloat();
-                double particleY = posit.getY() + 1F;
-                double particleZ = posit.getZ() + random.nextFloat();
-                double motX = this.random.nextGaussian() * 0.02D;
-                double motY = 0.1F + random.nextFloat() * 0.2F;
-                double motZ = this.random.nextGaussian() * 0.02D;
+                final double particleX = posit.getX() + random.nextFloat();
+                final double particleY = posit.getY() + 1F;
+                final double particleZ = posit.getZ() + random.nextFloat();
+                final double motX = this.random.nextGaussian() * 0.02D;
+                final double motY = 0.1F + random.nextFloat() * 0.2F;
+                final double motZ = this.random.nextGaussian() * 0.02D;
                 level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
             }
         }
@@ -547,8 +562,8 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     public void positionRider(Entity passenger) {
         this.setXRot(0);
         float radius = 1.0F + passenger.getBbWidth() * 0.5F;
-        float angle = (0.01745329251F * (this.yBodyRot - 180));
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * (this.yBodyRot - 180));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         double extraY = 0;
         passenger.setPos(this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ);
@@ -566,8 +581,8 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getCrowGround(radialPos);
@@ -592,8 +607,8 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getCrowGround(radialPos);
@@ -617,7 +632,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private Vec3 getOrbitVec(Vec3 vector3d, float gatheringCircleDist, boolean orbitClockwise) {
-        float angle = (0.01745329251F * (float) 2 * (orbitClockwise ? -tickCount : tickCount));
+        float angle = (Maths.STARTING_ANGLE * (float) 2 * (orbitClockwise ? -tickCount : tickCount));
         double extraX = gatheringCircleDist * Mth.sin((angle));
         double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (vector3d != null) {
@@ -630,11 +645,11 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     private BlockPos genSandPos(BlockPos parent) {
@@ -681,15 +696,15 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                     this.operation = MoveControl.Operation.WAIT;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
                 } else {
-                    float angle = (0.01745329251F * (parentEntity.yBodyRot + 90));
-                    float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                    double extraZ = radius * Mth.cos(angle);
+                    final float angle = (Maths.STARTING_ANGLE * (parentEntity.yBodyRot + 90));
+                    final float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
+                    final double extraX = radius * Mth.sin(Mth.PI + angle);
+                    final double extraZ = radius * Mth.cos(angle);
                     Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.05D / d0);
                     Vec3 strafPlus = new Vec3(extraX, 0, extraZ).scale(0.003D * Math.min(d0, 100));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(strafPlus));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d1));
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                     if (!EntityTarantulaHawk.this.isDragging()) {
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     }
@@ -700,7 +715,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private class AIMelee extends Goal {
-        private EntityTarantulaHawk hawk;
+        private final EntityTarantulaHawk hawk;
         private int orbitCooldown = 0;
         private boolean clockwise = false;
         private Vec3 orbitVec = null;
@@ -900,7 +915,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private class AIBury extends Goal {
-        private EntityTarantulaHawk hawk;
+        private final EntityTarantulaHawk hawk;
         private BlockPos buryPos = null;
         private int digTime = 0;
         private double stageX;

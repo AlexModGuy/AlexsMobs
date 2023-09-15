@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -93,26 +94,26 @@ public class ModelHummingbird extends AdvancedEntityModel<EntityHummingbird> {
         float flyProgress = entityIn.prevFlyProgress + (entityIn.flyProgress - entityIn.prevFlyProgress) * partialTick;
         float zoomProgress = entityIn.prevMovingProgress + (entityIn.movingProgress - entityIn.prevMovingProgress) * partialTick;
         float sipProgress = entityIn.prevSipProgress + (entityIn.sipProgress - entityIn.prevSipProgress) * partialTick;
-        progressRotationPrev(body, flyProgress, (float) Math.toRadians(30), 0, 0, 5F);
-        progressRotationPrev(head, flyProgress, (float) Math.toRadians(-30), 0, 0, 5F);
-        progressRotationPrev(wingL, flyProgress, (float) Math.toRadians(15), (float) Math.toRadians(55), (float) Math.toRadians(-100), 5F);
-        progressRotationPrev(wingR, flyProgress, (float) Math.toRadians(15), (float) Math.toRadians(-55), (float) Math.toRadians(100), 5F);
-        progressRotationPrev(tail, flyProgress, (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(legL, flyProgress, (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(legR, flyProgress, (float) Math.toRadians(-45), 0, 0, 5F);
+        progressRotationPrev(body, flyProgress, Maths.rad(30), 0, 0, 5F);
+        progressRotationPrev(head, flyProgress, Maths.rad(-30), 0, 0, 5F);
+        progressRotationPrev(wingL, flyProgress, Maths.rad(15), Maths.rad(55), Maths.rad(-100), 5F);
+        progressRotationPrev(wingR, flyProgress, Maths.rad(15), Maths.rad(-55), Maths.rad(100), 5F);
+        progressRotationPrev(tail, flyProgress, Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(legL, flyProgress, Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(legR, flyProgress, Maths.rad(-45), 0, 0, 5F);
         progressPositionPrev(wingL, flyProgress, 0, 1, 0, 5F);
         progressPositionPrev(wingR, flyProgress, 0, 1, 0, 5F);
         progressPositionPrev(legL, flyProgress, 0, -0.4F, 0, 5F);
         progressPositionPrev(legR, flyProgress, 0, -0.4F, 0, 5F);
         progressPositionPrev(head, flyProgress, 0, -0.5F, -1F, 5F);
         if (flyProgress > 0) {
-            progressRotationPrev(body, zoomProgress, (float) Math.toRadians(25), 0, 0, 5F);
-            progressRotationPrev(head, zoomProgress, (float) Math.toRadians(-25), 0, 0, 5F);
-            progressRotationPrev(wingL, zoomProgress, (float) Math.toRadians(20), 0, 0, 5F);
-            progressRotationPrev(wingR, zoomProgress, (float) Math.toRadians(20), 0, 0, 5F);
+            progressRotationPrev(body, zoomProgress, Maths.rad(25), 0, 0, 5F);
+            progressRotationPrev(head, zoomProgress, Maths.rad(-25), 0, 0, 5F);
+            progressRotationPrev(wingL, zoomProgress, Maths.rad(20), 0, 0, 5F);
+            progressRotationPrev(wingR, zoomProgress, Maths.rad(20), 0, 0, 5F);
         }
         progressPositionPrev(body, sipProgress, 0, -1, 3, 5F);
-        progressRotationPrev(head, sipProgress, (float) Math.toRadians(60), 0, 0, 5F);
+        progressRotationPrev(head, sipProgress, Maths.rad(60), 0, 0, 5F);
         if (entityIn.isFlying()) {
             this.flap(wingL, flySpeed * 2.3F, flyDegree * 2.3F, false, 0, 0F, ageInTicks, 1);
             this.walk(wingL, flySpeed * 2.3F, flyDegree, false, 0, -0.4F, ageInTicks, 1);

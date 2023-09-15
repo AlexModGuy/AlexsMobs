@@ -17,7 +17,7 @@ import java.util.EnumSet;
 
 public class MantisShrimpAIFryRice extends MoveToBlockGoal {
 
-    private EntityMantisShrimp mantisShrimp;
+    private final EntityMantisShrimp mantisShrimp;
     private boolean wasLitPrior = false;
     private int cookingTicks = 0;
 

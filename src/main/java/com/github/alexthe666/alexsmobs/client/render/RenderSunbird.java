@@ -32,8 +32,8 @@ public class RenderSunbird extends MobRenderer<EntitySunbird, ModelSunbird> {
     @Override
     public void render(EntitySunbird entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light) {
         super.render(entity, yaw, partialTicks, poseStack, buffer, light);
-        float ageInTicks = entity.tickCount + partialTicks;
-        float scale = (12.0F + (float) Math.sin(ageInTicks * 0.3F)) * entity.getScorchProgress(partialTicks);
+        final float ageInTicks = entity.tickCount + partialTicks;
+        final float scale = (12.0F + (float) Math.sin(ageInTicks * 0.3F)) * entity.getScorchProgress(partialTicks);
         if(scale > 0.0F) {
             poseStack.pushPose();
             poseStack.translate(0, entity.getBbHeight() * 0.5F, 0);
@@ -66,7 +66,7 @@ public class RenderSunbird extends MobRenderer<EntitySunbird, ModelSunbird> {
         return TEXTURE;
     }
 
-    class LayerScorch extends RenderLayer<EntitySunbird, ModelSunbird> {
+    static class LayerScorch extends RenderLayer<EntitySunbird, ModelSunbird> {
 
         public LayerScorch(RenderSunbird p_i50928_1_) {
             super(p_i50928_1_);

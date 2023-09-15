@@ -136,10 +136,10 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        boolean prev = super.hurt(source, amount);
+        final boolean prev = super.hurt(source, amount);
         if (prev) {
-            double range = 15;
-            int fleeTime = 100 + getRandom().nextInt(150);
+            final double range = 15;
+            final int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
             List<? extends EntitySeal> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntitySeal gaz : list) {
@@ -167,18 +167,12 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         return s != null && s.toLowerCase().contains("he was");
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (isInWater() ? 4.0F : 48.0F);
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean flying) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * (isInWater() ? 4.0F : 48.0F), 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     public float getSwimAngle() {
@@ -196,28 +190,33 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         prevBobbingProgress = bobbingProgress;
         prevSwimAngle = this.getSwimAngle();
         boolean dig = isDigging() && isInWaterOrBubble();
-        float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+        float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
         if (isInWater()) {
             this.setXRot(f2 * 2.5F);
+
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
-        if (isInWater() && this.isLandNavigator) {
-            switchNavigator(false);
+
+        if (isBasking()) {
+            if (baskProgress < 5F)
+                baskProgress++;
+        } else {
+            if (baskProgress > 0F)
+                baskProgress--;
         }
-        if (!isInWater() && !this.isLandNavigator) {
-            switchNavigator(true);
+
+        if (dig) {
+            if (digProgress < 5F)
+                digProgress++;
+        } else {
+            if (digProgress > 0F)
+                digProgress--;
         }
-        if (isBasking() && baskProgress < 5F) {
-            baskProgress++;
-        }
-        if (!isBasking() && baskProgress > 0F) {
-            baskProgress--;
-        }
-        if (dig && digProgress < 5F) {
-            digProgress++;
-        }
-        if (!dig && digProgress > 0F) {
-            digProgress--;
-        }
+
         if (dig && level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).canOcclude()) {
             BlockPos posit = this.getBlockPosBelowThatAffectsMyMovement();
             BlockState understate = level.getBlockState(posit);
@@ -292,11 +291,11 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     public boolean isBasking() {
@@ -473,7 +472,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         return !isBasking();
     }
 
-    public class SealGroupData extends AgeableMobGroupData {
+    public static class SealGroupData extends AgeableMobGroupData {
 
         public final int variant;
 

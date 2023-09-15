@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBananaSlug;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -83,15 +84,15 @@ public class ModelBananaSlug extends AdvancedEntityModel<EntityBananaSlug> {
         body.rotationPointZ -= stretch1 * 2F;
         leftAntenna.rotationPointZ -= stretch1 * 1;
         rightAntenna.rotationPointZ -= stretch1 * 1;
-        leftAntenna.rotateAngleY += netHeadYaw * 0.6F * ((float)Math.PI / 180F);
-        leftAntenna.rotateAngleX += headPitch * 0.3F * ((float)Math.PI / 180F);
-        rightAntenna.rotateAngleY += netHeadYaw * 0.6F * ((float)Math.PI / 180F);
-        rightAntenna.rotateAngleX += headPitch * 0.3F * ((float)Math.PI / 180F);
+        leftAntenna.rotateAngleY += netHeadYaw * 0.6F * Mth.DEG_TO_RAD;
+        leftAntenna.rotateAngleX += headPitch * 0.3F * Mth.DEG_TO_RAD;
+        rightAntenna.rotateAngleY += netHeadYaw * 0.6F * Mth.DEG_TO_RAD;
+        rightAntenna.rotateAngleX += headPitch * 0.3F * Mth.DEG_TO_RAD;
         float yaw = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO) * partialTick;
         float slimeYaw = Mth.wrapDegrees(entity.prevTrailYaw + (entity.trailYaw - entity.prevTrailYaw) * partialTick - yaw) * 0.65F;
-        goo.rotationPointX =  (float) (Math.sin(limbSwing * -walkSpeed - 1F) * limbSwingAmount);
-        goo.rotateAngleY += (float) Math.toRadians(slimeYaw);
-        tail.rotateAngleY += (float) Math.toRadians(slimeYaw * 0.8F);
+        goo.rotationPointX =  (Mth.sin(limbSwing * -walkSpeed - 1F) * limbSwingAmount);
+        goo.rotateAngleY += Maths.rad(slimeYaw);
+        tail.rotateAngleY += Maths.rad(slimeYaw * 0.8F);
         goo.setScale(1, 0, (1 + limbSwingAmount));
     }
 

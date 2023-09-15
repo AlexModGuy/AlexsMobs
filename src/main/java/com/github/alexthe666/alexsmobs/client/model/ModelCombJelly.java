@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelCombJelly extends AdvancedEntityModel<EntityCombJelly> {
     private final AdvancedModelBox root;
@@ -50,8 +51,8 @@ public class ModelCombJelly extends AdvancedEntityModel<EntityCombJelly> {
         float squishedScale = widthScale - 0.1F * landProgress;
         this.body.setScale(squishedScale, heightScale, widthScale);
         this.inner_body.setScale(squishedScale, heightScale, widthScale);
-        this.body.rotateAngleX = birdPitch * ((float)Math.PI / 180F) * (1F - landProgress * 0.2F);
-        this.body.rotateAngleZ = landProgress * 0.2F * ((float)Math.PI / 2);
+        this.body.rotateAngleX = birdPitch * Mth.DEG_TO_RAD * (1F - landProgress * 0.2F);
+        this.body.rotateAngleZ = landProgress * 0.2F * Mth.HALF_PI;
         this.body.rotationPointY += landProgress * 1.85F;
         this.body.rotationPointY += Math.abs(birdPitch * 0.07F);
         this.body.rotationPointX += landProgress;

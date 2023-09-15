@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -296,8 +297,8 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
             if (isSleeping() && random.nextFloat() < 0.3F) {
                 final double d0 = this.random.nextGaussian() * 0.02D;
                 final float radius = this.getBbWidth() * (0.7F + random.nextFloat() * 0.1F);
-                final float angle = (0.0174532925F * this.yBodyRot);
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
+                final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+                final double extraX = radius * Mth.sin(Mth.PI + angle) + random.nextFloat() * 0.5F - 0.25F;
                 final double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
                 ParticleOptions data = random.nextFloat() < 0.3F ? AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get() : AMParticleRegistry.FUNGUS_BUBBLE.get();
                 this.level.addParticle(data, this.getX() + extraX, this.getY() + random.nextFloat() * 0.1F, this.getZ() + extraZ, 0, d0, 0);

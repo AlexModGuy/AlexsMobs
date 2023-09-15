@@ -4,6 +4,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,8 +32,8 @@ public class ModelSombrero extends HumanoidModel {
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition head = partdefinition.getChild("head");
 
-        head.addOrReplaceChild("sombrero", CubeListBuilder.create().texOffs(0, 64).addBox(-4.0F, 7.0F, -4.0F, 8.0F, 6.0F, 8.0F, deformation), PartPose.offsetAndRotation(0, 0, 0, (float)Math.PI, 0, (float)Math.PI * 0.1F));
-        head.addOrReplaceChild("sombrero2", CubeListBuilder.create().texOffs(22, 73).addBox(-11.0F, 10.0F, -11.0F, 22.0F, 3.0F, 22.0F, deformation), PartPose.offsetAndRotation(0, 0, 0, (float)Math.PI, 0, (float)Math.PI * 0.1F));
+        head.addOrReplaceChild("sombrero", CubeListBuilder.create().texOffs(0, 64).addBox(-4.0F, 7.0F, -4.0F, 8.0F, 6.0F, 8.0F, deformation), PartPose.offsetAndRotation(0, 0, 0, Mth.PI, 0, Mth.PI * 0.1F));
+        head.addOrReplaceChild("sombrero2", CubeListBuilder.create().texOffs(22, 73).addBox(-11.0F, 10.0F, -11.0F, 22.0F, 3.0F, 22.0F, deformation), PartPose.offsetAndRotation(0, 0, 0, Mth.PI, 0, Mth.PI * 0.1F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }

@@ -42,7 +42,7 @@ public class RenderSpectre extends MobRenderer<EntitySpectre, ModelSpectre> {
         return ((float) Math.sin((entityIn.tickCount + partialTicks) * 0.1F) + 1.5F) * 0.1F + 0.5F;
     }
 
-    class SpectreEyesLayer extends EyesLayer<EntitySpectre, ModelSpectre> {
+    static class SpectreEyesLayer extends EyesLayer<EntitySpectre, ModelSpectre> {
 
         public SpectreEyesLayer(RenderSpectre p_i50928_1_) {
             super(p_i50928_1_);

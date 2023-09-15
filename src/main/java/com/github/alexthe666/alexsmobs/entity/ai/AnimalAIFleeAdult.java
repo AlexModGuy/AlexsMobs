@@ -1,6 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.core.BlockPos;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Animal;
@@ -13,7 +13,7 @@ public class AnimalAIFleeAdult extends Goal {
     private final Animal childAnimal;
     private Animal parentAnimal;
     private final double moveSpeed;
-    private double fleeDistance;
+    private final double fleeDistance;
     private int delayCounter;
     private Path path;
 
@@ -53,7 +53,7 @@ public class AnimalAIFleeAdult extends Goal {
                 } else if (this.parentAnimal.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.parentAnimal.distanceToSqr(this.childAnimal)) {
                     return false;
                 } else {
-                    this.path = childAnimal.getNavigation().createPath(new BlockPos(vec3d.x, vec3d.y, vec3d.z), 0);
+                    this.path = childAnimal.getNavigation().createPath(AMBlockPos.fromVec3(vec3d), 0);
                     return this.path != null;
                 }
             }

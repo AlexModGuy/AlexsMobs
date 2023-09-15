@@ -12,4 +12,6 @@ public class AMLootRegistry {
     public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> DEF_REG = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
     public static final RegistryObject<Codec<? extends IGlobalLootModifier>> BANANA_DROP = DEF_REG.register("banana_drop", BananaLootModifier::makeCodec);
     public static final RegistryObject<Codec<? extends IGlobalLootModifier>> BLOSSOM_DROP = DEF_REG.register("blossom_drop", BlossomLootModifier::makeCodec);
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ANCIENT_DART = DEF_REG.register("ancient_dart", BlossomLootModifier::makeCodec);
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> PIGSHOES = DEF_REG.register("pigshoes", BlossomLootModifier::makeCodec);
 }

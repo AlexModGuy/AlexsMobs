@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "seagull.txt",
-  "title": "Seagull",
+  "title": "entity.alexsmobs.seagull",
   "linked_page_buttons": [
   ],
   "images": [

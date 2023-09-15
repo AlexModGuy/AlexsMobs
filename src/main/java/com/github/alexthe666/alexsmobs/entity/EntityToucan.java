@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.FlyingAITargetDroppedItems;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -219,22 +220,26 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         if (this.getGoldenTime() > 0 && !level.isClientSide) {
             this.setGoldenTime(this.getGoldenTime() - 1);
         }
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        final boolean flying = isFlying();
+        if (flying) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
-        }
-        if (!level.isClientSide) {
-            if (isFlying() && this.isLandNavigator) {
-                switchNavigator(false);
+        if (!this.level.isClientSide) {
+            if (flying) {
+                if (this.isLandNavigator)
+                    switchNavigator(false);
+            } else {
+                if (!this.isLandNavigator)
+                    switchNavigator(true);
             }
-            if (!isFlying() && !this.isLandNavigator) {
-                switchNavigator(true);
-            }
-            if (this.isFlying()) {
+            if (flying) {
                 this.setNoGravity(true);
-                if (this.isFlying() && !this.onGround) {
+                if (this.isFlying() && !this.isOnGround()) {
                     if (!this.isInWaterOrBubble()) {
                         this.setDeltaMovement(this.getDeltaMovement().multiply(1F, 0.6F, 1F));
                     }
@@ -268,9 +273,10 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 if (this.getMainHandItem().hasCraftingRemainingItem()) {
                     this.spawnAtLocation(this.getMainHandItem().getCraftingRemainingItem());
                 }
-                if (this.getMainHandItem().getItem() == Items.GOLDEN_APPLE) {
+                final var mainHandItem = this.getMainHandItem().getItem();
+                if (mainHandItem == Items.GOLDEN_APPLE) {
                     this.setGoldenTime(12000);
-                } else if (this.getMainHandItem().getItem() == Items.ENCHANTED_GOLDEN_APPLE) {
+                } else if (mainHandItem == Items.ENCHANTED_GOLDEN_APPLE) {
                     this.setGoldenTime(-1);
                     this.setEnchanted(true);
                 }
@@ -282,7 +288,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             heldItemTime = 0;
         }
         if (this.isFlying() && this.getFeetBlockState().is(Blocks.VINE)) {
-            float f = this.getYRot() * ((float) Math.PI / 180F);
+            float f = this.getYRot() * Mth.DEG_TO_RAD;
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0.4F, Mth.cos(f) * 0.2F));
         }
     }
@@ -312,17 +318,17 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
-        float radius = 7 + radiusAdd + this.getRandom().nextInt(8);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        final float radius = 7 + radiusAdd + this.getRandom().nextInt(8);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getToucanGround(radialPos);
-        int distFromGround = (int) this.getY() - ground.getY();
-        int flightHeight = 8 + this.getRandom().nextInt(4);
-        int j = this.getRandom().nextInt(6) + 18;
+        final int distFromGround = (int) this.getY() - ground.getY();
+        final int flightHeight = 8 + this.getRandom().nextInt(4);
+        final int j = this.getRandom().nextInt(6) + 18;
 
         BlockPos newPos = ground.above(distFromGround > 9 ? flightHeight : j);
         if (level.getBlockState(ground).is(BlockTags.LEAVES)) {
@@ -335,7 +341,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public BlockPos getToucanGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
@@ -346,12 +352,12 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public Vec3 getBlockGrounding(Vec3 fleePos) {
-        float radius = 10 + this.getRandom().nextInt(15);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
+        final float radius = 10 + this.getRandom().nextInt(15);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getToucanGround(radialPos);
         if (ground.getY() == -64) {
@@ -418,19 +424,19 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     public int getSaplingTime() {
-        return this.entityData.get(SAPLING_TIME).intValue();
+        return this.entityData.get(SAPLING_TIME);
     }
 
     public void setSaplingTime(int time) {
-        this.entityData.set(SAPLING_TIME, Integer.valueOf(time));
+        this.entityData.set(SAPLING_TIME, time);
     }
 
     public boolean isGolden() {
@@ -438,15 +444,15 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public int getGoldenTime() {
-        return this.entityData.get(GOLDEN_TIME).intValue();
+        return this.entityData.get(GOLDEN_TIME);
     }
 
     public void setGoldenTime(int goldenTime) {
-        this.entityData.set(GOLDEN_TIME, Integer.valueOf(goldenTime));
+        this.entityData.set(GOLDEN_TIME, goldenTime);
     }
 
     public boolean isEnchanted() {
-        return this.entityData.get(ENCHANTED).booleanValue();
+        return this.entityData.get(ENCHANTED);
     }
 
     public void setEnchanted(boolean enchanted) {
@@ -506,13 +512,13 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         BlockState beneath = this.getBlockStateOn();
         if (level.isClientSide && !beneath.isAir() && beneath.getFluidState().isEmpty()) {
             for (int i = 0; i < 2 + random.nextInt(2); i++) {
-                double d2 = this.random.nextGaussian() * 0.02D;
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                float radius = this.getBbWidth() * 0.65F;
-                float angle = (0.01745329251F * this.yBodyRot);
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                double extraZ = radius * Mth.cos(angle);
+                final double d2 = this.random.nextGaussian() * 0.02D;
+                final double d0 = this.random.nextGaussian() * 0.02D;
+                final double d1 = this.random.nextGaussian() * 0.02D;
+                final float radius = this.getBbWidth() * 0.65F;
+                final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
+                final double extraZ = radius * Mth.cos(angle);
                 ParticleOptions data = new BlockParticleOption(ParticleTypes.BLOCK, beneath);
                 this.level.addParticle(data, this.getX() + extraX, this.getY() + 0.1F, this.getZ() + extraZ, d0, d1, d2);
             }
@@ -521,13 +527,13 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     private void eatItemEffect(ItemStack heldItemMainhand) {
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
-            double d2 = this.random.nextGaussian() * 0.02D;
-            double d0 = this.random.nextGaussian() * 0.02D;
-            double d1 = this.random.nextGaussian() * 0.02D;
-            float radius = this.getBbWidth() * 0.65F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
+            final double d2 = this.random.nextGaussian() * 0.02D;
+            final double d0 = this.random.nextGaussian() * 0.02D;
+            final double d1 = this.random.nextGaussian() * 0.02D;
+            final float radius = this.getBbWidth() * 0.65F;
+            final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
             if (heldItemMainhand.getItem() instanceof BlockItem) {
                 data = new BlockParticleOption(ParticleTypes.BLOCK, ((BlockItem) heldItemMainhand.getItem()).getBlock().defaultBlockState());
@@ -744,10 +750,11 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         }
 
         public BlockPos getVultureCirclePos(BlockPos target, float circleDistance, double yLevel) {
-            float angle = (0.01745329251F * 8 * (clockwise ? -encircleTime : encircleTime));
-            double extraX = circleDistance * Mth.sin((angle));
-            double extraZ = circleDistance * Mth.cos(angle);
-            BlockPos pos = new BlockPos(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);
+            final float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -encircleTime : encircleTime));
+            final double extraX = circleDistance * Mth.sin((angle));
+            final double extraZ = circleDistance * Mth.cos(angle);
+            BlockPos pos;
+            pos = new BlockPos((int) (target.getX() + 0.5F + extraX), (int) (target.getY() + 1 + yLevel), (int) (target.getZ() + 0.5F + extraZ));
             if (toucan.level.isEmptyBlock(pos)) {
                 return pos;
             }

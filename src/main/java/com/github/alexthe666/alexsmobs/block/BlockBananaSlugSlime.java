@@ -43,6 +43,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
         entity.setDeltaMovement(entity.getDeltaMovement().scale(0.8));
         super.entityInside(state, level, pos, entity);
     }
+
     @Override
     public boolean isSlimeBlock(BlockState state) {
         return true;
@@ -56,6 +57,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
     public boolean propagatesSkylightDown(BlockState p_48740_, BlockGetter p_48741_, BlockPos p_48742_) {
         return true;
     }
+
     @Override
     public boolean canStickTo(BlockState state, @NotNull BlockState other) {
         return !other.isStickyBlock() || other.getBlock() == this;
@@ -85,12 +87,12 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
         int i = 0;
         BlockState state = level.getBlockState(pos);
 
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             Tuple<BlockPos, Integer> tuple = queue.poll();
             BlockPos blockpos = tuple.getA();
             int j = tuple.getB();
 
-            for(Direction direction : Direction.values()) {
+            for (Direction direction : Direction.values()) {
                 BlockPos blockpos1 = blockpos.relative(direction);
                 BlockState blockstate = level.getBlockState(blockpos1);
                 Material material = blockstate.getMaterial();
@@ -106,7 +108,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
                     if (j < 6) {
                         queue.add(new Tuple<>(blockpos1, j + 1));
                     }
-                } else if (material == Material.WATER_PLANT || material == Material.REPLACEABLE_WATER_PLANT) {
+                } else if (/* TODO Check :: 1.20 uses block check */ material == Material.WATER_PLANT || material == Material.REPLACEABLE_WATER_PLANT) {
                     BlockEntity blockentity = blockstate.hasBlockEntity() ? level.getBlockEntity(blockpos1) : null;
                     dropResources(blockstate, level, blockpos1, blockentity);
                     level.setBlock(blockpos1, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState(), 3);

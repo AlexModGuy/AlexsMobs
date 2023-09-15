@@ -58,7 +58,7 @@ public class EntityGuster extends Monster {
 
     protected EntityGuster(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.maxUpStep = 1;
+        this.maxUpStep = 1; // FIXME
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
     }
 
@@ -204,11 +204,11 @@ public class EntityGuster extends Monster {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     public void aiStep() {
@@ -248,7 +248,7 @@ public class EntityGuster extends Monster {
                 radius = 0.2F + (liftingTime * 0.025F);
             }
             float angle = liftingTime * -0.25F;
-            double extraX = this.getX() + radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = this.getX() + radius * Mth.sin(Mth.PI + angle);
             double extraZ = this.getZ() + radius * Mth.cos(angle);
             double d0 = (extraX - lifted.getX()) * resist;
             double d1 = (extraZ - lifted.getZ()) * resist;
@@ -265,7 +265,7 @@ public class EntityGuster extends Monster {
             this.setLiftedEntity(this.getTarget().getId());
             maxLiftTime = 30 + random.nextInt(30);
         }
-        if (!level.isClientSide && shootingTicks >= 0) {
+        if (!level.isClientSide() && shootingTicks >= 0) {
             if (shootingTicks <= 0) {
                 if (this.getTarget() != null && (lifted == null || lifted.getId() != this.getTarget().getId()) && this.isAlive()) {
                     this.spit(this.getTarget());
@@ -276,7 +276,7 @@ public class EntityGuster extends Monster {
             }
         }
         Vec3 vector3d = this.getDeltaMovement();
-        if (!this.onGround && vector3d.y < 0.0D) {
+        if (!this.isOnGround() && vector3d.y < 0.0D) {
             this.setDeltaMovement(vector3d.multiply(1.0D, 0.6D, 1.0D));
         }
     }

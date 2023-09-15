@@ -95,13 +95,13 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
 
                         }
                         matrixStackIn.scale(0.7F, 0.7F, 0.7F);
-                        boolean flag1 = itemstack.hasFoil();
+                        final boolean flag1 = itemstack.hasFoil();
                         int clampedLight = packedLightIn;
                         if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                            int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(itemstack);
-                            float f = (float) (i >> 16 & 255) / 255.0F;
-                            float f1 = (float) (i >> 8 & 255) / 255.0F;
-                            float f2 = (float) (i & 255) / 255.0F;
+                            final int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(itemstack);
+                            final float f = (float) (i >> 16 & 255) / 255.0F;
+                            final float f1 = (float) (i >> 8 & 255) / 255.0F;
+                            final float f2 = (float) (i & 255) / 255.0F;
                             renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, null), notAVanillaModel);
                             renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, "overlay"), notAVanillaModel);
                         } else {
@@ -229,23 +229,24 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
     protected void setModelSlotVisible(HumanoidModel p_188359_1_, EquipmentSlot slotIn) {
         this.setModelVisible(p_188359_1_);
         switch (slotIn) {
-            case HEAD:
+            case HEAD -> {
                 p_188359_1_.head.visible = true;
                 p_188359_1_.hat.visible = true;
-                break;
-            case CHEST:
+            }
+            case CHEST -> {
                 p_188359_1_.body.visible = true;
                 p_188359_1_.rightArm.visible = true;
                 p_188359_1_.leftArm.visible = true;
-                break;
-            case LEGS:
+            }
+            case LEGS -> {
                 p_188359_1_.body.visible = true;
                 p_188359_1_.rightLeg.visible = true;
                 p_188359_1_.leftLeg.visible = true;
-                break;
-            case FEET:
+            }
+            case FEET -> {
                 p_188359_1_.rightLeg.visible = true;
                 p_188359_1_.leftLeg.visible = true;
+            }
         }
     }
 

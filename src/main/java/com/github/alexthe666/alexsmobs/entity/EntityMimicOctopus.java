@@ -3,7 +3,9 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -329,7 +331,8 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && (item == Items.INK_SAC)) {
+        final boolean tame = isTame();
+        if (tame && (item == Items.INK_SAC)) {
             this.setStopChange(!this.isStopChange());
             if (this.isStopChange()) {
                 this.makeEatingParticles(itemstack);
@@ -339,7 +342,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             }
             return InteractionResult.SUCCESS;
         }
-        if (!isTame() && (item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get())) {
+        if (!tame && (item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get())) {
             this.usePlayerItem(player, hand, itemstack);
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
@@ -354,7 +357,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && (item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get())) {
+        if (tame && (item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get())) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.usePlayerItem(player, hand, itemstack);
                 this.gameEvent(GameEvent.EAT);
@@ -364,32 +367,35 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             }
             return InteractionResult.PASS;
         }
-        if (this.isTame()) {
+        if (tame) {
             Optional<InteractionResult> result = Bucketable.bucketMobPickup(player, hand, this);
             if (result.isPresent()) {
                 return result.get();
             }
-        }
-        if (this.isTame() && item == Items.SLIME_BALL && this.getMoistness() < 24000) {
-            this.setMoistness(48000);
-            this.makeEatingParticles(itemstack);
-            this.usePlayerItem(player, hand, itemstack);
-            return InteractionResult.SUCCESS;
-        }
-        if (this.isTame() && !this.isUpgraded() && item == AMItemRegistry.MIMICREAM.get()) {
-            mimicreamFeedings++;
-            if (mimicreamFeedings > 5 || mimicreamFeedings > 2 && random.nextInt(2) == 0) {
-                this.level.broadcastEntityEvent(this, (byte) 46);
-                this.setUpgraded(true);
-                this.setMimicState(MimicState.MIMICUBE);
-                this.setStopChange(false);
-                this.setMimickedBlock(null);
-                this.stopMimicCooldown = 40;
+
+            if (item == Items.SLIME_BALL && this.getMoistness() < 24000) {
+                this.setMoistness(48000);
+                this.makeEatingParticles(itemstack);
+                this.usePlayerItem(player, hand, itemstack);
+                return InteractionResult.SUCCESS;
             }
-            this.makeEatingParticles(itemstack);
-            this.usePlayerItem(player, hand, itemstack);
-            return InteractionResult.SUCCESS;
+
+            if (!this.isUpgraded() && item == AMItemRegistry.MIMICREAM.get()) {
+                mimicreamFeedings++;
+                if (mimicreamFeedings > 5 || mimicreamFeedings > 2 && random.nextInt(2) == 0) {
+                    this.level.broadcastEntityEvent(this, (byte) 46);
+                    this.setUpgraded(true);
+                    this.setMimicState(MimicState.MIMICUBE);
+                    this.setStopChange(false);
+                    this.setMimickedBlock(null);
+                    this.stopMimicCooldown = 40;
+                }
+                this.makeEatingParticles(itemstack);
+                this.usePlayerItem(player, hand, itemstack);
+                return InteractionResult.SUCCESS;
+            }
         }
+
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
             if (player.isShiftKeyDown()) {
@@ -424,11 +430,11 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     private void makeEatingParticles(ItemStack item) {
@@ -441,18 +447,12 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.animationSpeedOld = p_233629_1_.animationSpeed;
-        double d0 = p_233629_1_.getX() - p_233629_1_.xo;
-        double d1 = p_233629_1_.getY() - p_233629_1_.yo;
-        double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt((float)(d0 * d0 + d1 * d1 + d2 * d2)) * (groundProgress < 2.5F ? 4.0F : 8.0F);
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        p_233629_1_.animationSpeed += (f - p_233629_1_.animationSpeed) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean p_233629_2_) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float)Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * (groundProgress < 2.5F ? 4.0F : 8.0F), 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     public boolean canBreatheUnderwater() {
@@ -481,13 +481,16 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             localMimicState = this.getPrevMimicState();
             transProgress = 0.0F;
         }
-        if (this.isInWater() && this.isLandNavigator) {
-            switchNavigator(false);
+
+        if (this.isInWater()) {
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
-        if (!this.isInWater() && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
-        BlockPos pos = new BlockPos(this.getX(), this.getEyeY() - 1F, this.getZ());
+
+        BlockPos pos = AMBlockPos.get(this.getX(), this.getEyeY() - 1F, this.getZ());
         boolean ground = level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP) && this.getMimicState() != MimicState.GUARDIAN || !this.isInWaterOrBubble() || this.isSitting();
         this.prevTransProgress = transProgress;
         this.prevColorShiftProgress = colorShiftProgress;
@@ -518,7 +521,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             sitProgress -= 0.5F;
         }
         if (this.isInWaterOrBubble()) {
-            float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) (180F / (float) Math.PI));
+            float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) Mth.RAD_TO_DEG);
             this.setXRot(f2);
         }
         if (camoCooldown > 0) {
@@ -644,8 +647,8 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     private BlockPos getPositionDown() {
-        BlockPos pos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
-        while (pos.getY() > 1 && (level.isEmptyBlock(pos) || level.getBlockState(pos).getMaterial() == Material.WATER)) {
+        BlockPos pos = AMBlockPos.get(this.getX(), this.getEyeY(), this.getZ());
+        while (pos.getY() > 1 && (level.isEmptyBlock(pos) || level.isWaterAt(pos))) {
             pos = pos.below();
         }
         return pos;
@@ -670,11 +673,11 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     @Override
@@ -694,19 +697,19 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isUpgraded() {
-        return this.entityData.get(FROM_BUCKET).booleanValue();
+        return this.entityData.get(FROM_BUCKET);
     }
 
     public void setUpgraded(boolean sit) {
-        this.entityData.set(FROM_BUCKET, Boolean.valueOf(sit));
+        this.entityData.set(FROM_BUCKET, sit);
     }
 
     public boolean isStopChange() {
-        return this.entityData.get(STOP_CHANGE).booleanValue();
+        return this.entityData.get(STOP_CHANGE);
     }
 
     public void setStopChange(boolean sit) {
-        this.entityData.set(STOP_CHANGE, Boolean.valueOf(sit));
+        this.entityData.set(STOP_CHANGE, sit);
     }
 
     public boolean hasGuardianLaser() {
@@ -842,8 +845,8 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getOctopusGround(radialPos);
@@ -1003,17 +1006,11 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         }
     }
 
-    public class EntitySorter implements Comparator<Entity> {
-        private final Entity theEntity;
-
-        public EntitySorter(Entity theEntityIn) {
-            this.theEntity = theEntityIn;
-        }
-
+    public record EntitySorter(Entity theEntity) implements Comparator<Entity> {
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-            double d0 = this.theEntity.distanceToSqr(p_compare_1_);
-            double d1 = this.theEntity.distanceToSqr(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
+            final double d1 = this.theEntity.distanceToSqr(p_compare_2_);
+            return Double.compare(d0, d1);
         }
     }
 

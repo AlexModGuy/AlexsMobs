@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.particle;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -21,7 +22,7 @@ public class ParticleSunbirdFeather extends SimpleAnimatedParticle {
         this.gravity = 0.02F;
         this.pickSprite(sprites);
         float f = Mth.sqrt((float) (xd * xd + zd * zd));
-        float f1 = -(float) Mth.atan2(yd, f) + (float)Math.toRadians(135);
+        float f1 = -(float) Mth.atan2(yd, f) + Maths.rad(135);
         this.roll = f1 * 2F;
     }
 
@@ -37,7 +38,7 @@ public class ParticleSunbirdFeather extends SimpleAnimatedParticle {
         } else {
             this.oRoll = this.roll;
             if (!this.onGround) {
-                float dist = -initialRoll / (this.lifetime - 6) * Math.min(this.age, this.lifetime - 6);
+                //float dist = -initialRoll / (this.lifetime - 6) * Math.min(this.age, this.lifetime - 6);
                 this.roll += 0 + (float)Math.sin(age * 0.3F) * 0.5F * (this.age / (float)lifetime);
             }
             this.move(this.xd, this.yd, this.zd);

@@ -48,14 +48,14 @@ public class EntityVoidWormShot extends Entity {
     public EntityVoidWormShot(Level worldIn, EntityVoidWorm p_i47273_2_) {
         this(AMEntityRegistry.VOID_WORM_SHOT.get(), worldIn);
         this.setShooter(p_i47273_2_);
-        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.sin(p_i47273_2_.yBodyRot * ((float) Math.PI / 180F)), p_i47273_2_.getY() + (double) 1F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.cos(p_i47273_2_.yBodyRot * ((float) Math.PI / 180F)));
+        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.sin(p_i47273_2_.yBodyRot * Mth.DEG_TO_RAD), p_i47273_2_.getY() + (double) 1F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.cos(p_i47273_2_.yBodyRot * Mth.DEG_TO_RAD));
     }
 
     public EntityVoidWormShot(Level worldIn, LivingEntity p_i47273_2_, boolean right) {
         this(AMEntityRegistry.VOID_WORM_SHOT.get(), worldIn);
         this.setShooter(p_i47273_2_);
         float rot = p_i47273_2_.yHeadRot + (right ? 60 : -60);
-        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.9F * (double) Mth.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getY() + (double) 1F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.9D * (double) Mth.cos(rot * ((float) Math.PI / 180F)));
+        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.9F * (double) Mth.sin(rot * Mth.DEG_TO_RAD), p_i47273_2_.getY() + (double) 1F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.9D * (double) Mth.cos(rot * Mth.DEG_TO_RAD));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -96,18 +96,20 @@ public class EntityVoidWormShot extends Entity {
         }
         if (this.tickCount > 40) {
             Entity entity = this.getShooter();
-            if(this.getStopHomingProgress() < HOME_FOR){
-                this.setStopHomingProgress(this.getStopHomingProgress() + 1.0F);
+            float stopHomingProgress = this.getStopHomingProgress();
+            if(stopHomingProgress < HOME_FOR){
+                stopHomingProgress += 1.0F;
+                this.setStopHomingProgress(stopHomingProgress);
             }
-            float homeScale = 1F - (this.getStopHomingProgress() / HOME_FOR);
+            final float homeScale = 1F - (stopHomingProgress / HOME_FOR);
             if (entity instanceof Mob && ((Mob) entity).getTarget() != null && homeScale > 0.0F) {
                 LivingEntity target = ((Mob) entity).getTarget();
                 if(target == null){
                     this.kill();
                 }
-                double d0 = target.getX() - this.getX();
-                double d1 = target.getEyeY() - this.getY();
-                double d2 = target.getZ() - this.getZ();
+                final double d0 = target.getX() - this.getX();
+                final double d1 = target.getEyeY() - this.getY();
+                final double d2 = target.getZ() - this.getZ();
                 Vec3 vec = new Vec3(d0, d1, d2).normalize().scale(Math.max(homeScale, 0.5F) * 1.2F);
                 this.setDeltaMovement(vec);
             }else{
@@ -120,13 +122,11 @@ public class EntityVoidWormShot extends Entity {
         if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }
-        double d0 = this.getX() + vector3d.x;
-        double d1 = this.getY() + vector3d.y;
-        double d2 = this.getZ() + vector3d.z;
+        final double d0 = this.getX() + vector3d.x;
+        final double d1 = this.getY() + vector3d.y;
+        final double d2 = this.getZ() + vector3d.z;
         this.setNoGravity(true);
         this.updateRotation();
-        float f = 0.99F;
-        float f1 = 0.06F;
         if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
             this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble()) {
@@ -140,7 +140,7 @@ public class EntityVoidWormShot extends Entity {
     protected void onEntityHit(EntityHitResult p_213868_1_) {
         Entity entity = this.getShooter();
         if (entity instanceof LivingEntity && !(p_213868_1_.getEntity() instanceof EntityVoidWorm || p_213868_1_.getEntity() instanceof EntityVoidWormPart)) {
-            boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), (float) (AMConfig.voidWormDamageModifier * 4F));
+            final boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), (float) (AMConfig.voidWormDamageModifier * 4F));
             if(b && p_213868_1_.getEntity() instanceof Player){
                 Player player = ((Player)p_213868_1_.getEntity());
                 if(player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)){
@@ -158,7 +158,8 @@ public class EntityVoidWormShot extends Entity {
 
 
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-        BlockState blockstate = this.level.getBlockState(p_230299_1_.getBlockPos());
+        // TODO Check :: Unused?
+//        BlockState blockstate = this.level.getBlockState(p_230299_1_.getBlockPos());
         if (!this.level.isClientSide) {
             this.remove(RemovalReason.DISCARDED);
         }
@@ -234,8 +235,8 @@ public class EntityVoidWormShot extends Entity {
         Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(this.getDeltaMovement().add(vector3d));
         float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
-        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
-        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
+        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }
@@ -260,9 +261,9 @@ public class EntityVoidWormShot extends Entity {
     public void lerpMotion(double x, double y, double z) {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            float f = Mth.sqrt((float) (x * x + z * z));
-            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI)));
-            this.setYRot( (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI)));
+            final float f = Mth.sqrt((float) (x * x + z * z));
+            this.setXRot((float) (Mth.atan2(y, f) * (double) Mth.RAD_TO_DEG));
+            this.setYRot( (float) (Mth.atan2(x, z) * (double) Mth.RAD_TO_DEG));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
             this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -281,8 +282,8 @@ public class EntityVoidWormShot extends Entity {
 
     protected void updateRotation() {
         Vec3 vector3d = this.getDeltaMovement();
-        float f = Mth.sqrt((float) vector3d.horizontalDistance());
-        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
-        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
+        final float f = Mth.sqrt((float) vector3d.horizontalDistance());
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG)));
+        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG)));
     }
 }

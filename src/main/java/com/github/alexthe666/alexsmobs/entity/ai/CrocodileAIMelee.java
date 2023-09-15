@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
 public class CrocodileAIMelee extends MeleeAttackGoal {
 
-    private EntityCrocodile crocodile;
+    private final EntityCrocodile crocodile;
 
     public CrocodileAIMelee(EntityCrocodile crocodile, double speedIn, boolean useLongMemory) {
         super(crocodile, speedIn, useLongMemory);

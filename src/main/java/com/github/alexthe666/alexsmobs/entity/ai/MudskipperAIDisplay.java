@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMudskipper;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -117,7 +118,7 @@ public class MudskipperAIDisplay extends Goal {
                 }
                 Vec3 circle = getCirclingPosOf(center, 1.5F + mudskipper.getRandom().nextFloat());
                 Vec3 dirVec = circle.subtract(mudskipper.position());
-                float headAngle = -(float) (Mth.atan2(dirVec.x, dirVec.z) * (double) (180F / (float) Math.PI));
+                float headAngle = -(float) (Mth.atan2(dirVec.x, dirVec.z) * (double) Mth.RAD_TO_DEG);
                 this.mudskipper.getNavigation().moveTo(circle.x, circle.y, circle.z, speed);
                 mudskipper.setYRot(headAngle);
                 mudskipper.yHeadRot = headAngle;

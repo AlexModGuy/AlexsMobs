@@ -167,17 +167,22 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
     public void tick() {
         super.tick();
         if(this.isInWater()){
-            maxUpStep = 1.2F;
+            maxUpStep = 1.2F; // FIXME
         }else{
-            maxUpStep = 0.6F;
+            maxUpStep = 0.6F; // FIXME
         }
         prevFlyProgress = flyProgress;
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        final boolean flying = isFlying();
+
+        if (flying) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
-        }
+
         if (revengeCooldown > 0) {
             revengeCooldown--;
         }
@@ -191,17 +196,21 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
             if(this.getAnimation() == NO_ANIMATION && this.getRandom().nextInt(700) == 0){
                 this.setAnimation(ANIMATION_BEAKSHAKE);
             }
-            if (isFlying() && this.isLandNavigator) {
-                switchNavigator(false);
+
+            if (flying) {
+                if (this.isLandNavigator)
+                    switchNavigator(false);
+            } else {
+                if (!this.isLandNavigator)
+                    switchNavigator(true);
             }
-            if (!isFlying() && !this.isLandNavigator) {
-                switchNavigator(true);
-            }
+
             if (this.revengeCooldown > 0 && !this.isFlying()) {
-                if (this.onGround || this.isInWater()) {
+                if (this.isOnGround() || this.isInWater()) {
                     this.setFlying(false);
                 }
             }
+
             if (isFlying()) {
                 this.setNoGravity(true);
             } else {
@@ -351,7 +360,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
         if(e.getItem().getItem() == AMItemRegistry.BLOBFISH.get()){
             luckLevel = Mth.clamp(luckLevel + 1, 0, 10);
         }
-        if(e.getItem().getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem()){
+        else if(e.getItem().getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem()){
             lureLevel = Mth.clamp(lureLevel + 1, 0, 10);
         }
         this.heal(5);

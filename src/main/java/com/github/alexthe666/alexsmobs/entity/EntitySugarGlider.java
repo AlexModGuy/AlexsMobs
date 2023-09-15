@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -145,8 +146,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         this.entityData.define(ATTACHED_FACE, Direction.DOWN);
         this.entityData.define(GLIDING, false);
         this.entityData.define(FORAGING_TIME, 0);
-        this.entityData.define(COMMAND, Integer.valueOf(0));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(COMMAND, 0);
+        this.entityData.define(SITTING, false);
     }
 
     private void switchNavigator(boolean onGround) {
@@ -196,7 +197,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     public void tick() {
         super.tick();
-        maxUpStep = 1F;
+        maxUpStep = 1F; // FIXME
         prevGlideProgress = glideProgress;
         prevAttachChangeProgress = attachChangeProgress;
         prevForageProgress = forageProgress;
@@ -204,7 +205,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         if (attachChangeProgress > 0F) {
             attachChangeProgress -= 0.25F;
         }
-        boolean glideVisual = this.isGliding() || this.getVehicle() != null && this.getVehicle().fallDistance != 0;
+        //boolean glideVisual = this.isGliding() || this.getVehicle() != null && this.getVehicle().fallDistance != 0;
         if (glideProgress < 5F && isGliding()) {
             glideProgress += 2.5F;
         }
@@ -333,9 +334,9 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                     this.setYRot(mount.getYRot());
                     this.yHeadRot = ((LivingEntity) mount).yHeadRot;
                     this.yRotO = ((LivingEntity) mount).yHeadRot;
-                    float radius = 0F;
-                    float angle = (0.01745329251F * (((LivingEntity) mount).yBodyRot - 180F));
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    final float radius = 0F;
+                    final float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F));
+                    double extraX = radius * Mth.sin(Mth.PI + angle);
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() + 0.1, mount.getY()), mount.getZ() + extraZ);
                     if (!mount.isAlive() || rideCooldown == 0 && mount.isShiftKeyDown()) {
@@ -353,7 +354,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     private List<ItemStack> getForageLoot(BlockState leafState) {
         Item sapling = LEAF_TO_SAPLING.get(leafState.getBlock());
         List<Item> rares = LEAF_TO_RARES.get(leafState.getBlock());
-        float rng = this.getRandom().nextFloat();
+        final float rng = this.getRandom().nextFloat();
         if (rng < 0.1F && rares != null) {
             Item item = rares.size() <= 1 ? rares.get(0) : rares.get(this.getRandom().nextInt(rares.size()));
             return List.of(new ItemStack(item));
@@ -438,7 +439,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     public boolean isGliding() {
-        return this.entityData.get(GLIDING).booleanValue();
+        return this.entityData.get(GLIDING);
     }
 
     public void setGliding(boolean gliding) {
@@ -455,19 +456,19 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     @Override
     public boolean isOrderedToSit() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -524,18 +525,12 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity entity, boolean b) {
-        entity.animationSpeedOld = entity.animationSpeed;
-        double d0 = entity.getX() - entity.xo;
-        double d1 = (entity.getY() - entity.yo) * 2.0F;
-        double d2 = entity.getZ() - entity.zo;
-        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2)) * 6.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        entity.animationSpeed += (f - entity.animationSpeed) * 0.4F;
-        entity.animationPosition += entity.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean b) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float) Mth.length(this.getX() - this.xo, (this.getY() - this.yo) * 2, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 6.0F, 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
@@ -581,8 +576,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             this.setDeltaMovement(fly);
             Vec3 move = this.getDeltaMovement();
             double d0 = move.horizontalDistance();
-            this.setXRot((float) (-Mth.atan2(move.y, d0) * (double) (180F / (float) Math.PI)));
-            this.setYRot(((float) Mth.atan2(move.z, move.x)) * (180F / (float) Math.PI) - 90F);
+            this.setXRot((float) (-Mth.atan2(move.y, d0) * (double) Mth.RAD_TO_DEG));
+            this.setYRot(((float) Mth.atan2(move.z, move.x)) * Mth.RAD_TO_DEG - 90F);
             this.setGliding(true);
         }
     }
@@ -654,9 +649,9 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             if (climbing) {
                 float inDir = EntitySugarGlider.this.getAttachmentFacing() == Direction.DOWN && EntitySugarGlider.this.getY() > climb.getY() + 0.3F ? 0.5F + EntitySugarGlider.this.getBbWidth() * 0.5F : 0.5F;
                 Vec3 offset = Vec3.atCenterOf(climb).subtract(0, 0, 0).add(climbOffset.getStepX() * inDir, climbOffset.getStepY() * inDir, climbOffset.getStepZ() * inDir);
-                double d0 = climb.getX() + 0.5F - EntitySugarGlider.this.getX();
-                double d2 = climb.getZ() + 0.5F - EntitySugarGlider.this.getZ();
-                double xzDistSqr = d0 * d0 + d2 * d2;
+                final double d0 = climb.getX() + 0.5F - EntitySugarGlider.this.getX();
+                final double d2 = climb.getZ() + 0.5F - EntitySugarGlider.this.getZ();
+                final double xzDistSqr = d0 * d0 + d2 * d2;
                 if (EntitySugarGlider.this.getY() > offset.y - 0.3F - EntitySugarGlider.this.getBbHeight()) {
                     EntitySugarGlider.this.stopClimbing = true;
                 }
@@ -688,8 +683,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             } else if (glide != null) {
                 EntitySugarGlider.this.stopClimbing = false;
                 EntitySugarGlider.this.setGliding(true);
-                double dist = Math.sqrt(EntitySugarGlider.this.distanceToSqr(Vec3.atCenterOf(glide)));
-                if (airtime > 5 && (EntitySugarGlider.this.horizontalCollision || EntitySugarGlider.this.isOnGround() || dist < 1.1F)) {
+                if (airtime > 5 && (EntitySugarGlider.this.horizontalCollision || EntitySugarGlider.this.isOnGround()
+                        || Math.sqrt(EntitySugarGlider.this.distanceToSqr(Vec3.atCenterOf(glide))) < 1.1F)) {
                     EntitySugarGlider.this.setGliding(false);
                     EntitySugarGlider.this.detachCooldown = 20 + random.nextInt(80);
                     itsOver = true;
@@ -699,8 +694,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
                 Vec3 move = EntitySugarGlider.this.getDeltaMovement();
                 double d0 = move.horizontalDistance();
-                EntitySugarGlider.this.setXRot((float) (-Mth.atan2(move.y, d0) * (double) (180F / (float) Math.PI)));
-                EntitySugarGlider.this.setYRot(((float) Mth.atan2(move.z, move.x)) * (180F / (float) Math.PI) - 90F);
+                EntitySugarGlider.this.setXRot((float) (-Mth.atan2(move.y, d0) * (double) Mth.RAD_TO_DEG));
+                EntitySugarGlider.this.setYRot(((float) Mth.atan2(move.z, move.x)) * Mth.RAD_TO_DEG - 90F);
                 airtime++;
             }
         }
@@ -709,9 +704,9 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             BlockPos mobPos = EntitySugarGlider.this.blockPosition();
             for (int i = 0; i < 15; i++) {
                 BlockPos offset = mobPos.offset(EntitySugarGlider.this.random.nextInt(16) - 8, random.nextInt(4) + 1, EntitySugarGlider.this.random.nextInt(16) - 8);
-                double d0 = offset.getX() + 0.5F - EntitySugarGlider.this.getX();
-                double d2 = offset.getZ() + 0.5F - EntitySugarGlider.this.getZ();
-                double xzDistSqr = d0 * d0 + d2 * d2;
+                final double d0 = offset.getX() + 0.5F - EntitySugarGlider.this.getX();
+                final double d2 = offset.getZ() + 0.5F - EntitySugarGlider.this.getZ();
+                final double xzDistSqr = d0 * d0 + d2 * d2;
                 Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(offset);
                 BlockHitResult result = level.clip(new ClipContext(EntitySugarGlider.this.getEyePosition(), blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySugarGlider.this));
                 if (result.getType() != HitResult.Type.MISS && xzDistSqr > 4 && result.getDirection().getAxis() != Direction.Axis.Y && getDistanceOffGround(result.getBlockPos().relative(result.getDirection())) > 3 && isPositionEasilyClimbable(result.getBlockPos())) {

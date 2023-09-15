@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -42,6 +43,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -79,18 +81,18 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(COMMAND, 0);
-        this.entityData.define(JOSTLING, Boolean.valueOf(false));
-        this.entityData.define(SADDLED, Boolean.valueOf(false));
+        this.entityData.define(JOSTLING, false);
+        this.entityData.define(SADDLED, false);
         this.entityData.define(JOSTLE_ANGLE, 0F);
         this.entityData.define(JOSTLER_UUID, Optional.empty());
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     public static <T extends Mob> boolean canKomodoDragonSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -107,7 +109,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2D, false));
-        this.goalSelector.addGoal(2, new TameableAIRide(this, 2D));
         this.goalSelector.addGoal(3, new TameableAIFollowOwner(this, 1.2D, 6.0F, 3.0F, false));
         this.goalSelector.addGoal(4, new KomodoDragonAIJostle(this));
         this.goalSelector.addGoal(5, new TameableAITempt(this, 1.1D, TEMPTATION_ITEMS, false));
@@ -125,8 +126,52 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.KOMODO_DRAGON_TARGETS)));
     }
 
-    public boolean isControlledByLocalInstance() {
-        return false;
+    @Override
+    public void travel(@NotNull final Vec3 travelVector) {
+        if (this.isAlive() && this.getControllingPassenger() instanceof Player player) {
+            travelRidden(player, new Vec3(this.xxa, this.yya, this.zza));
+        } else {
+            super.travel(travelVector);
+        }
+    }
+
+    /** 1.20 Mojang */
+    private void travelRidden(Player player, Vec3 vec3) {
+        Vec3 vec32 = this.getRiddenInput(player, vec3);
+        this.tickRidden(player, vec32);
+        if (this.isControlledByLocalInstance()) {
+            this.setSpeed(this.getRiddenSpeed(player));
+            super.travel(vec32);
+        } else {
+            this.calculateEntityAnimation(this, false);
+            this.setDeltaMovement(Vec3.ZERO);
+            this.tryCheckInsideBlocks();
+        }
+    }
+
+    protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
+        if (player.zza != 0) {
+            float f = player.zza < 0.0F ? 0.5F : 1.0F;
+            return new Vec3(player.xxa * 0.25F, 0.0D, player.zza * 0.5F * f);
+        } else {
+            this.setSprinting(false);
+        }
+        return Vec3.ZERO;
+    }
+
+    protected void tickRidden(Player player, Vec3 vec3) {
+        if(player.zza != 0 || player.xxa != 0){
+            this.setRot(player.getYRot(), player.getXRot() * 0.25F);
+            this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+            maxUpStep = 1;
+            this.getNavigation().stop();
+            this.setTarget(null);
+            this.setSprinting(true);
+        }
+    }
+
+    protected float getRiddenSpeed(Player rider) {
+        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 2);
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -204,31 +249,37 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
                 }
             }
         }
-        if (isJostling() && !hasJostlingSize){
+        if (!hasJostlingSize && isJostling()){
             refreshDimensions();
             hasJostlingSize = true;
         }
-        if (!isJostling() && hasJostlingSize){
+        if (hasJostlingSize && !isJostling()){
             refreshDimensions();
             hasJostlingSize = false;
         }
-        if (this.isJostling() && jostleProgress < 5F) {
-            jostleProgress++;
+
+        if (this.isJostling()) {
+            if (jostleProgress < 5F)
+                jostleProgress++;
+        } else {
+            if (jostleProgress > 0F)
+                jostleProgress--;
         }
-        if (!this.isJostling() && jostleProgress > 0F) {
-            jostleProgress--;
+
+        if (this.isOrderedToSit()) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (this.isOrderedToSit() && sitProgress < 5F) {
-            sitProgress++;
-        }
-        if (!this.isOrderedToSit() && sitProgress > 0F) {
-            sitProgress--;
-        }
+
         if(this.getCommand() == 2 && !this.isVehicle()){
             this.setOrderedToSit(true);
         }else{
             this.setOrderedToSit(false);
         }
+
         if (jostleCooldown > 0) {
             jostleCooldown--;
         }
@@ -303,8 +354,8 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
             float radius = 0;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -406,15 +457,15 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     public boolean isSaddled() {
-        return this.entityData.get(SADDLED).booleanValue();
+        return this.entityData.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled) {
-        this.entityData.set(SADDLED, Boolean.valueOf(saddled));
+        this.entityData.set(SADDLED, saddled);
     }
 
     public boolean isJostling() {
-        return this.entityData.get(JOSTLING).booleanValue();
+        return this.entityData.get(JOSTLING);
     }
 
     public void setJostling(boolean jostle) {

@@ -65,7 +65,7 @@ public class AnimalAILeapRandomly extends Goal {
                 ((EntityBunfungus) this.mob).onJump();
             }
             this.mob.setDeltaMovement(vector3d1.x, 0.6F, vector3d1.z);
-            mob.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+            mob.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
             mob.yBodyRot = mob.getYRot();
             mob.yHeadRot = mob.getYRot();
 

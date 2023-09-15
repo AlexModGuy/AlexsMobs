@@ -97,51 +97,51 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
 
 
     public boolean isBurrowed() {
-        return this.entityData.get(BURROWED).booleanValue();
+        return this.entityData.get(BURROWED);
     }
 
     public void setBurrowed(boolean burrowed) {
-        this.entityData.set(BURROWED, Boolean.valueOf(burrowed));
+        this.entityData.set(BURROWED, burrowed);
     }
 
     public boolean isDisturbed() {
-        return this.entityData.get(DISTURBED).booleanValue();
+        return this.entityData.get(DISTURBED);
     }
 
     public void setDisturbed(boolean burrowed) {
-        this.entityData.set(DISTURBED, Boolean.valueOf(burrowed));
+        this.entityData.set(DISTURBED, burrowed);
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     public int getStanceTime() {
-        return this.entityData.get(STANCE_TIME).intValue();
+        return this.entityData.get(STANCE_TIME);
     }
 
     public void setStanceTime(int stanceTime) {
-        this.entityData.set(STANCE_TIME, Integer.valueOf(stanceTime));
+        this.entityData.set(STANCE_TIME, stanceTime);
     }
 
     public int getAttackTime() {
-        return this.entityData.get(ATTACK_TIME).intValue();
+        return this.entityData.get(ATTACK_TIME);
     }
 
     public void setAttackTime(int attackTime) {
-        this.entityData.set(ATTACK_TIME, Integer.valueOf(attackTime));
+        this.entityData.set(ATTACK_TIME, attackTime);
     }
 
     public int getDanceTime() {
-        return this.entityData.get(DANCE_TIME).intValue();
+        return this.entityData.get(DANCE_TIME);
     }
 
     public void setDanceTime(int danceTime) {
-        this.entityData.set(DANCE_TIME, Integer.valueOf(danceTime));
+        this.entityData.set(DANCE_TIME, danceTime);
     }
 
     public boolean isFood(ItemStack stack) {
@@ -174,15 +174,19 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         prevDanceProgress = danceProgress;
         prevAttackProgress = attackProgress;
         prevStanceProgress = stanceProgress;
-        if (this.isBurrowed() && burrowProgress < 5F) {
-            burrowProgress += 0.5F;
+
+        if (this.isBurrowed()) {
+            if (burrowProgress < 5F)
+                burrowProgress += 0.5F;
+        } else {
+            if (burrowProgress > 0F)
+                burrowProgress -= 0.5F;
         }
-        if (!this.isBurrowed() && burrowProgress > 0F) {
-            burrowProgress -= 0.5F;
-        }
+
         if (this.burrowCooldown > 0) {
             this.burrowCooldown--;
         }
+
         if (this.getStanceTime() > 0) {
             this.setStanceTime(this.getStanceTime() - 1);
             if (this.stanceProgress < 5F) {
@@ -193,6 +197,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
                 this.stanceProgress--;
             }
         }
+
         if (this.getAttackTime() > 0) {
             this.setAttackTime(this.getAttackTime() - 1);
             if (this.attackProgress < 5F) {
@@ -203,13 +208,18 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
                 this.attackProgress -= 0.5F;
             }
         }
+
         boolean dancing = this.getDanceTime() > 0 || this.isJukeboxing;
-        if(dancing && this.danceProgress < 5f){
-            this.danceProgress++;
+        if (dancing) {
+            if (this.danceProgress < 5F) {
+                this.danceProgress++;
+            }
+        } else {
+            if (this.danceProgress > 0F) {
+                this.danceProgress--;
+            }
         }
-        if (!dancing && this.danceProgress > 0F) {
-            this.danceProgress--;
-        }
+
         if (this.getDanceTime() > 0) {
             this.setBurrowed(false);
             this.setDanceTime(this.getDanceTime() - 1);
@@ -255,18 +265,12 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         return this.isBurrowed();
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 16.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean flying) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float)Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 128.0F, 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     @javax.annotation.Nullable

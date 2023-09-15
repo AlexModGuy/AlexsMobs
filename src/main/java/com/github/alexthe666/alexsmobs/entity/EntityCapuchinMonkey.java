@@ -214,14 +214,14 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             maxSitTime = 300 + random.nextInt(250);
             this.setOrderedToSit(true);
         }
-        this.maxUpStep = 2;
+        this.maxUpStep = 2; // FIXME
         if (!forcedSit && this.isSitting() && (this.getDartTarget() != null || this.getCommand() == 1)) {
             this.setOrderedToSit(false);
         }
 
         if (!level.isClientSide) {
             if (this.getTarget() != null && this.getAnimation() == ANIMATION_SCRATCH && this.getAnimationTick() == 10) {
-                float f1 = this.getYRot() * Maths.piDividedBy180;
+                float f1 = this.getYRot() * Mth.DEG_TO_RAD;
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.3F, 0.0D, Mth.cos(f1) * 0.3F));
                 getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
                 this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -303,8 +303,8 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                     this.yHeadRot = player.yHeadRot;
                     this.yRotO = player.yHeadRot;
                     final float radius = 0F;
-                    final float angle = (0.0174532925F * (((LivingEntity) mount).yBodyRot - 180F));
-                    final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    final float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F));
+                    final double extraX = radius * Mth.sin(Mth.PI + angle);
                     final double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() + 0.1, mount.getY()), mount.getZ() + extraZ);
                     attackDecision = true;
@@ -390,11 +390,11 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     @Nullable
@@ -545,7 +545,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         return super.finalizeSpawn(world, diff, spawnType, data, tag);
     }
 
-    public class CapuchinGroupData extends AgeableMobGroupData {
+    public static class CapuchinGroupData extends AgeableMobGroupData {
 
         public final int variant;
 

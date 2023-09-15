@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "void_worm.txt",
-  "title": "Void Worm",
+  "title": "entity.alexsmobs.void_worm",
   "linked_page_buttons": [
   ],
   "images": [
@@ -28,7 +28,7 @@
       "page" : 0,
       "scale": 0.7,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -39,7 +39,7 @@
       "page" : 0,
       "scale": 0.6,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -50,7 +50,7 @@
       "page" : 0,
       "scale": 0.5,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -61,7 +61,7 @@
       "page" : 0,
       "scale": 0.4,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -72,7 +72,7 @@
       "page" : 0,
       "scale": 0.4,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -83,7 +83,7 @@
       "page" : 0,
       "scale": 0.4,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },

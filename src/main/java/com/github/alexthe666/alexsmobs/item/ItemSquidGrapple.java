@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.entity.EntitySquidGrapple;
 import com.github.alexthe666.alexsmobs.entity.util.SquidGrappleUtil;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -61,8 +60,7 @@ public class ItemSquidGrapple extends Item {
             int power = this.getUseDuration(stack) - i;
             EntitySquidGrapple hook = new EntitySquidGrapple(worldIn, livingEntityIn, !left);
             Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
-            Vector3f vector3f = new Vector3f(vector3d);
-            hook.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), getPowerForTime(power) * 3, 1);
+            hook.shoot((double) vector3d.x(), (double) vector3d.y(), (double) vector3d.z(), getPowerForTime(power) * 3, 1);
             hook.setXRot(livingEntityIn.getXRot());
             hook.setYRot(livingEntityIn.getYRot());
             if (!worldIn.isClientSide) {

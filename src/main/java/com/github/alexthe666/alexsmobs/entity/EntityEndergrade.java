@@ -5,8 +5,9 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
-import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -45,6 +46,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -91,11 +93,10 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(BITE_TICK, 0);
-        this.entityData.define(SADDLED, Boolean.valueOf(false));
+        this.entityData.define(SADDLED, false);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new TameableAIRide(this, 1.2D));
         this.goalSelector.addGoal(1, new EndergradeAIBreakFlowers(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.2D) {
             public void start() {
@@ -137,11 +138,6 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         }
         return null;
     }
-
-    public boolean isControlledByLocalInstance() {
-        return false;
-    }
-
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return AMSoundRegistry.ENDERGRADE_HURT.get();
     }
@@ -185,8 +181,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
             float radius = -0.25F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -203,21 +199,21 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     public boolean isSaddled() {
-        return this.entityData.get(SADDLED).booleanValue();
+        return this.entityData.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled) {
-        this.entityData.set(SADDLED, Boolean.valueOf(saddled));
+        this.entityData.set(SADDLED, saddled);
     }
 
     public void tick() {
         super.tick();
         prevTartigradePitch = this.tartigradePitch;
         prevBiteProgress = this.biteProgress;
-        float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) (180F / (float) Math.PI));
+        float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) Mth.RAD_TO_DEG);
         this.tartigradePitch = f2;
         if (this.getDeltaMovement().lengthSqr() > 0.005F) {
-            float angleMotion = (0.01745329251F * this.yBodyRot);
+            float angleMotion = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -0.2F * Mth.cos(angleMotion);
             this.level.addParticle(ParticleTypes.END_ROD, this.getRandomX(0.5D), this.getY() + 0.3, this.getRandomZ(0.5D), extraXMotion, 0D, extraZMotion);
@@ -291,6 +287,58 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     @Override
+    public void travel(@NotNull final Vec3 travelVector) {
+        if (this.isAlive() && this.getControllingPassenger() instanceof Player player) {
+            travelRidden(player, new Vec3(this.xxa, this.yya, this.zza));
+        } else {
+            super.travel(travelVector);
+        }
+    }
+
+    /** 1.20 Mojang */
+    private void travelRidden(Player player, Vec3 vec3) {
+        Vec3 vec32 = this.getRiddenInput(player, vec3);
+        this.tickRidden(player, vec32);
+        if (this.isControlledByLocalInstance()) {
+            this.setSpeed(this.getRiddenSpeed(player));
+            super.travel(vec32);
+        } else {
+            this.calculateEntityAnimation(this, false);
+            this.setDeltaMovement(Vec3.ZERO);
+            this.tryCheckInsideBlocks();
+        }
+    }
+
+    protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
+        if (player.zza != 0) {
+            this.setSprinting(true);
+            Vec3 lookVec = player.getLookAngle();
+            if (player.zza < 0) {
+                lookVec = lookVec.yRot(Mth.PI);
+            }
+            double y = lookVec.y * 0.35F;
+            return new Vec3(player.xxa, y, player.zza);
+        } else {
+            this.setSprinting(false);
+        }
+        return Vec3.ZERO;
+    }
+    protected void tickRidden(Player player, Vec3 vec3) {
+        if(player.zza != 0 || player.xxa != 0){
+            this.setRot(player.getYRot(), player.getXRot() * 0.25F);
+            this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+            maxUpStep = 1; // FIXME
+            this.getNavigation().stop();
+            this.setTarget(null);
+            this.setSprinting(true);
+        }
+    }
+
+    protected float getRiddenSpeed(Player rider) {
+        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.isOnGround() ? 0.2F : 0.8F));
+    }
+
+    @Override
     public boolean isFlying() {
         return true;
     }
@@ -343,10 +391,10 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float radius = 1 + parentEntity.getRandom().nextInt(5);
             float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             float renderYawOffset = parentEntity.yBodyRot;
-            float angle = (0.01745329251F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
+            BlockPos radialPos = AMBlockPos.get(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.getGroundPosition(radialPos);
             BlockPos newPos = ground.above(1 + parentEntity.getRandom().nextInt(6));
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(newPos)) && parentEntity.distanceToSqr(Vec3.atCenterOf(newPos)) > 6) {
@@ -371,20 +419,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0, vector3d.scale(this.speedModifier * 0.05D / d0).y(), 0));
                 float f = (float) this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
                 float f1 = (float) this.speedModifier * f;
-                float f2 = this.strafeForwards;
-                float f3 = this.strafeRight;
-                float f4 = Mth.sqrt(f2 * f2 + f3 * f3);
-                if (f4 < 1.0F) {
-                    f4 = 1.0F;
-                }
 
-                f4 = f1 / f4;
-                f2 = f2 * f4;
-                f3 = f3 * f4;
-                float f5 = Mth.sin(this.mob.getYRot() * ((float) Math.PI / 180F));
-                float f6 = Mth.cos(this.mob.getYRot() * ((float) Math.PI / 180F));
-                float f7 = f2 * f6 - f3 * f5;
-                float f8 = f3 * f6 + f2 * f5;
                 this.strafeForwards = 1.0F;
                 this.strafeRight = 0.0F;
 
@@ -406,12 +441,12 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(localSpeed * 0.005D / d0)));
                     if (parentEntity.getTarget() == null) {
                         Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     } else {
                         double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                         double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 }

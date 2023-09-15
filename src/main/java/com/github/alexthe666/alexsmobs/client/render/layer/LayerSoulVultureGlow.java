@@ -28,14 +28,11 @@ public class LayerSoulVultureGlow extends RenderLayer<EntitySoulVulture, ModelSo
     }
 
     private ResourceLocation getFlames(int tickCount) {
-        int i = tickCount / 3 % 3;
-        switch (i){
-            case 2:
-                return TEXTURE_2;
-            case 1:
-                return TEXTURE_1;
-            default:
-                return TEXTURE_0;
-        }
+        final int i = tickCount / 3 % 3;
+        return switch (i) {
+            case 2 -> TEXTURE_2;
+            case 1 -> TEXTURE_1;
+            default -> TEXTURE_0;
+        };
     }
 }

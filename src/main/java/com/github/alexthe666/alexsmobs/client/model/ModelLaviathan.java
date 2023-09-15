@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityLaviathan;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -173,14 +174,14 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         this.neck2.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.6F);
         this.head.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.45F);
 
-        progressRotationPrev(rightLeg, onLandProgress, 0, 0, (float) Math.toRadians(-15), 5F);
-        progressRotationPrev(leftLeg, onLandProgress, 0, 0, (float) Math.toRadians(15), 5F);
-        progressRotationPrev(rightArm, onLandProgress, 0, 0, (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(leftArm, onLandProgress, 0, 0, (float) Math.toRadians(20), 5F);
-        progressRotationPrev(head, biteProgress, (float) Math.toRadians(-10), 0, 0, 5F);
-        progressRotationPrev(top_jaw, biteProgress, (float) Math.toRadians(-20), 0, 0, 5F);
-        progressRotationPrev(bottom_jaw, biteProgress, (float) Math.toRadians(40), 0, 0, 5F);
-        progressRotationPrev(neck, biteProgress, (float) Math.toRadians(10), 0, 0, 5F);
+        progressRotationPrev(rightLeg, onLandProgress, 0, 0, Maths.rad(-15), 5F);
+        progressRotationPrev(leftLeg, onLandProgress, 0, 0, Maths.rad(15), 5F);
+        progressRotationPrev(rightArm, onLandProgress, 0, 0, Maths.rad(-20), 5F);
+        progressRotationPrev(leftArm, onLandProgress, 0, 0, Maths.rad(20), 5F);
+        progressRotationPrev(head, biteProgress, Maths.rad(-10), 0, 0, 5F);
+        progressRotationPrev(top_jaw, biteProgress, Maths.rad(-20), 0, 0, 5F);
+        progressRotationPrev(bottom_jaw, biteProgress, Maths.rad(40), 0, 0, 5F);
+        progressRotationPrev(neck, biteProgress, Maths.rad(10), 0, 0, 5F);
         progressPositionPrev(bottom_jaw, biteProgress, 0, 2, -1, 5F);
         progressPositionPrev(neck, biteProgress, 0, 0, 2, 5F);
         float idleSpeed = 0.04f;

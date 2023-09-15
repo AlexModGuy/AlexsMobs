@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -231,7 +232,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         }
         final double partYDest = Mth.clamp(prevHeight, -0.4F, 0.4F);
         final float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
-        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Maths.oneEightyDividedByFloatPi)));
+        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Mth.RAD_TO_DEG)));
         final float f2 = this.limitAngle(this.getXRot(), rawAngle, 10);
         this.setXRot(f2);
         this.entityData.set(BODY_XROT, f2);
@@ -275,7 +276,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         if (this.noPhysics) {
             return false;
         } else {
-            return !level.getFluidState(new BlockPos(x, y, z)).isEmpty();
+            return !level.getFluidState(AMBlockPos.fromCoords(x, y, z)).isEmpty();
         }
     }
 
@@ -287,7 +288,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
             final Vec3 vec3 = new Vec3(x, y, z);
             final AABB axisalignedbb = AABB.ofSize(vec3, f, 1.0E-6D, f);
             return this.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-                final BlockPos blockpos = new BlockPos(vec3);
+                final BlockPos blockpos = AMBlockPos.fromVec3(vec3);
                 return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
             });
         }

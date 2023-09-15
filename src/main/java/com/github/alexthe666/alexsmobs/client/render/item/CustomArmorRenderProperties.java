@@ -50,40 +50,41 @@ public class CustomArmorRenderProperties implements IClientItemExtensions {
         if(!init){
             initializeModels();
         }
-        if(itemStack.getItem() == AMItemRegistry.TARANTULA_HAWK_ELYTRA.get()){
+        final var item = itemStack.getItem();
+        if(item == AMItemRegistry.TARANTULA_HAWK_ELYTRA.get()){
             return ELYTRA_MODEL.withAnimations(entityLiving);
         }
-        if(itemStack.getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get()){
+        if(item == AMItemRegistry.ROADDRUNNER_BOOTS.get()){
             return ROADRUNNER_BOOTS_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.MOOSE_HEADGEAR.get()){
+        if(item == AMItemRegistry.MOOSE_HEADGEAR.get()){
             return MOOSE_HEADGEAR_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.FRONTIER_CAP.get()){
+        if(item == AMItemRegistry.FRONTIER_CAP.get()){
             return FRONTIER_CAP_MODEL.withAnimations(entityLiving);
         }
-        if(itemStack.getItem() == AMItemRegistry.FEDORA.get()){
+        if(item == AMItemRegistry.FEDORA.get()){
             return FEDORA_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()){
+        if(item == AMItemRegistry.SPIKED_TURTLE_SHELL.get()){
             return SPIKED_TURTLE_SHELL_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.SOMBRERO.get()){
+        if(item == AMItemRegistry.SOMBRERO.get()){
             return AlexsMobs.isAprilFools() ? SOMBRERO_GOOFY_FASHION_MODEL : SOMBRERO_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.FROSTSTALKER_HELMET.get()){
+        if(item == AMItemRegistry.FROSTSTALKER_HELMET.get()){
             return FROSTSTALKER_HELMET_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.ROCKY_CHESTPLATE.get()){
+        if(item == AMItemRegistry.ROCKY_CHESTPLATE.get()){
             return ROCKY_CHESTPLATE_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.FLYING_FISH_BOOTS.get()){
+        if(item == AMItemRegistry.FLYING_FISH_BOOTS.get()){
             return FLYING_FISH_BOOTS_MODEL.withAnimations(entityLiving);
         }
-        if(itemStack.getItem() == AMItemRegistry.NOVELTY_HAT.get()){
+        if(item == AMItemRegistry.NOVELTY_HAT.get()){
             return NOVELTY_HAT_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.UNSETTLING_KIMONO.get()){
+        if(item == AMItemRegistry.UNSETTLING_KIMONO.get()){
             return UNSETTLING_KIMONO_MODEL;
         }
         return _default;

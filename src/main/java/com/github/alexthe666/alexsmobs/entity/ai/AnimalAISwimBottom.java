@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
@@ -19,12 +20,12 @@ public class AnimalAISwimBottom extends RandomStrollGoal {
     protected Vec3 getPosition() {
         Vec3 vec = DefaultRandomPos.getPos(this.mob, 10, 7);
 
-        for(int var2 = 0; vec != null && !this.mob.level.getBlockState(new BlockPos(vec)).isPathfindable(this.mob.level, new BlockPos(vec), PathComputationType.WATER) && var2++ < 10; vec = DefaultRandomPos.getPos(this.mob, 10, 7)) {
+        for(int var2 = 0; vec != null && !this.mob.level.getBlockState(AMBlockPos.fromVec3(vec)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vec), PathComputationType.WATER) && var2++ < 10; vec = DefaultRandomPos.getPos(this.mob, 10, 7)) {
         }
         int yDrop = 1 + this.mob.getRandom().nextInt(3);
         if(vec != null){
-            BlockPos pos = new BlockPos(vec);
-            while(this.mob.level.getFluidState(pos).is(FluidTags.WATER) && this.mob.level.getBlockState(pos).isPathfindable(this.mob.level, new BlockPos(vec), PathComputationType.WATER) && pos.getY() > 1){
+            BlockPos pos = AMBlockPos.fromVec3(vec);
+            while(this.mob.level.getFluidState(pos).is(FluidTags.WATER) && this.mob.level.getBlockState(pos).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vec), PathComputationType.WATER) && pos.getY() > 1){
                 pos = pos.below();
             }
             pos = pos.above();

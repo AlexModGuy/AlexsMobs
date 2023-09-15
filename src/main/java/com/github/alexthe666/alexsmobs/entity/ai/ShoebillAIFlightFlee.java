@@ -1,6 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityShoebill;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -11,7 +13,7 @@ import java.util.EnumSet;
 
 public class ShoebillAIFlightFlee extends Goal {
 
-    private EntityShoebill bird;
+    private final EntityShoebill bird;
     private BlockPos currentTarget = null;
     private int executionTime = 0;
 
@@ -62,13 +64,13 @@ public class ShoebillAIFlightFlee extends Goal {
         }
     }
     public BlockPos getBlockInViewAway(Vec3 fleePos) {
-        float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
-        float neg = bird.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = bird.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        final float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
+        final float neg = bird.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = bird.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = bird.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
         int distFromGround = (int) bird.getY() - ground.getY();
         int flightHeight = 4 + bird.getRandom().nextInt(10);
@@ -80,13 +82,13 @@ public class ShoebillAIFlightFlee extends Goal {
     }
 
     public BlockPos getBlockGrounding(Vec3 fleePos) {
-        float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
-        float neg = bird.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = bird.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        final float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
+        final float neg = bird.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = bird.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = bird.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
         if (!bird.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {
             return ground;

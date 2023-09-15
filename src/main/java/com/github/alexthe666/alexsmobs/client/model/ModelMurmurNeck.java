@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -48,9 +49,9 @@ public class ModelMurmurNeck extends AdvancedEntityModel<LivingEntity> {
         this.stretch = f;
         float f1 = THIN ? 0.75F : 1.0F;
         this.neck.setScale(f1, this.stretch, f1);
-        this.neckPivot.rotateAngleX = (float)Math.toRadians(rotX);
-        this.neckPivot.rotateAngleY = (float)Math.toRadians(rotY);
-        this.neck.rotateAngleY = (float)Math.toRadians(-additionalYaw);
+        this.neckPivot.rotateAngleX = Maths.rad(rotX);
+        this.neckPivot.rotateAngleY = Maths.rad(rotY);
+        this.neck.rotateAngleY = Maths.rad(-additionalYaw);
         this.neckPivot.showModel = !HIDE;
         this.root.showModel = !HIDE;
         this.neck.showModel = !HIDE;

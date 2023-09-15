@@ -12,11 +12,11 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class HummingbirdAIWander extends Goal {
-    private EntityHummingbird fly;
-    private int rangeXZ;
-    private int rangeY;
-    private int chance;
-    private float speed;
+    private final EntityHummingbird fly;
+    private final int rangeXZ;
+    private final int rangeY;
+    private final int chance;
+    private final float speed;
     private Vec3 moveToPoint = null;
 
     public HummingbirdAIWander(EntityHummingbird fly, int rangeXZ, int rangeY, int chance, float speed) {

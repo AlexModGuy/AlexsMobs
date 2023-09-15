@@ -201,7 +201,7 @@ public class EntityHummingbird extends Animal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(FLYING, Boolean.valueOf(false));
+        this.entityData.define(FLYING, false);
         this.entityData.define(VARIANT, 0);
         this.entityData.define(CROPS_POLLINATED, 0);
         this.entityData.define(FEEDER_POS, Optional.empty());
@@ -221,34 +221,34 @@ public class EntityHummingbird extends Animal {
 
 
     public boolean isFlying() {
-        return this.entityData.get(FLYING).booleanValue();
+        return this.entityData.get(FLYING);
     }
 
     public void setFlying(boolean flying) {
-        this.entityData.set(FLYING, Boolean.valueOf(flying));
+        this.entityData.set(FLYING, flying);
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     public int getCropsPollinated() {
-        return this.entityData.get(CROPS_POLLINATED).intValue();
+        return this.entityData.get(CROPS_POLLINATED);
     }
 
     public void setCropsPollinated(int crops) {
-        this.entityData.set(CROPS_POLLINATED, Integer.valueOf(crops));
+        this.entityData.set(CROPS_POLLINATED, crops);
     }
 
     public void tick() {
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
         boolean flag = this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z >= 1.0E-3D;
-        if (!this.onGround && vector3d.y < 0.0D) {
+        if (!this.isOnGround() && vector3d.y < 0.0D) {
             this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
         }
         this.setFlying(true);

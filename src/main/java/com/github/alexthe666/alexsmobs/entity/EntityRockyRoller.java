@@ -4,6 +4,8 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.entity.ai.MovementControllerCustomCollisions;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import net.minecraft.core.BlockPos;
@@ -70,7 +72,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
 
     public static boolean checkRockyRollerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.POINTED_DRIPSTONE) || worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.DRIPSTONE_BLOCK));
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.POINTED_DRIPSTONE) || /* TODO :: solidBlocking to avoid ice and glass? */ worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.DRIPSTONE_BLOCK));
     }
 
 
@@ -115,13 +117,16 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     public void tick() {
         super.tick();
         prevRollProgress = rollProgress;
-        if (isRolling() && rollProgress < 5F) {
-            rollProgress++;
+
+        if (isRolling()) {
+            if (rollProgress < 5F)
+                rollProgress++;
+        } else {
+            if (rollProgress > 0F)
+                rollProgress--;
         }
-        if (!isRolling() && rollProgress > 0F) {
-            rollProgress--;
-        }
-        if (!level.isClientSide) {
+
+        if (!this.level.isClientSide) {
             this.setAngry(this.getTarget() != null && this.getTarget().isAlive() && this.distanceToSqr(this.getTarget()) < 20 * 20);
         }
         if (this.isRolling() && rollCooldown <= 0) {
@@ -140,9 +145,9 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             if (this.rollCounter > 2 && !this.isMoving() || !this.isAlive()) {
                 this.setRolling(false);
             }
-            maxUpStep = 1;
+            maxUpStep = 1; // FIXME
         } else {
-            maxUpStep = 0.66F;
+            maxUpStep = 0.66F; // FIXME
             this.rollCounter = 0;
         }
         if (rollCooldown > 0) {
@@ -171,20 +176,21 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             while ((!level.getBlockState(ceil).getMaterial().isSolid() || level.getBlockState(ceil).getBlock() == Blocks.POINTED_DRIPSTONE) && ceil.getY() < level.getMaxBuildHeight()) {
                 ceil = ceil.above();
             }
-            int i = 2 + random.nextInt(2);
-            int j = 2 + random.nextInt(2);
-            int k = 2 + random.nextInt(2);
-            float f = (float) (i + j + k) * 0.333F + 0.5F;
+            final int i = 2 + random.nextInt(2);
+            final int j = 2 + random.nextInt(2);
+            final int k = 2 + random.nextInt(2);
+            final float f = (float) (i + j + k) * 0.333F + 0.5F;
+            final double fTimesF = f * f;
 
             for (BlockPos blockpos1 : BlockPos.betweenClosed(ceil.offset(-i, -j, -k), ceil.offset(i, j, k))) {
-                if (blockpos1.distSqr(ceil) <= (double) (f * f) && level.getBlockState(blockpos1).getBlock() instanceof Fallable) {
+                if (blockpos1.distSqr(ceil) <= fTimesF && level.getBlockState(blockpos1).getBlock() instanceof Fallable) {
                     if (isHangingDripstone(blockpos1)) {
                         while (isHangingDripstone(blockpos1.above()) && blockpos1.getY() < level.getMaxBuildHeight()) {
                             blockpos1 = blockpos1.above();
                         }
                         if (isHangingDripstone(blockpos1)) {
                             Vec3 vec3 = Vec3.atBottomCenterOf(blockpos1);
-                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos(vec3), level.getBlockState(blockpos1));
+                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, AMBlockPos.get(vec3), level.getBlockState(blockpos1));
                             this.level.destroyBlock(blockpos1, false);
                             this.level.addFreshEntity(fallingblockentity);
                         }
@@ -210,19 +216,19 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     public boolean isRolling() {
-        return this.entityData.get(ROLLING).booleanValue();
+        return this.entityData.get(ROLLING);
     }
 
     public void setRolling(boolean rolling) {
-        this.entityData.set(ROLLING, Boolean.valueOf(rolling));
+        this.entityData.set(ROLLING, rolling);
     }
 
     public boolean isAngry() {
-        return this.entityData.get(ANGRY).booleanValue();
+        return this.entityData.get(ANGRY);
     }
 
     public void setAngry(boolean angry) {
-        this.entityData.set(ANGRY, Boolean.valueOf(angry));
+        this.entityData.set(ANGRY, angry);
     }
 
     private void handleRoll() {
@@ -240,7 +246,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             } else {
                 Vec3 vec3 = this.getDeltaMovement();
                 if (this.rollCounter == 1) {
-                    float f = this.getYRot() * ((float) Math.PI / 180F);
+                    float f = this.getYRot() * Mth.DEG_TO_RAD;
                     float f1 = this.isBaby() ? 0.2F : 0.35F;
                     this.rollYRot = this.getYRot();
                     this.rollDelta = new Vec3(vec3.x + (double) (-Mth.sin(f) * f1), 0.0D, vec3.z + (double) (Mth.cos(f) * f1));
@@ -265,10 +271,10 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     private void launch(Entity e, boolean huge) {
         if (e.isOnGround()) {
-            double d0 = e.getX() - this.getX();
-            double d1 = e.getZ() - this.getZ();
-            double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-            float f = huge ? 1.0F : 0.35F;
+            final double d0 = e.getX() - this.getX();
+            final double d1 = e.getZ() - this.getZ();
+            final double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+            final float f = huge ? 1.0F : 0.35F;
             e.push(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
         }
     }
@@ -339,7 +345,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
                 if (rockyRoller.isRolling() || rockyRoller.rollCooldown > 0 || rockyRoller.getTarget() != null && rockyRoller.getTarget().isAlive()) {
                     return false;
                 } else {
-                    float f = rockyRoller.getYRot() * ((float) Math.PI / 180F);
+                    float f = rockyRoller.getYRot() * Mth.DEG_TO_RAD;
                     int i = 0;
                     int j = 0;
                     float f1 = -Mth.sin(f);
@@ -400,7 +406,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             } else {
                 double d1 = enemy.getX() - EntityRockyRoller.this.getX();
                 double d2 = enemy.getZ() - EntityRockyRoller.this.getZ();
-                float f = (float) (Mth.atan2(d2, d1) * (double) (180F / (float) Math.PI)) - 90.0F;
+                float f = (float) (Mth.atan2(d2, d1) * (double) Mth.RAD_TO_DEG) - 90.0F;
                 EntityRockyRoller.this.setYRot(f);
                 EntityRockyRoller.this.yBodyRot = f;
                 EntityRockyRoller.this.rollFor(30 + random.nextInt(40));
@@ -427,8 +433,8 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         public BlockPos getRollAtPosition(Entity target) {
             float radius = EntityRockyRoller.this.getRandom().nextInt(2) + 6 + target.getBbWidth();
             int orbit = EntityRockyRoller.this.getRandom().nextInt(360);
-            float angle = (0.01745329251F * orbit);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * orbit);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             BlockPos circlePos = new BlockPos(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
             while (!EntityRockyRoller.this.level.getBlockState(circlePos).isAir() && circlePos.getY() < EntityRockyRoller.this.level.getMaxBuildHeight()) {
@@ -444,7 +450,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
     }
 
-    class Navigator extends GroundPathNavigatorWide {
+    static class Navigator extends GroundPathNavigatorWide {
 
         public Navigator(Mob mob, Level world) {
             super(mob, world, 0.75F);

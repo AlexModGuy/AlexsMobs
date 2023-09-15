@@ -80,8 +80,7 @@ public class RenderSugarGlider extends MobRenderer<EntitySugarGlider, ModelSugar
         } else if (entityLiving.isAutoSpinAttack()) {
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
-        } else if (pose == Pose.SLEEPING) {
-
+        //} else if (pose == Pose.SLEEPING) {
         } else if (entityLiving.hasCustomName() ) {
             String s = ChatFormatting.stripFormatting(entityLiving.getName().getString());
             if (("Dinnerbone".equals(s) || "Grumm".equals(s))) {

@@ -88,13 +88,13 @@ public class EntityTendonSegment  extends Entity {
         super.tick();
         Entity creator = getCreatorEntity();
         Entity current = getToEntity();
-        if(!this.isRetracting() && progress < MAX_EXTEND_TIME){
+        if(progress < MAX_EXTEND_TIME && !this.isRetracting()){
             this.setProgress(progress + 1);
         }
-        if(this.isRetracting() && progress > 0F){
+        if(progress > 0F && this.isRetracting()){
             this.setProgress(progress - 1);
         }
-        if(this.isRetracting() && progress == 0F){
+        if(progress == 0F && this.isRetracting()){
             Entity from = this.getFromEntity();
             if(from instanceof EntityTendonSegment){
                 EntityTendonSegment tendonSegment = (EntityTendonSegment) from;
@@ -147,9 +147,9 @@ public class EntityTendonSegment  extends Entity {
                 }
             }
         }
-        double d0 = this.getX() + vector3d.x;
-        double d1 = this.getY() + vector3d.y;
-        double d2 = this.getZ() + vector3d.z;
+        final double d0 = this.getX() + vector3d.x;
+        final double d1 = this.getY() + vector3d.y;
+        final double d2 = this.getZ() + vector3d.z;
         this.setDeltaMovement(vector3d.scale(0.99F));
         this.setPos(d0, d1, d2);
     }

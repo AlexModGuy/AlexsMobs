@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -64,7 +65,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     protected EntityTusklin(EntityType<? extends Animal> type, Level level) {
         super(type, level);
-        maxUpStep = 1.1F;
+        maxUpStep = 1.1F; // FIXME
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -158,13 +159,11 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     public boolean doHurtTarget(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
-            int anim = this.random.nextInt(3);
-            if (anim == 0) {
-                this.setAnimation(ANIMATION_FLING);
-            } else if (anim == 1) {
-                this.setAnimation(ANIMATION_GORE_L);
-            } else if (anim == 2) {
-                this.setAnimation(ANIMATION_GORE_R);
+            final int anim = this.random.nextInt(3);
+            switch (anim) {
+                case 0 -> this.setAnimation(ANIMATION_FLING);
+                case 1 -> this.setAnimation(ANIMATION_GORE_L);
+                case 2 -> this.setAnimation(ANIMATION_GORE_R);
             }
         }
         return true;
@@ -187,16 +186,16 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                     radius -= 0.4F - (this.getAnimationTick() - 5) * 0.1F;
                 }
             }
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
+            final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
     }
 
     public double getPassengersRidingOffset() {
-        float f = this.animationPosition;
-        float f1 = this.animationSpeed;
+        final float f = this.animationPosition;
+        final float f1 = this.animationSpeed;
         float f2 = 0;
         if (this.getAnimation() == ANIMATION_FLING) {
             if (this.getAnimationTick() <= 3F) {
@@ -297,11 +296,11 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public boolean isSaddled() {
-        return this.entityData.get(SADDLED).booleanValue();
+        return this.entityData.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled) {
-        this.entityData.set(SADDLED, Boolean.valueOf(saddled));
+        this.entityData.set(SADDLED, saddled);
     }
 
     protected void dropEquipment() {
@@ -351,8 +350,8 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                     launch.setPos(this.getEyePosition().add(0, 1, 0));
                     float rot = 180F + this.getYRot();
                     float strength = (float) (getLaunchStrength() * (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
-                    float x = Mth.sin(rot * ((float) Math.PI / 180F));
-                    float z = -Mth.cos(rot * ((float) Math.PI / 180F));
+                    float x = Mth.sin(rot * Mth.DEG_TO_RAD);
+                    float z = -Mth.cos(rot * Mth.DEG_TO_RAD);
                     if (!(strength <= 0.0D)) {
                         launch.hasImpulse = true;
                         Vec3 vec3 = this.getDeltaMovement();
@@ -390,9 +389,9 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                         }
                     }
                 }
-                maxUpStep = 2F;
+                maxUpStep = 2F; // FIXME
             }else{
-                maxUpStep = 1.1F;
+                maxUpStep = 1.1F; // FIXME
             }
             if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + this.getBbWidth() + 1.8F) {
                 if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 6) {
@@ -442,7 +441,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     private void knockbackTarget(LivingEntity entity, float strength, float angle) {
         float rot = getYRot() + angle;
         if(entity != null){
-            entity.knockback(strength, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+            entity.knockback(strength, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
         }
     }
 

@@ -29,7 +29,7 @@ public class RenderPlatypus extends MobRenderer<EntityPlatypus, ModelPlatypus> {
         return entity.isPerry() ? TEXTURE_PERRY : TEXTURE;
     }
 
-    class FedoraLayer extends RenderLayer<EntityPlatypus, ModelPlatypus> {
+    static class FedoraLayer extends RenderLayer<EntityPlatypus, ModelPlatypus> {
         private final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/platypus_fedora.png");
 
         public FedoraLayer(RenderPlatypus renderGrizzlyBear) {

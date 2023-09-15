@@ -54,17 +54,12 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
         Direction direction = p_52807_.getValue(HORIZONTAL_FACING);
         boolean flag = !p_52807_.getValue(OPEN);
         boolean flag1 = p_52807_.getValue(HINGE) == DoorHingeSide.RIGHT;
-        switch(direction) {
-            case EAST:
-            default:
-                return flag ? EAST_AABB : (flag1 ? NORTH_AABB : SOUTH_AABB);
-            case SOUTH:
-                return flag ? SOUTH_AABB : (flag1 ? EAST_AABB : WEST_AABB);
-            case WEST:
-                return flag ? WEST_AABB : (flag1 ? SOUTH_AABB : NORTH_AABB);
-            case NORTH:
-                return flag ? NORTH_AABB : (flag1 ? WEST_AABB : EAST_AABB);
-        }
+        return switch (direction) {
+            default -> flag ? EAST_AABB : (flag1 ? NORTH_AABB : SOUTH_AABB);
+            case SOUTH -> flag ? SOUTH_AABB : (flag1 ? EAST_AABB : WEST_AABB);
+            case WEST -> flag ? WEST_AABB : (flag1 ? SOUTH_AABB : NORTH_AABB);
+            case NORTH -> flag ? NORTH_AABB : (flag1 ? WEST_AABB : EAST_AABB);
+        };
     }
 
     public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor level, BlockPos pos, BlockPos p_52801_) {
@@ -100,15 +95,13 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos p_52780_, boolean p_52781_) {
 
         boolean flag = level.hasNeighborSignal(pos);
-        if(state.getValue(SEGMENT) == 0){
-            flag = flag || level.hasNeighborSignal(pos.above()) || level.hasNeighborSignal(pos.above(2));
-        }
-        if(state.getValue(SEGMENT) == 1){
-            flag = flag || level.hasNeighborSignal(pos.below()) || level.hasNeighborSignal(pos.above());
-        }
-        if(state.getValue(SEGMENT) == 2){
-            flag = flag || level.hasNeighborSignal(pos.below()) || level.hasNeighborSignal(pos.below(2));
-        }
+        flag = switch (state.getValue(SEGMENT)) {
+            case 0 -> flag || level.hasNeighborSignal(pos.above()) || level.hasNeighborSignal(pos.above(2));
+            case 1 -> flag || level.hasNeighborSignal(pos.below()) || level.hasNeighborSignal(pos.above());
+            case 2 -> flag || level.hasNeighborSignal(pos.below()) || level.hasNeighborSignal(pos.below(2));
+            default -> flag;
+        };
+
         if (!this.defaultBlockState().is(block) && flag != state.getValue(POWERED)) {
             if (flag != state.getValue(OPEN)) {
                // level.gameEvent(flag ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
@@ -213,15 +206,12 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
 
 
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        switch (state.getValue(SEGMENT)){
-            case 0:
-                return world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP);
-            case 1:
-                return world.getBlockState(pos.below()).is(this) && world.getBlockState(pos.above()).is(this);
-            case 2:
-                return world.getBlockState(pos.below()).is(this) && world.getBlockState(pos.below(2)).is(this);
-        }
-        return false;
+        return switch (state.getValue(SEGMENT)) {
+            case 0 -> world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP);
+            case 1 -> world.getBlockState(pos.below()).is(this) && world.getBlockState(pos.above()).is(this);
+            case 2 -> world.getBlockState(pos.below()).is(this) && world.getBlockState(pos.below(2)).is(this);
+            default -> false;
+        };
     }
 
 

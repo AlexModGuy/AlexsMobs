@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityUnderminer;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -93,17 +94,17 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
     public void setupHumanoidAnims(EntityUnderminer entityIn, float p_102867_, float p_102868_, float p_102869_, float p_102870_, float p_102871_) {
         boolean flag = entityIn.getFallFlyingTicks() > 4;
         boolean flag1 = entityIn.isVisuallySwimming();
-        this.head.rotateAngleY = p_102870_ * ((float)Math.PI / 180F);
+        this.head.rotateAngleY = p_102870_ * Mth.DEG_TO_RAD;
         if (flag) {
-            this.head.rotateAngleX = (-(float)Math.PI / 4F);
+            this.head.rotateAngleX = (-Maths.QUARTER_PI);
         } else if (this.swimAmount > 0.0F) {
             if (flag1) {
-                this.head.rotateAngleX = this.rotlerpRad(this.swimAmount, this.head.rotateAngleX, (-(float)Math.PI / 4F));
+                this.head.rotateAngleX = this.rotlerpRad(this.swimAmount, this.head.rotateAngleX, -Maths.QUARTER_PI);
             } else {
-                this.head.rotateAngleX = this.rotlerpRad(this.swimAmount, this.head.rotateAngleX, p_102871_ * ((float)Math.PI / 180F));
+                this.head.rotateAngleX = this.rotlerpRad(this.swimAmount, this.head.rotateAngleX, p_102871_ * Mth.DEG_TO_RAD);
             }
         } else {
-            this.head.rotateAngleX = p_102871_ * ((float)Math.PI / 180F);
+            this.head.rotateAngleX = p_102871_ * Mth.DEG_TO_RAD;
         }
         float f = 1.0F;
         if (flag) {
@@ -116,12 +117,12 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
             f = 1.0F;
         }
 
-        this.rightArm.rotateAngleX = Mth.cos(p_102867_ * 0.6662F + (float)Math.PI) * 2.0F * p_102868_ * 0.5F / f;
+        this.rightArm.rotateAngleX = Mth.cos(p_102867_ * 0.6662F + Mth.PI) * 2.0F * p_102868_ * 0.5F / f;
         this.leftArm.rotateAngleX = Mth.cos(p_102867_ * 0.6662F) * 2.0F * p_102868_ * 0.5F / f;
         this.rightArm.rotateAngleZ = 0.0F;
         this.leftArm.rotateAngleZ = 0.0F;
         this.rightLeg.rotateAngleX = Mth.cos(p_102867_ * 0.6662F) * 1.4F * p_102868_ / f;
-        this.leftLeg.rotateAngleX = Mth.cos(p_102867_ * 0.6662F + (float)Math.PI) * 1.4F * p_102868_ / f;
+        this.leftLeg.rotateAngleX = Mth.cos(p_102867_ * 0.6662F + Mth.PI) * 1.4F * p_102868_ / f;
         this.rightLeg.rotateAngleY = 0.0F;
         this.leftLeg.rotateAngleY = 0.0F;
         this.rightLeg.rotateAngleZ = 0.0F;
@@ -176,40 +177,38 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
         }
 
         if (this.swimAmount > 0.0F) {
-            float f5 = p_102867_ % 26.0F;
+            final float f5 = p_102867_ % 26.0F;
             HumanoidArm humanoidarm = this.getAttackArm(entityIn);
-            float f1 = humanoidarm == HumanoidArm.RIGHT && this.attackTime > 0.0F ? 0.0F : this.swimAmount;
-            float f2 = humanoidarm == HumanoidArm.LEFT && this.attackTime > 0.0F ? 0.0F : this.swimAmount;
+            final float f1 = humanoidarm == HumanoidArm.RIGHT && this.attackTime > 0.0F ? 0.0F : this.swimAmount;
+            final float f2 = humanoidarm == HumanoidArm.LEFT && this.attackTime > 0.0F ? 0.0F : this.swimAmount;
             if (!entityIn.isUsingItem()) {
                 if (f5 < 14.0F) {
                     this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, 0.0F);
                     this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, 0.0F);
-                    this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, (float)Math.PI);
-                    this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, (float)Math.PI);
-                    this.leftArm.rotateAngleZ = this.rotlerpRad(f2, this.leftArm.rotateAngleZ, (float)Math.PI + 1.8707964F * this.quadraticArmUpdate(f5) / this.quadraticArmUpdate(14.0F));
-                    this.rightArm.rotateAngleZ = Mth.lerp(f1, this.rightArm.rotateAngleZ, (float)Math.PI - 1.8707964F * this.quadraticArmUpdate(f5) / this.quadraticArmUpdate(14.0F));
+                    this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, Mth.PI);
+                    this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, Mth.PI);
+                    this.leftArm.rotateAngleZ = this.rotlerpRad(f2, this.leftArm.rotateAngleZ, Mth.PI + 1.8707964F * this.quadraticArmUpdate(f5) / this.quadraticArmUpdate(14.0F));
+                    this.rightArm.rotateAngleZ = Mth.lerp(f1, this.rightArm.rotateAngleZ, Mth.PI - 1.8707964F * this.quadraticArmUpdate(f5) / this.quadraticArmUpdate(14.0F));
                 } else if (f5 >= 14.0F && f5 < 22.0F) {
                     float f6 = (f5 - 14.0F) / 8.0F;
-                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, ((float)Math.PI / 2F) * f6);
-                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, ((float)Math.PI / 2F) * f6);
-                    this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, (float)Math.PI);
-                    this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, (float)Math.PI);
+                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, Mth.HALF_PI * f6);
+                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, Mth.HALF_PI * f6);
+                    this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, Mth.PI);
+                    this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, Mth.PI);
                     this.leftArm.rotateAngleZ = this.rotlerpRad(f2, this.leftArm.rotateAngleZ, 5.012389F - 1.8707964F * f6);
                     this.rightArm.rotateAngleZ = Mth.lerp(f1, this.rightArm.rotateAngleZ, 1.2707963F + 1.8707964F * f6);
                 } else if (f5 >= 22.0F && f5 < 26.0F) {
                     float f3 = (f5 - 22.0F) / 4.0F;
-                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, ((float)Math.PI / 2F) - ((float)Math.PI / 2F) * f3);
-                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, ((float)Math.PI / 2F) - ((float)Math.PI / 2F) * f3);
-                    this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, (float)Math.PI);
-                    this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, (float)Math.PI);
-                    this.leftArm.rotateAngleZ = this.rotlerpRad(f2, this.leftArm.rotateAngleZ, (float)Math.PI);
-                    this.rightArm.rotateAngleZ = Mth.lerp(f1, this.rightArm.rotateAngleZ, (float)Math.PI);
+                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, Mth.HALF_PI - Mth.HALF_PI * f3);
+                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, Mth.HALF_PI - Mth.HALF_PI * f3);
+                    this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, Mth.PI);
+                    this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, Mth.PI);
+                    this.leftArm.rotateAngleZ = this.rotlerpRad(f2, this.leftArm.rotateAngleZ, Mth.PI);
+                    this.rightArm.rotateAngleZ = Mth.lerp(f1, this.rightArm.rotateAngleZ, Mth.PI);
                 }
             }
 
-            float f7 = 0.3F;
-            float f4 = 0.33333334F;
-            this.leftLeg.rotateAngleX = Mth.lerp(this.swimAmount, this.leftLeg.rotateAngleX, 0.3F * Mth.cos(p_102867_ * 0.33333334F + (float)Math.PI));
+            this.leftLeg.rotateAngleX = Mth.lerp(this.swimAmount, this.leftLeg.rotateAngleX, 0.3F * Mth.cos(p_102867_ * 0.33333334F + Mth.PI));
             this.rightLeg.rotateAngleX = Mth.lerp(this.swimAmount, this.rightLeg.rotateAngleX, 0.3F * Mth.cos(p_102867_ * 0.33333334F));
         }
     }
@@ -228,17 +227,16 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
                 this.rightArm.rotateAngleY = 0.0F;
                 break;
             case THROW_SPEAR:
-                this.rightArm.rotateAngleX = this.rightArm.rotateAngleX * 0.5F - (float)Math.PI;
+                this.rightArm.rotateAngleX = this.rightArm.rotateAngleX * 0.5F - Mth.PI;
                 this.rightArm.rotateAngleY = 0.0F;
                 break;
             case BOW_AND_ARROW:
                 this.rightArm.rotateAngleY = -0.1F + this.head.rotateAngleY;
                 this.leftArm.rotateAngleY = 0.1F + this.head.rotateAngleY + 0.4F;
-                this.rightArm.rotateAngleX = (-(float)Math.PI / 2F) + this.head.rotateAngleX;
-                this.leftArm.rotateAngleX = (-(float)Math.PI / 2F) + this.head.rotateAngleX;
+                this.rightArm.rotateAngleX = (-Mth.HALF_PI) + this.head.rotateAngleX;
+                this.leftArm.rotateAngleX = (-Mth.HALF_PI) + this.head.rotateAngleX;
                 break;
-            case CROSSBOW_CHARGE:
-                break;
+            case CROSSBOW_CHARGE: // fallthrough
             case CROSSBOW_HOLD:
                 break;
             case SPYGLASS:
@@ -266,14 +264,14 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
                 this.leftArm.rotateAngleY = 0.0F;
                 break;
             case THROW_SPEAR:
-                this.leftArm.rotateAngleX = this.leftArm.rotateAngleX * 0.5F - (float)Math.PI;
+                this.leftArm.rotateAngleX = this.leftArm.rotateAngleX * 0.5F - Mth.PI;
                 this.leftArm.rotateAngleY = 0.0F;
                 break;
             case BOW_AND_ARROW:
                 this.rightArm.rotateAngleY = -0.1F + this.head.rotateAngleY - 0.4F;
                 this.leftArm.rotateAngleY = 0.1F + this.head.rotateAngleY;
-                this.rightArm.rotateAngleX = (-(float)Math.PI / 2F) + this.head.rotateAngleX;
-                this.leftArm.rotateAngleX = (-(float)Math.PI / 2F) + this.head.rotateAngleX;
+                this.rightArm.rotateAngleX = (-Mth.HALF_PI) + this.head.rotateAngleX;
+                this.leftArm.rotateAngleX = (-Mth.HALF_PI) + this.head.rotateAngleX;
                 break;
             case CROSSBOW_CHARGE:
                 break;
@@ -295,7 +293,7 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
             HumanoidArm humanoidarm = this.getAttackArm(p_102858_);
             AdvancedModelBox modelpart = this.getArm(humanoidarm);
             float f = this.attackTime;
-            this.body.rotateAngleY = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
+            this.body.rotateAngleY = Mth.sin(Mth.sqrt(f) * Mth.TWO_PI) * 0.2F;
             if (humanoidarm == HumanoidArm.LEFT) {
                 this.body.rotateAngleY *= -1.0F;
             }
@@ -307,22 +305,22 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
             f *= f;
             f *= f;
             f = 1.0F - f;
-            float f1 = Mth.sin(f * (float)Math.PI);
-            float f2 = Mth.sin(this.attackTime * (float)Math.PI) * -(this.head.rotateAngleX - 0.7F) * 0.75F;
+            final float f1 = Mth.sin(f * Mth.PI);
+            final float f2 = Mth.sin(this.attackTime * Mth.PI) * -(this.head.rotateAngleX - 0.7F) * 0.75F;
             modelpart.rotateAngleX -= f1 * 1.2F + f2;
             modelpart.rotateAngleY += this.body.rotateAngleY * 2.0F;
-            modelpart.rotateAngleZ += Mth.sin(this.attackTime * (float)Math.PI) * -0.4F;
+            modelpart.rotateAngleZ += Mth.sin(this.attackTime * Mth.PI) * -0.4F;
         }
     }
 
     protected float rotlerpRad(float p_102836_, float p_102837_, float p_102838_) {
-        float f = (p_102838_ - p_102837_) % ((float)Math.PI * 2F);
-        if (f < -(float)Math.PI) {
-            f += ((float)Math.PI * 2F);
+        float f = (p_102838_ - p_102837_) % Mth.TWO_PI;
+        if (f < -Mth.PI) {
+            f += Mth.TWO_PI;
         }
 
-        if (f >= (float)Math.PI) {
-            f -= ((float)Math.PI * 2F);
+        if (f >= Mth.PI) {
+            f -= Mth.TWO_PI;
         }
 
         return p_102837_ + p_102836_ * f;

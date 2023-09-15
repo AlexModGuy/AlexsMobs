@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
-import com.mojang.math.Vector3f;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -57,8 +56,7 @@ public class ItemPocketSand extends Item {
             }
             EntitySandShot blood = new EntitySandShot(worldIn, livingEntityIn, !left);
             Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
-            Vector3f vector3f = new Vector3f(vector3d);
-            blood.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), 1.2F, 11);
+            blood.shoot((double) vector3d.x(), (double) vector3d.y(), (double) vector3d.z(), 1.2F, 11);
             if (!worldIn.isClientSide) {
                 worldIn.addFreshEntity(blood);
             }

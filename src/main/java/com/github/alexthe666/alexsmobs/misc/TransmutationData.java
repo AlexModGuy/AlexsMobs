@@ -1,6 +1,9 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.util.RandomSource;
@@ -11,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TransmutationData {
-    private Map<ItemStack, Double> itemstackData = new HashMap<>();
+    private final Object2DoubleMap<ItemStack> itemstackData = new Object2DoubleOpenHashMap<>();
 
     public void onTransmuteItem(ItemStack beingTransmuted, ItemStack turnedInto){
         double fromWeight = getWeight(beingTransmuted);
@@ -21,9 +24,9 @@ public class TransmutationData {
     }
 
     public double getWeight(ItemStack stack){
-        for(Map.Entry<ItemStack, Double> entry : itemstackData.entrySet()){
+        for(Object2DoubleMap.Entry<ItemStack> entry : itemstackData.object2DoubleEntrySet()){
             if(ItemStack.isSameItemSameTags(stack, entry.getKey())){
-                return entry.getValue();
+                return entry.getDoubleValue();
             }
         }
         return 0.0;
@@ -39,9 +42,9 @@ public class TransmutationData {
 
     public void putWeight(ItemStack stack, double newWeight){
         ItemStack replace = stack;
-        for(Map.Entry<ItemStack, Double> entry : itemstackData.entrySet()){
-            if(ItemStack.isSameItemSameTags(stack, entry.getKey())){
-                replace = entry.getKey();
+        for(ItemStack entry : itemstackData.keySet()){
+            if(ItemStack.isSameItemSameTags(stack, entry)){
+                replace = entry;
                 break;
             }
         }
@@ -52,11 +55,11 @@ public class TransmutationData {
     public ItemStack getRandomItem(RandomSource random) {
         ItemStack result = null;
         double bestValue = Double.MAX_VALUE;
-        for(Map.Entry<ItemStack, Double> entry : itemstackData.entrySet()){
-            if(entry.getValue() <= 0.0){
+        for(Object2DoubleMap.Entry<ItemStack> entry : itemstackData.object2DoubleEntrySet()){
+            if(entry.getDoubleValue() <= 0.0){
                 continue;
             }else{
-                double value = -Math.log(random.nextDouble()) / entry.getValue();
+                final double value = -Math.log(random.nextDouble()) / entry.getDoubleValue();
                 if (value < bestValue) {
                     bestValue = value;
                     result = entry.getKey().copy();
@@ -69,10 +72,10 @@ public class TransmutationData {
     public CompoundTag saveAsNBT(){
         CompoundTag compound = new CompoundTag();
         ListTag listTag = new ListTag();
-        for(Map.Entry<ItemStack, Double> entry : itemstackData.entrySet()) {
+        for(Object2DoubleMap.Entry<ItemStack> entry : itemstackData.object2DoubleEntrySet()) {
             CompoundTag tag = new CompoundTag();
             tag.put("Item", entry.getKey().save(new CompoundTag()));
-            tag.putDouble("Weight", entry.getValue().doubleValue());
+            tag.putDouble("Weight", entry.getDoubleValue());
             listTag.add(tag);
         }
         compound.put("TransmutationData", listTag);
@@ -99,10 +102,6 @@ public class TransmutationData {
     }
 
     public double getTotalWeight() {
-        double total = 0;
-        for(Map.Entry<ItemStack, Double> entry : itemstackData.entrySet()) {
-            total += entry.getValue();
-        }
-        return total;
+        return itemstackData.values().doubleStream().sum();
     }
 }

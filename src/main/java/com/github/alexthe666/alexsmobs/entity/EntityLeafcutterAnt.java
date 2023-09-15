@@ -264,7 +264,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         if (attachChangeProgress > 0F) {
             attachChangeProgress -= 0.25F;
         }
-        this.maxUpStep = isQueen() ? 1F : 0.5F;
+        this.maxUpStep = isQueen() ? 1F : 0.5F; // FIXME
         Vec3 vector3d = this.getDeltaMovement();
         if (!this.level.isClientSide && !this.isQueen()) {
             this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.isOnGround());
@@ -273,9 +273,8 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             } else  if (this.verticalCollision) {
                 this.entityData.set(ATTACHED_FACE, Direction.UP);
             }else {
-                boolean flag = false;
                 Direction closestDirection = Direction.DOWN;
-                double closestDistance = 100;
+                double closestDistance = 100D;
                 for (Direction dir : HORIZONTALS) {
                     BlockPos antPos = new BlockPos(Mth.floor(this.getX()), Mth.floor(this.getY()), Mth.floor(this.getZ()));
                     BlockPos offsetPos = antPos.relative(dir);
@@ -289,21 +288,22 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             }
         }
         boolean flag = false;
-        if (this.getAttachmentFacing() != Direction.DOWN) {
-            if(this.getAttachmentFacing() == Direction.UP){
+        final Direction attachmentFacing = this.getAttachmentFacing();
+        if (attachmentFacing != Direction.DOWN) {
+            if(attachmentFacing == Direction.UP){
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 1, 0));
             }else{
-                if (!this.horizontalCollision && this.getAttachmentFacing() != Direction.UP) {
-                    Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
+                if (!this.horizontalCollision) {
+                    Vec3 vec = Vec3.atLowerCornerOf(attachmentFacing.getNormal());
                     this.setDeltaMovement(this.getDeltaMovement().add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
                 }
-                if (!this.onGround && vector3d.y < 0.0D) {
+                if (!this.isOnGround() && vector3d.y < 0.0D) {
                     this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
                     flag = true;
                 }
             }
         }
-        if(this.getAttachmentFacing() == Direction.UP) {
+        if(attachmentFacing == Direction.UP) {
             this.setNoGravity(true);
             this.setDeltaMovement(vector3d.multiply(0.7D, 1D, 0.7D));
         }else{
@@ -314,15 +314,15 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
             }
         }
-        if (prevAttachDir != this.getAttachmentFacing()) {
+        if (prevAttachDir != attachmentFacing) {
             attachChangeProgress = 1F;
         }
-        this.prevAttachDir = this.getAttachmentFacing();
+        this.prevAttachDir = attachmentFacing;
         if (!this.level.isClientSide) {
-            if (this.getAttachmentFacing() == Direction.UP && !this.isUpsideDownNavigator) {
+            if (attachmentFacing == Direction.UP && !this.isUpsideDownNavigator) {
                 switchNavigator(false);
             }
-            if (this.getAttachmentFacing() != Direction.UP && this.isUpsideDownNavigator) {
+            if (attachmentFacing != Direction.UP && this.isUpsideDownNavigator) {
                 switchNavigator(true);
             }
             if (this.stayOutOfHiveCountdown > 0) {
@@ -450,15 +450,15 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     public boolean hasLeaf() {
-        return this.entityData.get(HAS_LEAF).booleanValue();
+        return this.entityData.get(HAS_LEAF);
     }
 
     public void setLeaf(boolean leaf) {
-        this.entityData.set(HAS_LEAF, Boolean.valueOf(leaf));
+        this.entityData.set(HAS_LEAF, leaf);
     }
 
     public boolean isQueen() {
-        return this.entityData.get(QUEEN).booleanValue();
+        return this.entityData.get(QUEEN);
     }
 
     public void setQueen(boolean queen) {
@@ -596,19 +596,13 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         return !this.hasLeaf();
     }
 
-    @Override
-    public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.animationSpeedOld = p_233629_1_.animationSpeed;
-        double d0 = p_233629_1_.getX() - p_233629_1_.xo;
-        double d1 = (p_233629_1_.getY() - p_233629_1_.yo) * 2.0F;
-        double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt((float)(d0 * d0 + d1 * d1 + d2 * d2)) * 4.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        p_233629_1_.animationSpeed += (f - p_233629_1_.animationSpeed) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.animationSpeed;
+    @Override // FIXME
+    public void calculateEntityAnimation(LivingEntity ignored, boolean p_233629_2_) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float)Mth.length(this.getX() - this.xo, 2 * (this.getY() - this.yo), this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 4.0F, 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     @Override
@@ -646,6 +640,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         private int searchCooldown = 1;
         private BlockPos hivePos;
         private int approachTime = 0;
+        private int moveToCooldown = 0;
 
         public ReturnToHiveGoal() {
         }
@@ -691,42 +686,61 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             this.approachTime = 0;
         }
 
+        public void start() {
+            this.hivePos = null;
+            this.searchCooldown = 20;
+            this.approachTime = 0;
+            moveToCooldown = 10 + random.nextInt(10);
+        }
+
         public void tick() {
-            double dist = EntityLeafcutterAnt.this.distanceToSqr(Vec3.upFromBottomCenterOf(hivePos, 1));
-            if (dist < 1.2F && EntityLeafcutterAnt.this.getBlockPosBelowThatAffectsMyMovement().equals(hivePos)) {
-                BlockEntity tileentity = EntityLeafcutterAnt.this.level.getBlockEntity(hivePos);
-                if (tileentity instanceof TileEntityLeafcutterAnthill) {
-                    TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill) tileentity;
-                    beehivetileentity.tryEnterHive(EntityLeafcutterAnt.this, EntityLeafcutterAnt.this.hasLeaf());
-                }
+            if(moveToCooldown > 0){
+                moveToCooldown--;
             }
-            if (dist < 16) {
-                approachTime++;
-                if(dist < 4){
-                    Vec3 center = Vec3.upFromBottomCenterOf(hivePos, 1.1F);
-                    Vec3 add = center.subtract(EntityLeafcutterAnt.this.position());
-                    if(add.length() > 1F){
-                        add = add.normalize();
+            if(hivePos != null){
+
+                double dist = EntityLeafcutterAnt.this.distanceToSqr(Vec3.upFromBottomCenterOf(hivePos, 1));
+                if (dist < 1.2F && EntityLeafcutterAnt.this.getBlockPosBelowThatAffectsMyMovement().equals(hivePos)) {
+                    BlockEntity tileentity = EntityLeafcutterAnt.this.level.getBlockEntity(hivePos);
+                    if (tileentity instanceof TileEntityLeafcutterAnthill) {
+                        TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill) tileentity;
+                        beehivetileentity.tryEnterHive(EntityLeafcutterAnt.this, EntityLeafcutterAnt.this.hasLeaf());
                     }
-                    add = add.scale(0.2F);
-                    EntityLeafcutterAnt.this.setDeltaMovement(EntityLeafcutterAnt.this.getDeltaMovement().add(add));
                 }
-                if(dist < (approachTime < 200 ? 2 : 10) && EntityLeafcutterAnt.this.getY() >= hivePos.getY()){
-                    if(EntityLeafcutterAnt.this.getAttachmentFacing() != Direction.DOWN){
-                        EntityLeafcutterAnt.this.setDeltaMovement(EntityLeafcutterAnt.this.getDeltaMovement().add(0, 0.1, 0));
+                if (dist < 16) {
+                    approachTime++;
+                    if(dist < 4){
+                        Vec3 center = Vec3.upFromBottomCenterOf(hivePos, 1.1F);
+                        Vec3 add = center.subtract(EntityLeafcutterAnt.this.position());
+                        if(add.length() > 1F){
+                            add = add.normalize();
+                        }
+                        add = add.scale(0.2F);
+                        EntityLeafcutterAnt.this.setDeltaMovement(EntityLeafcutterAnt.this.getDeltaMovement().add(add));
                     }
-                   EntityLeafcutterAnt.this.getMoveControl().setWantedPosition((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.5F, (double) hivePos.getZ() + 0.5F, 1.0D);
+                    if(dist < (approachTime < 200 ? 2 : 10) && EntityLeafcutterAnt.this.getY() >= hivePos.getY()){
+                        if(EntityLeafcutterAnt.this.getAttachmentFacing() != Direction.DOWN){
+                            EntityLeafcutterAnt.this.setDeltaMovement(EntityLeafcutterAnt.this.getDeltaMovement().add(0, 0.1, 0));
+                        }
+                        EntityLeafcutterAnt.this.getMoveControl().setWantedPosition((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.5F, (double) hivePos.getZ() + 0.5F, 1.0D);
+                    }
+                    if(moveToCooldown <= 0){
+                        moveToCooldown = 50 + random.nextInt(30);
+                        EntityLeafcutterAnt.this.navigation.resetMaxVisitedNodesMultiplier();
+                        EntityLeafcutterAnt.this.navigation.moveTo((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.6F, (double) hivePos.getZ() + 0.5F, 1.0D);
+                    }
+                } else {
+                    startMovingToFar(this.hivePos);
                 }
-                EntityLeafcutterAnt.this.navigation.resetMaxVisitedNodesMultiplier();
-                EntityLeafcutterAnt.this.navigation.moveTo((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.6F, (double) hivePos.getZ() + 0.5F, 1.0D);
-            } else {
-                startMovingToFar(this.hivePos);
             }
         }
 
         private boolean startMovingToFar(BlockPos pos) {
-            EntityLeafcutterAnt.this.navigation.setMaxVisitedNodesMultiplier(10.0F);
-            EntityLeafcutterAnt.this.navigation.moveTo(pos.getX(), pos.getY(), pos.getZ(), 1.0D);
+            if(moveToCooldown <= 0){
+                moveToCooldown = 50 + random.nextInt(30);
+                EntityLeafcutterAnt.this.navigation.setMaxVisitedNodesMultiplier(10.0F);
+                EntityLeafcutterAnt.this.navigation.moveTo(pos.getX(), pos.getY(), pos.getZ(), 1.0D);
+            }
             return EntityLeafcutterAnt.this.navigation.getPath() != null && EntityLeafcutterAnt.this.navigation.getPath().canReach();
         }
 

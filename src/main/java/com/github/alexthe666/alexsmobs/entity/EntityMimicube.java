@@ -161,37 +161,40 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     public void setItemSlot(EquipmentSlot slotIn, ItemStack stack) {
-        if (slotIn == EquipmentSlot.HEAD && !stack.sameItem(this.getItemBySlot(EquipmentSlot.HEAD))) {
-            helmetSwapProgress = 5;
-            this.level.broadcastEntityEvent(this, (byte) 45);
-        }
-        if (slotIn == EquipmentSlot.MAINHAND && !stack.sameItem(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
-            rightSwapProgress = 5;
-            this.level.broadcastEntityEvent(this, (byte) 46);
-        }
-        if (slotIn == EquipmentSlot.OFFHAND && !stack.sameItem(this.getItemBySlot(EquipmentSlot.OFFHAND))) {
-            leftSwapProgress = 5;
-            this.level.broadcastEntityEvent(this, (byte) 47);
+        switch (slotIn) {
+            case HEAD -> {
+                if (!stack.sameItem(this.getItemBySlot(EquipmentSlot.HEAD))) {
+                    helmetSwapProgress = 5;
+                    this.level.broadcastEntityEvent(this, (byte) 45);
+                }
+            }
+            case MAINHAND -> {
+                if (!stack.sameItem(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
+                    rightSwapProgress = 5;
+                    this.level.broadcastEntityEvent(this, (byte) 46);
+                }
+            }
+            case OFFHAND -> {
+                if (!stack.sameItem(this.getItemBySlot(EquipmentSlot.OFFHAND))) {
+                    leftSwapProgress = 5;
+                    this.level.broadcastEntityEvent(this, (byte) 47);
+                }
+            }
         }
         super.setItemSlot(slotIn, stack);
         if (!this.level.isClientSide) {
             this.setCombatTask();
         }
-
     }
 
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
-        if (id == 45) {
-            helmetSwapProgress = 5;
-        }
-        if (id == 46) {
-            rightSwapProgress = 5;
-        }
-        if (id == 47) {
-            leftSwapProgress = 5;
-
+        switch (id) {
+            case 45 -> helmetSwapProgress = 5;
+            case 46 -> rightSwapProgress = 5;
+            case 47 -> leftSwapProgress = 5;
+            default -> {}
         }
     }
 
@@ -201,8 +204,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
 
     public boolean hurt(DamageSource source, float amount) {
         Entity trueSource = source.getEntity();
-        if (trueSource != null && trueSource instanceof LivingEntity) {
-            LivingEntity attacker = (LivingEntity) trueSource;
+        if (trueSource != null && trueSource instanceof LivingEntity attacker) {
             if (!attacker.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
                 this.setItemSlot(EquipmentSlot.HEAD, mimicStack(attacker.getItemBySlot(EquipmentSlot.HEAD)));
             }
@@ -241,10 +243,10 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         if (helmetSwapProgress > 0F) {
             helmetSwapProgress -= 0.5F;
         }
-        if (this.onGround && !this.wasOnGround) {
+        if (this.isOnGround() && !this.wasOnGround) {
 
             for (int j = 0; j < 8; ++j) {
-                float f = this.random.nextFloat() * ((float) Math.PI * 2F);
+                float f = this.random.nextFloat() * Mth.TWO_PI;
                 float f1 = this.random.nextFloat() * 0.5F + 0.5F;
                 float f2 = Mth.sin(f) * 0.5F * f1;
                 float f3 = Mth.cos(f) * 0.5F * f1;
@@ -253,7 +255,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
 
             this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
             this.squishAmount = -0.35F;
-        } else if (!this.onGround && this.wasOnGround) {
+        } else if (!this.isOnGround() && this.wasOnGround) {
             this.squishAmount = 2F;
         }
         if(this.isInWater()){
@@ -305,7 +307,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         } else {
             eatingTicks = 0;
         }
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.isOnGround();
         this.alterSquishAmount();
         LivingEntity livingentity = this.getTarget();
         if (livingentity != null && this.distanceToSqr(livingentity) < 144D) {
@@ -358,7 +360,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         return this.getMainHandItem().getItem() instanceof ProjectileWeaponItem || this.getMainHandItem().getItem() instanceof TridentItem;
     }
 
-    private class MimicubeMoveHelper extends MoveControl {
+    private static class MimicubeMoveHelper extends MoveControl {
         private final EntityMimicube slime;
         private float yRot;
         private int jumpDelay;
@@ -367,7 +369,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         public MimicubeMoveHelper(EntityMimicube slimeIn) {
             super(slimeIn);
             this.slime = slimeIn;
-            this.yRot = 180.0F * slimeIn.getYRot() / (float) Math.PI;
+            this.yRot = 180.0F * slimeIn.getYRot() / Mth.PI;
         }
 
         public void setDirection(float yRotIn, boolean aggressive) {

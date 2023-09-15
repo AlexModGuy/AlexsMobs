@@ -16,7 +16,7 @@ public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> im
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel.png");
     private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel_glow.png");
-    private static ModelEndPirateShipWheel WHEEL_MODEL = new ModelEndPirateShipWheel();
+    private static final ModelEndPirateShipWheel WHEEL_MODEL = new ModelEndPirateShipWheel();
 
     public RenderEndPirateShipWheel(Context rendererDispatcherIn) {
     }
@@ -25,19 +25,13 @@ public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> im
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         Direction dir = tileEntityIn.getBlockState().getValue(BlockEndPirateShipWheel.FACING);
-        if(dir == Direction.UP){
-            matrixStackIn.translate(0.5F, 1.5F, 0.5F);
-        }else if(dir == Direction.DOWN){
-            matrixStackIn.translate(0.5F, -0.5F, 0.5F);
-        }else if(dir == Direction.NORTH){
-            matrixStackIn.translate(0.5, 0.5F, -0.5F);
-        }else if(dir == Direction.EAST){
-            matrixStackIn.translate(1.5F, 0.5F, 0.5F);
-        }else if(dir == Direction.SOUTH){
-            matrixStackIn.translate(0.5, 0.5F, 1.5F);
-
-        }else if(dir == Direction.WEST){
-            matrixStackIn.translate(-0.5F, 0.5F, 0.5F);
+        switch (dir) {
+            case UP -> matrixStackIn.translate(0.5F, 1.5F, 0.5F);
+            case DOWN -> matrixStackIn.translate(0.5F, -0.5F, 0.5F);
+            case NORTH -> matrixStackIn.translate(0.5, 0.5F, -0.5F);
+            case EAST -> matrixStackIn.translate(1.5F, 0.5F, 0.5F);
+            case SOUTH -> matrixStackIn.translate(0.5, 0.5F, 1.5F);
+            case WEST -> matrixStackIn.translate(-0.5F, 0.5F, 0.5F);
         }
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
         matrixStackIn.pushPose();

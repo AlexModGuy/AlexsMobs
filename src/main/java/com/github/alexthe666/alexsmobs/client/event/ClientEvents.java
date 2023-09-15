@@ -16,6 +16,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityBlueJay;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.entity.IFalconry;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -249,15 +250,15 @@ public class ClientEvents {
             leftHand = player.getMainArm() != HumanoidArm.LEFT;
         }
         if (leftHand && event.isLeftHand() && usingLasso) {
-            float swing = (float) Math.sin(player.tickCount + f) * 0.5F;
+            //float swing = (float) Math.sin(player.tickCount + f) * 0.5F;
             event.setResult(Event.Result.ALLOW);
-            event.getModel().leftArm.xRot = (float) Math.toRadians(-120F) + (float) Math.sin(player.tickCount + f) * 0.5F;
-            event.getModel().leftArm.yRot = (float) Math.toRadians(-20F) + (float) Math.cos(player.tickCount + f) * 0.5F;
+            event.getModel().leftArm.xRot = Maths.rad(-120F) + Mth.sin(player.tickCount + f) * 0.5F;
+            event.getModel().leftArm.yRot = Maths.rad(-20F) + Mth.cos(player.tickCount + f) * 0.5F;
         }
         if (!leftHand && !event.isLeftHand() && usingLasso) {
             event.setResult(Event.Result.ALLOW);
-            event.getModel().rightArm.xRot = (float) Math.toRadians(-120F) + (float) Math.sin(player.tickCount + f) * 0.5F;
-            event.getModel().rightArm.yRot = (float) Math.toRadians(20F) - (float) Math.cos(player.tickCount + f) * 0.5F;
+            event.getModel().rightArm.xRot = Maths.rad(-120F) + Mth.sin(player.tickCount + f) * 0.5F;
+            event.getModel().rightArm.yRot = Maths.rad(20F) - Mth.cos(player.tickCount + f) * 0.5F;
         }
     }
 
@@ -276,8 +277,7 @@ public class ClientEvents {
                 leftHand = player.getMainArm() != HumanoidArm.LEFT;
             }
             for (Entity entity : player.getPassengers()) {
-                if (entity instanceof IFalconry) {
-                    IFalconry falconry = (IFalconry)entity;
+                if (entity instanceof IFalconry falconry) {
                     float yaw = player.yBodyRotO + (player.yBodyRot - player.yBodyRotO) * event.getPartialTick();
                     ClientProxy.currentUnrenderedEntities.remove(entity.getUUID());
                     PoseStack matrixStackIn = event.getPoseStack();
@@ -302,10 +302,10 @@ public class ClientEvents {
             ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
             InteractionHand hand = MoreObjects.firstNonNull(Minecraft.getInstance().player.swingingArm, InteractionHand.MAIN_HAND);
             float f = Minecraft.getInstance().player.getAttackAnim(event.getPartialTick());
-            float f1 = Mth.lerp(event.getPartialTick(), Minecraft.getInstance().player.xRotO, Minecraft.getInstance().player.getXRot());
-            float f5 = -0.4F * Mth.sin(Mth.sqrt(f) * (float) Math.PI);
-            float f6 = 0.2F * Mth.sin(Mth.sqrt(f) * ((float) Math.PI * 2F));
-            float f10 = -0.2F * Mth.sin(f * (float) Math.PI);
+            //float f1 = Mth.lerp(event.getPartialTick(), Minecraft.getInstance().player.xRotO, Minecraft.getInstance().player.getXRot());
+            float f5 = -0.4F * Mth.sin(Mth.sqrt(f) * Mth.PI);
+            float f6 = 0.2F * Mth.sin(Mth.sqrt(f) * Mth.TWO_PI);
+            float f10 = -0.2F * Mth.sin(f * Mth.PI);
             HumanoidArm handside = hand == InteractionHand.MAIN_HAND ? Minecraft.getInstance().player.getMainArm() : Minecraft.getInstance().player.getMainArm().getOpposite();
             boolean flag3 = handside == HumanoidArm.RIGHT;
             int l = flag3 ? 1 : -1;

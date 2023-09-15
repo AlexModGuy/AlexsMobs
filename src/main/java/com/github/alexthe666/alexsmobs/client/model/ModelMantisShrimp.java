@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMantisShrimp;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -8,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 	public final AdvancedModelBox root;
@@ -166,12 +168,12 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 		float rightEyePitch = entity.prevRightPitch + (entity.getEyePitch(false) - entity.prevRightPitch) * partialTick;
 		float leftEyeYaw = entity.prevLeftYaw + (entity.getEyeYaw(true) - entity.prevLeftYaw) * partialTick;
 		float rightEyeYaw = entity.prevRightYaw + (entity.getEyeYaw(false) - entity.prevRightYaw) * partialTick;
-		this.eye_left.rotateAngleX += leftEyePitch * ((float)Math.PI / 180F);
-		this.eye_left.rotateAngleY += leftEyeYaw * ((float)Math.PI / 180F);
-		this.eye_right.rotateAngleX += rightEyePitch * ((float)Math.PI / 180F);
-		this.eye_right.rotateAngleY += rightEyeYaw * ((float)Math.PI / 180F);
-		this.head.rotateAngleY += netHeadYaw * 0.5F * ((float)Math.PI / 180F);
-		this.head.rotateAngleX += headPitch * 0.8F * ((float)Math.PI / 180F);
+		this.eye_left.rotateAngleX += leftEyePitch * Mth.DEG_TO_RAD;
+		this.eye_left.rotateAngleY += leftEyeYaw * Mth.DEG_TO_RAD;
+		this.eye_right.rotateAngleX += rightEyePitch * Mth.DEG_TO_RAD;
+		this.eye_right.rotateAngleY += rightEyeYaw * Mth.DEG_TO_RAD;
+		this.head.rotateAngleY += netHeadYaw * 0.5F * Mth.DEG_TO_RAD;
+		this.head.rotateAngleX += headPitch * 0.8F * Mth.DEG_TO_RAD;
 		this.walk(whisker_left, idleSpeed * 1.5F, idleDegree, false, 0F, -0.25F, ageInTicks, 1);
 		this.walk(whisker_right, idleSpeed * 1.5F, idleDegree, true, 0F, 0.25F, ageInTicks, 1);
 		this.swing(whisker_left, idleSpeed * 1F, idleDegree * 0.75F, false, 1F, 0F, ageInTicks, 1);
@@ -184,11 +186,11 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 		this.bob(legs_front, walkSpeed * 0.5F, walkDegree * 4F, true, limbSwing, limbSwingAmount);
 		this.walk(legs_back, walkSpeed, walkDegree * 0.2F, true, 2, 0, limbSwing, limbSwingAmount);
 		this.bob(legs_back, walkSpeed * 0.5F, walkDegree * 4F, true, limbSwing, limbSwingAmount);
-		progressRotationPrev(head, Math.max(0, swimProgress - punchProgress * 2.5F), (float)Math.toRadians(45), 0, 0, 5F);
-		progressRotationPrev(whisker_left, swimProgress, (float)Math.toRadians(-45), 0, 0, 5F);
-		progressRotationPrev(whisker_right, swimProgress, (float)Math.toRadians(-45), 0, 0, 5F);
-		progressRotationPrev(arm_left, swimProgress, (float)Math.toRadians(20), 0, 0, 5F);
-		progressRotationPrev(arm_right, swimProgress, (float)Math.toRadians(20), 0, 0, 5F);
+		progressRotationPrev(head, Math.max(0, swimProgress - punchProgress * 2.5F), Maths.rad(45), 0, 0, 5F);
+		progressRotationPrev(whisker_left, swimProgress, Maths.rad(-45), 0, 0, 5F);
+		progressRotationPrev(whisker_right, swimProgress, Maths.rad(-45), 0, 0, 5F);
+		progressRotationPrev(arm_left, swimProgress, Maths.rad(20), 0, 0, 5F);
+		progressRotationPrev(arm_right, swimProgress, Maths.rad(20), 0, 0, 5F);
 		progressPositionPrev(head, swimProgress, 0, -6, 0, 5F);
 		progressPositionPrev(arm_left, swimProgress, 0, -3, 0, 5F);
 		progressPositionPrev(arm_right, swimProgress, 0, -3, 0, 5F);
@@ -203,12 +205,12 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 		progressPositionPrev(arm_left, punchProgress, -1, -7, 0, 2F);
 		progressPositionPrev(fist_right, punchProgress, 0, -2, -2, 2F);
 		progressPositionPrev(fist_left, punchProgress, 0, -2, -2, 2F);
-		progressRotationPrev(arm_right, punchProgress, (float)Math.toRadians(70), 0, 0, 2F);
-		progressRotationPrev(fist_right, punchProgress, (float)Math.toRadians(-240),0,  (float)Math.toRadians(10), 2F);
-		progressRotationPrev(arm_left, punchProgress, (float)Math.toRadians(70), 0, 0, 2F);
-		progressRotationPrev(fist_left, punchProgress, (float)Math.toRadians(-240), 0,  (float)Math.toRadians(-10), 2F);
-		progressRotationPrev(flapper_right, punchProgress, 0, (float)Math.toRadians(50), 0, 2F);
-		progressRotationPrev(flapper_left, punchProgress, 0, (float)Math.toRadians(-50), 0, 2F);
+		progressRotationPrev(arm_right, punchProgress, Maths.rad(70), 0, 0, 2F);
+		progressRotationPrev(fist_right, punchProgress, Maths.rad(-240),0,  Maths.rad(10), 2F);
+		progressRotationPrev(arm_left, punchProgress, Maths.rad(70), 0, 0, 2F);
+		progressRotationPrev(fist_left, punchProgress, Maths.rad(-240), 0,  Maths.rad(-10), 2F);
+		progressRotationPrev(flapper_right, punchProgress, 0, Maths.rad(50), 0, 2F);
+		progressRotationPrev(flapper_left, punchProgress, 0, Maths.rad(-50), 0, 2F);
 
 	}
 

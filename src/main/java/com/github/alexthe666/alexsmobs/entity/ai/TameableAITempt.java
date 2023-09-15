@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 public class TameableAITempt extends TemptGoal {
 
     private static final TargetingConditions DEF = TargetingConditions.forNonCombat().range(10.0D).ignoreLineOfSight();
-    private Animal tameable;
+    private final Animal tameable;
     private int calmDown;
     private final TargetingConditions targetingConditions;
     private final Ingredient items;

@@ -27,7 +27,7 @@ public class RenderSkreecher extends MobRenderer<EntitySkreecher, ModelSkreecher
         return TEXTURE;
     }
 
-    class LayerScorch extends RenderLayer<EntitySkreecher, ModelSkreecher> {
+    static class LayerScorch extends RenderLayer<EntitySkreecher, ModelSkreecher> {
 
         public LayerScorch(RenderSkreecher render) {
             super(render);

@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EndergradeAIBreakFlowers extends MoveToBlockGoal {
 
-    private EntityEndergrade endergrade;
+    private final EntityEndergrade endergrade;
     private int idleAtFlowerTime = 0;
     private boolean isAboveDestinationBear;
 

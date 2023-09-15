@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageStartDancing;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -102,7 +103,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
         this.entityData.define(EAR_PITCH, 0F);
         this.entityData.define(EAR_YAW, 0F);
         this.entityData.define(SHAKING_TIME, 0);
-        this.entityData.define(DANCING, Boolean.valueOf(false));
+        this.entityData.define(DANCING, false);
     }
 
     public float getEarYaw() {
@@ -122,7 +123,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     }
 
     public boolean isDancing() {
-        return this.entityData.get(DANCING).booleanValue();
+        return this.entityData.get(DANCING);
     }
 
     public void setDancing(boolean dancing) {
@@ -220,8 +221,8 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
             double d0 = this.random.nextGaussian() * 0.02D;
             double d1 = this.random.nextGaussian() * 0.02D;
             float radius = this.getBbWidth() * 0.65F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
             if (heldItemMainhand.getItem() instanceof BlockItem) {
@@ -276,25 +277,32 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     }
 
     private void updateEars() {
-        float pitchDist = Math.abs(targetPitch - this.getEarPitch());
-        float yawDist = Math.abs(targetYaw - this.getEarYaw());
+        final float pitchDist = Math.abs(targetPitch - this.getEarPitch());
+        final float yawDist = Math.abs(targetYaw - this.getEarYaw());
         if (earCooldown <= 0 && this.random.nextInt(30) == 0 && pitchDist <= 0.1F && yawDist <= 0.1F) {
             targetPitch = Mth.clamp(random.nextFloat() * 60F - 30, -30, 30);
             targetYaw = Mth.clamp(random.nextFloat() * 60F - 30, -30, 30);
             earCooldown = 8 + random.nextInt(15);
         }
-        if (this.getEarPitch() < this.targetPitch && pitchDist > 0.1F) {
-            this.setEarPitch(this.getEarPitch() + Math.min(pitchDist, 4F));
+
+        if (pitchDist > 0.1F) {
+            if (this.getEarPitch() < this.targetPitch) {
+                this.setEarPitch(this.getEarPitch() + Math.min(pitchDist, 4F));
+            }
+            if (this.getEarPitch() > this.targetPitch) {
+                this.setEarPitch(this.getEarPitch() - Math.min(pitchDist, 4F));
+            }
         }
-        if (this.getEarPitch() > this.targetPitch && pitchDist > 0.1F) {
-            this.setEarPitch(this.getEarPitch() - Math.min(pitchDist, 4F));
+
+        if (yawDist > 0.1F) {
+            if (this.getEarYaw() < this.targetYaw) {
+                this.setEarYaw(this.getEarYaw() + Math.min(yawDist, 4F));
+            }
+            if (this.getEarYaw() > this.targetYaw) {
+                this.setEarYaw(this.getEarYaw() - Math.min(yawDist, 4F));
+            }
         }
-        if (this.getEarYaw() < this.targetYaw && yawDist > 0.1F) {
-            this.setEarYaw(this.getEarYaw() + Math.min(yawDist, 4F));
-        }
-        if (this.getEarYaw() > this.targetYaw && yawDist > 0.1F) {
-            this.setEarYaw(this.getEarYaw() - Math.min(yawDist, 4F));
-        }
+
         if (earCooldown > 0) {
             earCooldown--;
         }

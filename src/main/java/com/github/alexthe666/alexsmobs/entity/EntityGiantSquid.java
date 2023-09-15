@@ -116,7 +116,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public static boolean canGiantSquidSpawn(EntityType<EntityGiantSquid> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
+        return reason == MobSpawnType.SPAWNER || iServerWorld.isWaterAt(pos) && iServerWorld.isWaterAt(pos.above());
     }
 
 
@@ -238,18 +238,23 @@ public class EntityGiantSquid extends WaterAnimal {
         if (this.isInWater() && dryProgress > 0F) {
             dryProgress--;
         }
-        if (this.isGrabbing() && grabProgress < 5F) {
-            grabProgress += 0.25F;
+
+        if (this.isGrabbing()) {
+            if (grabProgress < 5F)
+                grabProgress += 0.25F;
+        } else {
+            if (grabProgress > 0F)
+                grabProgress -= 0.25F;
         }
-        if (!this.isGrabbing() && grabProgress > 0F) {
-            grabProgress -= 0.25F;
+
+        if (this.isCaptured()) {
+            if (capturedProgress < 5F)
+                capturedProgress += 0.5F;
+        } else {
+            if (capturedProgress > 0F)
+                capturedProgress -= 0.5F;
         }
-        if (this.isCaptured() && capturedProgress < 5F) {
-            capturedProgress += 0.5F;
-        }
-        if (!this.isCaptured() && capturedProgress > 0F) {
-            capturedProgress -= 0.5F;
-        }
+
         if (this.isGrabbing()) {
             Entity target = getGrabbedEntity();
             if(!level.isClientSide && target != null){
@@ -261,7 +266,7 @@ public class EntityGiantSquid extends WaterAnimal {
             if (target != null && target.isAlive()) {
                 this.setXRot(0);
                 float invert = 1F - grabProgress * 0.2F;
-                Vec3 extraVec = new Vec3(0, 0, 2F + invert * 7F).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-this.yBodyRot * ((float) Math.PI / 180F));
+                Vec3 extraVec = new Vec3(0, 0, 2F + invert * 7F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.yBodyRot * Mth.DEG_TO_RAD);
                 Vec3 minus = new Vec3(this.getX() + extraVec.x - target.getX(), this.getY() + extraVec.y - target.getY(), this.getZ() + extraVec.z - target.getZ());
                 target.setDeltaMovement(minus);
             }
@@ -279,8 +284,7 @@ public class EntityGiantSquid extends WaterAnimal {
                 this.allParts[j].collideWithNearbyEntities();
                 avector3d[j] = new Vec3(this.allParts[j].getX(), this.allParts[j].getY(), this.allParts[j].getZ());
             }
-            float yaw = this.getYRot() * ((float) Math.PI / 180F);
-            float pitch = this.getXRot() * ((float) Math.PI / 180F) * 0.8F;
+            final float pitch = this.getXRot() * Mth.DEG_TO_RAD * 0.8F;
             this.mantleCollisionPart.setPos(this.getX(), this.getY() - ((this.mantleCollisionPart.getBbHeight() - this.getEyeHeight()) * 0.5F) * (1F - dryProgress * 0.2F), this.getZ());
             this.setPartPositionFromBuffer(this.mantlePart1, pitch, 0.9F, 0);
             this.setPartPositionFromBuffer(this.mantlePart2, pitch, 1.6F, 0);
@@ -376,8 +380,8 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     private void setPartPositionFromBuffer(EntityGiantSquidPart part, float pitch, float offsetScale, int ringBufferOffset) {
-        float f2 = Mth.sin(getRingBuffer(ringBufferOffset, 1.0F, false) * ((float) Math.PI / 180F)) * (1 - Math.abs((this.getXRot()) / 90F));
-        float f3 = Mth.cos(getRingBuffer(ringBufferOffset, 1.0F, false) * ((float) Math.PI / 180F)) * (1 - Math.abs((this.getXRot()) / 90F));
+        float f2 = Mth.sin(getRingBuffer(ringBufferOffset, 1.0F, false) * Mth.DEG_TO_RAD) * (1 - Math.abs((this.getXRot()) / 90F));
+        float f3 = Mth.cos(getRingBuffer(ringBufferOffset, 1.0F, false) * Mth.DEG_TO_RAD) * (1 - Math.abs((this.getXRot()) / 90F));
         setPartPosition(part, f2, pitch, -f3, offsetScale);
     }
 
@@ -454,27 +458,27 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isGrabbing() {
-        return this.entityData.get(GRABBING).booleanValue();
+        return this.entityData.get(GRABBING);
     }
 
     public void setGrabbing(boolean running) {
-        this.entityData.set(GRABBING, Boolean.valueOf(running));
+        this.entityData.set(GRABBING, running);
     }
 
     public boolean isCaptured() {
-        return this.entityData.get(CAPTURED).booleanValue();
+        return this.entityData.get(CAPTURED);
     }
 
     public void setCaptured(boolean running) {
-        this.entityData.set(CAPTURED, Boolean.valueOf(running));
+        this.entityData.set(CAPTURED, running);
     }
 
     public boolean isBlue() {
-        return this.entityData.get(BLUE).booleanValue();
+        return this.entityData.get(BLUE);
     }
 
     public void setBlue(boolean t) {
-        this.entityData.set(BLUE, Boolean.valueOf(t));
+        this.entityData.set(BLUE, t);
     }
 
     public void push(Entity entity) {
@@ -484,18 +488,12 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity entity, boolean flying) {
-        entity.animationSpeedOld = entity.animationSpeed;
-        double d0 = entity.getX() - entity.xo;
-        double d1 = entity.getY() - entity.yo;
-        double d2 = entity.getZ() - entity.zo;
-        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2)) * 8.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        entity.animationSpeed += (f - entity.animationSpeed) * 0.4F;
-        entity.animationPosition += entity.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean flying) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float)Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     public boolean canBeCollidedWith() {
@@ -512,11 +510,12 @@ public class EntityGiantSquid extends WaterAnimal {
             boolean flag = movement.x != vec3.x;
             boolean flag1 = movement.y != vec3.y;
             boolean flag2 = movement.z != vec3.z;
-            boolean flag3 = this.onGround || flag1 && movement.y < 0.0D;
-            if (this.maxUpStep > 0.0F && flag3 && (flag || flag2)) {
-                Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, this.maxUpStep, movement.z), aabb, this.level, list);
-                Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, this.maxUpStep, 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level, list);
-                if (vec32.y < (double) this.maxUpStep) {
+            boolean flag3 = this.isOnGround() || flag1 && movement.y < 0.0D;
+            float stepHeight = getStepHeight();
+            if (stepHeight > 0.0F && flag3 && (flag || flag2)) {
+                Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, stepHeight, movement.z), aabb, this.level, list);
+                Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, stepHeight, 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level, list);
+                if (vec32.y < stepHeight) {
                     Vec3 vec33 = collideBoundingBox(this, new Vec3(movement.x, 0.0D, movement.z), aabb.move(vec32), this.level, list).add(vec32);
                     if (vec33.horizontalDistanceSqr() > vec31.horizontalDistanceSqr()) {
                         vec31 = vec33;
@@ -644,12 +643,12 @@ public class EntityGiantSquid extends WaterAnimal {
     private void spawnInk() {
         this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.playSound(SoundEvents.SQUID_SQUIRT, this.getSoundVolume(), 0.5F * this.getVoicePitch());
-        if (!level.isClientSide) {
-            Vec3 inkDirection = new Vec3(0, 0, 1.2F).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-this.yBodyRot * ((float) Math.PI / 180F));
+        if (level instanceof ServerLevel serverLevel) {
+            Vec3 inkDirection = new Vec3(0, 0, 1.2F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.yBodyRot * Mth.DEG_TO_RAD);
             Vec3 vec3 = this.position().add(inkDirection);
             for (int i = 0; i < 30; ++i) {
                 Vec3 vec32 = inkDirection.add(random.nextFloat() - 0.5F, random.nextFloat() - 0.5F, random.nextFloat() - 0.5F).scale(0.8D + (double) (this.random.nextFloat() * 2.0F));
-                ((ServerLevel) this.level).sendParticles(ParticleTypes.SQUID_INK, vec3.x, vec3.y + 0.5D, vec3.z, 0, vec32.x, vec32.y, vec32.z, 0.1F);
+                serverLevel.sendParticles(ParticleTypes.SQUID_INK, vec3.x, vec3.y + 0.5D, vec3.z, 0, vec32.x, vec32.y, vec32.z, 0.1F);
             }
         }
     }

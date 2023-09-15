@@ -5,7 +5,9 @@ import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIRevealTreasure;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIStealFromPlayers;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -243,8 +245,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            Entity entity = source.getEntity();
-            boolean prev = super.hurt(source, amount);
+            final boolean prev = super.hurt(source, amount);
             if (prev) {
                 this.setSitting(false);
                 if (!this.getMainHandItem().isEmpty()) {
@@ -265,20 +266,28 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         this.prevFlapAmount = flapAmount;
         this.prevAttackProgress = attackProgress;
         this.prevSitProgress = sitProgress;
-        float yMot = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-        float absYaw = Math.abs(this.getYRot() - this.yRotO);
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+        final float yMot = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
+        final float absYaw = Math.abs(this.getYRot() - this.yRotO);
+
+        final boolean flying = isFlying();
+        final boolean sitting = isSitting();
+
+        if (flying) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
+
+        if (sitting) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (isSitting() && sitProgress < 5F) {
-            sitProgress++;
-        }
-        if (!isSitting() && sitProgress > 0F) {
-            sitProgress--;
-        }
+
         if (absYaw > 8) {
             flapAmount = Math.min(1F, flapAmount + 0.1F);
         } else if (yMot < 0.0F) {
@@ -373,13 +382,13 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
     private void eatItemEffect(ItemStack heldItemMainhand) {
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
-            double d2 = this.random.nextGaussian() * 0.02D;
-            double d0 = this.random.nextGaussian() * 0.02D;
-            double d1 = this.random.nextGaussian() * 0.02D;
-            float radius = this.getBbWidth() * 0.65F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
+            final double d2 = this.random.nextGaussian() * 0.02D;
+            final double d0 = this.random.nextGaussian() * 0.02D;
+            final double d1 = this.random.nextGaussian() * 0.02D;
+            final float radius = this.getBbWidth() * 0.65F;
+            final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
             if (heldItemMainhand.getItem() instanceof BlockItem) {
                 data = new BlockParticleOption(ParticleTypes.BLOCK, ((BlockItem) heldItemMainhand.getItem()).getBlock().defaultBlockState());
@@ -428,7 +437,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
     public boolean isWingull() {
         String s = ChatFormatting.stripFormatting(this.getName().getString());
-        return s != null && s.toLowerCase().equals("wingull");
+        return s != null && s.equalsIgnoreCase("wingull");
     }
 
     @Override
@@ -451,16 +460,16 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
-        float radius = 5 + radiusAdd + this.getRandom().nextInt(5);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        final float radius = 5 + radiusAdd + this.getRandom().nextInt(5);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getSeagullGround(radialPos);
-        int distFromGround = (int) this.getY() - ground.getY();
-        int flightHeight = 8 + this.getRandom().nextInt(4);
+        final int distFromGround = (int) this.getY() - ground.getY();
+        final int flightHeight = 8 + this.getRandom().nextInt(4);
         BlockPos newPos = ground.above(distFromGround > 3 ? flightHeight : this.getRandom().nextInt(4) + 8);
         if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
             return Vec3.atCenterOf(newPos);
@@ -480,13 +489,13 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     }
 
     public Vec3 getBlockGrounding(Vec3 fleePos) {
-        float radius = 10 + this.getRandom().nextInt(15);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        final float radius = 10 + this.getRandom().nextInt(15);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = AMBlockPos.get(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getSeagullGround(radialPos);
         if (ground.getY() == 0) {
             return this.position();
@@ -509,12 +518,12 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     }
 
     private Vec3 getOrbitVec(Vec3 vector3d, float gatheringCircleDist) {
-        float angle = (0.01745329251F * (float) this.orbitDist * (orbitClockwise ? -tickCount : tickCount));
-        double extraX = gatheringCircleDist * Mth.sin((angle));
-        double extraZ = gatheringCircleDist * Mth.cos(angle);
+        final float angle = (Maths.STARTING_ANGLE * (float) this.orbitDist * (orbitClockwise ? -tickCount : tickCount));
+        final double extraX = gatheringCircleDist * Mth.sin((angle));
+        final double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (this.orbitPos != null) {
             Vec3 pos = new Vec3(orbitPos.getX() + extraX, orbitPos.getY() + random.nextInt(2), orbitPos.getZ() + extraZ);
-            if (this.level.isEmptyBlock(new BlockPos(pos))) {
+            if (this.level.isEmptyBlock(AMBlockPos.get(pos))) {
                 return pos;
             }
         }
@@ -624,7 +633,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             }
 
             if (targetEntity != null) {
-                if (EntitySeagull.this.onGround || flightTarget == null || flightTarget != null && EntitySeagull.this.distanceToSqr(flightTarget) < 3) {
+                if (EntitySeagull.this.isOnGround() || flightTarget == null || flightTarget != null && EntitySeagull.this.distanceToSqr(flightTarget) < 3) {
                     Vec3 vec = EntitySeagull.this.getBlockInViewAway(targetEntity.position(), 0);
                     if (vec != null && vec.y() > EntitySeagull.this.getY()) {
                         flightTarget = vec;
@@ -647,17 +656,11 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         }
 
 
-        public class Sorter implements Comparator<Entity> {
-            private final Entity theEntity;
-
-            public Sorter(Entity theEntityIn) {
-                this.theEntity = theEntityIn;
-            }
-
+        public record Sorter(Entity theEntity) implements Comparator<Entity> {
             public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-                double d0 = this.theEntity.distanceToSqr(p_compare_1_);
-                double d1 = this.theEntity.distanceToSqr(p_compare_2_);
-                return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+                final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
+                final double d1 = this.theEntity.distanceToSqr(p_compare_2_);
+                return Double.compare(d0, d1);
             }
         }
     }
@@ -804,7 +807,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         }
     }
 
-    class MoveHelper extends MoveControl {
+    static class MoveHelper extends MoveControl {
         private final EntitySeagull parentEntity;
 
         public MoveHelper(EntitySeagull bird) {
@@ -820,11 +823,9 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     this.operation = MoveControl.Operation.WAIT;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
                 } else {
-                    double d1 = this.wantedY - this.parentEntity.getY();
-                    float yScale = d1 > 0 || fallFlag ? 1F : 0.7F;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(speedModifier * 0.03D / d5)));
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                     parentEntity.yBodyRot = parentEntity.getYRot();
 
                 }
@@ -833,7 +834,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         }
     }
 
-    private class AITargetItems extends CreatureAITargetItems {
+    private static class AITargetItems extends CreatureAITargetItems {
 
         public AITargetItems(PathfinderMob creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
             super(creature, checkSight, onlyNearby, tickThreshold, radius);
@@ -864,14 +865,14 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                 }
                 if (this.mob.distanceTo(this.targetEntity) > 8 || crow.isFlying()) {
                     crow.setFlying(true);
-                    float f = (float) (crow.getX() - targetEntity.getX());
-                    float f1 = 1.8F;
-                    float f2 = (float) (crow.getZ() - targetEntity.getZ());
-                    float xzDist = Mth.sqrt(f * f + f2 * f2);
+                    final float f = (float) (crow.getX() - targetEntity.getX());
+                    final float f2 = (float) (crow.getZ() - targetEntity.getZ());
 
                     if (!crow.hasLineOfSight(targetEntity)) {
                         crow.getMoveControl().setWantedPosition(this.targetEntity.getX(), 1 + crow.getY(), this.targetEntity.getZ(), 1.5F);
                     } else {
+                        float f1 = 1.8F;
+                        final float xzDist = Mth.sqrt(f * f + f2 * f2);
                         if (xzDist < 5) {
                             f1 = 0;
                         }

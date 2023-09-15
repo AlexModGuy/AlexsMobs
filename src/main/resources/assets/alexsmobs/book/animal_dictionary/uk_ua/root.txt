@@ -1,12 +1,21 @@
 <NEWLINE>
 <NEWLINE>
-Численні дивні істоти населяють Поверхню, Незер Та Енд.
 <NEWLINE>
-Цей довідник допоможе визначити та описати різні види створінь.
-<NEWLINE>
-<NEWLINE>
+Численні дивні істоти населяють Верхній світ, Незер та Енд.
+       Ця книга призначена для того,     щоб допомогти ідентифікувати та зрозуміти різні види тварин.
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+.

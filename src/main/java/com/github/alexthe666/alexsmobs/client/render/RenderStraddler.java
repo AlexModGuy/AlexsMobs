@@ -30,7 +30,7 @@ public class RenderStraddler extends MobRenderer<EntityStraddler, ModelStraddler
         return TEXTURE;
     }
 
-    class StradpoleLayer extends RenderLayer<EntityStraddler, ModelStraddler> {
+    static class StradpoleLayer extends RenderLayer<EntityStraddler, ModelStraddler> {
 
         public StradpoleLayer(RenderStraddler p_i50928_1_) {
             super(p_i50928_1_);
@@ -41,7 +41,7 @@ public class RenderStraddler extends MobRenderer<EntityStraddler, ModelStraddler
             if(straddler.getAnimation() == EntityStraddler.ANIMATION_LAUNCH && t < 20 && t > 6){
                 matrixStackIn.pushPose();
                 translateToModel(matrixStackIn);
-                float back = t <= 15 ? (t-6) * 0.05F : 0.25F;
+                final float back = t <= 15 ? (t-6) * 0.05F : 0.25F;
                 matrixStackIn.translate(0F, -2.5F + back * 0.5F, 0.35F + back);
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(RenderStradpole.TEXTURE));
                 STRADPOLE_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(straddler, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class EffectSunbird extends MobEffect {
-    public boolean curse;
+    public final boolean curse;
 
     public EffectSunbird(boolean curse) {
         super(curse ? MobEffectCategory.HARMFUL : MobEffectCategory.BENEFICIAL, 0XFFEAB9);

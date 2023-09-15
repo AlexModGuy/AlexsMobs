@@ -88,8 +88,6 @@ public class EntityGust extends Entity {
             this.remove(RemovalReason.DISCARDED);
         }
         this.updateRotation();
-        float f = 0.99F;
-        float f1 = 0.06F;
          if (this.isInWaterOrBubble()) {
             this.remove(RemovalReason.DISCARDED);
         } else {
@@ -144,8 +142,8 @@ public class EntityGust extends Entity {
     protected void onHitBlock(BlockHitResult p_230299_1_) {
         if( p_230299_1_.getBlockPos() != null){
             BlockPos pos = p_230299_1_.getBlockPos();
-            if(level.getBlockState(pos).getMaterial().isSolid()){
-                if (!this.level.isClientSide) {
+            if(level.isWaterAt((pos))){
+                if (!this.level.isClientSide()) {
                     this.remove(RemovalReason.DISCARDED);
 
                 }
@@ -201,8 +199,8 @@ public class EntityGust extends Entity {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             float f = Mth.sqrt((float)(x * x + z * z));
-            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI)));
-            this.setYRot( (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI)));
+            this.setXRot((float) (Mth.atan2(y, f) * (double) Mth.RAD_TO_DEG));
+            this.setYRot( (float) (Mth.atan2(x, z) * (double) Mth.RAD_TO_DEG));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
             this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -213,7 +211,7 @@ public class EntityGust extends Entity {
     protected void updateRotation() {
         Vec3 vector3d = this.getDeltaMovement();
         float f = Mth.sqrt((float)(vector3d.x * vector3d.x + vector3d.z * vector3d.z));
-        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
-        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG)));
+        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG)));
     }
 }

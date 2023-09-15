@@ -151,14 +151,14 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(LEADER, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(HAS_TARGET, Boolean.valueOf(false));
+        this.entityData.define(LEADER, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(HAS_TARGET, false);
         this.entityData.define(GRASS_TIME, 0);
     }
 
     public boolean isLeader() {
-        return this.entityData.get(LEADER).booleanValue() && !this.isBaby();
+        return this.entityData.get(LEADER) && !this.isBaby();
     }
 
     public void setLeader(boolean leader) {
@@ -166,19 +166,19 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setSitting(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public boolean isAggro() {
-        return this.entityData.get(HAS_TARGET).booleanValue();
+        return this.entityData.get(HAS_TARGET);
     }
 
     public void setAggro(boolean sit) {
-        this.entityData.set(HAS_TARGET, Boolean.valueOf(sit));
+        this.entityData.set(HAS_TARGET, sit);
     }
 
     public int getClearGrassTime() {
@@ -192,38 +192,41 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     public void tick() {
         super.tick();
         this.prevSitProgress = this.sitProgress;
-        if (this.isSitting() && sitProgress < 5) {
-            sitProgress += 1;
+
+        if (this.isSitting()) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!this.isSitting() && sitProgress > 0) {
-            sitProgress -= 1;
-        }
-        if (!level.isClientSide && isSitting() && ++sittingTime > maxSitTime) {
-            this.setSitting(false);
-            sittingTime = 0;
-            maxSitTime = 75 + random.nextInt(50);
-        }
-        if (!level.isClientSide && this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSitting() && random.nextInt(500) == 0) {
-            sittingTime = 0;
-            maxSitTime = 200 + random.nextInt(550);
-            this.setSitting(true);
-        }
-        if (this.isSitting() && (this.getTarget() != null || this.isInLove())) {
-            this.setSitting(false);
-        }
-        if (!level.isClientSide && this.getTarget() != null && (this.getAnimation() == ANIMATION_SWIPE_L || this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < this.getBbHeight() + this.getTarget().getBbHeight() + 1) {
-            getTarget().knockback(0.4F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-            float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-            if (this.isLeader() && getTarget() instanceof EntityGeladaMonkey monkey) {
-                if (monkey.isLeader()) {
-                    monkey.setTarget(this);
-                    monkey.leaderFightTime = this.leaderFightTime;
-                    dmg = 0;
-                }
+
+        if (!this.level.isClientSide) {
+            if (isSitting() && ++sittingTime > maxSitTime) {
+                this.setSitting(false);
+                sittingTime = 0;
+                maxSitTime = 75 + random.nextInt(50);
             }
-            this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
-        }
-        if (!level.isClientSide) {
+            if (this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSitting() && random.nextInt(500) == 0) {
+                sittingTime = 0;
+                maxSitTime = 200 + random.nextInt(550);
+                this.setSitting(true);
+            }
+            if (this.isSitting() && (this.getTarget() != null || this.isInLove())) {
+                this.setSitting(false);
+            }
+            if (this.getTarget() != null && (this.getAnimation() == ANIMATION_SWIPE_L || this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < this.getBbHeight() + this.getTarget().getBbHeight() + 1) {
+                getTarget().knockback(0.4F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
+                float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+                if (this.isLeader() && getTarget() instanceof EntityGeladaMonkey monkey) {
+                    if (monkey.isLeader()) {
+                        monkey.setTarget(this);
+                        monkey.leaderFightTime = this.leaderFightTime;
+                        dmg = 0;
+                    }
+                }
+                this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
+            }
             if (this.getTarget() != null && this.getTarget().isAlive()) {
                 this.setAggro(true);
                 if (this.isLeader() && this.getTarget() instanceof EntityGeladaMonkey monkey) {
@@ -246,16 +249,21 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
                 this.leaderFightTime++;
             }
         }
-        if (isAggro() && !hasSpedUp) {
-            hasSpedUp = true;
-            this.setSprinting(true);
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.31F);
+
+        if (isAggro()) {
+            if (!hasSpedUp) {
+                hasSpedUp = true;
+                this.setSprinting(true);
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.31F);
+            }
+        } else {
+            if (hasSpedUp) {
+                hasSpedUp = false;
+                this.setSprinting(false);
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
+            }
         }
-        if (!isAggro() && hasSpedUp) {
-            hasSpedUp = false;
-            this.setSprinting(false);
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
-        }
+
         if (getClearGrassTime() > 0) {
             setClearGrassTime(getClearGrassTime() - 1);
         }
@@ -318,7 +326,6 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
         if (prev) {
             Entity direct = source.getEntity();
             if (direct instanceof EntityGeladaMonkey) {
-                double range = 15;
                 int fleeTime = 100 + getRandom().nextInt(5);
                 this.revengeCooldown = fleeTime;
                 this.revengeCooldown = 10 + getRandom().nextInt(30);

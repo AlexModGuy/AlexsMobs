@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Nosorożce to duże, opancerzone ssaki występujące w grupach w sawannach.
+Mają duże rogi na głowie, których używają do atakowania każdego zagrożenia, które znajdzie się zbyt blisko.
+Nosorożce nie lubią żadnych rozbójników i szukają ich na każdym kroku.
+Te rogate i opancerzone zwierzęta potrafią bardzo szybko zadać duże obrażenia.
+<NEWLINE>
+Zwierzęta te są początkowo płochliwe w stosunku do graczy, ale można je uspokoić karmiąc je pszenicą.
+Jeśli mikstura zostanie użyta na nosorożcu, zostanie ona nałożona na jego róg. Każde stworzenie zaatakowane przez Nosorożca otrzyma efekt mikstury.
+Mikstury działają od 15 do 20 ataków, zanim się zużyją. Zaprzyjaźniony Nosorożec może przyjść z pomocą każdemu, kto nakarmił go pszenicą i będzie krążył po pobliskiej wiosce dla bezpieczeństwa.
+<NEWLINE>
+Nosorożce można rozmnażać wysoką trawą lub martwymi krzakami.

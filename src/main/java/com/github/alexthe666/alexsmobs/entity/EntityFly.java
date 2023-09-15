@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -12,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -78,11 +80,11 @@ public class EntityFly extends Animal implements FlyingAnimal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(NO_DESPAWN, Boolean.valueOf(false));
+        this.entityData.define(NO_DESPAWN, false);
     }
 
         public boolean isNoDespawn() {
-        return this.entityData.get(NO_DESPAWN).booleanValue();
+        return this.entityData.get(NO_DESPAWN);
     }
 
     public void setNoDespawn(boolean despawn) {
@@ -276,7 +278,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
         public void start() {
             Vec3 vector3d = this.getRandomLocation();
             if (vector3d != null) {
-                EntityFly.this.navigation.moveTo(EntityFly.this.navigation.createPath(new BlockPos(vector3d), 1), 1.0D);
+                EntityFly.this.navigation.moveTo(EntityFly.this.navigation.createPath(AMBlockPos.get(vector3d), 1), 1.0D);
             }
 
         }
@@ -285,8 +287,8 @@ public class EntityFly extends Animal implements FlyingAnimal {
         private Vec3 getRandomLocation() {
             Vec3   vec3 = EntityFly.this.getViewVector(0.0F);
             int i = 8;
-            Vec3 vec32 = HoverRandomPos.getPos(EntityFly.this, 8, 7, vec3.x, vec3.z, ((float)Math.PI / 2F), 3, 1);
-            return vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(EntityFly.this, 8, 4, -2, vec3.x, vec3.z, (double)((float)Math.PI / 2F));
+            Vec3 vec32 = HoverRandomPos.getPos(EntityFly.this, 8, 7, vec3.x, vec3.z, Mth.HALF_PI, 3, 1);
+            return vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(EntityFly.this, 8, 4, -2, vec3.x, vec3.z, (double)Mth.HALF_PI);
         }
     }
 
@@ -381,17 +383,11 @@ public class EntityFly extends Animal implements FlyingAnimal {
         }
 
 
-        public class Sorter implements Comparator<Entity> {
-            private final Entity theEntity;
-
-            public Sorter(Entity theEntityIn) {
-                this.theEntity = theEntityIn;
-            }
-
+        public record Sorter(Entity theEntity) implements Comparator<Entity> {
             public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-                double d0 = this.theEntity.distanceToSqr(p_compare_1_);
-                double d1 = this.theEntity.distanceToSqr(p_compare_2_);
-                return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+                final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
+                final double d1 = this.theEntity.distanceToSqr(p_compare_2_);
+                return Double.compare(d0, d1);
             }
         }
     }

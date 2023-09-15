@@ -132,25 +132,36 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
         prevSwimProgress = swimProgress;
         prevRetreatProgress = retreatProgress;
         prevSpinProgress = spinProgress;
-        if (this.isInWaterOrBubble() && swimProgress < 5F) {
-            swimProgress++;
+
+        final boolean inWaterOrBubble = this.isInWaterOrBubble();
+        final boolean spinning = this.isSpinning();
+        final boolean retreated = this.hasRetreated();
+
+        if (inWaterOrBubble) {
+            if (swimProgress < 5F)
+                swimProgress++;
+        } else {
+            if (swimProgress > 0F)
+                swimProgress--;
         }
-        if (!this.isInWaterOrBubble() && swimProgress > 0F) {
-            swimProgress--;
+
+        if (spinning) {
+            if (spinProgress < 5F)
+                spinProgress++;
+        } else {
+            if (spinProgress > 0F)
+                spinProgress--;
         }
-        if (this.isSpinning() && spinProgress < 5F) {
-            spinProgress++;
+
+        if (retreated) {
+            if (retreatProgress < 5F)
+                retreatProgress++;
+        } else {
+            if (retreatProgress > 0F)
+                retreatProgress--;
         }
-        if (!this.isSpinning() && spinProgress > 0F) {
-            spinProgress--;
-        }
-        if (this.hasRetreated() && retreatProgress < 5F) {
-            retreatProgress++;
-        }
-        if (!this.hasRetreated() && retreatProgress > 0F) {
-            retreatProgress--;
-        }
-        if (this.isSpinning()) {
+
+        if (spinning) {
             this.handleSpin();
             if (this.isAlive() && spinCounter > 5 && !this.isBaby()) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
@@ -196,7 +207,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
                             this.hideInShellTimer += 40 + random.nextInt(40);
                         } else if (!isSpinning()) {
                             lastLauncher = player;
-                            int spin = 100 + random.nextInt(100);
+                            final int spin = 100 + random.nextInt(100);
                             this.hideInShellTimer = spin;
                             this.setYRot(player.getYHeadRot());
                             spinFor(spin);
@@ -206,9 +217,9 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             }
 
             if (swimProgress > 0) {
-                this.maxUpStep = 1;
+                this.maxUpStep = 1; // FIXME
             } else {
-                this.maxUpStep = 0.6F;
+                this.maxUpStep = 0.6F; // FIXME
             }
             if (hideInShellTimer > 0) {
                 hideInShellTimer--;
@@ -318,51 +329,51 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     private int getTurtleTypeOrdinal() {
-        return Mth.clamp(this.entityData.get(TURTLE_TYPE).intValue(), 0, TerrapinTypes.values().length - 1);
+        return Mth.clamp(this.entityData.get(TURTLE_TYPE), 0, TerrapinTypes.values().length - 1);
     }
 
     private void setTurtleTypeOrdinal(int i) {
-        this.entityData.set(TURTLE_TYPE, Integer.valueOf(i));
+        this.entityData.set(TURTLE_TYPE, i);
     }
 
     public int getShellType() {
-        return this.entityData.get(SHELL_TYPE).intValue();
+        return this.entityData.get(SHELL_TYPE);
     }
 
     public void setShellType(int i) {
-        this.entityData.set(SHELL_TYPE, Integer.valueOf(i));
+        this.entityData.set(SHELL_TYPE, i);
     }
 
     public int getSkinType() {
-        return this.entityData.get(SKIN_TYPE).intValue();
+        return this.entityData.get(SKIN_TYPE);
     }
 
     public void setSkinType(int i) {
-        this.entityData.set(SKIN_TYPE, Integer.valueOf(i));
+        this.entityData.set(SKIN_TYPE, i);
     }
 
     public int getShellColor() {
-        return this.entityData.get(SHELL_COLOR).intValue();
+        return this.entityData.get(SHELL_COLOR);
     }
 
     public void setShellColor(int i) {
-        this.entityData.set(SHELL_COLOR, Integer.valueOf(i));
+        this.entityData.set(SHELL_COLOR, i);
     }
 
     public int getSkinColor() {
-        return this.entityData.get(SKIN_COLOR).intValue();
+        return this.entityData.get(SKIN_COLOR);
     }
 
     public void setSkinColor(int i) {
-        this.entityData.set(SKIN_COLOR, Integer.valueOf(i));
+        this.entityData.set(SKIN_COLOR, i);
     }
 
     public int getTurtleColor() {
-        return this.entityData.get(TURTLE_COLOR).intValue();
+        return this.entityData.get(TURTLE_COLOR);
     }
 
     public void setTurtleColor(int i) {
-        this.entityData.set(TURTLE_COLOR, Integer.valueOf(i));
+        this.entityData.set(TURTLE_COLOR, i);
     }
 
     public TerrapinTypes getTurtleType() {
@@ -374,19 +385,19 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public boolean isSpinning() {
-        return this.entityData.get(SPINNING).booleanValue();
+        return this.entityData.get(SPINNING);
     }
 
     public void setSpinning(boolean b) {
-        this.entityData.set(SPINNING, Boolean.valueOf(b));
+        this.entityData.set(SPINNING, b);
     }
 
     public boolean hasRetreated() {
-        return this.entityData.get(RETREATED).booleanValue();
+        return this.entityData.get(RETREATED);
     }
 
     public void setRetreated(boolean b) {
-        this.entityData.set(RETREATED, Boolean.valueOf(b));
+        this.entityData.set(RETREATED, b);
     }
 
     public boolean hasEgg() {
@@ -423,8 +434,8 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     private void copySpinDelta(float spinRot, Vec3 motionIn) {
-        float f = spinRot * ((float) Math.PI / 180F);
-        float f1 = this.isBaby() ? 0.3F : 0.5F;
+        final float f = spinRot * Mth.DEG_TO_RAD;
+        final float f1 = this.isBaby() ? 0.3F : 0.5F;
         this.spinYRot = spinRot;
         this.spinDelta = new Vec3(motionIn.x + (double) (-Mth.sin(f) * f1), 0.0D, motionIn.z + (double) (Mth.cos(f) * f1));
         this.setDeltaMovement(this.spinDelta.add(0.0D, 0.0D, 0.0D));
@@ -556,18 +567,12 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
         return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (isSpinning() ? 4.0F : 32.0F);
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean flying) {
+        this.animationSpeedOld = this.animationSpeed;
+        final float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        final float f2 = Math.min(f1 * (this.isSpinning() ? 4.0F : 32.0F), 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
 

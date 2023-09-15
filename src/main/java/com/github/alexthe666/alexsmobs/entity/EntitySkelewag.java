@@ -131,7 +131,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         }
         float targetXRot = 0;
         if(this.getDeltaMovement().length() > 0.09){
-            targetXRot = -((float)(Mth.atan2(this.getDeltaMovement().y, this.getDeltaMovement().horizontalDistance()) * (double)(180F / (float)Math.PI)));
+            targetXRot = -((float)(Mth.atan2(this.getDeltaMovement().y, this.getDeltaMovement().horizontalDistance()) * (double)Mth.RAD_TO_DEG));
         }
         if(targetXRot < this.getXRot() - 5){
             targetXRot = this.getXRot() - 5;
@@ -143,7 +143,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         if (!level.isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0F + this.getTarget().getBbWidth() / 2) {
             this.lookAt(this.getTarget(), 350, 200);
             if(this.getAnimation() == ANIMATION_STAB && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget())){
-                float f1 = this.getYRot() * ((float) Math.PI / 180F);
+                float f1 = this.getYRot() * Mth.DEG_TO_RAD;
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
                 getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
                 this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -170,11 +170,11 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int command) {
-        this.entityData.set(VARIANT, Integer.valueOf(command));
+        this.entityData.set(VARIANT, command);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -211,7 +211,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
             passenger.setYBodyRot(this.yBodyRot);
-            Vec3 vec = new Vec3(0, this.getBbHeight() * 0.4F, this.getBbWidth() * -0.2F).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
+            Vec3 vec = new Vec3(0, this.getBbHeight() * 0.4F, this.getBbWidth() * -0.2F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
             passenger.setPos(this.getX() + vec.x, this.getY() + vec.y + passenger.getMyRidingOffset(), this.getZ() + vec.z);
         }
     }
@@ -267,7 +267,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     private class AttackGoal extends Goal {
-        private EntitySkelewag fish;
+        private final EntitySkelewag fish;
         private boolean isCharging = false;
 
         public AttackGoal(EntitySkelewag skelewag) {

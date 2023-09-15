@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityFart;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.mojang.math.Vector3f;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -68,11 +67,10 @@ public class ItemStinkRay extends Item {
                 }
                 EntityFart blood = new EntityFart(level, entity, !left);
                 Vec3 vector3d = entity.getViewVector(1.0F);
-                Vector3f vector3f = new Vector3f(vector3d);
                 RandomSource rand = level.getRandom();
                 entity.gameEvent(GameEvent.ITEM_INTERACT_START);
                 entity.playSound(AMSoundRegistry.STINK_RAY.get(), 1.0F, 0.9F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                blood.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), 0.2F + getPowerForTime(i) * 0.4F, 10);
+                blood.shoot((double) vector3d.x(), (double) vector3d.y(), (double) vector3d.z(), 0.2F + getPowerForTime(i) * 0.4F, 10);
                 if (!level.isClientSide) {
                     level.addFreshEntity(blood);
                 }

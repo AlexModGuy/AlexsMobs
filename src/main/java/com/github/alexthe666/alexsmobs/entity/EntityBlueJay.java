@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -178,12 +179,15 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         this.prevFlapAmount = flapAmount;
         this.prevFlyProgress = flyProgress;
         this.prevBirdPitch = birdPitch;
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        if (isFlying()) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
-        }
+
         if (this.entityData.get(ATTACK_TICK) > 0) {
             this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
             if (attackProgress < 5F) {
@@ -195,7 +199,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             }
         }
         float yMov = (float) this.getDeltaMovement().y;
-        this.birdPitch = yMov * 2 * -(float) (180F / (float) Math.PI);
+        this.birdPitch = yMov * 2 * -(float) Mth.RAD_TO_DEG;
         if(yMov >= 0){
             if(flapAmount < 1F){
                 flapAmount += 0.25F;
@@ -212,13 +216,15 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         }else{
             this.crestAmount = Mth.approach(this.crestAmount, this.getTargetCrest(), 0.3F);
         }
-        if(!level.isClientSide){
-            if (isFlying() && this.isLandNavigator) {
-                switchNavigator(false);
+        if(!this.level.isClientSide){
+            if (isFlying()) {
+                if (this.isLandNavigator)
+                    switchNavigator(false);
+            } else {
+                if (!this.isLandNavigator)
+                    switchNavigator(true);
             }
-            if (!isFlying() && !this.isLandNavigator) {
-                switchNavigator(true);
-            }
+
             if (isFlying()) {
                 timeFlying++;
                 this.setNoGravity(true);
@@ -265,9 +271,9 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             if(this.prevSingTime % 15 == 0){
                this.playSound(AMSoundRegistry.BLUE_JAY_SONG.get(), this.getSoundVolume(), this.getVoicePitch());
             }
-            if(level.isClientSide){
+            if(this.level.isClientSide){
                 if(this.getSingTime() % 5 == 0 && this.level.isClientSide){
-                    Vec3 modelFront = new Vec3(0, 0.2F, 0.3F).scale(this.getScale()).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
+                    Vec3 modelFront = new Vec3(0, 0.2F, 0.3F).scale(this.getScale()).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
                     Vec3 particleFrom = this.position().add(modelFront);
                     this.level.addParticle(AMParticleRegistry.BIRD_SONG.get(), particleFrom.x, particleFrom.y, particleFrom.z, modelFront.x, modelFront.y, modelFront.z);
                 }
@@ -344,8 +350,15 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     }
 
     public boolean isAlliedTo(Entity entityIn) {
-        if (entityIn instanceof EntityRaccoon ) {
-            return this.getRaccoonUUID() != null && this.getRaccoonUUID().equals(entityIn.getUUID());
+        if(this.getRaccoonUUID() != null){
+            if(entityIn instanceof EntityRaccoon && this.getRaccoonUUID().equals(entityIn.getUUID())) {
+                return true;
+            }else{
+                Entity raccoon = getRaccoon();
+                if(raccoon != null && (raccoon.isAlliedTo(entityIn) || entityIn.isAlliedTo(raccoon))){
+                    return true;
+                }
+            }
         }
         return super.isAlliedTo(entityIn);
     }
@@ -354,8 +367,8 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         float radius = 10 + this.getRandom().nextInt(15);
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getBlueJayGround(radialPos);
@@ -377,8 +390,8 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         float radius = 5 + radiusAdd + this.getRandom().nextInt(5);
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getBlueJayGround(radialPos);
@@ -488,8 +501,8 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     @javax.annotation.Nullable
     public Entity getLastFeeder() {
         UUID id = getLastFeederUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && level instanceof ServerLevel serverLevel) {
+            return serverLevel.getEntity(id);
         }
         return null;
     }
@@ -514,8 +527,8 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     @javax.annotation.Nullable
     public Entity getRaccoon() {
         UUID id = getRaccoonUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && level instanceof ServerLevel serverLevel) {
+            return serverLevel.getEntity(id);
         }
         return null;
     }
@@ -793,17 +806,11 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         }
 
 
-        public class Sorter implements Comparator<Entity> {
-            private final Entity theEntity;
-
-            public Sorter(Entity theEntityIn) {
-                this.theEntity = theEntityIn;
-            }
-
+        public record Sorter(Entity theEntity) implements Comparator<Entity> {
             public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-                double d0 = this.theEntity.distanceToSqr(p_compare_1_);
-                double d1 = this.theEntity.distanceToSqr(p_compare_2_);
-                return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+                final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
+                final double d1 = this.theEntity.distanceToSqr(p_compare_2_);
+                return Double.compare(d0, d1);
             }
         }
     }
@@ -812,7 +819,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         return this.getFeedTime() > 0 || this.getSingTime() > 0 || this.getRaccoonUUID() != null || aiItemFlag;
     }
 
-    private class AITargetItems extends CreatureAITargetItems {
+    private static class AITargetItems extends CreatureAITargetItems {
 
         public AITargetItems(PathfinderMob creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
             super(creature, checkSight, onlyNearby, tickThreshold, radius);

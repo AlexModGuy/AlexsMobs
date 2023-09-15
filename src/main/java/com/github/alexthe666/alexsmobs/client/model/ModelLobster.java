@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityLobster;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -103,10 +104,10 @@ public class ModelLobster extends AdvancedEntityModel<EntityLobster> {
 		float walkDegree = 0.6F;
 		float partialTick = Minecraft.getInstance().getFrameTime();
 		float attackProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTick;
-		progressRotationPrev(arm_left, attackProgress, 0, (float)Math.toRadians(45), 0, 5F);
-		progressRotationPrev(arm_right, attackProgress, 0, (float)Math.toRadians(-45), 0, 5F);
-		progressRotationPrev(hand_left, attackProgress, 0, (float)Math.toRadians(-30), 0, 5F);
-		progressRotationPrev(hand_right, attackProgress, 0, (float)Math.toRadians(30), 0, 5F);
+		progressRotationPrev(arm_left, attackProgress, 0, Maths.rad(45), 0, 5F);
+		progressRotationPrev(arm_right, attackProgress, 0, Maths.rad(-45), 0, 5F);
+		progressRotationPrev(hand_left, attackProgress, 0, Maths.rad(-30), 0, 5F);
+		progressRotationPrev(hand_right, attackProgress, 0, Maths.rad(30), 0, 5F);
 		this.walk(antenna_left, idleSpeed * 1.5F, idleDegree, false, 0F, 0F, ageInTicks, 1);
 		this.walk(antenna_right, idleSpeed * 1.5F, idleDegree, true, 0F, 0F, ageInTicks, 1);
 		this.walk(tail, idleSpeed, idleDegree * 0.2F, false, 1F, -0.1F, ageInTicks, 1);

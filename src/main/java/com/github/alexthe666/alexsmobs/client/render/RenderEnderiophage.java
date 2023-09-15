@@ -50,7 +50,7 @@ public class RenderEnderiophage extends MobRenderer<EntityEnderiophage, ModelEnd
         return entity.getVariant() == 2 ? TEXTURE_NETHER : entity.getVariant() == 1 ? TEXTURE_OVERWORLD : TEXTURE;
     }
 
-    class EnderiophageEyesLayer extends EyesLayer<EntityEnderiophage, ModelEnderiophage> {
+    static class EnderiophageEyesLayer extends EyesLayer<EntityEnderiophage, ModelEnderiophage> {
 
         public EnderiophageEyesLayer(RenderEnderiophage p_i50928_1_) {
             super(p_i50928_1_);

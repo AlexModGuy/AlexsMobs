@@ -1,12 +1,14 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySkelewag;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
     private final AdvancedModelBox root;
@@ -87,39 +89,39 @@ public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
         animator.startKeyframe(3);
         animator.move(body, 0, 0, 10);
         animator.move(head, 1, 0, -1);
-        animator.rotate(body, (float)Math.toRadians(-10), 0, 0);
-        animator.rotate(head, (float)Math.toRadians(10), (float)Math.toRadians(-5), 0);
+        animator.rotate(body, Maths.rad(-10), 0, 0);
+        animator.rotate(head, Maths.rad(10), Maths.rad(-5), 0);
         animator.endKeyframe();
         animator.setStaticKeyframe(2);
         animator.startKeyframe(2);
         animator.move(body, 0, 0, -10);
-        animator.rotate(body, 0, 0, (float)Math.toRadians(-10));
+        animator.rotate(body, 0, 0, Maths.rad(-10));
         animator.endKeyframe();
         animator.resetKeyframe(3);
         animator.setAnimation(EntitySkelewag.ANIMATION_SLASH);
         animator.startKeyframe(5);
         animator.move(body, 0, 0, 5);
-        animator.rotate(body, 0, (float)Math.toRadians(-40), 0);
-        animator.rotate(tail, 0, (float)Math.toRadians(20), 0);
-        animator.rotate(head,  (float)Math.toRadians(10), (float)Math.toRadians(-10), (float)Math.toRadians(-10));
+        animator.rotate(body, 0, Maths.rad(-40), 0);
+        animator.rotate(tail, 0, Maths.rad(20), 0);
+        animator.rotate(head,  Maths.rad(10), Maths.rad(-10), Maths.rad(-10));
         animator.endKeyframe();
         animator.startKeyframe(5);
         animator.move(body, 0, 0, 5);
-        animator.rotate(body, 0, (float)Math.toRadians(40), 0);
-        animator.rotate(tail, 0, (float)Math.toRadians(-20), 0);
-        animator.rotate(head,  (float)Math.toRadians(-10), (float)Math.toRadians(10), (float)Math.toRadians(10));
+        animator.rotate(body, 0, Maths.rad(40), 0);
+        animator.rotate(tail, 0, Maths.rad(-20), 0);
+        animator.rotate(head,  Maths.rad(-10), Maths.rad(10), Maths.rad(10));
         animator.endKeyframe();
         animator.startKeyframe(5);
         animator.move(body, 0, 0, 5);
-        animator.rotate(body, 0, (float)Math.toRadians(-40), 0);
-        animator.rotate(tail, 0, (float)Math.toRadians(20), 0);
-        animator.rotate(head,  (float)Math.toRadians(-10), (float)Math.toRadians(-10), (float)Math.toRadians(-10));
+        animator.rotate(body, 0, Maths.rad(-40), 0);
+        animator.rotate(tail, 0, Maths.rad(20), 0);
+        animator.rotate(head,  Maths.rad(-10), Maths.rad(-10), Maths.rad(-10));
         animator.endKeyframe();
         animator.startKeyframe(5);
         animator.move(body, 0, 0, 5);
-        animator.rotate(body, 0, (float)Math.toRadians(40), 0);
-        animator.rotate(tail, 0, (float)Math.toRadians(-20), 0);
-        animator.rotate(head,  (float)Math.toRadians(10), (float)Math.toRadians(10), (float)Math.toRadians(10));
+        animator.rotate(body, 0, Maths.rad(40), 0);
+        animator.rotate(tail, 0, Maths.rad(-20), 0);
+        animator.rotate(head,  Maths.rad(10), Maths.rad(10), Maths.rad(10));
         animator.endKeyframe();
         animator.resetKeyframe(5);
     }
@@ -134,15 +136,15 @@ public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
         float partialTick = ageInTicks - entity.tickCount;
         float landProgress = entity.prevOnLandProgress + (entity.onLandProgress - entity.prevOnLandProgress) * partialTick;
         float fallApartProgress = entity.deathTime > 0 ? (entity.deathTime + partialTick) / 20F : 0;
-        progressRotationPrev(body, landProgress, 0, 0, (float) Math.toRadians(-90), 5F);
+        progressRotationPrev(body, landProgress, 0, 0, Maths.rad(-90), 5F);
         progressPositionPrev(body, landProgress, 0, 3, 6, 5F);
         progressPositionPrev(tail, fallApartProgress, 0, 0, 4, 1F);
         progressPositionPrev(tail_fin, fallApartProgress, 0, 0, 4, 1F);
         progressPositionPrev(right_fin, fallApartProgress, 0, 1, 2, 1F);
         progressPositionPrev(left_fin, fallApartProgress, 0, 1, 2, 1F);
         progressPositionPrev(head, fallApartProgress, 0, 0, -1, 1F);
-        progressRotationPrev(right_fin, fallApartProgress, 0,  (float) Math.toRadians(25), 0, 1F);
-        progressRotationPrev(left_fin, fallApartProgress, 0,  (float) Math.toRadians(-25), 0, 1F);
+        progressRotationPrev(right_fin, fallApartProgress, 0,  Maths.rad(25), 0, 1F);
+        progressRotationPrev(left_fin, fallApartProgress, 0,  Maths.rad(-25), 0, 1F);
         AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{body, tail, tail_fin};
         this.chainSwing(tailBoxes, idleSpeed, idleDegree * 0.1F, 3, ageInTicks, 1);
         this.bob(body, idleSpeed, idleDegree, false, ageInTicks, 1);
@@ -156,8 +158,8 @@ public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
         this.bob(left_fin, swimSpeed, -1.5F * swimDegree, false, limbSwing, limbSwingAmount);
         this.bob(right_fin, swimSpeed, -1.5F * swimDegree, false, limbSwing, limbSwingAmount);
         this.swing(flag, swimSpeed, swimDegree * 0.6F, false, 2, 0.3F, limbSwing, limbSwingAmount);
-        this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
-        this.head.rotateAngleX -= headPitch * 0.5F * ((float)Math.PI / 180F);
+        this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
+        this.head.rotateAngleX -= headPitch * 0.5F * Mth.DEG_TO_RAD;
 
     }
 

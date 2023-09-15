@@ -183,7 +183,10 @@ public class AMConfig {
     public static int bananaSlugSpawnRolls = 0;
     public static int blueJaySpawnWeight = 16;
     public static int blueJaySpawnRolls = 0;
-
+    public static int caimanSpawnWeight = 29;
+    public static int caimanSpawnRolls = 0;
+    public static int triopsSpawnWeight = 8;
+    public static int triopsSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -445,6 +448,10 @@ public class AMConfig {
             bananaSlugSpawnRolls = ConfigHolder.COMMON.bananaSlugSpawnRolls.get();
             blueJaySpawnRolls = ConfigHolder.COMMON.blueJaySpawnRolls.get();
             blueJaySpawnWeight = ConfigHolder.COMMON.blueJaySpawnWeight.get();
+            caimanSpawnRolls = ConfigHolder.COMMON.caimanSpawnRolls.get();
+            caimanSpawnWeight = ConfigHolder.COMMON.caimanSpawnWeight.get();
+            triopsSpawnRolls = ConfigHolder.COMMON.triopsSpawnRolls.get();
+            triopsSpawnWeight = ConfigHolder.COMMON.triopsSpawnWeight.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
@@ -509,8 +516,7 @@ public class AMConfig {
             transmutingWeightRemoveStep = ConfigHolder.COMMON.transmutingWeightRemoveStep.get();
             underminerDisappearDistance = ConfigHolder.COMMON.underminerDisappearDistance.get();
         } catch (Exception e) {
-            AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
-            e.printStackTrace();
+            AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.", e);
         }
     }
 

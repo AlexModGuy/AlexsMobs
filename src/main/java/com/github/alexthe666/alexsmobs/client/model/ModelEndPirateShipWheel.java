@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateShipWheel;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -46,6 +47,6 @@ public class ModelEndPirateShipWheel extends AdvancedEntityModel<Entity> {
 
     public void renderWheel(TileEntityEndPirateShipWheel wheel, float partialTick) {
         this.resetToDefaultPose();
-        this.wheel.rotateAngleY = (float)Math.toRadians(wheel.getWheelRot(partialTick));
+        this.wheel.rotateAngleY = Maths.rad(wheel.getWheelRot(partialTick));
     }
 }

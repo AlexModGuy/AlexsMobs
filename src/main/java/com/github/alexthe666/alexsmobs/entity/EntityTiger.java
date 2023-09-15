@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -137,12 +138,12 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(WHITE, Boolean.valueOf(false));
-        this.entityData.define(RUNNING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(STEALTH_MODE, Boolean.valueOf(false));
-        this.entityData.define(HOLDING, Boolean.valueOf(false));
-        this.entityData.define(SLEEPING, Boolean.valueOf(false));
+        this.entityData.define(WHITE, false);
+        this.entityData.define(RUNNING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(STEALTH_MODE, false);
+        this.entityData.define(HOLDING, false);
+        this.entityData.define(SLEEPING, false);
         this.entityData.define(ANGER_TIME, 0);
         this.entityData.define(LAST_SCARED_MOB_ID, -1);
     }
@@ -225,51 +226,51 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     public boolean isWhite() {
-        return this.entityData.get(WHITE).booleanValue();
+        return this.entityData.get(WHITE);
     }
 
     public void setWhite(boolean white) {
-        this.entityData.set(WHITE, Boolean.valueOf(white));
+        this.entityData.set(WHITE, white);
     }
 
     public boolean isRunning() {
-        return this.entityData.get(RUNNING).booleanValue();
+        return this.entityData.get(RUNNING);
     }
 
     public void setRunning(boolean running) {
-        this.entityData.set(RUNNING, Boolean.valueOf(running));
+        this.entityData.set(RUNNING, running);
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setSitting(boolean bar) {
-        this.entityData.set(SITTING, Boolean.valueOf(bar));
+        this.entityData.set(SITTING, bar);
     }
 
     public boolean isStealth() {
-        return this.entityData.get(STEALTH_MODE).booleanValue();
+        return this.entityData.get(STEALTH_MODE);
     }
 
     public void setStealth(boolean bar) {
-        this.entityData.set(STEALTH_MODE, Boolean.valueOf(bar));
+        this.entityData.set(STEALTH_MODE, bar);
     }
 
     public boolean isHolding() {
-        return this.entityData.get(HOLDING).booleanValue();
+        return this.entityData.get(HOLDING);
     }
 
     public void setHolding(boolean running) {
-        this.entityData.set(HOLDING, Boolean.valueOf(running));
+        this.entityData.set(HOLDING, running);
     }
 
     public boolean isSleeping() {
-        return this.entityData.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING);
     }
 
     public void setSleeping(boolean sleeping) {
-        this.entityData.set(SLEEPING, Boolean.valueOf(sleeping));
+        this.entityData.set(SLEEPING, sleeping);
     }
 
     public int getRemainingPersistentAngerTime() {
@@ -312,40 +313,54 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         prevSleepProgress = sleepProgress;
         prevHoldProgress = holdProgress;
         prevStealthProgress = stealthProgress;
-        if (isSitting() && sitProgress < 5F) {
-            sitProgress++;
+
+        final boolean sitting = isSitting();
+        final boolean sleeping = isSleeping();
+        final boolean holding = isHolding();
+        final boolean stealth = isStealth();
+
+        if (sitting) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!isSitting() && sitProgress > 0F) {
-            sitProgress--;
+
+        if (sleeping) {
+            if (sleepProgress < 5F)
+                sleepProgress++;
+        } else {
+            if (sleepProgress > 0F)
+                sleepProgress--;
         }
-        if (isSleeping() && sleepProgress < 5F) {
-            sleepProgress++;
+
+        if (holding) {
+            if (holdProgress < 5F)
+                holdProgress++;
+        } else {
+            if (holdProgress > 0F)
+                holdProgress--;
         }
-        if (!isSleeping() && sleepProgress > 0F) {
-            sleepProgress--;
+
+        if (stealth) {
+            if (stealthProgress < 10F)
+                stealthProgress += 0.25F;
+        } else {
+            if (stealthProgress > 0F)
+                stealthProgress--;
         }
-        if (isHolding() && holdProgress < 5F) {
-            holdProgress++;
-        }
-        if (!isHolding() && holdProgress > 0F) {
-            holdProgress--;
-        }
-        if (isStealth() && stealthProgress < 10F) {
-            stealthProgress += 0.25F;
-        }
-        if (!isStealth() && stealthProgress > 0F) {
-            stealthProgress--;
-        }
-        if (!level.isClientSide) {
+
+        if (!this.level.isClientSide) {
             if (isRunning() && !hasSpedUp) {
                 hasSpedUp = true;
-                maxUpStep = 1F;
+                maxUpStep = 1F; // FIXME
                 this.setSprinting(true);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F);
             }
             if (!isRunning() && hasSpedUp) {
                 hasSpedUp = false;
-                maxUpStep = 0.6F;
+                maxUpStep = 0.6F; // FIXME
                 this.setSprinting(false);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
             }
@@ -376,11 +391,11 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             this.setRunning(false);
             if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
                 this.setXRot(0);
-                float radius = 1.0F + this.getTarget().getBbWidth() * 0.5F;
-                float angle = (0.01745329251F * this.yBodyRot);
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                double extraZ = radius * Mth.cos(angle);
-                double extraY = -0.5F;
+                final float radius = 1.0F + this.getTarget().getBbWidth() * 0.5F;
+                final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
+                final double extraZ = radius * Mth.cos(angle);
+                final double extraY = -0.5F;
                 Vec3 minus = new Vec3(this.getX() + extraX - this.getTarget().getX(), this.getY() + extraY - this.getTarget().getY(), this.getZ() + extraZ - this.getTarget().getZ());
                 this.getTarget().setDeltaMovement(minus);
                 if (holdTime % 20 == 0) {
@@ -398,9 +413,9 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         if (prevScaredMobId != this.entityData.get(LAST_SCARED_MOB_ID) && level.isClientSide) {
             Entity e = level.getEntity(this.entityData.get(LAST_SCARED_MOB_ID));
             if (e != null) {
-                double d2 = this.random.nextGaussian() * 0.1D;
-                double d0 = this.random.nextGaussian() * 0.1D;
-                double d1 = this.random.nextGaussian() * 0.1D;
+                final double d2 = this.random.nextGaussian() * 0.1D;
+                final double d0 = this.random.nextGaussian() * 0.1D;
+                final double d1 = this.random.nextGaussian() * 0.1D;
                 this.level.addParticle(AMParticleRegistry.SHOCKED.get(), e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
             }
         }
@@ -413,7 +428,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        boolean prev = super.hurt(source, amount);
+        final boolean prev = super.hurt(source, amount);
         if (prev) {
             if (source.getEntity() != null) {
                 if (source.getEntity() instanceof LivingEntity) {
@@ -446,7 +461,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        boolean whiteOther = p_241840_2_ instanceof EntityTiger && ((EntityTiger) p_241840_2_).isWhite();
+        final boolean whiteOther = p_241840_2_ instanceof EntityTiger entityTiger && entityTiger.isWhite();
         EntityTiger baby = AMEntityRegistry.TIGER.get().create(p_241840_1_);
         double whiteChance = 0.1D;
         if (this.isWhite() && whiteOther) {
@@ -556,7 +571,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         }
     }
 
-    class Navigator extends GroundPathNavigatorWide {
+    static class Navigator extends GroundPathNavigatorWide {
 
         public Navigator(Mob mob, Level world) {
             super(mob, world, 1.2F);
@@ -569,7 +584,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     private class AIMelee extends Goal {
-        private EntityTiger tiger;
+        private final EntityTiger tiger;
         private int jumpAttemptCooldown = 0;
 
         public AIMelee() {
@@ -588,8 +603,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             }
             LivingEntity target = tiger.getTarget();
             if (target != null && target.isAlive()) {
-                double dist = tiger.distanceTo(target);
-                if (tiger.getLastHurtByMob() != null && tiger.getLastHurtByMob().isAlive() && dist < 10) {
+                final double dist = tiger.distanceTo(target);
+                if (dist < 10 && tiger.getLastHurtByMob() != null && tiger.getLastHurtByMob().isAlive()) {
                     tiger.setStealth(false);
                 } else {
                     if (dist > 20) {
@@ -618,7 +633,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                 if (tiger.getAnimation() == ANIMATION_LEAP) {
                     tiger.getNavigation().stop();
                     Vec3 vec = target.position().subtract(tiger.position());
-                    tiger.setYRot(-((float) Mth.atan2(vec.x, vec.z)) * (180F / (float) Math.PI));
+                    tiger.setYRot(-((float) Mth.atan2(vec.x, vec.z)) * Mth.RAD_TO_DEG);
                     tiger.yBodyRot = tiger.getYRot();
                     if (tiger.getAnimationTick() >= 5 && tiger.getAnimationTick() < 11 && tiger.isOnGround()) {
                         Vec3 vector3d1 = new Vec3(target.getX() - this.tiger.getX(), 0.0D, target.getZ() - this.tiger.getZ());

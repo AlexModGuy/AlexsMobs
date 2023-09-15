@@ -8,8 +8,10 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -127,11 +129,11 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     protected void registerGoals() {
@@ -219,8 +221,8 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                     this.yHeadRot = ((LivingEntity) mount).yHeadRot;
                     this.yRotO = ((LivingEntity) mount).yHeadRot;
                     float radius = mount.getBbWidth();
-                    float angle = (0.01745329251F * (((LivingEntity) mount).yBodyRot + passengerIndex * 90F));
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot + passengerIndex * 90F));
+                    double extraX = radius * Mth.sin(Mth.PI + angle);
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getEyeHeight() * 0.25F, mount.getY()), mount.getZ() + extraZ);
                     if (!mount.isAlive() || mount instanceof Player && ((Player) mount).isCreative()) {
@@ -375,8 +377,8 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
             if (level.isClientSide) {
                 float pitch = -this.getPhagePitch() / 90F;
                 float radius = this.getBbWidth() * 0.2F * -pitch;
-                float angle = (0.01745329251F * this.getYRot());
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                float angle = (Maths.STARTING_ANGLE * this.getYRot());
+                double extraX = radius * Mth.sin(Mth.PI + angle);
                 double extraY = 0.2F - (1 - pitch) * 0.15F;
                 double extraZ = radius * Mth.cos(angle);
                 double motX = extraX * 8 + random.nextGaussian() * 0.05F;
@@ -387,17 +389,22 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         }
         prevPhagePitch = this.getPhagePitch();
         prevFlyProgress = flyProgress;
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        if (isFlying()) {
+            if (flyProgress < 5F) {
+                flyProgress++;
+            }
+        } else {
+            if (flyProgress > 0F) {
+                flyProgress--;
+            }
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
-        }
+
         this.lastTentacleAngle = this.tentacleAngle;
         this.phageRotation += this.rotationVelocity;
         if ((double) this.phageRotation > (Math.PI * 2D)) {
             if (this.level.isClientSide) {
-                this.phageRotation = ((float) Math.PI * 2F);
+                this.phageRotation = Mth.TWO_PI;
             } else {
                 this.phageRotation = (float) ((double) this.phageRotation - (Math.PI * 2D));
                 if (this.random.nextInt(10) == 0) {
@@ -406,9 +413,9 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 this.level.broadcastEntityEvent(this, (byte) 19);
             }
         }
-        if (this.phageRotation < (float) Math.PI) {
-            float f = this.phageRotation / (float) Math.PI;
-            this.tentacleAngle = Mth.sin(f * f * (float) Math.PI) * 4.275F;
+        if (this.phageRotation < Mth.PI) {
+            float f = this.phageRotation / Mth.PI;
+            this.tentacleAngle = Mth.sin(f * f * Mth.PI) * 4.275F;
             if ((double) f > 0.75D) {
                 if (squishCooldown == 0 && this.isFlying()) {
                     squishCooldown = 20;
@@ -441,7 +448,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 }
             }
         }
-        if (!this.onGround && this.getDeltaMovement().y < 0.0D) {
+        if (!this.isOnGround() && this.getDeltaMovement().y < 0.0D) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.6D, 1.0D));
         }
         if (this.isFlying()) {
@@ -511,7 +518,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     public float getPhagePitch() {
-        return entityData.get(PHAGE_PITCH).floatValue();
+        return entityData.get(PHAGE_PITCH);
     }
 
     public void setPhagePitch(float pitch) {
@@ -548,8 +555,8 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getPhageGround(radialPos);
@@ -578,10 +585,10 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.get(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getPhageGround(radialPos);
         if (ground.getY() <= -63) {
             return Vec3.upFromBottomCenterOf(ground, 110 + random.nextInt(20));
@@ -663,10 +670,10 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
             } else {
                 this.phage.getNavigation().moveTo(this.x, this.y, this.z, fleeAfterStealTime == 0 ? 1.3F : 1F);
             }
-            if (!flightTarget && isFlying() && phage.onGround) {
+            if (!flightTarget && isFlying() && phage.isOnGround()) {
                 phage.setFlying(false);
             }
-            if (isFlying() && phage.onGround && phage.timeFlying > 100 && phage.fleeAfterStealTime == 0) {
+            if (isFlying() && phage.isOnGround() && phage.timeFlying > 100 && phage.fleeAfterStealTime == 0) {
                 phage.setFlying(false);
             }
         }
@@ -711,7 +718,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         }
     }
 
-    public class FlyTowardsTarget extends Goal {
+    public static class FlyTowardsTarget extends Goal {
         private final EntityEnderiophage parentEntity;
 
         public FlyTowardsTarget(EntityEnderiophage phage) {

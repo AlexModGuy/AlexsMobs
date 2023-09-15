@@ -50,7 +50,7 @@ public class EntityCachalotEcho extends Entity {
         playerLaunched = true;
         this.setGreen(green);
         this.setFasterAnimation(true);
-        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * Maths.piDividedBy180), p_i47273_2_.getY() + 1D, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * Maths.piDividedBy180));
+        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * Mth.DEG_TO_RAD), p_i47273_2_.getY() + 1D, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * Mth.DEG_TO_RAD));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -77,7 +77,7 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public boolean isReturning() {
-        return this.entityData.get(RETURNING).booleanValue();
+        return this.entityData.get(RETURNING);
     }
 
     public void setReturning(boolean returning) {
@@ -85,7 +85,7 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public boolean isFasterAnimation() {
-        return this.entityData.get(FASTER_ANIM).booleanValue();
+        return this.entityData.get(FASTER_ANIM);
     }
 
     public void setFasterAnimation(boolean anim) {
@@ -99,7 +99,7 @@ public class EntityCachalotEcho extends Entity {
 
     public void tick() {
         final double yMot = Mth.sqrt((float)(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z));
-        this.setXRot((float) (Mth.atan2(this.getDeltaMovement().y, yMot) * Maths.oneEightyDividedByFloatPi));
+        this.setXRot((float) (Mth.atan2(this.getDeltaMovement().y, yMot) * Mth.RAD_TO_DEG));
         if (!this.leftOwner) {
             this.leftOwner = this.checkLeftOwner();
         }
@@ -134,7 +134,7 @@ public class EntityCachalotEcho extends Entity {
         this.setDeltaMovement(vector3d.scale(0.99F));
         this.setNoGravity(true);
         this.setPos(d0, d1, d2);
-        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * Maths.oneEightyDividedByFloatPi) - 90);
+        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * Mth.RAD_TO_DEG) - 90);
     }
 
     protected void onEntityHit(EntityHitResult result) {
@@ -190,8 +190,8 @@ public class EntityCachalotEcho extends Entity {
 
     @Nullable
     public Entity getOwner() {
-        if (this.ownerUUID != null && this.level instanceof ServerLevel) {
-            return ((ServerLevel) this.level).getEntity(this.ownerUUID);
+        if (this.ownerUUID != null && this.level instanceof ServerLevel serverLevel) {
+            return serverLevel.getEntity(this.ownerUUID);
         } else {
             return this.ownerNetworkId != 0 ? this.level.getEntity(this.ownerNetworkId) : null;
         }
@@ -238,8 +238,8 @@ public class EntityCachalotEcho extends Entity {
         final Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.0075D * (double) inaccuracy, this.random.nextGaussian() * 0.0075D * (double) inaccuracy, this.random.nextGaussian() * 0.0075D * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(vector3d);
         final float f = Mth.sqrt((float) horizontalMag(vector3d));
-        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * Maths.oneEightyDividedByFloatPi));
-        this.setXRot((float) (Mth.atan2(vector3d.y, f) * Maths.oneEightyDividedByFloatPi));
+        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * Mth.RAD_TO_DEG));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * Mth.RAD_TO_DEG));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }
@@ -249,10 +249,10 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public void shootFromRotation(Entity p_234612_1_, float p_234612_2_, float p_234612_3_, float p_234612_4_, float p_234612_5_, float p_234612_6_) {
-        final float f3 = p_234612_3_ * Maths.piDividedBy180;
-        final float f0 = Mth.cos(p_234612_2_ * Maths.piDividedBy180);
+        final float f3 = p_234612_3_ * Mth.DEG_TO_RAD;
+        final float f0 = Mth.cos(p_234612_2_ * Mth.DEG_TO_RAD);
         final float f = -Mth.sin(f3) * f0;
-        final float f1 = -Mth.sin((p_234612_2_ + p_234612_4_) * Maths.piDividedBy180);
+        final float f1 = -Mth.sin((p_234612_2_ + p_234612_4_) * Mth.DEG_TO_RAD);
         final float f2 = Mth.cos(f3) * f0;
         this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vec3 vector3d = p_234612_1_.getDeltaMovement();
@@ -280,8 +280,8 @@ public class EntityCachalotEcho extends Entity {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             final float f = Mth.sqrt((float)(x * x + z * z));
-            this.setXRot((float) (Mth.atan2(y, f) * Maths.oneEightyDividedByFloatPi));
-            this.setYRot((float) (Mth.atan2(x, z) * Maths.oneEightyDividedByFloatPi));
+            this.setXRot((float) (Mth.atan2(y, f) * Mth.RAD_TO_DEG));
+            this.setYRot((float) (Mth.atan2(x, z) * Mth.RAD_TO_DEG));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
             this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -309,8 +309,8 @@ public class EntityCachalotEcho extends Entity {
     protected void updateRotation() {
         final Vec3 vector3d = this.getDeltaMovement();
         final float f = Mth.sqrt((float)horizontalMag(vector3d));
-        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * Maths.oneEightyDividedByFloatPi)));
-        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * Maths.oneEightyDividedByFloatPi)));
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * Mth.RAD_TO_DEG)));
+        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * Mth.RAD_TO_DEG)));
     }
 
     public boolean isGreen() {

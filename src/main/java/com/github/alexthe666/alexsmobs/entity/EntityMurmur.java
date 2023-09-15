@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeaveWater;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -34,6 +35,8 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
 
     private static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(EntityMurmur.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> HEAD_ID = SynchedEntityData.defineId(EntityMurmur.class, EntityDataSerializers.INT);
+    private boolean renderFakeHead = true;
+
 
     protected EntityMurmur(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -64,7 +67,7 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
     }
 
     public static <T extends Mob> boolean checkMurmurSpawnRules(EntityType<EntityMurmur> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= AMConfig.murmurSpawnHeight && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && (pos.getY() <= AMConfig.murmurSpawnHeight || iServerWorld.getBiome(pos).is(AMTagRegistry.SPAWNS_MURMURS_IGNORE_HEIGHT)) && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -114,8 +117,13 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
         }
     }
 
+    public boolean shouldRenderFakeHead() {
+        return this.renderFakeHead;
+    }
+
     public void tick() {
         super.tick();
+        if (this.renderFakeHead) this.renderFakeHead = false;
         this.yBodyRot = this.getYRot();
         this.yHeadRot = Mth.clamp(this.yHeadRot, this.yBodyRot - 70, this.yBodyRot + 70);
         if (!level.isClientSide) {
@@ -140,7 +148,7 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
             if (f > 1.0F) {
                 f = 1.0F;
             }
-            rotatedOnDeath = rotatedOnDeath.add(f * 0.1F, f * 0.4F, 0).zRot((float) (f * Math.PI / 2F)).yRot(-this.yBodyRot * ((float)Math.PI / 180F));
+            rotatedOnDeath = rotatedOnDeath.add(f * 0.1F, f * 0.4F, 0).zRot((float) (f * Math.PI / 2F)).yRot(-this.yBodyRot * Mth.DEG_TO_RAD);
         }
         return new Vec3(d0, d1, d2).add(rotatedOnDeath);
     }

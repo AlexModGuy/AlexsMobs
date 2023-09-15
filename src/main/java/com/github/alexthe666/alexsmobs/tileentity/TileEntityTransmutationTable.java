@@ -37,8 +37,8 @@ public class TileEntityTransmutationTable  extends BlockEntity {
     private static final ResourceLocation RARE_ITEMS = new ResourceLocation("alexsmobs", "gameplay/transmutation_table_rare");
     public int ticksExisted;
     private int totalTransmuteCount = 0;
-    private Map<UUID, TransmutationData> playerToData = new HashMap<>();
-    private ItemStack[] possiblities = new ItemStack[3];
+    private final Map<UUID, TransmutationData> playerToData = new HashMap<>();
+    private final ItemStack[] possiblities = new ItemStack[3];
     private static final RandomSource RANDOM = RandomSource.createThreadSafe();
 
     public TileEntityTransmutationTable(BlockPos pos, BlockState state) {

@@ -2,6 +2,8 @@ package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.citadel.client.model.container.JsonUtils;
 import com.google.gson.*;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CapsidRecipe {
-    private NonNullList<Ingredient> ingredients;
+    private final NonNullList<Ingredient> ingredients;
     private ItemStack result = ItemStack.EMPTY;
     private int time = 0;
 
@@ -47,7 +49,7 @@ public class CapsidRecipe {
     }
 
     public boolean matches(ItemStack... stacks) {
-        List<Integer> taken = new ArrayList<>();
+        IntList taken = new IntArrayList();
         ItemStack[] copy = new ItemStack[stacks.length];
         for (int j = 0; j < copy.length; j++) {
             copy[j] = stacks[j].copy();

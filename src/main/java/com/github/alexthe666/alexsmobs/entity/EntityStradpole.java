@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.BoneSerpentPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -261,12 +262,11 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             f = 0.1F;
         }
         super.tick();
-        boolean liquid = this.isInWater() || this.isInLava();
+        final boolean liquid = this.isInWater() || this.isInLava();
         prevSwimPitch = this.swimPitch;
 
-        float f2 = (float) -((float) this.getDeltaMovement().y * (liquid ? 2.5F : f) * (double) (180F / (float) Math.PI));
-        this.swimPitch = f2;
-        if (this.onGround && !this.isInWater() && !this.isInLava()) {
+        this.swimPitch = (float) -((float) this.getDeltaMovement().y * (liquid ? 2.5F : f) * (double) Mth.RAD_TO_DEG);
+        if (this.isOnGround() && !this.isInWater() && !this.isInLava()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setYRot( this.random.nextFloat() * 360.0F);
             this.onGround = false;
@@ -299,18 +299,10 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
                 double motionX = prevMotion.x();
                 double motionY = prevMotion.y();
                 double motionZ = prevMotion.z();
-                switch(face){
-                    case EAST:
-                    case WEST:
-                        motionX = -motionX;
-                        break;
-                    case SOUTH:
-                    case NORTH:
-                        motionZ = -motionZ;
-                        break;
-                    default:
-                        motionY = -motionY;
-                        break;
+                switch (face) {
+                    case EAST, WEST -> motionX = -motionX;
+                    case SOUTH, NORTH -> motionZ = -motionZ;
+                    default -> motionY = -motionY;
                 }
                 this.setDeltaMovement(motionX, motionY, motionZ);
                 if (this.tickCount > 200 || ricochetCount > 20) {
@@ -418,7 +410,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
         this.entityData.set(LAUNCHED, true);
     }
 
-    class StradpoleAISwim extends RandomStrollGoal {
+    static class StradpoleAISwim extends RandomStrollGoal {
         public StradpoleAISwim(EntityStradpole creature, double speed, int chance) {
             super(creature, speed, chance, false);
         }
@@ -455,7 +447,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             }
             Vec3 vector3d = LandRandomPos.getPos(this.mob, 7, 3);
 
-            for (int i = 0; vector3d != null && !this.mob.level.getFluidState(new BlockPos(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
+            for (int i = 0; vector3d != null && !this.mob.level.getFluidState(AMBlockPos.fromVec3(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
             }
 
             return vector3d;

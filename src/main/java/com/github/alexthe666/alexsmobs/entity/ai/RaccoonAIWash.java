@@ -63,7 +63,7 @@ public class RaccoonAIWash extends Goal {
             if (dist <= 1F) {
                 double d0 = waterPos.getX() + 0.5D - this.raccoon.getX();
                 double d2 = waterPos.getZ() + 0.5D - this.raccoon.getZ();
-                float yaw = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                float yaw = (float)(Mth.atan2(d2, d0) * (double)Mth.RAD_TO_DEG) - 90.0F;
                 this.raccoon.setYRot(yaw);
                 this.raccoon.yHeadRot = yaw;
                 this.raccoon.yBodyRot = yaw;

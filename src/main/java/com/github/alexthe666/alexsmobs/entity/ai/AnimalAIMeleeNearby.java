@@ -8,9 +8,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 
 public class AnimalAIMeleeNearby extends Goal {
-    private Mob entity;
-    private int range;
-    private double speed;
+    private final Mob entity;
+    private final int range;
+    private final double speed;
     private BlockPos fightStartPos = null;
 
     public AnimalAIMeleeNearby(Mob entity, int range, double speed) {

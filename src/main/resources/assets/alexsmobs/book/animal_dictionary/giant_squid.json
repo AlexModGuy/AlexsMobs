@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "giant_squid.txt",
-  "title": "Giant Squid",
+  "title": "entity.alexsmobs.giant_squid",
   "linked_page_buttons": [
   ],
   "images": [

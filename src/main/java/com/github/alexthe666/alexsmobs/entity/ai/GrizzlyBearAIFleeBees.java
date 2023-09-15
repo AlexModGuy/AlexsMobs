@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.google.common.base.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -56,7 +57,7 @@ public class GrizzlyBearAIFleeBees extends Goal {
             } else if (this.closestLivingEntity.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.distanceToSqr(this.entity)) {
                 return false;
             } else {
-                this.path = entity.getNavigation().createPath(new BlockPos(vec3d.x, vec3d.y, vec3d.z), 0);
+                this.path = entity.getNavigation().createPath(AMBlockPos.fromCoords(vec3d.x, vec3d.y, vec3d.z), 0);
                 return this.path != null;
             }
         }

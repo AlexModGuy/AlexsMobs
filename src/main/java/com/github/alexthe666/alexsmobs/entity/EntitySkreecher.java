@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -156,13 +157,17 @@ public class EntitySkreecher extends Monster {
         if (!clingVisually && clingProgress > 0F && this.getDistanceToCeiling() == 0) {
             clingProgress--;
         }
-        if(isClapping() && clapProgress < 5F){
-            clapProgress++;
+
+        final boolean clapping = this.isClapping();
+        if (clapping) {
+            if (clapProgress < 5F)
+                clapProgress++;
+        } else {
+            if (clapProgress > 0F)
+                clapProgress--;
         }
-        if(!isClapping() && clapProgress > 0F){
-            clapProgress--;
-        }
-        if (!level.isClientSide) {
+
+        if (!this.level.isClientSide) {
             float technicalDistToCeiling = calculateDistanceToCeiling();
             float gap = Math.max(technicalDistToCeiling - this.getDistanceToCeiling(), 0F);
             if(this.isClinging()){
@@ -306,34 +311,34 @@ public class EntitySkreecher extends Monster {
     }
 
     public boolean isClinging() {
-        return this.entityData.get(CLINGING).booleanValue();
+        return this.entityData.get(CLINGING);
     }
 
     public void setClinging(boolean upsideDown) {
-        this.entityData.set(CLINGING, Boolean.valueOf(upsideDown));
+        this.entityData.set(CLINGING, upsideDown);
     }
 
     public boolean isClapping() {
-        return this.entityData.get(CLAPPING).booleanValue();
+        return this.entityData.get(CLAPPING);
     }
 
     public void setClapping(boolean clapping) {
-        this.entityData.set(CLAPPING, Boolean.valueOf(clapping));
+        this.entityData.set(CLAPPING, clapping);
         if(!clapping){
             clapTick = 0;
         }
     }
 
     public boolean isJumpingUp() {
-        return this.entityData.get(JUMPING_UP).booleanValue();
+        return this.entityData.get(JUMPING_UP);
     }
 
     public void setJumpingUp(boolean jumping) {
-        this.entityData.set(JUMPING_UP, Boolean.valueOf(jumping));
+        this.entityData.set(JUMPING_UP, jumping);
     }
 
     protected BlockPos getPositionAbove(float height) {
-        return new BlockPos(this.position().x, this.getBoundingBox().maxY + height + 0.5000001D, this.position().z);
+        return AMBlockPos.get(this.position().x, this.getBoundingBox().maxY + height + 0.5000001D, this.position().z);
     }
 
     protected PathNavigation createScreecherNavigation(Level level) {
@@ -365,7 +370,7 @@ public class EntitySkreecher extends Monster {
             final Vec3 vec3 = new Vec3(x, y, z);
             final AABB axisAlignedBB = AABB.ofSize(vec3, d, 1.0E-6D, d);
             return this.level.getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-                BlockPos blockpos = new BlockPos(vec3);
+                BlockPos blockpos = AMBlockPos.get(vec3);
                 return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
             });
         }
@@ -387,7 +392,7 @@ public class EntitySkreecher extends Monster {
     }
 
     public void travel(Vec3 travelVector) {
-        if (this.isEffectiveAi() && this.isClinging()) {
+        if (this.isEffectiveAi() && this.isClinging() && !this.isInFluidType()) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.75D));
@@ -471,11 +476,11 @@ public class EntitySkreecher extends Monster {
                     double d3 = parentEntity.getTarget().getY() - parentEntity.getY();
                     double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                     float f = Mth.sqrt((float)(d2 * d2 + d1 * d1));
-                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
-                    parentEntity.setXRot((float) (Mth.atan2(d3, f) * (double) (180F / (float) Math.PI)));
+                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
+                    parentEntity.setXRot((float) (Mth.atan2(d3, f) * (double) Mth.RAD_TO_DEG));
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 }else if (d0 >= width) {
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                 }
             }
         }

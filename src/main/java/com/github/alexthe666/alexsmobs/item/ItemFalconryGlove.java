@@ -31,11 +31,13 @@ public class ItemFalconryGlove extends Item implements ILeftClick {
 
     public boolean onLeftClick(ItemStack stack, LivingEntity playerIn) {
         if(stack.getItem() == AMItemRegistry.FALCONRY_GLOVE.get()){
-            boolean flag = false;
-            float dist = 128;
+            final float dist = 128;
             Vec3 Vector3d = playerIn.getEyePosition(1.0F);
             Vec3 Vector3d1 = playerIn.getViewVector(1.0F);
-            Vec3 Vector3d2 = Vector3d.add(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist);
+            final double vector3d1xDist = Vector3d1.x * dist;
+            final double vector3d1yDist = Vector3d1.y * dist;
+            final double vector3d1zDist = Vector3d1.z * dist;
+            Vec3 Vector3d2 = Vector3d.add(vector3d1xDist, vector3d1yDist, vector3d1zDist);
             double d1 = dist;
             Entity pointedEntity = null;
             List<Entity> list = playerIn.level.getEntities(playerIn, playerIn.getBoundingBox().expandTowards(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist).inflate(1.0D, 1.0D, 1.0D), new Predicate<Entity>() {
@@ -43,28 +45,26 @@ public class ItemFalconryGlove extends Item implements ILeftClick {
                     return entity != null && entity.isPickable() && (entity instanceof Player || (entity instanceof LivingEntity));
                 }
             });
-            double d2 = d1;
-            for (int j = 0; j < list.size(); ++j) {
-                Entity entity1 = list.get(j);
+            for (Entity entity1 : list) {
                 AABB axisalignedbb = entity1.getBoundingBox().inflate(entity1.getPickRadius());
                 Optional<Vec3> optional = axisalignedbb.clip(Vector3d, Vector3d2);
 
                 if (axisalignedbb.contains(Vector3d)) {
-                    if (d2 >= 0.0D) {
+                    if (d1 >= 0.0D) {
                         //pointedEntity = entity1;
-                        d2 = 0.0D;
+                        d1 = 0.0D;
                     }
                 } else if (optional.isPresent()) {
                     double d3 = Vector3d.distanceTo(optional.get());
 
-                    if (d3 < d2 || d2 == 0.0D) {
+                    if (d3 < d1 || d1 == 0.0D) {
                         if (entity1.getRootVehicle() == playerIn.getRootVehicle() && !playerIn.canRiderInteract()) {
-                            if (d2 == 0.0D) {
+                            if (d1 == 0.0D) {
                                 pointedEntity = entity1;
                             }
                         } else {
                             pointedEntity = entity1;
-                            d2 = d3;
+                            d1 = d3;
                         }
                     }
                 }
@@ -72,9 +72,8 @@ public class ItemFalconryGlove extends Item implements ILeftClick {
 
             if(!playerIn.getPassengers().isEmpty()){
                 for(Entity entity : playerIn.getPassengers()){
-                    if(entity instanceof IFalconry && entity instanceof Animal){
+                    if(entity instanceof IFalconry && entity instanceof Animal animal){
                         IFalconry falcon = (IFalconry)entity;
-                        Animal animal = (Animal)entity;
                         animal.removeVehicle();
                         animal.moveTo(playerIn.getX(), playerIn.getEyeY(), playerIn.getZ(), animal.getYRot(), animal.getXRot());
                         if(animal.level.isClientSide){

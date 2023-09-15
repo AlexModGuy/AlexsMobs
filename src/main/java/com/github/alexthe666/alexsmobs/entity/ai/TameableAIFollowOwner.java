@@ -7,8 +7,8 @@ import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 
 public class TameableAIFollowOwner extends FollowOwnerGoal {
 
-    private IFollower follower;
-    private TamableAnimal tameable;
+    private final IFollower follower;
+    private final TamableAnimal tameable;
 
     public TameableAIFollowOwner(TamableAnimal tameable, double speed, float minDist, float maxDist, boolean teleportToLeaves) {
         super(tameable, speed, minDist, maxDist, teleportToLeaves);

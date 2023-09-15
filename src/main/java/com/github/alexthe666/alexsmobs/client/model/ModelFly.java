@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFly;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -80,8 +81,8 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
         this.flap(mouth, idleSpeed * 0.2F, idleDegree * 0.05F, false, -2, 0F, ageInTicks, 1);
         boolean flag = entityIn.isOnGround() && entityIn.getDeltaMovement().lengthSqr() < 1.0E-7D;
         if(flag){
-            this.left_wing.rotateAngleZ = (float) Math.toRadians(-35);
-            this.right_wing.rotateAngleZ = (float) Math.toRadians(35);
+            this.left_wing.rotateAngleZ = Maths.rad(-35);
+            this.right_wing.rotateAngleZ = Maths.rad(35);
             this.swing(legs, flySpeed * 0.6F, flyDegree * 0.2F, false, 1, 0F, limbSwing, limbSwingAmount);
         }else{
             this.flap(left_wing, flySpeed * 1.3F, flyDegree, true, 0, 0.2F, ageInTicks, 1);

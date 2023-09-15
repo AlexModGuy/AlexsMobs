@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMurmurHead;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -76,8 +77,8 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
             double d1 = Mth.lerp((double)partialTicks, entity.prevYHair, entity.yHair) - Mth.lerp((double)partialTicks, entity.yo, entity.getY());
             double d2 = Mth.lerp((double)partialTicks, entity.prevZHair, entity.zHair) - Mth.lerp((double)partialTicks, entity.zo, entity.getZ());
             float f = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO);
-            double d3 = (double)Mth.sin(f * ((float)Math.PI / 180F));
-            double d4 = (double)(-Mth.cos(f * ((float)Math.PI / 180F)));
+            double d3 = (double)Mth.sin(f * Mth.DEG_TO_RAD);
+            double d4 = (double)(-Mth.cos(f * Mth.DEG_TO_RAD));
             float f1 = (float)d1 * 10.0F;
             f1 = Mth.clamp(f1, -6.0F, 32.0F) * hairAnimateScale;
             float f2 = (float)(d0 * d3 + d2 * d4) * 100.0F;
@@ -88,9 +89,9 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
                 f2 = 0.0F;
             }
             f1 += Mth.sin(Mth.lerp(partialTicks, entity.walkDistO, entity.walkDist) * 6.0F) * 32.0F * 1F;
-            float hairX = (float)Math.toRadians(6.0F + f2 / 2.0F + f1 - 180);
-            float hairY = (float) Math.toRadians(f3 / 2.0F);
-            float hairZ = (float) Math.toRadians(180.0F - f3 / 2.0F);
+            float hairX = Maths.rad(6.0F + f2 / 2.0F + f1 - 180);
+            float hairY = Maths.rad(f3 / 2.0F);
+            float hairZ = Maths.rad(180.0F - f3 / 2.0F);
             this.backHair.rotateAngleX -= hairX;
             this.backHair.rotateAngleY -= hairY;
             this.backHair.rotateAngleZ -= hairZ;
@@ -103,9 +104,9 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
         }
         this.animateHair(ageInTicks);
         this.faceTarget(netHeadYaw, headPitch, 1, head);
-        progressRotationPrev(this.backHair, angerProgress, (float)Math.toRadians(-20F), 0, 0, 5F);
-        progressRotationPrev(this.rightHair, angerProgress, (float)Math.toRadians(-10F), 0, (float)Math.toRadians(25F), 5F);
-        progressRotationPrev(this.leftHair, angerProgress, (float)Math.toRadians(-10F), 0, (float)Math.toRadians(-25F), 5F);
+        progressRotationPrev(this.backHair, angerProgress, Maths.rad(-20F), 0, 0, 5F);
+        progressRotationPrev(this.rightHair, angerProgress, Maths.rad(-10F), 0, Maths.rad(25F), 5F);
+        progressRotationPrev(this.leftHair, angerProgress, Maths.rad(-10F), 0, Maths.rad(-25F), 5F);
 
     }
 }

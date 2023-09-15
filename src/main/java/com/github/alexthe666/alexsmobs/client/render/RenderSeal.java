@@ -37,6 +37,7 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
         return super.shouldShowName(seal) || seal.isTearsEasterEgg();
     }
 
+    // TODO Check :: Removed in 1.20?
     protected void scale(EntitySeal entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
         matrixStackIn.scale(1.3F, 1.3F, 1.3F);
     }
@@ -99,7 +100,7 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
         }
     }
 
-    class SealTearsLayer extends RenderLayer<EntitySeal, ModelSeal> {
+    static class SealTearsLayer extends RenderLayer<EntitySeal, ModelSeal> {
 
         public SealTearsLayer(RenderSeal p_i50928_1_) {
             super(p_i50928_1_);

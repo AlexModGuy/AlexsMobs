@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 	private final AdvancedModelBox root;
@@ -82,7 +83,7 @@ public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 	@Override
 	public void setupAnim(EntityVoidWormPart entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
-		this.root.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+		this.root.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
 		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.tickCount)) / 57.295776F * 0.5F;
 		this.body.rotateAngleZ += yawAmount;
 	}

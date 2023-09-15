@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "kangaroo.txt",
-  "title": "Kangaroo",
+  "title": "entity.alexsmobs.kangaroo",
   "linked_page_buttons": [
   ],
   "images": [

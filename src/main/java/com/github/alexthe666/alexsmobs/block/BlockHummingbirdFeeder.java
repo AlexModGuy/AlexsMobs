@@ -80,7 +80,7 @@ public class BlockHummingbirdFeeder extends Block {
             if(itemStack.getItem() == Items.SUGAR){
                 setContent = 2;
                 useItem(player, itemStack);
-            }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.tagMatches(waterBottle, itemStack)){
+            }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameTags(waterBottle, itemStack)){
                 setContent = 1;
                 useItem(player, itemStack);
             }
@@ -90,7 +90,7 @@ public class BlockHummingbirdFeeder extends Block {
                 useItem(player, itemStack);
             }
         }else if(contents == 2){
-            if(itemStack.getItem() == waterBottle.getItem() && ItemStack.tagMatches(waterBottle, itemStack)){
+            if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameTags(waterBottle, itemStack)){
                 setContent = 3;
                 useItem(player, itemStack);
             }

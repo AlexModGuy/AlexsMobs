@@ -102,12 +102,12 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(CURLED, Boolean.valueOf(false));
-        this.entityData.define(RATTLING, Boolean.valueOf(false));
+        this.entityData.define(CURLED, false);
+        this.entityData.define(RATTLING, false);
     }
 
     public boolean isCurled() {
-        return this.entityData.get(CURLED).booleanValue();
+        return this.entityData.get(CURLED);
     }
 
     public void setCurled(boolean curled) {
@@ -115,7 +115,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
     }
 
     public boolean isRattling() {
-        return this.entityData.get(RATTLING).booleanValue();
+        return this.entityData.get(RATTLING);
     }
 
     public void setRattling(boolean rattling) {
@@ -125,13 +125,16 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
     public void tick(){
         super.tick();
         prevCurlProgress = curlProgress;
-        if (this.isCurled() && curlProgress < 5) {
-            curlProgress += 0.5F;
+
+        if (this.isCurled()) {
+            if (curlProgress < 5F)
+                curlProgress += 0.5F;
+        } else {
+            if (curlProgress > 0F)
+                curlProgress--;
         }
-        if (!this.isCurled() && curlProgress > 0) {
-            curlProgress -= 1;
-        }
-        if (random.nextInt(15) == 0 && randomToungeTick == 0) {
+
+        if (randomToungeTick == 0 && random.nextInt(15) == 0) {
             randomToungeTick = 10 + random.nextInt(20);
         }
         if (randomToungeTick > 0) {
@@ -142,27 +145,32 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
             curlTime = 0;
             maxCurlTime = 75 + random.nextInt(50);
         }
-        if(!level.isClientSide && this.isCurled() && (this.getTarget() != null && this.getTarget().isAlive())){
-            this.setCurled(false);
-        }
-        if(!level.isClientSide && this.isRattling()  && this.getTarget() == null){
-            this.setCurled(true);
 
-        }
-        if (!level.isClientSide && !this.isCurled() && this.getTarget() == null && random.nextInt(500) == 0) {
-            maxCurlTime = 300 + random.nextInt(250);
-            this.setCurled(true);
-        }
-        if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 4){
-             this.playSound(AMSoundRegistry.RATTLESNAKE_ATTACK.get(), getSoundVolume(), getVoicePitch());
-        }
         LivingEntity target = this.getTarget();
-        if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 8 && target != null && this.distanceTo(target) < 2D){
-            boolean meepMeep = target instanceof EntityRoadrunner;
-            int f = isBaby() ? 2 : 1;
-            target.hurt(DamageSource.mobAttack(this), meepMeep ? 1.0F : f * (float)getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-            if(!meepMeep){
-                target.addEffect(new MobEffectInstance(MobEffects.POISON, 300, f * 2));
+        if (!this.level.isClientSide) {
+            if (this.isCurled() && (target != null && target.isAlive())) {
+                this.setCurled(false);
+            }
+            if (this.isRattling() && target == null) {
+                this.setCurled(true);
+
+            }
+            if (!this.isCurled() && this.getTarget() == null && random.nextInt(500) == 0) {
+                maxCurlTime = 300 + random.nextInt(250);
+                this.setCurled(true);
+            }
+        }
+        if (this.getAnimation() == ANIMATION_BITE) {
+            if (this.getAnimationTick() == 4) {
+                this.playSound(AMSoundRegistry.RATTLESNAKE_ATTACK.get(), getSoundVolume(), getVoicePitch());
+            }
+            if (this.getAnimationTick() == 8 && target != null && this.distanceTo(target) < 2D) {
+                final boolean meepMeep = target instanceof EntityRoadrunner;
+                final int f = isBaby() ? 2 : 1;
+                target.hurt(DamageSource.mobAttack(this), meepMeep ? 1.0F : f * (float)getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                if (!meepMeep) {
+                    target.addEffect(new MobEffectInstance(MobEffects.POISON, 300, f * 2));
+                }
             }
         }
         if(isRattling()){
@@ -239,7 +247,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
         @Override
         public boolean canUse() {
             if(EntityRattlesnake.this.getRandom().nextInt(executionChance) == 0){
-                double dist = 5D;
+                final double dist = 5D;
                 List<LivingEntity> list = EntityRattlesnake.this.level.getEntitiesOfClass(LivingEntity.class, EntityRattlesnake.this.getBoundingBox().inflate(dist, dist, dist), WARNABLE_PREDICATE);
                 double d0 = Double.MAX_VALUE;
                 Entity possibleTarget = null;

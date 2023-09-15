@@ -69,8 +69,8 @@ public class EntityJerboa extends Animal {
 
     protected EntityJerboa(EntityType<? extends Animal> jerboa, Level lvl) {
         super(jerboa, lvl);
-        this.moveControl = new EntityJerboa.MoveHelperController(this);
-        this.jumpControl = new EntityJerboa.JumpHelperController(this);
+        this.moveControl = new MoveHelperController(this);
+        this.jumpControl = new JumpHelperController(this);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -81,10 +81,10 @@ public class EntityJerboa extends Animal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(JUMP_ACTIVE, Boolean.valueOf(false));
-        this.entityData.define(BEGGING, Boolean.valueOf(false));
-        this.entityData.define(SLEEPING, Boolean.valueOf(false));
-        this.entityData.define(BEFRIENDED, Boolean.valueOf(false));
+        this.entityData.define(JUMP_ACTIVE, false);
+        this.entityData.define(BEGGING, false);
+        this.entityData.define(SLEEPING, false);
+        this.entityData.define(BEFRIENDED, false);
     }
 
     protected void registerGoals() {
@@ -144,7 +144,7 @@ public class EntityJerboa extends Animal {
         this.prevReboundProgress = reboundProgress;
         this.prevSleepProgress = sleepProgress;
         this.prevBegProgress = begProgress;
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             this.entityData.set(JUMP_ACTIVE, !this.isOnGround());
         }
         if (this.entityData.get(JUMP_ACTIVE)) {
@@ -167,19 +167,24 @@ public class EntityJerboa extends Animal {
                 jumpProgress = Math.max(jumpProgress - 1F, 0);
             }
         }
-        if (this.isBegging() && begProgress < 5F) {
-            begProgress++;
+
+        if (this.isBegging()) {
+            if (begProgress < 5F)
+                begProgress++;
+        } else {
+            if (begProgress > 0F)
+                begProgress--;
         }
-        if (!this.isBegging() && begProgress > 0F) {
-            begProgress--;
+
+        if (this.isSleeping()) {
+            if (sleepProgress < 5F)
+                sleepProgress++;
+        } else {
+            if (sleepProgress > 0F)
+                sleepProgress--;
         }
-        if (this.isSleeping() && sleepProgress < 5F) {
-            sleepProgress++;
-        }
-        if (!this.isSleeping() && sleepProgress > 0F) {
-            sleepProgress--;
-        }
-        if (!this.level.isClientSide) {
+
+        if (!this.level.isClientSide()) {
             if (this.level.isDay() && this.getLastHurtByMob() == null && !this.isBegging()) {
                 if (tickCount % 10 == 0 && this.getRandom().nextInt(750) == 0) {
                     this.setSleeping(true);
@@ -191,27 +196,27 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isBegging() {
-        return this.entityData.get(BEGGING).booleanValue();
+        return this.entityData.get(BEGGING);
     }
 
     public void setBegging(boolean begging) {
-        this.entityData.set(BEGGING, Boolean.valueOf(begging));
+        this.entityData.set(BEGGING, begging);
     }
 
     public boolean isSleeping() {
-        return this.entityData.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING);
     }
 
     public void setSleeping(boolean sleeping) {
-        this.entityData.set(SLEEPING, Boolean.valueOf(sleeping));
+        this.entityData.set(SLEEPING, sleeping);
     }
 
     public boolean isBefriended() {
-        return this.entityData.get(BEFRIENDED).booleanValue();
+        return this.entityData.get(BEFRIENDED);
     }
 
     public void setBefriended(boolean befriended) {
-        this.entityData.set(BEFRIENDED, Boolean.valueOf(befriended));
+        this.entityData.set(BEFRIENDED, befriended);
     }
 
 
@@ -313,7 +318,7 @@ public class EntityJerboa extends Animal {
             }
         }
 
-        if (!this.level.isClientSide) {
+        if (!this.level.isClientSide()) {
             this.level.broadcastEntityEvent(this, (byte) 1);
         }
 
@@ -336,7 +341,7 @@ public class EntityJerboa extends Animal {
     }
 
     private void calculateRotationYaw(double x, double z) {
-        this.setYRot((float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F);
+        this.setYRot((float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) Mth.RAD_TO_DEG) - 90.0F);
     }
 
     private void enableJumpControl() {
@@ -367,7 +372,7 @@ public class EntityJerboa extends Animal {
             --this.currentMoveTypeDuration;
         }
 
-        if (this.onGround && this.shouldMove()) {
+        if (this.isOnGround() && this.shouldMove()) {
             if (!this.wasOnGround) {
                 this.setJumping(false);
                 this.checkLandingDelay();
@@ -404,7 +409,7 @@ public class EntityJerboa extends Animal {
             this.checkLandingDelay();
         }
 
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.isOnGround();
     }
 
     public void aiStep() {
@@ -484,7 +489,7 @@ public class EntityJerboa extends Animal {
         }
     }
 
-    public class JumpHelperController extends JumpControl {
+    public static class JumpHelperController extends JumpControl {
         private final EntityJerboa jerboa;
         private boolean canJump;
 

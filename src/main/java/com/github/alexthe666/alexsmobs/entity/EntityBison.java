@@ -76,7 +76,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
 
     protected EntityBison(EntityType<? extends Animal> animal, Level lvl) {
         super(animal, lvl);
-        this.maxUpStep = 1.1F;
+        this.maxUpStep = 1.1F; // FIXME
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -111,11 +111,11 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     public boolean isSnowy() {
-        return this.entityData.get(SNOWY).booleanValue();
+        return this.entityData.get(SNOWY);
     }
 
     public void setSnowy(boolean honeyed) {
-        this.entityData.set(SNOWY, Boolean.valueOf(honeyed));
+        this.entityData.set(SNOWY, honeyed);
     }
 
     protected void registerGoals() {
@@ -176,21 +176,22 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         if (!this.isCharging() && chargeProgress > 0F) {
             chargeProgress--;
         }
-        if (snowTimer == 0 && !level.isClientSide) {
-            snowTimer = 200 + random.nextInt(400);
-            if (this.isSnowy()) {
-                if (!permSnow) {
-                    if (!this.level.isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level, this.blockPosition().above())) {
-                        this.setSnowy(false);
+        if (!this.level.isClientSide) {
+            if (snowTimer == 0) {
+                snowTimer = 200 + random.nextInt(400);
+                if (this.isSnowy()) {
+                    if (!permSnow) {
+                        if (this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level, this.blockPosition().above())) {
+                            this.setSnowy(false);
+                        }
+                    }
+                } else {
+                    if (EntityGrizzlyBear.isSnowingAt(level, this.blockPosition())) {
+                        this.setSnowy(true);
                     }
                 }
-            } else {
-                if (!this.level.isClientSide && EntityGrizzlyBear.isSnowingAt(level, this.blockPosition())) {
-                    this.setSnowy(true);
-                }
             }
-        }
-        if (!level.isClientSide) {
+
             LivingEntity attackTarget = this.getTarget();
             if (this.getDeltaMovement().lengthSqr() < 0.05D && this.getAnimation() == NO_ANIMATION && (attackTarget == null || !attackTarget.isAlive())) {
                 if ((getRandom().nextInt(600) == 0 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
@@ -237,7 +238,10 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                     }
                 } else if (!this.isCharging()) {
                     final Animation animation = this.getAnimation();
-                    if (animation == NO_ANIMATION || animation == ANIMATION_PREPARE_CHARGE) {
+                    if(animation == NO_ANIMATION){
+                        this.setAnimation(ANIMATION_PREPARE_CHARGE);
+                    }
+                    else if (animation == ANIMATION_PREPARE_CHARGE) {
                         this.getNavigation().stop();
                         if (this.getAnimationTick() > 30) {
                             this.setCharging(true);
@@ -278,8 +282,9 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         final float rot = 180F + this.getYRot();
         final float hugeScale = huge ? 4F : 0.6F;
         final float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
-        final float x = Mth.sin(rot * Maths.piDividedBy180);
-        final float z = -Mth.cos(rot * Maths.piDividedBy180);
+        final float rotRad = rot * Mth.DEG_TO_RAD;
+        final float x = Mth.sin(rotRad);
+        final float z = -Mth.cos(rotRad);
         launch.hasImpulse = true;
         final Vec3 vec3 = this.getDeltaMovement();
         final Vec3 vec31 = vec3.add((new Vec3(x, 0.0D, z)).normalize().scale(strength));
@@ -291,7 +296,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     private void knockbackTarget(LivingEntity entity, float strength, float angle) {
         float rot = getYRot() + angle;
         if(entity != null){
-            entity.knockback(strength, Mth.sin(rot * Maths.piDividedBy180), -Mth.cos(rot * Maths.piDividedBy180));
+            entity.knockback(strength, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
         }
     }
 

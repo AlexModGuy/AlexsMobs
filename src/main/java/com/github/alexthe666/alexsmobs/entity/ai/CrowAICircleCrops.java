@@ -1,18 +1,21 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.phys.Vec3;
 
 public class CrowAICircleCrops extends MoveToBlockGoal {
 
-    private EntityCrow crow;
+    private final EntityCrow crow;
     private int idleAtFlowerTime = 0;
     private boolean isAboveDestinationBear;
     float circlingTime = 0;
@@ -88,7 +91,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
             if (this.isReachedTarget()) {
                 crow.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5));
                 if (this.idleAtFlowerTime >= 5) {
-                    this.pollinate();
+                    this.destroyCrop();
                     this.stop();
                 } else {
                     crow.peck();
@@ -99,10 +102,10 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     public BlockPos getVultureCirclePos(BlockPos target) {
-        float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
+        float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
-        BlockPos pos = new BlockPos(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);
+        BlockPos pos = AMBlockPos.fromCoords(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);
         if (crow.level.isEmptyBlock(pos)) {
             return pos;
         }
@@ -110,27 +113,30 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-        return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
+        return blockpos.distSqr(AMBlockPos.fromCoords(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
     }
 
     protected boolean isReachedTarget() {
         return this.isAboveDestinationBear;
     }
 
-    private void pollinate() {
+    private void destroyCrop() {
         if(crow.level.getBlockState(blockPos).getBlock() instanceof CropBlock){
-            CropBlock block = (CropBlock)crow.level.getBlockState(blockPos).getBlock();
-            int cropAge = crow.level.getBlockState(blockPos).getValue(block.getAgeProperty());
-            if(cropAge > 0){
-                crow.level.setBlockAndUpdate(blockPos, crow.level.getBlockState(blockPos).setValue(block.getAgeProperty(), cropAge - 1));
-            }else{
+            if(crow.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)){
+                CropBlock block = (CropBlock)crow.level.getBlockState(blockPos).getBlock();
+                int cropAge = block.getAge(crow.level.getBlockState(blockPos)); // FIXME
+                if(cropAge > 0){
+                    crow.level.setBlockAndUpdate(blockPos, block.getStateForAge(Math.max(0, cropAge - 1)));
+                }else{
+                    crow.level.destroyBlock(blockPos, true);
+                }
+            }
+        }else{
+            if(crow.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                 crow.level.destroyBlock(blockPos, true);
             }
-            stop();
-        }else{
-            crow.level.destroyBlock(blockPos, true);
-            stop();
         }
+        stop();
         tryTicks = 1200;
     }
 

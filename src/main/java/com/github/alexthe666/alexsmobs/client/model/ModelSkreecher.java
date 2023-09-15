@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySkreecher;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -141,16 +142,16 @@ public class ModelSkreecher extends AdvancedEntityModel<EntitySkreecher> {
         this.rightArm.setScale(1.0F, armScale, 1.0F);
         this.leftArm.setShouldScaleChildren(true);
         this.leftArm.setScale(1.0F, armScale, 1.0F);
-        progressRotationPrev(rightArmPivot, clingProgress, (float) Math.toRadians(-210), 0, 0, 5F);
-        progressRotationPrev(leftArmPivot, clingProgress, (float) Math.toRadians(-210), 0, 0, 5F);
-        progressRotationPrev(body, clingProgress, (float) Math.toRadians(30), 0, 0, 5F);
-        progressRotationPrev(head, clingProgress, (float) Math.toRadians(-30), 0, 0, 5F);
+        progressRotationPrev(rightArmPivot, clingProgress, Maths.rad(-210), 0, 0, 5F);
+        progressRotationPrev(leftArmPivot, clingProgress, Maths.rad(-210), 0, 0, 5F);
+        progressRotationPrev(body, clingProgress, Maths.rad(30), 0, 0, 5F);
+        progressRotationPrev(head, clingProgress, Maths.rad(-30), 0, 0, 5F);
         progressPositionPrev(body, clingProgress, 0, 8.5F, 0, 5F);
         progressPositionPrev(rightArmPivot, clingProgress, 0, -1F, 0, 5F);
         progressPositionPrev(leftArmPivot, clingProgress, 0, -1F, 0, 5F);
         progressPositionPrev(head, clingProgress, 0, 3F, 0F, 5F);
-        progressRotationPrev(rightLeg, clapProgress, (float) Math.toRadians(-10), (float) Math.toRadians(-25), 0, 5F);
-        progressRotationPrev(leftLeg, clapProgress, (float) Math.toRadians(-10), (float) Math.toRadians(25), 0, 5F);
+        progressRotationPrev(rightLeg, clapProgress, Maths.rad(-10), Maths.rad(-25), 0, 5F);
+        progressRotationPrev(leftLeg, clapProgress, Maths.rad(-10), Maths.rad(25), 0, 5F);
         this.walk(body, idleSpeed, idleDegree, false, 0F, 0F, ageInTicks, 1F);
         this.walk(rightLeg, idleSpeed, idleDegree, false, -1F, 0F, ageInTicks, feetStill);
         this.walk(leftLeg, idleSpeed, idleDegree, false, -1F, 0F, ageInTicks, feetStill);

@@ -68,7 +68,7 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
     }
 
     public static boolean canCombJellySpawn(EntityType<EntityCombJelly> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER && isLightLevelOk(pos, iServerWorld);
+        return reason == MobSpawnType.SPAWNER || iServerWorld.isWaterAt(pos) && iServerWorld.isWaterAt(pos.above()) && isLightLevelOk(pos, iServerWorld);
     }
 
     private static boolean isLightLevelOk(BlockPos pos, ServerLevelAccessor iServerWorld) {
@@ -95,15 +95,15 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.entityData.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, variant);
     }
 
     public float getJellyPitch() {
-        return Mth.clamp(this.entityData.get(JELLYPITCH).floatValue(), -90, 90);
+        return Mth.clamp(this.entityData.get(JELLYPITCH), -90, 90);
     }
 
     public void setJellyPitch(float pitch) {

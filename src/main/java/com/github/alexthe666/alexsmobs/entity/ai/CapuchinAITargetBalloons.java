@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 
 public class CapuchinAITargetBalloons extends Goal {
 
-    private EntityCapuchinMonkey monkey;
+    private final EntityCapuchinMonkey monkey;
     protected final boolean shouldCheckSight;
     private final boolean nearbyOnly;
     private int targetSearchStatus;

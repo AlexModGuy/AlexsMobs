@@ -90,7 +90,6 @@ public class EntityUnderminer extends PathfinderMob {
         if (reason == MobSpawnType.SPAWNER) {
             return true;
         }else{
-            int i = iServerWorld.getMaxLocalRawBrightness(pos);
             int j = 3;
             if(pos.getY() >= iServerWorld.getSeaLevel()){
                 return false;
@@ -100,6 +99,7 @@ public class EntityUnderminer extends PathfinderMob {
                 return false;
             }
 
+            final int i = iServerWorld.getMaxLocalRawBrightness(pos);
             return i > random.nextInt(j) ? false : checkMobSpawnRules(entityType, iServerWorld, reason, pos, random);
         }
     }
@@ -278,13 +278,12 @@ public class EntityUnderminer extends PathfinderMob {
             hidingProgress--;
         }
         if (!level.isClientSide) {
-            double xzSpeed = this.getDeltaMovement().horizontalDistance();
-            double distToFloor = Mth.clamp(calculateDistanceToFloor(), -1F, 1F);
+            final double xzSpeed = this.getDeltaMovement().horizontalDistance();
+            final double distToFloor = Mth.clamp(calculateDistanceToFloor(), -1F, 1F);
             if (Math.abs(distToFloor) > 0.01 && xzSpeed < 0.05 && !this.isActuallyInAWall()) {
                 if (distToFloor < 0.0) {
                     this.setDeltaMovement(this.getDeltaMovement().add(0, -Math.min(distToFloor * 0.1F, 0F), 0));
-                }
-                if (distToFloor > 0.0) {
+                } else if (distToFloor > 0.0) {
                     this.setDeltaMovement(this.getDeltaMovement().add(0, -Math.max(distToFloor * 0.1F, 0F), 0));
                 }
             }
@@ -361,7 +360,7 @@ public class EntityUnderminer extends PathfinderMob {
     }
 
     private boolean isActuallyInAWall() {
-        float f = this.getDimensions(this.getPose()).width * 0.1F;
+        final float f = this.getDimensions(this.getPose()).width * 0.1F;
         AABB aabb = AABB.ofSize(this.getEyePosition(), f, 1.0E-6D, f);
         return BlockPos.betweenClosedStream(aabb).anyMatch((p_201942_) -> {
             BlockState blockstate = this.level.getBlockState(p_201942_);
@@ -391,7 +390,7 @@ public class EntityUnderminer extends PathfinderMob {
     private List<BlockPos> getNearbyObscuredOres(int range, int maxOres) {
         List<BlockPos> obscuredBlocks = new ArrayList<>();
         BlockPos blockpos = this.blockPosition();
-        int half = range / 2;
+        final int half = range / 2;
         for (int i = 0; i <= half && i >= -half; i = (i <= 0 ? 1 : 0) - i) {
             for (int j = 0; j <= range && j >= -range; j = (j <= 0 ? 1 : 0) - j) {
                 for (int k = 0; k <= range && k >= -range; k = (k <= 0 ? 1 : 0) - k) {
@@ -484,7 +483,7 @@ public class EntityUnderminer extends PathfinderMob {
                 double nearestDist = Double.MAX_VALUE;
                 if (!obscuredOres.isEmpty()) {
                     for (BlockPos obscuredPos : obscuredOres) {
-                        double dist = EntityUnderminer.this.position().distanceTo(Vec3.atCenterOf(obscuredPos));
+                        final double dist = EntityUnderminer.this.position().distanceTo(Vec3.atCenterOf(obscuredPos));
                         if (nearestDist > dist) {
                             nearest = obscuredPos;
                             nearestDist = dist;
@@ -531,18 +530,18 @@ public class EntityUnderminer extends PathfinderMob {
         public void tick() {
             if (minePretendPos != null && minePretendStartState != null) {
                 mineTime++;
-                double distSqr = EntityUnderminer.this.distanceToSqr(minePretendPos.getX() + 0.5F, minePretendPos.getY() + 0.5F, minePretendPos.getZ() + 0.5F);
+                final double distSqr = EntityUnderminer.this.distanceToSqr(minePretendPos.getX() + 0.5F, minePretendPos.getY() + 0.5F, minePretendPos.getZ() + 0.5F);
                 if (distSqr < 6.5F) {
                     EntityUnderminer.this.getNavigation().stop();
                     if(EntityUnderminer.this.getNavigation().isDone()) {
                         EntityUnderminer.this.setMiningPos(minePretendPos);
                         EntityUnderminer.this.setMiningProgress((1F + (float) Math.cos(mineTime * 0.1F + Math.PI)) * 0.5F);
-                        double d1 = minePretendPos.getZ() + 0.5F - EntityUnderminer.this.getZ();
-                        double d3 = minePretendPos.getY() + 0.5F - EntityUnderminer.this.getY();
-                        double d2 = minePretendPos.getX() + 0.5F - EntityUnderminer.this.getX();
-                        float f = Mth.sqrt((float) (d2 * d2 + d1 * d1));
-                        EntityUnderminer.this.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
-                        EntityUnderminer.this.setXRot((float) (Mth.atan2(d3, f) * (double) (180F / (float) Math.PI)) + (float) Math.sin(EntityUnderminer.this.tickCount * 0.1F));
+                        final double d1 = minePretendPos.getZ() + 0.5F - EntityUnderminer.this.getZ();
+                        final double d3 = minePretendPos.getY() + 0.5F - EntityUnderminer.this.getY();
+                        final double d2 = minePretendPos.getX() + 0.5F - EntityUnderminer.this.getX();
+                        final float f = Mth.sqrt((float) (d2 * d2 + d1 * d1));
+                        EntityUnderminer.this.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
+                        EntityUnderminer.this.setXRot((float) (Mth.atan2(d3, f) * (double) Mth.RAD_TO_DEG) + (float) Math.sin(EntityUnderminer.this.tickCount * 0.1F));
                         EntityUnderminer.this.entityData.set(VISUALLY_MINING, true);
                         if (mineTime % 10 == 0) {
                             SoundType soundType = minePretendStartState.getBlock().getSoundType(minePretendStartState, EntityUnderminer.this.level, minePretendPos, EntityUnderminer.this);

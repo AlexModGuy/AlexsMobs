@@ -36,7 +36,7 @@ public class RenderBunfungus extends MobRenderer<EntityBunfungus, ModelBunfungus
         return entity.isSleeping() ? TEXTURE_SLEEPING : TEXTURE;
     }
 
-    class LayerHeldItem extends RenderLayer<EntityBunfungus, ModelBunfungus> {
+    static class LayerHeldItem extends RenderLayer<EntityBunfungus, ModelBunfungus> {
 
         public LayerHeldItem(RenderBunfungus render) {
             super(render);

@@ -65,8 +65,8 @@ public class EntitySquidGrapple extends Entity {
         Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(vector3d);
         float f = Mth.sqrt((float) (vector3d.x * vector3d.x + vector3d.z * vector3d.z));
-        this.setYRot(Mth.wrapDegrees((float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)) + 180));
-        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
+        this.setYRot(Mth.wrapDegrees((float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG) + 180));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }
@@ -147,9 +147,9 @@ public class EntitySquidGrapple extends Entity {
                 double d1 = this.getY() + vector3d.y;
                 double d2 = this.getZ() + vector3d.z;
                 float f = Mth.sqrt((float) (move.x * move.x + move.z * move.z));
-                if(!level.isClientSide){
-                    this.setYRot(Mth.wrapDegrees((float) (-Mth.atan2(move.x, move.z) * (double) (180F / (float) Math.PI))) - 180);
-                    this.setXRot((float) (Mth.atan2(move.y, f) * (double) (180F / (float) Math.PI)));
+                if(!this.level.isClientSide){
+                    this.setYRot(Mth.wrapDegrees((float) (-Mth.atan2(move.x, move.z) * (double) Mth.RAD_TO_DEG)) - 180);
+                    this.setXRot((float) (Mth.atan2(move.y, f) * (double) Mth.RAD_TO_DEG));
                     this.yRotO = this.getYRot();
                     this.xRotO = this.getXRot();
                 }
@@ -187,29 +187,25 @@ public class EntitySquidGrapple extends Entity {
                 this.setPos(vec3.add(offset));
                 float targetX = this.getXRot();
                 float targetY = this.getYRot();
-                switch (this.getAttachmentFacing()){
-                    case UP:
-                        targetX = 0;
-                        break;
-                    case DOWN:
-                        targetX = 180;
-                        break;
-                    case NORTH:
+                switch (this.getAttachmentFacing()) {
+                    case UP -> targetX = 0;
+                    case DOWN -> targetX = 180;
+                    case NORTH -> {
                         targetX = -90;
                         targetY = 0;
-                        break;
-                    case EAST:
+                    }
+                    case EAST -> {
                         targetX = -90;
                         targetY = 90;
-                        break;
-                    case SOUTH:
+                    }
+                    case SOUTH -> {
                         targetX = -90;
                         targetY = 180;
-                        break;
-                    case WEST:
+                    }
+                    case WEST -> {
                         targetX = -90;
                         targetY = -90;
-                        break;
+                    }
                 }
                 this.setXRot(targetX);
                 this.setYRot(targetY);

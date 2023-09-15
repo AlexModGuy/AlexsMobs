@@ -2,6 +2,8 @@
   "replace": false,
   "entries": [
     "alexsmobs:banana_drop",
-    "alexsmobs:blossom_drop"
+    "alexsmobs:blossom_drop",
+    "alexsmobs:ancient_dart",
+    "alexsmobs:pigshoes"
   ]
 }

@@ -1,12 +1,14 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityDropBear;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
     private final AdvancedModelBox root;
@@ -23,7 +25,7 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
     private final AdvancedModelBox claws_left;
     private final AdvancedModelBox arm_right;
     private final AdvancedModelBox claws_right;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelDropBear() {
         texWidth = 128;
@@ -108,53 +110,53 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
         animator.update(entity);
         animator.setAnimation(EntityDropBear.ANIMATION_BITE);
         animator.startKeyframe(5);
-        animator.rotate(head, (float)Math.toRadians(-40), 0, 0);
-        animator.rotate(jaw, (float)Math.toRadians(80), 0, 0);
+        animator.rotate(head, Maths.rad(-40), 0, 0);
+        animator.rotate(jaw, Maths.rad(80), 0, 0);
         animator.move(head, 0, 0, 2F);
         animator.move(ear_left, 0, 0, -2F);
         animator.move(ear_right, 0, 0, -2F);
         animator.endKeyframe();
         animator.setStaticKeyframe(1);
         animator.startKeyframe(2);
-        animator.rotate(head, (float)Math.toRadians(-5), 0, 0);
-        animator.rotate(jaw, (float)Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(-5), 0, 0);
+        animator.rotate(jaw, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(1);
         animator.setAnimation(EntityDropBear.ANIMATION_SWIPE_L);
         animator.startKeyframe(7);
-        animator.rotate(front_body, 0, (float)Math.toRadians(10F), 0);
-        animator.rotate(head, 0, 0, (float)Math.toRadians(10F));
-        animator.rotate(arm_left, (float)Math.toRadians(65F), 0, (float)Math.toRadians(-100F));
-        animator.rotate(arm_right, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(10F));
+        animator.rotate(front_body, 0, Maths.rad(10F), 0);
+        animator.rotate(head, 0, 0, Maths.rad(10F));
+        animator.rotate(arm_left, Maths.rad(65F), 0, Maths.rad(-100F));
+        animator.rotate(arm_right, Maths.rad(-15F), 0, Maths.rad(10F));
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(front_body, 0, (float)Math.toRadians(-20F), 0);
-        animator.rotate(arm_left, (float)Math.toRadians(-90F), 0, (float)Math.toRadians(20F));
-        animator.rotate(arm_right, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(20F));
+        animator.rotate(front_body, 0, Maths.rad(-20F), 0);
+        animator.rotate(arm_left, Maths.rad(-90F), 0, Maths.rad(20F));
+        animator.rotate(arm_right, Maths.rad(-15F), 0, Maths.rad(20F));
         animator.move(arm_left, 0, 0, -6F);
         animator.endKeyframe();
         animator.resetKeyframe(3);
         animator.setAnimation(EntityDropBear.ANIMATION_SWIPE_R);
         animator.startKeyframe(7);
-        animator.rotate(front_body, 0, (float)Math.toRadians(10F), 0);
-        animator.rotate(head, 0, 0, (float)Math.toRadians(10F));
-        animator.rotate(arm_right, (float)Math.toRadians(65F), 0, (float)Math.toRadians(100F));
-        animator.rotate(arm_left, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(-10F));
+        animator.rotate(front_body, 0, Maths.rad(10F), 0);
+        animator.rotate(head, 0, 0, Maths.rad(10F));
+        animator.rotate(arm_right, Maths.rad(65F), 0, Maths.rad(100F));
+        animator.rotate(arm_left, Maths.rad(-15F), 0, Maths.rad(-10F));
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(front_body, 0, (float)Math.toRadians(-20F), 0);
-        animator.rotate(arm_right, (float)Math.toRadians(-90F), 0, (float)Math.toRadians(-20F));
-        animator.rotate(arm_left, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(-20F));
+        animator.rotate(front_body, 0, Maths.rad(-20F), 0);
+        animator.rotate(arm_right, Maths.rad(-90F), 0, Maths.rad(-20F));
+        animator.rotate(arm_left, Maths.rad(-15F), 0, Maths.rad(-20F));
         animator.move(arm_right, 0, 0, -6F);
         animator.endKeyframe();
         animator.resetKeyframe(3);
         animator.setAnimation(EntityDropBear.ANIMATION_JUMPUP);
         animator.startKeyframe(10);
         animator.move(body, 0, 5, 0);
-        animator.rotate(arm_right, 0, 0, (float)Math.toRadians(40F));
-        animator.rotate(arm_left, 0, 0, (float)Math.toRadians(-40F));
-        animator.rotate(leg_right, 0, 0, (float)Math.toRadians(40F));
-        animator.rotate(leg_left, 0, 0, (float)Math.toRadians(-40F));
+        animator.rotate(arm_right, 0, 0, Maths.rad(40F));
+        animator.rotate(arm_left, 0, 0, Maths.rad(-40F));
+        animator.rotate(leg_right, 0, 0, Maths.rad(40F));
+        animator.rotate(leg_left, 0, 0, Maths.rad(-40F));
         animator.endKeyframe();
         animator.setStaticKeyframe(5);
         animator.resetKeyframe(5);
@@ -171,7 +173,7 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
         float idleDegree = 0.1F;
         float invert = upsideDownProgress > 0 ? -1F : 1F;
         progressPositionPrev(body, upsideDownProgress, 0, 1, 0, 5f);
-        progressRotationPrev(body, upsideDownProgress, 0, 0, (float) Math.toRadians(180) * (entityIn.fallRotation ? -1F : 1F), 5f);
+        progressRotationPrev(body, upsideDownProgress, 0, 0, Maths.rad(180) * (entityIn.fallRotation ? -1F : 1F), 5f);
         this.walk(leg_left, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
         this.bob(leg_left, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
         this.walk(leg_right, walkSpeed, walkDegree, true, 0F, 0F, limbSwing, limbSwingAmount);
@@ -188,8 +190,8 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
         this.flap(ear_right, idleSpeed, idleDegree, false, -1F, 0, ageInTicks, 1);
         this.flap(ear_left, idleSpeed, idleDegree, true, -1F, 0, ageInTicks, 1);
         this.flap(nose, idleSpeed * 0.5F, idleDegree, false, 0F, 0F, ageInTicks, 1);
-        this.head.rotateAngleY += netHeadYaw * 0.9F * invert * ((float)Math.PI / 180F);
-        this.head.rotateAngleX += headPitch * 0.9F *invert * ((float)Math.PI / 180F);
+        this.head.rotateAngleY += netHeadYaw * 0.9F * invert * Mth.DEG_TO_RAD;
+        this.head.rotateAngleX += headPitch * 0.9F *invert * Mth.DEG_TO_RAD;
 
     }
 

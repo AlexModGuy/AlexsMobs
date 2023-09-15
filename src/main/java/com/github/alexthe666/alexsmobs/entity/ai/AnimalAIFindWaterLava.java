@@ -12,8 +12,8 @@ import java.util.EnumSet;
 public class AnimalAIFindWaterLava extends Goal {
     private final PathfinderMob creature;
     private BlockPos targetPos;
-    private int executionChance = 30;
-    private double speed;
+    private final int executionChance = 30;
+    private final double speed;
 
     public AnimalAIFindWaterLava(PathfinderMob creature) {
         this(creature, 1.0F);

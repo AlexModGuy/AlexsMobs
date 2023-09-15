@@ -24,6 +24,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -185,9 +186,14 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
     }
 
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+        ItemStack pickaxe = builder.getOptionalParameter(LootContextParams.TOOL);
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        ItemStack stack = new ItemStack(AMBlockRegistry.TERRAPIN_EGG.get());
-        if (blockentity instanceof TileEntityTerrapinEgg) {
+        boolean silkTouch = false;
+        if(pickaxe != null){
+            silkTouch = pickaxe.getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0;
+        }
+        if (silkTouch && blockentity instanceof TileEntityTerrapinEgg) {
+            ItemStack stack = new ItemStack(AMBlockRegistry.TERRAPIN_EGG.get());
             TileEntityTerrapinEgg egg = (TileEntityTerrapinEgg)blockentity;
             CompoundTag tag = stack.getOrCreateTagElement("BlockEntityTag");
             CompoundTag parent1 = new CompoundTag();
@@ -205,9 +211,9 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
                 tag.put("Parent1Data", parent1);
                 tag.put("Parent2Data", parent2);
             }
+            return List.of(stack);
         }
-
-        return List.of(stack);
+        return List.of();
     }
 
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter w, List<Component> list, TooltipFlag flags) {

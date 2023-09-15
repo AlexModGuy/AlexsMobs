@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -108,7 +110,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
-        BlockPos pos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
+        BlockPos pos = AMBlockPos.get(this.getX(), this.getEyeY(), this.getZ());
         return !worldIn.getBlockState(pos).isSuffocating(worldIn, pos);
     }
 
@@ -156,8 +158,8 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DISPLAYING, Boolean.valueOf(false));
-        this.entityData.define(FROM_BUCKET, Boolean.valueOf(false));
+        this.entityData.define(DISPLAYING, false);
+        this.entityData.define(FROM_BUCKET, false);
         this.entityData.define(DISPLAY_ANGLE, 0F);
         this.entityData.define(DISPLAYER_UUID, Optional.empty());
         this.entityData.define(MOUTH_TICKS, 0);
@@ -205,20 +207,22 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         }
         //so the model does not sink in mud
         boolean mud = onMud();
-        if(mudProgress < 1F && mud){
-            mudProgress += 0.5f;
+        if (mud) {
+            if (mudProgress < 1F)
+                mudProgress += 0.5f;
+        } else {
+            if (mudProgress > 0)
+                mudProgress -= 0.5f;
         }
-        if(mudProgress > 0 && !mud){
-            mudProgress -= 0.5f;
-        }
-        boolean swim = !this.isOnGround() && this.isInWaterOrBubble();
+
+        boolean swim = !this.onGround && this.isInWaterOrBubble();
         if(swimProgress < 5F && swim){
             swimProgress++;
         }
         if(swimProgress > 0 && !swim){
             swimProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level.isClientSide) {
             if (isInWaterOrBubble()) {
                 swimTimer++;
             } else {
@@ -257,7 +261,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean isDisplaying() {
-        return this.entityData.get(DISPLAYING).booleanValue();
+        return this.entityData.get(DISPLAYING);
     }
 
     public void setDisplaying(boolean display) {
@@ -325,18 +329,12 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         return below.is(Blocks.MUD);
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 8.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+    public void calculateEntityAnimation(LivingEntity ignored, boolean flying) {
+        this.animationSpeedOld = this.animationSpeed;
+        float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.animationSpeed += (f2 - this.animationSpeed) * 0.4F;
+        this.animationPosition += this.animationSpeed;
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
@@ -352,19 +350,19 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     public boolean isOrderedToSit() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     @Override

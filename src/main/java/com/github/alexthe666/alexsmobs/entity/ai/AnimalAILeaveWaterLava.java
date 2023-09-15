@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -14,7 +15,7 @@ import java.util.EnumSet;
 public class AnimalAILeaveWaterLava extends Goal {
     private final PathfinderMob creature;
     private BlockPos targetPos;
-    private int executionChance = 30;
+    private final int executionChance = 30;
 
     public AnimalAILeaveWaterLava(PathfinderMob creature) {
         this.creature = creature;
@@ -42,7 +43,7 @@ public class AnimalAILeaveWaterLava extends Goal {
             this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
         if(this.creature.horizontalCollision && (this.creature.isInWater() || this.creature.isInLava())){
-            float f1 = creature.getYRot() * ((float)Math.PI / 180F);
+            float f1 = creature.getYRot() * Mth.DEG_TO_RAD;
             creature.setDeltaMovement(creature.getDeltaMovement().add((double)(-Mth.sin(f1) * 0.2F), 0.1D, (double)(Mth.cos(f1) * 0.2F)));
 
         }
@@ -70,7 +71,7 @@ public class AnimalAILeaveWaterLava extends Goal {
             if(waterDetected){
                 vector3d = LandRandomPos.getPos(this.creature, 23, 7);
             }else{
-                return new BlockPos(vector3d);
+                return AMBlockPos.fromVec3(vector3d);
             }
             tries++;
         }

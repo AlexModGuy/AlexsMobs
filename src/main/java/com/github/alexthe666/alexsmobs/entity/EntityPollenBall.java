@@ -38,18 +38,17 @@ public class EntityPollenBall extends EntityMobProjectile {
             if (target == null) {
                 this.kill();
             }
-            double d0 = target.getX() - this.getX();
-            double d1 = target.getY() + target.getBbHeight() * 0.5F - this.getY();
-            double d2 = target.getZ() - this.getZ();
-            Vec3 vector3d = new Vec3(d0, d1, d2);
-            float speed = 0.35F;
+            final double d0 = target.getX() - this.getX();
+            final double d1 = target.getY() + target.getBbHeight() * 0.5F - this.getY();
+            final double d2 = target.getZ() - this.getZ();
+            final float speed = 0.35F;
             shoot(d0, d1, d2, speed, 0);
-            this.setYRot(-((float) Mth.atan2(d0, d2)) * (180F / (float) Math.PI));
+            this.setYRot(-((float) Mth.atan2(d0, d2)) * Mth.RAD_TO_DEG);
         }
-        if(level.isClientSide && random.nextInt(2) == 0){
-            float r1 = (random.nextFloat() - 0.5F) * 0.5F;
-            float r2 = (random.nextFloat() - 0.5F) * 0.5F;
-            float r3 = (random.nextFloat() - 0.5F) * 0.5F;
+        if(this.level.isClientSide && random.nextInt(2) == 0){
+            final float r1 = (random.nextFloat() - 0.5F) * 0.5F;
+            final float r2 = (random.nextFloat() - 0.5F) * 0.5F;
+            final float r3 = (random.nextFloat() - 0.5F) * 0.5F;
             this.level.addParticle(ParticleTypes.FALLING_NECTAR, this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
         }
     }

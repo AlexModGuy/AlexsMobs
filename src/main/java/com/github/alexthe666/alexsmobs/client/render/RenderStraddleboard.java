@@ -45,8 +45,10 @@ public class RenderStraddleboard extends EntityRenderer<EntityStraddleboard> {
         float r = (float)(k >> 16 & 255) / 255.0F;
         float g = (float)(k >> 8 & 255) / 255.0F;
         float b = (float)(k & 255) / 255.0F;
-        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(entityIn.prevBoardRot + partialTicks * (entityIn.boardRot - entityIn.prevBoardRot)));
-        matrixStackIn.translate(0, -1.5F - Math.abs(entityIn.boardRot * 0.007F) - (lava ? 0.25F : 0), 0);
+        float boardRot = entityIn.prevBoardRot + partialTicks * (entityIn.getBoardRot() - entityIn.prevBoardRot);
+        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(boardRot));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180));
+        matrixStackIn.translate(0, -1.5F - Math.abs(boardRot * 0.007F) - (lava ? 0 : 0.25F), 0);
         BOARD_MODEL.animateBoard(entityIn, entityIn.tickCount + partialTicks);
         VertexConsumer ivertexbuilder2 = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_OVERLAY));
         BOARD_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder2, packedLightIn, NO_OVERLAY, r, g, b, 1.0F);

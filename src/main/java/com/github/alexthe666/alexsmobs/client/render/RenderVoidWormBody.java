@@ -22,8 +22,8 @@ public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart,
     private static final ResourceLocation TEXTURE_TAIL = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail.png");
     private static final ResourceLocation TEXTURE_TAIL_HURT = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail_hurt.png");
     private static final ResourceLocation TEXTURE_TAIL_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail_glow.png");
-    private ModelVoidWormBody bodyModel = new ModelVoidWormBody(0.0F);
-    private ModelVoidWormTail tailModel = new ModelVoidWormTail(0.0F);
+    private final ModelVoidWormBody bodyModel = new ModelVoidWormBody(0.0F);
+    private final ModelVoidWormTail tailModel = new ModelVoidWormTail(0.0F);
 
     public RenderVoidWormBody(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelVoidWormBody(0.0F), 1F);

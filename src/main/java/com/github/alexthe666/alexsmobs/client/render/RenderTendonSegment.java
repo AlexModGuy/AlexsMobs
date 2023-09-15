@@ -84,8 +84,8 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             if(entity.hasClaw() || entity.isRetracting()){
                 poseStack.pushPose();
                 poseStack.translate(to.x, to.y, to.z);
-                float rotY = (float) (Mth.atan2(to.x, to.z) * (double) (180F / (float) Math.PI));
-                float rotX = (float) (-(Mth.atan2(to.y, to.horizontalDistance()) * (double) (180F / (float) Math.PI)));
+                float rotY = (float) (Mth.atan2(to.x, to.z) * (double) Mth.RAD_TO_DEG);
+                float rotX = (float) (-(Mth.atan2(to.y, to.horizontalDistance()) * (double) Mth.RAD_TO_DEG));
                 CLAW_MODEL.setAttributes(rotX, rotY, 1 - progress);
                 CLAW_MODEL.renderToBuffer(poseStack, clawConsumer, getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1F, 1, 1F);
                 poseStack.popPose();
@@ -102,8 +102,8 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
         if(mob instanceof Player && segment.isCreator(mob)){
             Player player = (Player) mob;
             float f = player.getAttackAnim(partialTicks);
-            float f1 = Mth.sin(Mth.sqrt(f) * (float) Math.PI);
-            float f2 = Mth.lerp(partialTicks, player.yBodyRotO, player.yBodyRot) * ((float) Math.PI / 180F);
+            float f1 = Mth.sin(Mth.sqrt(f) * Mth.PI);
+            float f2 = Mth.lerp(partialTicks, player.yBodyRotO, player.yBodyRot) * Mth.DEG_TO_RAD;
             int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
             double d0 = (double) Mth.sin(f2);
             double d1 = (double) Mth.cos(f2);
@@ -147,7 +147,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             int l = j & 255;
             int i1 = i >> 16 & 255;
             int j1 = j >> 16 & 255;
-            return (k > l ? k : l) | (i1 > j1 ? i1 : j1) << 16;
+            return (Math.max(k, l)) | (Math.max(i1, j1)) << 16;
         }else{
             return 0;
         }

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCosmicCod;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -69,7 +70,7 @@ public class ModelCosmicCod extends AdvancedEntityModel<EntityCosmicCod> {
         float idleDegree = 0.25F;
         float swimSpeed = 0.8F;
         float swimDegree = 0.5F;
-        float pitch = (float) Math.toRadians(Mth.rotLerp(ageInTicks - entity.tickCount, entity.prevFishPitch, entity.getFishPitch()));
+        float pitch = Maths.rad(Mth.rotLerp(ageInTicks - entity.tickCount, entity.prevFishPitch, entity.getFishPitch()));
         this.swing(this.tail, idleSpeed, idleDegree, true, 1F, 0F, ageInTicks, 1);
         this.flap(this.left_fin, idleSpeed, idleDegree, true, 3F, 0F, ageInTicks, 1);
         this.flap(this.right_fin, idleSpeed, idleDegree, false, 3F, 0F, ageInTicks, 1);

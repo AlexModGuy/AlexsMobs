@@ -35,7 +35,7 @@ public class SemiAquaticPathNavigator extends WaterBoundPathNavigation {
     }
 
     public boolean isStableDestination(BlockPos pos) {
-        return  !this.level.getBlockState(pos.below()).isAir();
+        return !this.level.getBlockState(pos.below()).isAir();
     }
 
     public void setCanFloat(boolean canSwim) {

@@ -42,9 +42,9 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
             matrixStackIn.pushPose();
             float moveDown = Math.max(bottomOfChain - i, 0);
             matrixStackIn.translate(0, 0.1F + moveDown, 0);
-            if (i == 0) {
-                float leftovers = 1F - bottomOfChain % 0.5F;
-            }
+//            if (i == 0) {
+//                float leftovers = 1F - bottomOfChain % 0.5F;
+//            }
             if (flag) {
                 matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
             }

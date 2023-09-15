@@ -18,14 +18,14 @@ public class RenderWarpedMosco extends MobRenderer<EntityWarpedMosco, ModelWarpe
 
     public RenderWarpedMosco(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelWarpedMosco(), 1F);
-        this.addLayer(new RenderWarpedMosco.WarpedMoscoGlowLayer(this));
+        this.addLayer(new WarpedMoscoGlowLayer(this));
     }
 
     public ResourceLocation getTextureLocation(EntityWarpedMosco entity) {
         return TEXTURE;
     }
 
-    class WarpedMoscoGlowLayer extends RenderLayer<EntityWarpedMosco, ModelWarpedMosco> {
+    static class WarpedMoscoGlowLayer extends RenderLayer<EntityWarpedMosco, ModelWarpedMosco> {
 
         public WarpedMoscoGlowLayer(RenderWarpedMosco p_i50928_1_) {
             super(p_i50928_1_);

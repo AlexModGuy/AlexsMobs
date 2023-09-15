@@ -10,6 +10,8 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -70,13 +72,13 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     private static final EntityDataAccessor<Optional<UUID>> DATA_TRUSTED_ID_0 = SynchedEntityData.defineId(EntityRhinoceros.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Optional<UUID>> DATA_TRUSTED_ID_1 = SynchedEntityData.defineId(EntityRhinoceros.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> ANGRY = SynchedEntityData.defineId(EntityRhinoceros.class, EntityDataSerializers.BOOLEAN);
-    private static final HashMap<String, Integer> potionToColor = new HashMap<String, Integer>();
+    private static final Object2IntMap<String> potionToColor = new Object2IntOpenHashMap<>();
     private int animationTick;
     private Animation currentAnimation;
 
     protected EntityRhinoceros(EntityType type, Level level) {
         super(type, level);
-        this.maxUpStep = 1.1F;
+        this.maxUpStep = 1.1F; // FIXME
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -145,27 +147,28 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                 this.level.setBlock(down, Blocks.DIRT.defaultBlockState(), 2);
                 this.heal(10);
             }
-            if (this.getTarget() != null && this.getTarget().isAlive()) {
-                this.setAngry(this.distanceTo(this.getTarget()) < 20);
-                double dist = this.distanceTo(this.getTarget());
-                if (hasLineOfSight(this.getTarget())) {
-                    this.lookAt(this.getTarget(), 30, 30);
+            LivingEntity target = this.getTarget();
+            if (target != null && target.isAlive()) {
+                this.setAngry(this.distanceTo(target) < 20);
+                double dist = this.distanceTo(target);
+                if (hasLineOfSight(target)) {
+                    this.lookAt(target, 30, 30);
                     this.yBodyRot = this.getYRot();
                 }
                 if (dist < this.getBbWidth() + 3.0F) {
                     if (this.getAnimation() == NO_ANIMATION) {
                         this.setAnimation(random.nextBoolean() ? ANIMATION_SLASH : ANIMATION_FLING);
                     }
-                    if(dist < this.getBbWidth() + 1.5F && this.hasLineOfSight(this.getTarget())){
+                    if(dist < this.getBbWidth() + 1.5F && this.hasLineOfSight(target)){
                         if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() >= 5 && this.getAnimationTick() <= 8) {
                             float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-                            if (this.getTarget() instanceof Raider) {
+                            if (target instanceof Raider) {
                                 dmg = 10;
                             }
-                            attackWithPotion(this.getTarget(), dmg);
-                            launch(this.getTarget(), 0, 1F);
+                            attackWithPotion(target, dmg);
+                            launch(target, 0, 1F);
                             for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
-                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != this.getTarget()){
+                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != target){
                                     attackWithPotion(entity, Math.max(dmg - 5, 1));
                                     launch(entity, 0, 0.5F);
                                 }
@@ -173,13 +176,13 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                         }
                         if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() >= 9 && this.getAnimationTick() <= 11 || this.getAnimationTick() >= 19 && this.getAnimationTick() <= 21)) {
                             float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-                            if (this.getTarget() instanceof Raider) {
+                            if (target instanceof Raider) {
                                 dmg = 10;
                             }
-                            attackWithPotion(this.getTarget(), dmg);
-                            launch(this.getTarget(), this.getAnimationTick() <= 15 ? -90 : 90, 1F);
+                            attackWithPotion(target, dmg);
+                            launch(target, this.getAnimationTick() <= 15 ? -90 : 90, 1F);
                             for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
-                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != this.getTarget()){
+                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != target){
                                     attackWithPotion(entity, Math.max(dmg - 5, 1));
                                     launch(entity, this.getAnimationTick() <= 15 ? -90 : 90, 0.5F);
                                 }
@@ -231,7 +234,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         if (s.isEmpty()) {
             return -1;
         } else {
-            if (potionToColor.get(s) == null) {
+            if (!potionToColor.containsKey(s)) {
                 MobEffect effect = getPotionEffect();
                 if (effect != null) {
                     int color = effect.getColor();
@@ -240,7 +243,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                 }
                 return -1;
             } else {
-                return potionToColor.get(s);
+                return potionToColor.getInt(s);
             }
         }
     }
@@ -296,11 +299,12 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     private void launch(Entity launch, float angle, float scale) {
-        float rot = 180F + angle + this.getYRot();
-        float hugeScale = 1.0F + random.nextFloat() * 0.5F * scale;
-        float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
-        float x = Mth.sin(rot * ((float) Math.PI / 180F));
-        float z = -Mth.cos(rot * ((float) Math.PI / 180F));
+        final float rot = 180F + angle + this.getYRot();
+        final float hugeScale = 1.0F + random.nextFloat() * 0.5F * scale;
+        final float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
+        final float rotRad = rot * Mth.DEG_TO_RAD;
+        final float x = Mth.sin(rotRad);
+        final float z = -Mth.cos(rotRad);
         launch.hasImpulse = true;
         Vec3 vec3 = this.getDeltaMovement();
         Vec3 vec31 = vec3.add((new Vec3(x, 0.0D, z)).normalize().scale(strength));
@@ -344,11 +348,11 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     public boolean isAngry() {
-        return this.entityData.get(ANGRY).booleanValue();
+        return this.entityData.get(ANGRY);
     }
 
     public void setAngry(boolean angry) {
-        this.entityData.set(ANGRY, Boolean.valueOf(angry));
+        this.entityData.set(ANGRY, angry);
     }
 
     private void attackWithPotion(LivingEntity target, float dmg) {
@@ -480,7 +484,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     private boolean trustsAny() {
-        return !this.entityData.get(DATA_TRUSTED_ID_0).isEmpty() || !this.entityData.get(DATA_TRUSTED_ID_1).isEmpty();
+        return this.entityData.get(DATA_TRUSTED_ID_0).isPresent() || this.entityData.get(DATA_TRUSTED_ID_1).isPresent();
     }
 
     class DefendTrustedTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {

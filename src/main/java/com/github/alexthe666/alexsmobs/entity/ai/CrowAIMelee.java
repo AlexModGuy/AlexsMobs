@@ -1,7 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
-import net.minecraft.core.BlockPos;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +11,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
 public class CrowAIMelee extends Goal {
-    private EntityCrow crow;
+    private final EntityCrow crow;
     float circlingTime = 0;
     float circleDistance = 1;
     float yLevel = 2;
@@ -73,11 +74,11 @@ public class CrowAIMelee extends Goal {
     }
 
     public Vec3 getVultureCirclePos(Vec3 target) {
-        float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
+        float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
-        if (crow.level.isEmptyBlock(new BlockPos(pos))) {
+        if (crow.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;

@@ -32,6 +32,7 @@ public class AMTagRegistry {
     public static final TagKey<EntityType<?>> VOID_PORTAL_IGNORES = registerEntityTag("void_portal_ignores");
 
     public static final TagKey<EntityType<?>> SKUNK_FEARS = registerEntityTag("skunk_fears");
+    public static final TagKey<EntityType<?>> CAIMAN_TARGETS = registerEntityTag("caiman_targets");
 
     public static final TagKey<Item> BANANAS = registerItemTag("bananas");
     public static final TagKey<Item> RACCOON_FOODSTUFFS = registerItemTag("raccoon_foodstuffs");
@@ -105,6 +106,7 @@ public class AMTagRegistry {
     public static final TagKey<Biome> SPAWNS_HUGE_CATFISH = registerBiomeTag("spawns_huge_catfish");
     public static final TagKey<Biome> SPAWNS_WHITE_MANTIS_SHRIMP = registerBiomeTag("spawns_white_mantis_shrimp");
     public static final TagKey<Biome> SKREECHERS_CAN_SPAWN_WARDENS = registerBiomeTag("skreechers_can_spawn_wardens");
+    public static final TagKey<Biome> SPAWNS_MURMURS_IGNORE_HEIGHT = registerBiomeTag("spawns_murmurs_ignore_height");
 
     public static final TagKey<Structure> SPAWNS_UNDERMINERS = registerStructureTag("spawns_underminers");
 

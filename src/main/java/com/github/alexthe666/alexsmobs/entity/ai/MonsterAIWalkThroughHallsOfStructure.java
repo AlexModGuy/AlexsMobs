@@ -25,7 +25,7 @@ public class MonsterAIWalkThroughHallsOfStructure extends RandomStrollGoal {
     public MonsterAIWalkThroughHallsOfStructure(PathfinderMob mob, double speed, int chance, TagKey<Structure> structureTagKey, double maximumDistance) {
         super(mob, speed, chance, false);
         this.structureTagKey = structureTagKey;
-        this.maximumDistance = 50;
+        this.maximumDistance = 32;
     }
 
     @Nullable
@@ -64,8 +64,8 @@ public class MonsterAIWalkThroughHallsOfStructure extends RandomStrollGoal {
         if(start.isValid()){
             return start;
         }else{
-            BlockPos nearestOf = serverlevel.findNearestMapStructure(structureTagKey, pos, (int)this.maximumDistance, false);
-            if(nearestOf == null){
+            BlockPos nearestOf = serverlevel.findNearestMapStructure(structureTagKey, pos, (int)(this.maximumDistance / 16), false);
+            if(nearestOf == null || nearestOf.distToCenterSqr(this.mob.getX(), this.mob.getY(), this.mob.getZ()) > 256 || !serverlevel.isLoaded(nearestOf)){
                 return StructureStart.INVALID_START;
             }
             return serverlevel.structureManager().getStructureWithPieceAt(nearestOf, structureTagKey);

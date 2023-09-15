@@ -2,7 +2,9 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -234,45 +236,50 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         this.yHeadRot = this.getYRot();
         prevFlutterPitch = this.getFlutterPitch();
         prevTentacleProgress = this.tentacleProgress;
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        if (isFlying()) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
+
+        if (isSitting()) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (isSitting() && sitProgress < 5F) {
-            sitProgress++;
-        }
-        if (!isSitting() && sitProgress > 0F) {
-            sitProgress--;
-        }
-        if (entityData.get(TENTACLING) && tentacleProgress < 5F) {
+
+        if (tentacleProgress < 5F && entityData.get(TENTACLING)) {
             tentacleProgress++;
         }
 
-        if(!entityData.get(TENTACLING) && tentacleProgress == 5F){
+        if(tentacleProgress == 5F && !entityData.get(TENTACLING)){
             if (squishCooldown == 0 && this.isFlying()) {
                 squishCooldown = 10;
                 this.playSound(AMSoundRegistry.FLUTTER_FLAP.get(), 3F, 1.5F * this.getVoicePitch());
             }
         }
-        if (!entityData.get(TENTACLING) && tentacleProgress > 0F) {
+        if (tentacleProgress > 0F && !entityData.get(TENTACLING)) {
             tentacleProgress--;
         }
         this.FlutterRotation += this.rotationVelocity;
-        if ((double) this.FlutterRotation > (Math.PI * 2D)) {
+        if ((double) this.FlutterRotation > (Mth.TWO_PI)) {
             if (this.level.isClientSide) {
-                this.FlutterRotation = ((float) Math.PI * 2F);
+                this.FlutterRotation = Mth.TWO_PI;
             } else {
-                this.FlutterRotation = (float) ((double) this.FlutterRotation - (Math.PI * 2D));
+                this.FlutterRotation = (float) ((double) this.FlutterRotation - (Mth.TWO_PI));
                 if (this.random.nextInt(10) == 0) {
                     this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.5F;
                 }
                 this.level.broadcastEntityEvent(this, (byte) 19);
             }
         }
-        if (this.FlutterRotation < (float) Math.PI) {
-            float f = this.FlutterRotation / (float) Math.PI;
+        if (this.FlutterRotation < Mth.PI) {
+            float f = this.FlutterRotation / Mth.PI;
             if ((double) f >= 0.95F) {
                 this.entityData.set(TENTACLING, true);
                 if (squishCooldown == 0 && this.isFlying()) {
@@ -303,7 +310,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 timeFlying = 0;
             }
         }
-        if (!this.onGround && this.getDeltaMovement().y < 0.0D) {
+        if (!this.isOnGround() && this.getDeltaMovement().y < 0.0D) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.8D, 1.0D));
         }
         if (this.isFlying()) {
@@ -451,7 +458,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 if (vec != null) {
                     this.getMoveControl().setWantedPosition(vec.getX(), vec.getY(), vec.getZ(), followSpeed);
                 }
-                if (this.onGround) {
+                if (this.isOnGround()) {
                     this.setFlying(false);
                 }
             } else {
@@ -543,8 +550,8 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         float radius = 1 + this.getRandom().nextInt(3) + radiusAdd;
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + (this.getRandom().nextFloat() * neg) * 0.2F;
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + (this.getRandom().nextFloat() * neg) * 0.2F;
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getFlutterGround(radialPos);
@@ -562,10 +569,10 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.get(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getFlutterGround(radialPos);
         if (ground.getY() <= -63) {
             return Vec3.upFromBottomCenterOf(ground, 110 + random.nextInt(20));
@@ -769,10 +776,10 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
 
         public BlockPos getShootFromPos(LivingEntity target) {
             float radius = 3 + parentEntity.getRandom().nextInt(5);
-            float angle = (0.01745329251F * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(target.getX() + extraX, target.getY() + 2, target.getZ() + extraZ);
+            BlockPos radialPos = AMBlockPos.get(target.getX() + extraX, target.getY() + 2, target.getZ() + extraZ);
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(radialPos))) {
                 return radialPos;
             }

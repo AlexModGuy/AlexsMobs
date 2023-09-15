@@ -27,7 +27,7 @@ public class ButtonTransmute extends Button {
         int cost = AMConfig.transmutingExperienceCost;
         if(!canBeTransmuted(cost)){
             color = 16736352;
-        }else if (this.active && this.isHoveredOrFocused()) {
+        }else if (this.active && this.isHovered) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, GUITransmutationTable.TEXTURE);
@@ -53,5 +53,7 @@ public class ButtonTransmute extends Button {
         if(canBeTransmuted(AMConfig.transmutingExperienceCost)){
             super.onPress();
         }
+        this.isHovered = false;
+        this.setFocused(false);
     }
 }

@@ -15,10 +15,10 @@ import java.util.EnumSet;
 
 public class GrizzlyBearAIAprilFools extends Goal {
 
-    private EntityGrizzlyBear bear;
+    private final EntityGrizzlyBear bear;
     private Player target;
     private int runDelay = 0;
-    private double maxDistance = 13;
+    private final double maxDistance = 13;
     private int powerOutTimer = 0;
     private int musicBoxTimer = 0;
     private int maxMusicBoxTime = 0;

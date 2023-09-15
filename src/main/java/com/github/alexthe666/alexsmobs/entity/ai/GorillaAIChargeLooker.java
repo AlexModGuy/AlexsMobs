@@ -14,7 +14,7 @@ public class GorillaAIChargeLooker extends Goal {
     private final EntityGorilla gorilla;
     private final double range = 20D;
     private Player starer;
-    private double speed;
+    private final double speed;
     private int runDelay = 0;
 
     public GorillaAIChargeLooker(EntityGorilla gorilla, double speed) {

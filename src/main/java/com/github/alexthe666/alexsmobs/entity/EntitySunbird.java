@@ -3,6 +3,8 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -153,13 +155,13 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
         } else {
-            BlockPos ground = new BlockPos(this.getX(), this.getY() - 1.0D, this.getZ());
+            BlockPos ground = AMBlockPos.get(this.getX(), this.getY() - 1.0D, this.getZ());
             float f = 0.91F;
             if (this.onGround) {
                 f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
             }
 
-            float f1 = 0.16277137F / (f * f * f);
+            //float f1 = 0.16277137F / (f * f * f);
             f = 0.91F;
             if (this.onGround) {
                 f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
@@ -178,17 +180,17 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         super.tick();
         prevBirdPitch = this.birdPitch;
         prevScorchProgress = this.scorchProgress;
-        float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+        float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
         this.birdPitch = f2;
-        if (level.isClientSide) {
-            float radius = 0.35F + random.nextFloat() * 3.5F;
-            float angle = (0.01745329251F * ((random.nextBoolean() ? -85F : 85F) + this.yBodyRot));
-            float angleMotion = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
-            double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
-            double extraZMotion = -0.2F * Mth.cos(angleMotion);
-            double yRandom = 0.2F + random.nextFloat() * 0.3F;
+        if (this.level.isClientSide) {
+            final float radius = 0.35F + random.nextFloat() * 3.5F;
+            final float angle = (Maths.STARTING_ANGLE * ((random.nextBoolean() ? -85F : 85F) + this.yBodyRot));
+            final float angleMotion = (Maths.STARTING_ANGLE * this.yBodyRot);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
+            final double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
+            final double extraZMotion = -0.2F * Mth.cos(angleMotion);
+            final double yRandom = 0.2F + random.nextFloat() * 0.3F;
             this.level.addParticle(AMParticleRegistry.SUNBIRD_FEATHER.get(), this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
         } else {
             if (this.tickCount % 100 == 0) {
@@ -229,13 +231,17 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                 }
             }
         }
-        if (this.isScorching() && scorchProgress < 20F) {
-            scorchProgress++;
+
+        final boolean scorching = this.isScorching();
+        if (scorching) {
+            if (scorchProgress < 20F)
+                scorchProgress++;
+        } else {
+            if (scorchProgress > 0F)
+                scorchProgress--;
         }
-        if (!this.isScorching() && scorchProgress > 0F) {
-            scorchProgress--;
-        }
-        if (this.isScorching() && scorchProgress == 20F && !level.isClientSide) {
+
+        if (scorching && scorchProgress == 20F && !this.level.isClientSide) {
             if(fullScorchTime > 30){
                 this.setScorching(false);
             }else if(fullScorchTime % 5 == 0){
@@ -257,11 +263,11 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     }
 
     public boolean isScorching() {
-        return this.entityData.get(SCORCHING).booleanValue();
+        return this.entityData.get(SCORCHING);
     }
 
     public void setScorching(boolean scorching) {
-        this.entityData.set(SCORCHING, Boolean.valueOf(scorching));
+        this.entityData.set(SCORCHING, scorching);
     }
 
 
@@ -335,7 +341,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
                 Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
-                double d0 = vector3d.length();
+                final double d0 = vector3d.length();
                 if (d0 < parentEntity.getBoundingBox().getSize()) {
                     this.operation = MoveControl.Operation.WAIT;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
@@ -343,12 +349,12 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                     if (parentEntity.getTarget() == null) {
                         Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     } else {
-                        double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
-                        double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                        final double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
+                        final double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
+                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 }
@@ -423,11 +429,11 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         }
 
         private BlockPos getBlockInViewBeacon(BlockPos orbitPos, float gatheringCircleDist) {
-            float angle = (0.01745329251F * (float) 9 * (parentEntity.orbitClockwise ? -parentEntity.tickCount : parentEntity.tickCount));
-            double extraX = gatheringCircleDist * Mth.sin((angle));
-            double extraZ = gatheringCircleDist * Mth.cos(angle);
+            final float angle = (Maths.STARTING_ANGLE * (float) 9 * (parentEntity.orbitClockwise ? -parentEntity.tickCount : parentEntity.tickCount));
+            final double extraX = gatheringCircleDist * Mth.sin((angle));
+            final double extraZ = gatheringCircleDist * Mth.cos(angle);
             if (orbitPos != null) {
-                BlockPos pos = new BlockPos(orbitPos.getX() + extraX, orbitPos.getY() + parentEntity.random.nextInt(2) + 2, orbitPos.getZ() + extraZ);
+                BlockPos pos = AMBlockPos.get(orbitPos.getX() + extraX, orbitPos.getY() + parentEntity.random.nextInt(2) + 2, orbitPos.getZ() + extraZ);
                 if (parentEntity.level.isEmptyBlock(new BlockPos(pos))) {
                     return pos;
                 }
@@ -436,16 +442,16 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         }
 
         public BlockPos getBlockInViewSunbird() {
-            float radius = 0.75F * (0.7F * 6) * -3 - parentEntity.getRandom().nextInt(24);
-            float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
-            float renderYawOffset = parentEntity.yBodyRot;
-            float angle = (0.01745329251F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, 0, parentEntity.getZ() + extraZ);
+            final float radius = 0.75F * (0.7F * 6) * -3 - parentEntity.getRandom().nextInt(24);
+            final float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
+            final float renderYawOffset = parentEntity.yBodyRot;
+            final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
+            BlockPos radialPos = AMBlockPos.get(parentEntity.getX() + extraX, 0, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
-            int distFromGround = (int) parentEntity.getY() - ground.getY();
-            int flightHeight = Math.max(ground.getY(), 230 + parentEntity.getRandom().nextInt(40)) - ground.getY();
+            final int distFromGround = (int) parentEntity.getY() - ground.getY();
+            final int flightHeight = Math.max(ground.getY(), 230 + parentEntity.getRandom().nextInt(40)) - ground.getY();
             BlockPos newPos = radialPos.above(distFromGround > 16 ? flightHeight : (int) parentEntity.getY() + parentEntity.getRandom().nextInt(16) + 1);
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(newPos)) && parentEntity.distanceToSqr(Vec3.atCenterOf(newPos)) > 6) {
                 return newPos;

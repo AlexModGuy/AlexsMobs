@@ -53,19 +53,13 @@ public class BlockVoidWormEffigy extends Block {
     }
 
     public VoxelShape getShape(BlockState p_54561_, BlockGetter p_54562_, BlockPos p_54563_, CollisionContext p_54564_) {
-        switch(p_54561_.getValue(FACING)) {
-            case NORTH:
-                return NORTH_SHAPE;
-            case SOUTH:
-                return SOUTH_SHAPE;
-            case EAST:
-                return EAST_SHAPE;
-            case WEST:
-                return WEST_SHAPE;
-            case UP:
-                return UP_SHAPE;
-            default:
-                return DOWN_SHAPE;
-        }
+        return switch (p_54561_.getValue(FACING)) {
+            case NORTH -> NORTH_SHAPE;
+            case SOUTH -> SOUTH_SHAPE;
+            case EAST -> EAST_SHAPE;
+            case WEST -> WEST_SHAPE;
+            case UP -> UP_SHAPE;
+            default -> DOWN_SHAPE;
+        };
     }
 }

@@ -6,9 +6,9 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 
 public class ElephantAIVillagerRide  extends Goal {
 
-    private EntityElephant elephant;
+    private final EntityElephant elephant;
     private AbstractVillager villager;
-    private double speed;
+    private final double speed;
 
     public ElephantAIVillagerRide(EntityElephant dragon, double speed) {
         elephant = dragon;

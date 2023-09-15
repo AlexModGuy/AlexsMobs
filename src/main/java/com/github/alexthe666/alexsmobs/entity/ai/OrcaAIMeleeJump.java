@@ -28,7 +28,7 @@ public class OrcaAIMeleeJump extends JumpGoal {
         }
     }
     public boolean canContinueToUse() {
-        double d0 = this.dolphin.getDeltaMovement().y;
+        final double d0 = this.dolphin.getDeltaMovement().y;
         return dolphin.getTarget() != null && dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.getXRot() == 0.0F || !(Math.abs(this.dolphin.getXRot()) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.isOnGround();
     }
 
@@ -39,16 +39,16 @@ public class OrcaAIMeleeJump extends JumpGoal {
     public void start() {
         LivingEntity target = this.dolphin.getTarget();
         if(target != null){
-            double distanceXZ = dolphin.distanceToSqr(target.getX(), dolphin.getY(), target.getZ());
+            final double distanceXZ = dolphin.distanceToSqr(target.getX(), dolphin.getY(), target.getZ());
             if(distanceXZ < 150){
                 dolphin.lookAt(target, 260, 30);
-                double smoothX = Mth.clamp(Math.abs(target.getX() - dolphin.getX()), 0, 1);
-                double smoothY = Mth.clamp(Math.abs(target.getY() - dolphin.getY()), 0, 1);
-                double smoothZ = Mth.clamp(Math.abs(target.getZ() - dolphin.getZ()), 0, 1);
-                double d0 = (target.getX() - this.dolphin.getX()) * 0.3 * smoothX;
-                double d1 = Math.signum(target.getY() - this.dolphin.getY());
-                double d2 = (target.getZ() - this.dolphin.getZ()) * 0.3 * smoothZ;
-                float up = 1F + dolphin.getRandom().nextFloat() * 0.8F;
+                final double smoothX = Mth.clamp(Math.abs(target.getX() - dolphin.getX()), 0, 1);
+                //double smoothY = Mth.clamp(Math.abs(target.getY() - dolphin.getY()), 0, 1);
+                final double smoothZ = Mth.clamp(Math.abs(target.getZ() - dolphin.getZ()), 0, 1);
+                final double d0 = (target.getX() - this.dolphin.getX()) * 0.3 * smoothX;
+                //double d1 = Math.signum(target.getY() - this.dolphin.getY());
+                final double d2 = (target.getZ() - this.dolphin.getZ()) * 0.3 * smoothZ;
+                final float up = 1F + dolphin.getRandom().nextFloat() * 0.8F;
                 this.dolphin.setDeltaMovement(this.dolphin.getDeltaMovement().add((double) d0 * 0.3D, up, (double) d2 * 0.3D));
                 this.dolphin.getNavigation().stop();
                 this.dolphin.jumpCooldown = dolphin.getRandom().nextInt(32) + 64;
@@ -88,10 +88,10 @@ public class OrcaAIMeleeJump extends JumpGoal {
 
         Vec3 vector3d = this.dolphin.getDeltaMovement();
         if (vector3d.y * vector3d.y < (double) 0.1F && this.dolphin.getXRot() != 0.0F) {
-            this.dolphin.setXRot(Mth.rotlerp(this.dolphin.getXRot(), 0.0F, 0.2F));
+            this.dolphin.setXRot(Mth.rotLerp(this.dolphin.getXRot(), 0.0F, 0.2F));
         } else {
-            double d0 = Math.sqrt(vector3d.horizontalDistanceSqr());
-            double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double) (180F / (float) Math.PI);
+            final double d0 = Math.sqrt(vector3d.horizontalDistanceSqr());
+            final double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double) Mth.RAD_TO_DEG;
             this.dolphin.setXRot((float) d1);
         }
 

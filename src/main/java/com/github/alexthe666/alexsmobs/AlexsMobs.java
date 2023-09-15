@@ -16,6 +16,7 @@ import com.github.alexthe666.alexsmobs.message.*;
 import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.world.AMFeatureRegistry;
+import com.github.alexthe666.alexsmobs.world.AMLeafcutterAntBiomeModifier;
 import com.github.alexthe666.alexsmobs.world.AMMobSpawnBiomeModifier;
 import com.github.alexthe666.alexsmobs.world.AMMobSpawnStructureModifier;
 import com.mojang.serialization.Codec;
@@ -54,7 +55,7 @@ public class AlexsMobs {
     public static final String MODID = "alexsmobs";
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
-    public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    public static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     private static int packetsRegistered;
     private static boolean isAprilFools = false;
     private static boolean isHalloween = false;
@@ -84,8 +85,6 @@ public class AlexsMobs {
         AMTileEntityRegistry.DEF_REG.register(modBusEvent);
         AMPointOfInterestRegistry.DEF_REG.register(modBusEvent);
         AMFeatureRegistry.DEF_REG.register(modBusEvent);
-        AMFeatureRegistry.AMConfiguredFeatureRegistry.DEF_REG.register(modBusEvent);
-        AMFeatureRegistry.AMPlacedFeatureRegistry.DEF_REG.register(modBusEvent);
         AMSoundRegistry.DEF_REG.register(modBusEvent);
         AMParticleRegistry.DEF_REG.register(modBusEvent);
         AMPaintingRegistry.DEF_REG.register(modBusEvent);
@@ -99,6 +98,7 @@ public class AlexsMobs {
         final DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
         biomeModifiers.register(modBusEvent);
         biomeModifiers.register("am_mob_spawns", AMMobSpawnBiomeModifier::makeCodec);
+        biomeModifiers.register("am_leafcutter_ant_spawns", AMLeafcutterAntBiomeModifier::makeCodec);
         final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
         structureModifiers.register(modBusEvent);
         structureModifiers.register("am_structure_spawns", AMMobSpawnStructureModifier::makeCodec);

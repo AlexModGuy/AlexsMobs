@@ -106,8 +106,8 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     protected EntityKangaroo(EntityType type, Level world) {
         super(type, world);
         initKangarooInventory();
-        this.jumpControl = new EntityKangaroo.JumpHelperController(this);
-        this.moveControl = new EntityKangaroo.MoveHelperController(this);
+        this.jumpControl = new JumpHelperController(this);
+        this.moveControl = new MoveHelperController(this);
 
     }
 
@@ -120,6 +120,10 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 22.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 4F);
     }
 
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return null;
+    }
     protected void tickLeash() {
         super.tickLeash();
         Entity lvt_1_1_ = this.getLeashHolder();
@@ -163,7 +167,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     public boolean isRoger() {
         String s = ChatFormatting.stripFormatting(this.getName().getString());
-        return s != null && s.toLowerCase().equals("roger");
+        return s != null && s.equalsIgnoreCase("roger");
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -340,49 +344,49 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
-        this.entityData.set(STANDING, Boolean.valueOf(standing));
+        this.entityData.set(STANDING, standing);
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     public int getVisualFlag() {
-        return this.entityData.get(VISUAL_FLAG).intValue();
+        return this.entityData.get(VISUAL_FLAG);
     }
 
     public void setVisualFlag(int visualFlag) {
-        this.entityData.set(VISUAL_FLAG, Integer.valueOf(visualFlag));
+        this.entityData.set(VISUAL_FLAG, visualFlag);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(FORCED_SIT, Boolean.valueOf(false));
-        this.entityData.define(COMMAND, Integer.valueOf(0));
-        this.entityData.define(VISUAL_FLAG, Integer.valueOf(0));
-        this.entityData.define(POUCH_TICK, Integer.valueOf(0));
-        this.entityData.define(CHEST_INDEX, Integer.valueOf(-1));
-        this.entityData.define(HELMET_INDEX, Integer.valueOf(-1));
-        this.entityData.define(SWORD_INDEX, Integer.valueOf(-1));
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(FORCED_SIT, false);
+        this.entityData.define(COMMAND, 0);
+        this.entityData.define(VISUAL_FLAG, 0);
+        this.entityData.define(POUCH_TICK, 0);
+        this.entityData.define(CHEST_INDEX, -1);
+        this.entityData.define(HELMET_INDEX, -1);
+        this.entityData.define(SWORD_INDEX, -1);
     }
 
     @Override
@@ -429,27 +433,37 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         this.prevPouchProgress = pouchProgress;
         this.prevSitProgress = sitProgress;
         this.prevStandProgress = standProgress;
-        if (this.isSitting() && sitProgress < 5) {
-            sitProgress += 1;
+
+        if (this.isSitting()) {
+            if (sitProgress < 5F) {
+                sitProgress++;
+            }
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
+
         if (eatCooldown > 0) {
             eatCooldown--;
         }
-        if (!this.isSitting() && sitProgress > 0) {
-            sitProgress -= 1;
+
+        if (this.isStanding()) {
+            if (standProgress < 5F)
+                standProgress++;
+        } else {
+            if (standProgress > 0F)
+                standProgress--;
         }
-        if (this.isStanding() && standProgress < 5) {
-            standProgress += 1;
+
+        if (moving) {
+            if (totalMovingProgress < 5F) {
+                totalMovingProgress++;
+            }
+        } else {
+            if (totalMovingProgress > 0F)
+                totalMovingProgress--;
         }
-        if (!this.isStanding() && standProgress > 0) {
-            standProgress -= 1;
-        }
-        if (moving && totalMovingProgress < 5) {
-            totalMovingProgress += 1;
-        }
-        if (!moving && totalMovingProgress > 0) {
-            totalMovingProgress -= 1;
-        }
+
         if (pouchTick != 0 && pouchProgress < 5) {
             pouchProgress += 1;
         }
@@ -529,17 +543,17 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         if (attackTarget != null && this.hasLineOfSight(attackTarget)) {
             if (distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1) {
                 if (this.getAnimation() == ANIMATION_KICK && this.getAnimationTick() == 8) {
-                    attackTarget.knockback(1.3F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(1.3F, Mth.sin(this.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(this.getYRot() * Mth.DEG_TO_RAD));
                     this.doHurtTarget(this.getTarget());
                 }
                 if ((this.getAnimation() == ANIMATION_PUNCH_L) && this.getAnimationTick() == 6) {
                     float rot = getYRot() + 90;
-                    attackTarget.knockback(0.85F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.85F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                     this.doHurtTarget(this.getTarget());
                 }
                 if ((this.getAnimation() == ANIMATION_PUNCH_R) && this.getAnimationTick() == 6) {
                     float rot = getYRot() - 90;
-                    attackTarget.knockback(0.85F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.85F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                     this.doHurtTarget(this.getTarget());
                 }
             }
@@ -553,14 +567,17 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             this.setStanding(true);
             maxStandTime = 25;
         }
-        if (this.isBaby() && this.isPassenger() && this.getVehicle() instanceof EntityKangaroo) {
-            EntityKangaroo mount = (EntityKangaroo) this.getVehicle();
-            this.setYRot( mount.yBodyRot);
-            this.yHeadRot = mount.yBodyRot;
-            this.yBodyRot = mount.yBodyRot;
-        }
-        if (this.isPassenger() && this.getVehicle() instanceof EntityKangaroo && !this.isBaby()) {
-            this.removeVehicle();
+
+        if (this.isPassenger()) {
+            if (this.isBaby() && this.getVehicle() instanceof EntityKangaroo) {
+                EntityKangaroo mount = (EntityKangaroo) this.getVehicle();
+                this.setYRot(mount.yBodyRot);
+                this.yHeadRot = mount.yBodyRot;
+                this.yBodyRot = mount.yBodyRot;
+            }
+            if (this.getVehicle() instanceof EntityKangaroo && !this.isBaby()) {
+                this.removeVehicle();
+            }
         }
         if (clientArmorCooldown > 0) {
             clientArmorCooldown--;
@@ -598,7 +615,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     private void damageItem(ItemStack stack) {
         if (stack != null) {
             stack.hurt(1, this.getRandom(), null);
-            if (stack.getDamageValue() < 0) {
+            if (stack.getDamageValue() <= 0) {
                 stack.shrink(1);
             }
         }
@@ -628,11 +645,6 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     public MoveControl getMoveControl() {
         return this.moveControl;
     }
-
-    public boolean isControlledByLocalInstance() {
-        return false;
-    }
-
     public void travel(Vec3 vec3d) {
         if (this.isSitting() || this.getAnimation() == ANIMATION_EAT_GRASS) {
             if (this.getNavigation().getPath() != null) {
@@ -675,7 +687,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     private void calculateRotationYaw(double x, double z) {
-        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F);
+        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) Mth.RAD_TO_DEG) - 90.0F);
     }
 
     public boolean canSpawnSprintParticle() {
@@ -689,7 +701,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             --this.currentMoveTypeDuration;
         }
 
-        if (this.onGround) {
+        if (this.isOnGround()) {
             if (!this.wasOnGround) {
                 this.setJumping(false);
                 this.checkLandingDelay();
@@ -709,6 +721,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
                 if (!rabbitController.getIsJumping()) {
                     if (this.moveControl.hasWanted() && this.currentMoveTypeDuration == 0) {
                         Path path = this.navigation.getPath();
+                        // TODO Check :: Unused?
                         Vec3 vector3d = new Vec3(this.moveControl.getWantedX(), this.moveControl.getWantedY(), this.moveControl.getWantedZ());
                         if (path != null && !path.isDone()) {
                             vector3d = path.getNextEntityPos(this);
@@ -721,7 +734,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             }
         }
 
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.isOnGround();
     }
 
     public float getJumpCompletion(float partialTicks) {
@@ -792,7 +805,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public void resetKangarooSlots() {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             int swordIndex = -1;
             double swordDamage = 0;
             int helmetIndex = -1;
@@ -837,7 +850,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     private void updateClientInventory() {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             for (int i = 0; i < 9; i++) {
                 AlexsMobs.sendMSGToAll(new MessageKangarooInventorySync(this.getId(), i, kangarooInventory.getItem(i)));
             }
@@ -851,14 +864,11 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         for (EquipmentSlot equipmentslottype : EquipmentSlot.values()) {
             ItemStack itemstack;
             switch (equipmentslottype.getType()) {
-                case HAND:
-                    itemstack = this.getItemInHand(equipmentslottype);
-                    break;
-                case ARMOR:
-                    itemstack = this.getArmorInSlot(equipmentslottype);
-                    break;
-                default:
+                case HAND -> itemstack = this.getItemInHand(equipmentslottype);
+                case ARMOR -> itemstack = this.getArmorInSlot(equipmentslottype);
+                default -> {
                     continue;
+                }
             }
 
             ItemStack itemstack1 = this.getItemBySlot(equipmentslottype);
@@ -883,14 +893,11 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public ItemStack getItemBySlot(EquipmentSlot slotIn) {
-        switch (slotIn.getType()) {
-            case HAND:
-                return getItemInHand(slotIn);
-            case ARMOR:
-                return getArmorInSlot(slotIn);
-            default:
-                return ItemStack.EMPTY;
-        }
+        return switch (slotIn.getType()) {
+            case HAND -> getItemInHand(slotIn);
+            case ARMOR -> getArmorInSlot(slotIn);
+            default -> ItemStack.EMPTY;
+        };
     }
 
     private ItemStack getArmorInSlot(EquipmentSlot slot) {
@@ -988,7 +995,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         }
 
         public void tick() {
-            if (this.kangaroo.hasJumper() && this.kangaroo.onGround && !this.kangaroo.jumping && !((EntityKangaroo.JumpHelperController) this.kangaroo.jumpControl).getIsJumping()) {
+            if (this.kangaroo.hasJumper() && this.kangaroo.isOnGround() && !this.kangaroo.jumping && !((EntityKangaroo.JumpHelperController) this.kangaroo.jumpControl).getIsJumping()) {
                 this.kangaroo.setMovementSpeed(0.0D);
             } else if (this.hasWanted()) {
                 this.kangaroo.setMovementSpeed(this.nextJumpSpeed);
@@ -1013,7 +1020,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         }
     }
 
-    public class JumpHelperController extends JumpControl {
+    public static class JumpHelperController extends JumpControl {
         private final EntityKangaroo kangaroo;
         private boolean canJump;
 

@@ -19,8 +19,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class MenuTransmutationTable extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private long lastSoundTime;
-    private Player player;
-    private Slot transmuteSlot;
+    private final Player player;
+    private final Slot transmuteSlot;
     private TileEntityTransmutationTable table;
 
     public final Container container = new SimpleContainer(1) {

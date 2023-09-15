@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -104,16 +105,19 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
     public void tick() {
         super.tick();
         this.prevOnLandProgress = onLandProgress;
-        if (!this.isInWater() && onLandProgress < 5F) {
-            onLandProgress++;
+
+        if (this.isInWater()) {
+            if (onLandProgress > 0F)
+                onLandProgress--;
+        } else {
+            if (onLandProgress < 5F)
+                onLandProgress++;
         }
-        if (this.isInWater() && onLandProgress > 0F) {
-            onLandProgress--;
-        }
-        if (this.onGround && !this.isInWater()) {
+
+        if (this.isOnGround() && !this.isInWater()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setYRot(this.random.nextFloat() * 360.0F);
-            this.onGround = false;
+            this.setOnGround(false);
             this.hasImpulse = true;
         }
         if (circleCooldown > 0) {
@@ -247,10 +251,10 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
 
         public void tick() {
             BlockPos pos = EntitySeaBear.this.lastCircle;
-            if (target == null || EntitySeaBear.this.distanceToSqr(target) < 2 || !EntitySeaBear.this.level.getFluidState(new BlockPos(target).above()).is(FluidTags.WATER)) {
+            if (target == null || EntitySeaBear.this.distanceToSqr(target) < 2 || !EntitySeaBear.this.level.getFluidState(AMBlockPos.get(target).above()).is(FluidTags.WATER)) {
                 target = DefaultRandomPos.getPosAway(EntitySeaBear.this, 20, 7, Vec3.atCenterOf(pos));
             }
-            if (target != null && EntitySeaBear.this.level.getFluidState(new BlockPos(target).above()).is(FluidTags.WATER)) {
+            if (target != null && EntitySeaBear.this.level.getFluidState(AMBlockPos.get(target).above()).is(FluidTags.WATER)) {
                 EntitySeaBear.this.getNavigation().moveTo(target.x, target.y, target.z, 1.0D);
             }
         }

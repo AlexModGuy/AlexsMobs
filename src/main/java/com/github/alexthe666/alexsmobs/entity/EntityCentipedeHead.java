@@ -34,6 +34,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,7 +51,7 @@ public class EntityCentipedeHead extends Monster {
     protected EntityCentipedeHead(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.xpReward = 13;
-        this.maxUpStep = 3;
+        this.maxUpStep = 3; // FIXME
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -213,9 +214,7 @@ public class EntityCentipedeHead extends Monster {
         this.yBodyRot = Mth.clamp(this.getYRot(), this.yBodyRot - 2, this.yBodyRot + 2);
         this.yHeadRot = this.yBodyRot;
         if (this.ringBufferIndex < 0) {
-            for (int i = 0; i < this.ringBuffer.length; ++i) {
-                this.ringBuffer[i] = this.yBodyRot;
-            }
+            Arrays.fill(this.ringBuffer, this.yBodyRot);
         }
         if (updateRingBuffer() || ringBufferIndex < 0) {
             this.ringBufferIndex++;

@@ -315,7 +315,6 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         }
     }
 
-
     private void transformBiome(BlockPos pos, Holder<Biome> biome) {
         LevelChunk chunk = level.getChunkAt(pos);
         PalettedContainer<Holder<Biome>> container = getChunkBiomes(chunk).recreate();
@@ -323,7 +322,8 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             int lvt_4_1_ = chunk.getPos().getMinBlockX() >> 2;
             int yChunk = (int)this.getY() >> 2;
             int lvt_5_1_ = chunk.getPos().getMinBlockZ() >> 2;
-            ChunkGenerator chunkgenerator = ((ServerLevel) level).getChunkSource().getGenerator();
+            // TODO Check :: Unused?
+//            ChunkGenerator chunkgenerator = ((ServerLevel) level).getChunkSource().getGenerator();
             for(int k = 0; k < 4; ++k) {
                 for(int l = 0; l < 4; ++l) {
                     for(int i1 = 0; i1 < 4; ++i1) {
@@ -347,9 +347,11 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                         }
                     }
                 }
-                int id = this.getId();
                 setChunkBiomes(chunk, container);
-                AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), ForgeRegistries.BIOMES.getKey(biome.value()).toString()));
+                ResourceLocation biomeKey = ForgeRegistries.BIOMES.getKey(biome.value());
+                if(biomeKey != null){
+                    AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), biomeKey.toString()));
+                }
             }
         }
 
@@ -406,9 +408,9 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         super.defineSynchedData();
         this.entityData.define(MUSHROOM_STATE, Optional.empty());
         this.getEntityData().define(TARGETED_BLOCK_POS, Optional.empty());
-        this.entityData.define(ALT_ORDER_MUSHROOMS, Boolean.valueOf(false));
-        this.entityData.define(REVERTING, Boolean.valueOf(false));
-        this.entityData.define(EXPLOSION_DISABLED, Boolean.valueOf(false));
+        this.entityData.define(ALT_ORDER_MUSHROOMS, false);
+        this.entityData.define(REVERTING, false);
+        this.entityData.define(EXPLOSION_DISABLED, false);
         this.entityData.define(MUSHROOM_COUNT, 0);
         this.entityData.define(SACK_SWELL, 0);
     }
@@ -547,19 +549,19 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
     public int getMushroomCount() {
-        return this.entityData.get(MUSHROOM_COUNT).intValue();
+        return this.entityData.get(MUSHROOM_COUNT);
     }
 
     public void setMushroomCount(int command) {
-        this.entityData.set(MUSHROOM_COUNT, Integer.valueOf(command));
+        this.entityData.set(MUSHROOM_COUNT, command);
     }
 
     public int getSackSwell() {
-        return this.entityData.get(SACK_SWELL).intValue();
+        return this.entityData.get(SACK_SWELL);
     }
 
     public void setSackSwell(int command) {
-        this.entityData.set(SACK_SWELL, Integer.valueOf(command));
+        this.entityData.set(SACK_SWELL, command);
     }
 
     @Nullable
@@ -572,7 +574,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
     public boolean isAltOrderMushroom() {
-        return this.entityData.get(ALT_ORDER_MUSHROOMS).booleanValue();
+        return this.entityData.get(ALT_ORDER_MUSHROOMS);
     }
 
     @Nullable

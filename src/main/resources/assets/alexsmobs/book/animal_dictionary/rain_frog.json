@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "rain_frog.txt",
-  "title": "Rain Frog",
+  "title": "entity.alexsmobs.rain_frog",
   "linked_page_buttons": [
   ],
   "images": [

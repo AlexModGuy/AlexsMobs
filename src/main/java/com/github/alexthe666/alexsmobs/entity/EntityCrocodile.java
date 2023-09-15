@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.block.BlockCrocodileEgg;
+import com.github.alexthe666.alexsmobs.block.BlockReptileEgg;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
@@ -187,10 +187,10 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(DESERT, Boolean.valueOf(false));
-        this.entityData.define(HAS_EGG, Boolean.valueOf(false));
-        this.entityData.define(IS_DIGGING, Boolean.valueOf(false));
+        this.entityData.define(SITTING, false);
+        this.entityData.define(DESERT, false);
+        this.entityData.define(HAS_EGG, false);
+        this.entityData.define(IS_DIGGING, false);
         this.entityData.define(CLIMBING, (byte) 0);
         this.entityData.define(STUN_TICKS, 0);
     }
@@ -304,7 +304,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                 }
             }
             if (this.getStunTicks() == 0 && this.isAlive() && this.getTarget() != null && this.getAnimation() == ANIMATION_LUNGE && (level.getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player)) && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
-                final float f1 = this.getYRot() * Maths.piDividedBy180;
+                final float f1 = this.getYRot() * Mth.DEG_TO_RAD;
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
                 if (this.distanceTo(this.getTarget()) < 3.5F && this.hasLineOfSight(this.getTarget())) {
                     boolean flag = this.getTarget().isBlocking();
@@ -346,12 +346,12 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         }
         if (this.getStunTicks() > 0) {
             this.setStunTicks(this.getStunTicks() - 1);
-            if (level.isClientSide) {
-                final float angle = (0.0174532925F * this.yBodyRot);
-                final double headX = 1.5F * getScale() * Mth.sin((float) (Math.PI + angle));
+            if (this.level.isClientSide) {
+                final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+                final double headX = 1.5F * getScale() * Mth.sin(Mth.PI + angle);
                 final double headZ = 1.5F * getScale() * Mth.cos(angle);
                 for (int i = 0; i < 5; i++) {
-                    final float innerAngle = (0.0174532925F * (this.yBodyRot + tickCount * 5) * (i + 1));
+                    final float innerAngle = (Maths.STARTING_ANGLE * (this.yBodyRot + tickCount * 5) * (i + 1));
                     final double extraX = 0.5F * Mth.sin((float) (Math.PI + innerAngle));
                     final double extraZ = 0.5F * Mth.cos(innerAngle);
                     level.addParticle(ParticleTypes.CRIT, true, this.getX() + headX + extraX, this.getEyeY() + 0.5F, this.getZ() + headZ + extraZ, 0, 0, 0);
@@ -423,8 +423,8 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         }
         if (this.hasPassenger(passenger)) {
             final float radius = 2F;
-            final float angle = (0.0174532925F * this.yBodyRot);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + 0.1F, this.getZ() + extraZ);
             passengerTimer++;
@@ -459,7 +459,9 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     public void travel(Vec3 travelVector) {
-        if (this.isEffectiveAi() && this.isInWater()) {
+        if(isSitting()){
+            super.travel(Vec3.ZERO);
+        }else if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
@@ -498,7 +500,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
     @Override
     public boolean shouldStopMoving() {
-        return this.getAnimation() == ANIMATION_DEATHROLL;
+        return this.getAnimation() == ANIMATION_DEATHROLL || this.isSitting();
     }
 
     @Override
@@ -507,19 +509,19 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public boolean isDesert() {
-        return this.entityData.get(DESERT).booleanValue();
+        return this.entityData.get(DESERT);
     }
 
     public void setDesert(boolean desert) {
-        this.entityData.set(DESERT, Boolean.valueOf(desert));
+        this.entityData.set(DESERT, desert);
     }
 
     public boolean hasEgg() {
@@ -743,7 +745,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                 final Level world = this.turtle.level;
                 turtle.gameEvent(GameEvent.BLOCK_PLACE);
                 world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
-                world.setBlock(this.blockPos.above(), AMBlockRegistry.CROCODILE_EGG.get().defaultBlockState().setValue(BlockCrocodileEgg.EGGS, Integer.valueOf(this.turtle.random.nextInt(1) + 1)), 3);
+                world.setBlock(this.blockPos.above(), AMBlockRegistry.CROCODILE_EGG.get().defaultBlockState().setValue(BlockReptileEgg.EGGS, Integer.valueOf(this.turtle.random.nextInt(1) + 1)), 3);
                 this.turtle.setHasEgg(false);
                 this.turtle.setDigging(false);
                 this.turtle.setInLoveTime(600);
@@ -752,7 +754,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         }
 
         protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
-            return worldIn.isEmptyBlock(pos.above()) && BlockCrocodileEgg.isProperHabitat(worldIn, pos);
+            return worldIn.isEmptyBlock(pos.above()) && BlockReptileEgg.isProperHabitat(worldIn, pos);
         }
     }
 }

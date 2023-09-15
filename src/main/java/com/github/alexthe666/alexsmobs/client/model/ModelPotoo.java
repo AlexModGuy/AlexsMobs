@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityPotoo;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -132,15 +133,15 @@ public class ModelPotoo extends AdvancedEntityModel<EntityPotoo> {
         float walkAmount = (5F - flyProgress) * 0.2F;
         float walkSwingAmount = limbSwingAmount * walkAmount;
 
-        progressRotationPrev(body, Math.min(walkSwingAmount, 0.5F), (float) Math.toRadians(20), 0, 0, 0.5F);
-        progressRotationPrev(left_foot, Math.min(walkSwingAmount, 0.5F), (float) Math.toRadians(-20), 0, 0, 0.5F);
-        progressRotationPrev(right_foot, Math.min(walkSwingAmount, 0.5F), (float) Math.toRadians(-20), 0, 0, 0.5F);
-        progressRotationPrev(tail, 5F - perchProgress, (float) Math.toRadians(85), 0, 0, 5f);
-        progressRotationPrev(body, flyProgress * limbSwingAmount, (float) Math.toRadians(80), 0, 0, 5F);
-        progressRotationPrev(right_wing, flyProgress,  (float) Math.toRadians(-90),  (float) Math.toRadians(90),  0, 5F);
-        progressRotationPrev(left_wing, flyProgress,  (float) Math.toRadians(-90),  (float) Math.toRadians(-90), 0, 5F);
-        progressRotationPrev(tail, flyProgress,  (float) Math.toRadians(-60),  0, 0, 5F);
-        progressRotationPrev(head, mouthProgress,  (float) Math.toRadians(-70),  0F, 0, 5F);
+        progressRotationPrev(body, Math.min(walkSwingAmount, 0.5F), Maths.rad(20), 0, 0, 0.5F);
+        progressRotationPrev(left_foot, Math.min(walkSwingAmount, 0.5F), Maths.rad(-20), 0, 0, 0.5F);
+        progressRotationPrev(right_foot, Math.min(walkSwingAmount, 0.5F), Maths.rad(-20), 0, 0, 0.5F);
+        progressRotationPrev(tail, 5F - perchProgress, Maths.rad(85), 0, 0, 5f);
+        progressRotationPrev(body, flyProgress * limbSwingAmount, Maths.rad(80), 0, 0, 5F);
+        progressRotationPrev(right_wing, flyProgress,  Maths.rad(-90),  Maths.rad(90),  0, 5F);
+        progressRotationPrev(left_wing, flyProgress,  Maths.rad(-90),  Maths.rad(-90), 0, 5F);
+        progressRotationPrev(tail, flyProgress,  Maths.rad(-60),  0, 0, 5F);
+        progressRotationPrev(head, mouthProgress,  Maths.rad(-70),  0F, 0, 5F);
         progressPositionPrev(head, mouthProgress,  0F,  0.5F, -0.5F, 5F);
         this.flap(body, walkSpeed, walkDegree * 0.2F, true, 0F, 0F, limbSwing, walkSwingAmount);
         if(flyProgress > 0){
@@ -150,8 +151,8 @@ public class ModelPotoo extends AdvancedEntityModel<EntityPotoo> {
         }
         this.left_foot.rotationPointZ += 2 * (float) (Math.sin((double) (limbSwing * walkSpeed) - 2.5F) * (double) walkSwingAmount * (double) walkDegree - (double) (walkSwingAmount * walkDegree));
         this.right_foot.rotationPointZ += 2 * (float) (Math.sin(-(double) (limbSwing * walkSpeed) + 2.5F) * (double) walkSwingAmount * (double) walkDegree - (double) (walkSwingAmount * walkDegree));
-        this.left_foot.rotationPointY += 1F * (float) (Math.sin((double) (limbSwing * walkSpeed) - 2.5F) * (double) walkSwingAmount * (double) walkDegree - (double) (walkSwingAmount * walkDegree));
-        this.right_foot.rotationPointY += 1F * (float) (Math.sin(-(double) (limbSwing * walkSpeed) + 2.5F) * (double) walkSwingAmount * (double) walkDegree - (double) (walkSwingAmount * walkDegree));
+        this.left_foot.rotationPointY += (float) (Math.sin((double) (limbSwing * walkSpeed) - 2.5F) * (double) walkSwingAmount * (double) walkDegree - (double) (walkSwingAmount * walkDegree));
+        this.right_foot.rotationPointY += (float) (Math.sin(-(double) (limbSwing * walkSpeed) + 2.5F) * (double) walkSwingAmount * (double) walkDegree - (double) (walkSwingAmount * walkDegree));
 
     }
 
