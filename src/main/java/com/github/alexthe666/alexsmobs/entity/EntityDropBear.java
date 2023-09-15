@@ -190,7 +190,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                     }
                 }
             }
-            if ((attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && random.nextInt(300) == 0 && this.onGround && !this.isUpsideDown() && this.getY() + 2 < worldHeight.getY()) {
+            if ((attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && random.nextInt(300) == 0 && this.isOnGround() && !this.isUpsideDown() && this.getY() + 2 < worldHeight.getY()) {
                 if (this.getAnimation() == NO_ANIMATION) {
                     this.setAnimation(ANIMATION_JUMPUP);
                 }
@@ -198,7 +198,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
             if (jumpingUp && this.getY() > worldHeight.getY()) {
                 jumpingUp = false;
             }
-            if ((this.onGround && this.getAnimation() == ANIMATION_JUMPUP && this.getAnimationTick() > 10 || jumpingUp && this.getAnimation() == NO_ANIMATION)) {
+            if ((this.isOnGround() && this.getAnimation() == ANIMATION_JUMPUP && this.getAnimationTick() > 10 || jumpingUp && this.getAnimation() == NO_ANIMATION)) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 2F, 0));
                 jumpingUp = true;
             }
@@ -208,7 +208,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                 final float f = 0.91F;
                 this.setDeltaMovement(this.getDeltaMovement().multiply(f, 1F, f));
                 if (!this.verticalCollision) {
-                    if (this.onGround || validBelowState || upwardsFallingTicks > 5) {
+                    if (this.isOnGround() || validBelowState || upwardsFallingTicks > 5) {
                         this.setUpsideDown(false);
                         upwardsFallingTicks = 0;
                     } else {
@@ -450,7 +450,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                         EntityDropBear.this.setUpsideDown(false);
                     }
                 } else {
-                    if (EntityDropBear.this.onGround) {
+                    if (EntityDropBear.this.isOnGround()) {
                         EntityDropBear.this.getNavigation().moveTo(target, 1.2D);
                     }
                 }

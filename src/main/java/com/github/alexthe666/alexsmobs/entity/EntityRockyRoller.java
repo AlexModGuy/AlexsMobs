@@ -341,7 +341,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
 
         public boolean canUse() {
-            if (this.rockyRoller.onGround) {
+            if (this.rockyRoller.isOnGround()) {
                 if (rockyRoller.isRolling() || rockyRoller.rollCooldown > 0 || rockyRoller.getTarget() != null && rockyRoller.getTarget().isAlive()) {
                     return false;
                 } else {

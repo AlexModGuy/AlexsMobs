@@ -30,7 +30,7 @@ public class RockyChestplateUtil {
             lassoedTag.putInt(ROCKY_ROLL_TIMESTAMP, roller.tickCount);
         }
         CitadelEntityData.setCitadelTag(roller, lassoedTag);
-        if (!roller.level.isClientSide) {
+        if (!roller.level.isClientSide()) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, roller.getId()));
         }else{
             Citadel.sendMSGToServer(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, roller.getId()));
@@ -82,7 +82,7 @@ public class RockyChestplateUtil {
             if(roller instanceof Player){
                 ((Player)roller).setForcedPose(Pose.SWIMMING);
             }
-            if(!roller.level.isClientSide){
+            if(!roller.level.isClientSide()){
                 for (Entity entity : roller.level.getEntitiesOfClass(LivingEntity.class, roller.getBoundingBox().inflate(1.0F))) {
                     if (!roller.isAlliedTo(entity) && !entity.isAlliedTo(roller) && entity != roller) {
                         entity.hurt(DamageSource.mobAttack(roller), 2.0F + roller.getRandom().nextFloat() * 1.0F);
@@ -110,7 +110,7 @@ public class RockyChestplateUtil {
                 update = true;
             }
         }
-        if (!roller.level.isClientSide && update) {
+        if (!roller.level.isClientSide() && update) {
             CitadelEntityData.setCitadelTag(roller, tag);
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", tag, roller.getId()));
         }

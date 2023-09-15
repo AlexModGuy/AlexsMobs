@@ -309,7 +309,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                 attackProgress--;
             }
         }
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (isFlying()) {
                 float lookYawDist = Math.abs(this.getFlightLookYaw() - targetFlightLookYaw);
                 if (flightLookCooldown > 0) {
@@ -325,7 +325,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                 if (this.getFlightLookYaw() > this.targetFlightLookYaw && lookYawDist > 0.5F) {
                     this.setFlightLookYaw(this.getFlightLookYaw() - Math.min(lookYawDist, 4F));
                 }
-                if (this.onGround && !this.isInWaterOrBubble() && this.timeFlying > 30) {
+                if (this.isOnGround() && !this.isInWaterOrBubble() && this.timeFlying > 30) {
                     this.setFlying(false);
                 }
                 timeFlying++;
@@ -444,7 +444,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     public void onGetItem(ItemEntity e) {
         ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide()) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         stealCooldown += 600 + random.nextInt(1200);
@@ -737,26 +737,26 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     orbitResetCooldown = -400 - random.nextInt(400);
                 }
             }
-            if (eagle.horizontalCollision && !eagle.onGround) {
+            if (eagle.horizontalCollision && !eagle.isOnGround()) {
                 stop();
             }
             if (flightTarget) {
                 eagle.getMoveControl().setWantedPosition(x, y, z, 1F);
             } else {
-                if (!eagle.isFlying() || eagle.onGround) {
+                if (!eagle.isFlying() || eagle.isOnGround()) {
                     this.eagle.getNavigation().moveTo(this.x, this.y, this.z, 1F);
                 }
             }
             if (!flightTarget && isFlying()) {
                 eagle.fallFlag = true;
-                if (eagle.onGround) {
+                if (eagle.isOnGround()) {
                     eagle.setFlying(false);
                     orbitTime = 0;
                     eagle.orbitPos = null;
                     orbitResetCooldown = -400 - random.nextInt(400);
                 }
             }
-            if (isFlying() && (!level.isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.onGround) && !eagle.isInWaterOrBubble() && eagle.timeFlying > 30) {
+            if (isFlying() && (!level.isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.isOnGround()) && !eagle.isInWaterOrBubble() && eagle.timeFlying > 30) {
                 eagle.setFlying(false);
                 orbitTime = 0;
                 eagle.orbitPos = null;

@@ -258,7 +258,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                 Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
                 this.setDeltaMovement(vector3d.add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
             }
-            if (!this.onGround && vector3d.y < 0.0D) {
+            if (!this.isOnGround() && vector3d.y < 0.0D) {
                 this.setDeltaMovement(vector3d.multiply(1.0D, 0.5D, 1.0D));
                 flag = true;
             }

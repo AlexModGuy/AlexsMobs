@@ -223,7 +223,7 @@ public class EntityBananaSlug extends Animal {
                     Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
                     this.setDeltaMovement(this.getDeltaMovement().add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
                 }
-                if (!this.onGround && vector3d.y < 0.0D) {
+                if (!this.isOnGround() && vector3d.y < 0.0D) {
                     this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
                     flag = true;
                 }

@@ -296,7 +296,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         if(this.isBaby() && this.getEyeHeight() > this.getBbHeight()){
             this.refreshDimensions();
         }
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (isInWater() || isInLava()) {
                 if (swimTimer < 0) {
                     swimTimer = 0;
@@ -374,7 +374,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         if (isTongueOut && attackProgress < 5F) {
             attackProgress++;
         }
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             this.entityData.set(JUMP_ACTIVE, !this.isOnGround());
         }
         if (this.entityData.get(JUMP_ACTIVE) && !isInWaterOrBubble()) {

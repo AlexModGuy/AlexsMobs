@@ -192,13 +192,13 @@ public class EntitySkreecher extends Monster {
                     this.setClinging(true);
                 }
                 this.setDistanceToCeiling(Math.max(0, prevDistanceToCeiling - 0.5F));
-                if(this.onGround && clingCooldown <= 0 && !this.isJumpingUp() && this.isAlive() && random.nextFloat() < 0.0085F && technicalDistToCeiling > MAX_DIST_TO_CEILING && !this.level.canSeeSky(this.blockPosition())){
+                if(this.isOnGround() && clingCooldown <= 0 && !this.isJumpingUp() && this.isAlive() && random.nextFloat() < 0.0085F && technicalDistToCeiling > MAX_DIST_TO_CEILING && !this.level.canSeeSky(this.blockPosition())){
                     this.setJumpingUp(true);
                 }
             }
         }
         if(this.isJumpingUp()){
-            if(this.isAlive() && !this.level.canSeeSky(this.blockPosition()) && (!this.verticalCollision || this.onGround)){
+            if(this.isAlive() && !this.level.canSeeSky(this.blockPosition()) && (!this.verticalCollision || this.isOnGround())){
                 this.setDistanceToCeiling(1.5F);
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.2F, 0));
                 for(int i = 0; i < 3; i++){

@@ -108,9 +108,9 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
     }
 
     public Entity getHead() {
-        if (!level.isClientSide) {
+        if (level instanceof ServerLevel serverLevel) {
             UUID id = getHeadUUID();
-            return id == null ? null : ((ServerLevel) level).getEntity(id);
+            return id == null ? null : serverLevel.getEntity(id);
         }else{
             int id = this.entityData.get(HEAD_ID);
             return id == -1 ? null : level.getEntity(id);
@@ -126,7 +126,7 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
         if (this.renderFakeHead) this.renderFakeHead = false;
         this.yBodyRot = this.getYRot();
         this.yHeadRot = Mth.clamp(this.yHeadRot, this.yBodyRot - 70, this.yBodyRot + 70);
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             Entity head = getHead();
             if(head == null){
                 LivingEntity created = createHead();

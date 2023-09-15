@@ -162,12 +162,12 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
 
     public void tick() {
         super.tick();
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (this.getLastHurtByMob() == null && this.getTarget() == null) {
                 if (this.getDeltaMovement().lengthSqr() < 0.03D && this.getRandom().nextInt(190) == 0 && this.getAnimation() == NO_ANIMATION) {
                     if (getRandom().nextInt(3) == 0) {
                         this.setAnimation(ANIMATION_PUZZLED);
-                    } else if (this.onGround) {
+                    } else if (this.isOnGround()) {
                         this.setAnimation(ANIMATION_PECK_GROUND);
                     }
                 }

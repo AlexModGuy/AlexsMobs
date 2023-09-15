@@ -678,12 +678,12 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             } else {
                 this.crow.getNavigation().moveTo(this.x, this.y, this.z, 1F);
 
-                if (isFlying() && crow.onGround) {
+                if (isFlying() && crow.isOnGround()) {
                     crow.setFlying(false);
                 }
             }
 
-            if (isFlying() && crow.onGround && crow.timeFlying > 10) {
+            if (isFlying() && crow.isOnGround() && crow.timeFlying > 10) {
                 crow.setFlying(false);
             }
         }
@@ -819,7 +819,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             }
 
             if (targetEntity != null) {
-                if (EntityCrow.this.onGround || flightTarget == null || EntityCrow.this.distanceToSqr(flightTarget) < 3) {
+                if (EntityCrow.this.isOnGround() || flightTarget == null || EntityCrow.this.distanceToSqr(flightTarget) < 3) {
                     final Vec3 vec = EntityCrow.this.getBlockInViewAway(targetEntity.position(), 0);
                     if (vec != null && vec.y() > EntityCrow.this.getY()) {
                         flightTarget = vec;

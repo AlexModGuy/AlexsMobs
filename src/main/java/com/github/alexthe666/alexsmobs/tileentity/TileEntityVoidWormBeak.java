@@ -36,7 +36,7 @@ public class TileEntityVoidWormBeak extends BlockEntity {
         if(!powered && chompProgress > 0F){
             chompProgress--;
         }
-        if(chompProgress >= 5F && !level.isClientSide && ticksExisted % 5 == 0){
+        if(chompProgress >= 5F && !level.isClientSide() && ticksExisted % 5 == 0){
             float i = this.getBlockPos().getX() + 0.5F;
             float j = this.getBlockPos().getY() + 0.5F;
             float k = this.getBlockPos().getZ() + 0.5F;

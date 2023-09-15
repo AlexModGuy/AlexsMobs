@@ -545,7 +545,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             this.setFlying(true);
             this.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getBbHeight(), owner.getZ(), followSpeed);
         } else {
-            if (this.onGround) {
+            if (this.isOnGround()) {
                 this.setFlying(false);
             }
             if (this.isFlying() && !this.isOverWater()) {
@@ -862,10 +862,10 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             } else {
                 this.hawk.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && hawk.onGround) {
+            if (!flightTarget && isFlying() && hawk.isOnGround()) {
                 hawk.setFlying(false);
             }
-            if (isFlying() && hawk.onGround && hawk.timeFlying > 10) {
+            if (isFlying() && hawk.isOnGround() && hawk.timeFlying > 10) {
                 hawk.setFlying(false);
             }
         }

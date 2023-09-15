@@ -34,7 +34,7 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
     private final AdvancedModelBox jaw;
     private final AdvancedModelBox left_lowerteeth;
     private final AdvancedModelBox right_lowerteeth;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelCrocodile() {
         texWidth = 256;

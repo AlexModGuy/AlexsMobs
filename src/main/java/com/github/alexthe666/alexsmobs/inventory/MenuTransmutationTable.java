@@ -104,7 +104,7 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
     }
 
     public boolean clickMenuButton(Player player, int buttonId) {
-        if(player.level.isClientSide){
+        if(player.level.isClientSide()){
             AlexsMobs.sendMSGToServer(new MessageTransmuteFromMenu(player.getId(), buttonId));
         }
         return true;
@@ -116,7 +116,7 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
         int cost = AMConfig.transmutingExperienceCost;
         ItemStack setTo = table.getPossibility(buttonId).copy();
         double divisible = from.getMaxStackSize() / (double)setTo.getMaxStackSize();
-        if(!player.level.isClientSide && table != null && divisible > 0 && table.hasPossibilities() && !from.isEmpty() && (player.experienceLevel >= cost || player.getAbilities().instabuild)){
+        if(!player.level.isClientSide() && table != null && divisible > 0 && table.hasPossibilities() && !from.isEmpty() && (player.experienceLevel >= cost || player.getAbilities().instabuild)){
             int newStackSize = (int)Math.floor(from.getCount() / divisible);
             setTo.setCount(Math.max(newStackSize, 1));
             transmuteSlot.set(setTo);

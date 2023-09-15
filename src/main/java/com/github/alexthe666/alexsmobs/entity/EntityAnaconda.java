@@ -234,8 +234,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public Entity getChild() {
         UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && level instanceof ServerLevel serverLevel) {
+            return serverLevel.getEntity(id);
         }
         return null;
     }
@@ -278,7 +278,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.yHeadRot = Mth.clamp(this.yHeadRot, this.yBodyRot - 70, this.yBodyRot + 70);
 
         if (this.isStrangling()) {
-            if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
+            if (!level.isClientSide() && this.getTarget() != null && this.getTarget().isAlive()) {
                 this.setXRot(0);
                 final LivingEntity target = this.getTarget();
                 final float radius = this.getTarget().getBbWidth() * -0.5F;
@@ -319,7 +319,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         }
         this.ringBuffer[this.ringBufferIndex] = this.getYRot();
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             final int segments = 7;
             final Entity child = getChild();
             if (child == null) {
@@ -474,7 +474,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     public ItemEntity spawnItemAtOffset(ItemStack stack, float f, float f1) {
         if (stack.isEmpty()) {
             return null;
-        } else if (this.level.isClientSide) {
+        } else if (this.level.isClientSide()) {
             return null;
         } else {
             final Vec3 vec = new Vec3(0, 0, f).yRot(-f * Mth.DEG_TO_RAD);

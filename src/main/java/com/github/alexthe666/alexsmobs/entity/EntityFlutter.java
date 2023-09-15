@@ -684,10 +684,10 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             } else {
                 this.phage.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && phage.onGround) {
+            if (!flightTarget && isFlying() && phage.isOnGround()) {
                 phage.setFlying(false);
             }
-            if (isFlying() && phage.onGround && phage.timeFlying > 40) {
+            if (isFlying() && phage.isOnGround() && phage.timeFlying > 40) {
                 phage.setFlying(false);
             }
         }

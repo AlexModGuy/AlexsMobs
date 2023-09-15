@@ -596,7 +596,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         return !this.hasLeaf();
     }
 
-    @Override // FIXME
+    @Override
     public void calculateEntityAnimation(LivingEntity ignored, boolean p_233629_2_) {
         this.animationSpeedOld = this.animationSpeed;
         float f1 = (float)Mth.length(this.getX() - this.xo, 2 * (this.getY() - this.yo), this.getZ() - this.zo);

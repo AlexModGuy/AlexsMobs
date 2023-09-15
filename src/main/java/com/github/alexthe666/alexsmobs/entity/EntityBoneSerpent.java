@@ -248,7 +248,7 @@ public class EntityBoneSerpent extends Monster {
                 switchNavigator(false);
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             final Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;

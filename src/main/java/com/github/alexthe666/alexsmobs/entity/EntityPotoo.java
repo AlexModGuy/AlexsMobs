@@ -548,7 +548,7 @@ public class EntityPotoo extends Animal implements IFalconry {
 
         public void tick() {
             EntityPotoo.this.getMoveControl().setWantedPosition(this.x, this.y, this.z, 1F);
-            if (isFlying() && EntityPotoo.this.onGround && EntityPotoo.this.timeFlying > 10) {
+            if (isFlying() && EntityPotoo.this.isOnGround() && EntityPotoo.this.timeFlying > 10) {
                 EntityPotoo.this.setFlying(false);
             }
         }

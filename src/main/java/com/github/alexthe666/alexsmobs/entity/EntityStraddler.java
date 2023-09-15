@@ -251,7 +251,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
             pole.shoot(d1, d2 + (double)f3, d3, 2F, 0F);
             pole.setYRot(this.getYRot() % 360.0F);
             pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F);
-            if(!level.isClientSide){
+            if(!level.isClientSide()){
                 this.level.addFreshEntity(pole);
             }
         }

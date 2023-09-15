@@ -457,7 +457,7 @@ public class EntityJerboa extends Animal {
         }
 
         public void tick() {
-            if (this.jerboa.hasJumper() && this.jerboa.onGround && !this.jerboa.jumping && !((EntityJerboa.JumpHelperController) this.jerboa.jumpControl).getIsJumping()) {
+            if (this.jerboa.hasJumper() && this.jerboa.isOnGround() && !this.jerboa.jumping && !((EntityJerboa.JumpHelperController) this.jerboa.jumpControl).getIsJumping()) {
                 this.jerboa.setMovementSpeed(0.0D);
             } else if (this.hasWanted()) {
                 this.jerboa.setMovementSpeed(this.nextJumpSpeed);

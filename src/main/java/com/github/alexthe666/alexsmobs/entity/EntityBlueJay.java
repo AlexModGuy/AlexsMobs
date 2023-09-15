@@ -216,7 +216,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         }else{
             this.crestAmount = Mth.approach(this.crestAmount, this.getTargetCrest(), 0.3F);
         }
-        if(!this.level.isClientSide){
+        if(!this.level.isClientSide()){
             if (isFlying()) {
                 if (this.isLandNavigator)
                     switchNavigator(false);
@@ -271,15 +271,15 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             if(this.prevSingTime % 15 == 0){
                this.playSound(AMSoundRegistry.BLUE_JAY_SONG.get(), this.getSoundVolume(), this.getVoicePitch());
             }
-            if(this.level.isClientSide){
-                if(this.getSingTime() % 5 == 0 && this.level.isClientSide){
+            if(this.level.isClientSide()){
+                if(this.getSingTime() % 5 == 0){
                     Vec3 modelFront = new Vec3(0, 0.2F, 0.3F).scale(this.getScale()).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
                     Vec3 particleFrom = this.position().add(modelFront);
                     this.level.addParticle(AMParticleRegistry.BIRD_SONG.get(), particleFrom.x, particleFrom.y, particleFrom.z, modelFront.x, modelFront.y, modelFront.z);
                 }
             }
         }
-        if(prevSingTime < getSingTime() && !level.isClientSide){
+        if(prevSingTime < getSingTime() && !level.isClientSide()){
             blueTime = 1200;
             this.entityData.set(BLUE_VISUAL_FLAG, true);
             highlightMonsters();
@@ -319,7 +319,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     @Override
     public void remove(Entity.RemovalReason removalReason) {
-        if(this.getSingTime() > 0 && !level.isClientSide){
+        if(this.getSingTime() > 0 && !level.isClientSide()){
             this.entityData.set(BLUE_VISUAL_FLAG, false);
             this.level.broadcastEntityEvent(this, (byte) 68);
         }
@@ -568,7 +568,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     @Override
     public void onGetItem(ItemEntity e) {
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide()) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.heal(3);
@@ -659,10 +659,10 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             } else {
                 EntityBlueJay.this.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && EntityBlueJay.this.onGround) {
+            if (!flightTarget && isFlying() && EntityBlueJay.this.isOnGround()) {
                 EntityBlueJay.this.setFlying(false);
             }
-            if (isFlying() && EntityBlueJay.this.onGround && EntityBlueJay.this.timeFlying > 10) {
+            if (isFlying() && EntityBlueJay.this.isOnGround() && EntityBlueJay.this.timeFlying > 10) {
                 EntityBlueJay.this.setFlying(false);
             }
         }
@@ -783,7 +783,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             }
 
             if (targetEntity != null) {
-                if (EntityBlueJay.this.onGround || flightTarget == null || flightTarget != null && EntityBlueJay.this.distanceToSqr(flightTarget) < 3) {
+                if (EntityBlueJay.this.isOnGround() || flightTarget == null || flightTarget != null && EntityBlueJay.this.distanceToSqr(flightTarget) < 3) {
                     Vec3 vec = EntityBlueJay.this.getBlockInViewAway(targetEntity.position(), 0);
                     if (vec != null && vec.y() > EntityBlueJay.this.getY()) {
                         flightTarget = vec;

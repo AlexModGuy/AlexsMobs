@@ -200,7 +200,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     public LivingEntity getLaserTarget() {
         if (!this.hasLaser()) {
             return null;
-        } else if (this.level.isClientSide) {
+        } else if (this.level.isClientSide()) {
             if (this.laserTargetEntity != null) {
                 return this.laserTargetEntity;
             } else {
@@ -290,7 +290,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                 this.setInvisible(this.hasEffect(MobEffects.INVISIBILITY));
             }
             if (this.getAnimation() == ANIMATION_EMERGE) {
-                if(level.isClientSide){
+                if(level.isClientSide()){
                     this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getRandomX(0.75F), this.getRandomY(), this.getRandomZ(0.75F), (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
                 }
                 if(this.getAnimationTick() == 1){

@@ -607,10 +607,10 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             } else {
                 this.toucan.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && toucan.onGround) {
+            if (!flightTarget && isFlying() && toucan.isOnGround()) {
                 toucan.setFlying(false);
             }
-            if (isFlying() && toucan.onGround && toucan.timeFlying > 10) {
+            if (isFlying() && toucan.isOnGround() && toucan.timeFlying > 10) {
                 toucan.setFlying(false);
             }
         }

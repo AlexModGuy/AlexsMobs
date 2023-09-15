@@ -189,7 +189,7 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
             CompoundTag compoundnbt = new CompoundTag();
             p_226962_1_.save(compoundnbt);
             if (p_226962_2_) {
-                if (!level.isClientSide && p_226962_1_.getRandom().nextFloat() < AMConfig.leafcutterAntFungusGrowChance) {
+                if (!level.isClientSide() && p_226962_1_.getRandom().nextFloat() < AMConfig.leafcutterAntFungusGrowChance) {
                     growFungus();
                 }
                 leafFeedings++;

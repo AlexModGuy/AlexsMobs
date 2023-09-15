@@ -308,7 +308,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         int rayTrace = getSeatRaytrace(entity);
         if (rayTrace >= 0 && rayTrace < 4) {
             if (riderPositionMap[rayTrace] != null) {
-                if (!this.level.isClientSide && level instanceof ServerLevel serverLevel) {
+                if (!this.level.isClientSide() && level instanceof ServerLevel serverLevel) {
                     Entity kickOff = serverLevel.getEntity(riderPositionMap[rayTrace]);
                     riderPositionMap[rayTrace] = null;
                     if (kickOff != null) {
@@ -359,12 +359,12 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.hasBodyGear()) {
-            if (!this.level.isClientSide) {
+            if (!this.level.isClientSide()) {
                 this.spawnAtLocation(AMItemRegistry.STRADDLE_SADDLE.get());
             }
         }
         if (this.hasHeadGear()) {
-            if (!this.level.isClientSide) {
+            if (!this.level.isClientSide()) {
                 this.spawnAtLocation(AMItemRegistry.STRADDLE_HELMET.get());
             }
         }

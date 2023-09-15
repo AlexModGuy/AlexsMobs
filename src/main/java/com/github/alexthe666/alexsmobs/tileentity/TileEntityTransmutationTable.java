@@ -50,7 +50,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
     }
 
     private static ItemStack createFromLootTable(Player player, ResourceLocation loc) {
-        if(player.level.isClientSide){
+        if(player.level.isClientSide()){
             return ItemStack.EMPTY;
         }else{
             LootTable loottable = player.level.getServer().getLootTables().get(loc);

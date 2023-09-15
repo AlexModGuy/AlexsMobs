@@ -19,6 +19,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -245,7 +246,7 @@ public class EntityCrimsonMosquito extends Monster {
                     if (!mount.isAlive() || mount instanceof Player && ((Player) mount).isCreative()) {
                         this.removeVehicle();
                     }
-                    if (!level.isClientSide) {
+                    if (!level.isClientSide()) {
                         if (drinkTime % 20 == 0 && this.isAlive()) {
                             final boolean mungus = AMConfig.warpedMoscoTransformation &&  mount instanceof EntityMungus && ((EntityMungus)mount).isWarpedMoscoReady();
                             if(mount.hurt(DamageSource.mobAttack(this), mungus ? 7F : 2.0F)){
@@ -397,7 +398,7 @@ public class EntityCrimsonMosquito extends Monster {
                 flyProgress--;
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (this.isPassenger())
                 this.setFlying(false);
 
@@ -464,7 +465,7 @@ public class EntityCrimsonMosquito extends Monster {
         if (randomWingFlapTick > 0) {
             randomWingFlapTick--;
         }
-        if (!level.isClientSide && isOnGround() && !this.isFlying() && (flightTicks >= 0 && random.nextInt(5) == 0 || this.getTarget() != null)) {
+        if (!level.isClientSide() && isOnGround() && !this.isFlying() && (flightTicks >= 0 && random.nextInt(5) == 0 || this.getTarget() != null)) {
             this.setFlying(true);
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setOnGround(false);
@@ -473,7 +474,7 @@ public class EntityCrimsonMosquito extends Monster {
         if (flightTicks < 0) {
             flightTicks++;
         }
-        if (!level.isClientSide && isFlying()) {
+        if (!level.isClientSide() && isFlying()) {
             flightTicks++;
             if (flightTicks > 200 && (this.getTarget() == null || !this.getTarget().isAlive())) {
                 BlockPos above = this.getGroundPosition(this.blockPosition().above());
@@ -496,7 +497,7 @@ public class EntityCrimsonMosquito extends Monster {
                 this.setMosquitoScale(this.getMosquitoScale() + 0.05F);
             }
         }
-        if (!level.isClientSide && shootingTicks > 0) {
+        if (!level.isClientSide() && shootingTicks > 0) {
             shootingTicks--;
             if (shootingTicks == 0) {
                 if (this.getTarget() != null && this.getBloodLevel() > 0) {
@@ -538,11 +539,11 @@ public class EntityCrimsonMosquito extends Monster {
                 if (sickTicks > 160) {
                     EntityWarpedMosco mosco = AMEntityRegistry.WARPED_MOSCO.get().create(level);
                     mosco.copyPosition(this);
-                    if (!level.isClientSide){
-                        mosco.finalizeSpawn((ServerLevelAccessor)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                    if (level instanceof ServerLevel serverLevel){
+                        mosco.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
                     }
 
-                    if (!this.level.isClientSide) {
+                    if (!this.level.isClientSide()) {
                         this.level.broadcastEntityEvent(this, (byte) 79);
                         level.addFreshEntity(mosco);
                     }
@@ -790,7 +791,7 @@ public class EntityCrimsonMosquito extends Monster {
                 this.parentEntity.getMoveControl().setWantedPosition(parentEntity.getTarget().getX(), parentEntity.getTarget().getY(), parentEntity.getTarget().getZ(), 1.0D);
                 if (parentEntity.getBoundingBox().inflate(0.3F, 0.3F, 0.3F).intersects(parentEntity.getTarget().getBoundingBox()) && !isBittenByMosquito(parentEntity.getTarget()) && parentEntity.drinkTime == 0) {
                     parentEntity.startRiding(parentEntity.getTarget(), true);
-                    if (!parentEntity.level.isClientSide) {
+                    if (!parentEntity.level.isClientSide()) {
                         AlexsMobs.sendMSGToAll(new MessageMosquitoMountPlayer(parentEntity.getId(), parentEntity.getTarget().getId()));
                     }
                 }

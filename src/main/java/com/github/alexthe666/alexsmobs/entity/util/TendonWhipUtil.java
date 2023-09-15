@@ -18,7 +18,7 @@ public class TendonWhipUtil {
 
     private static void sync(LivingEntity enchanted, CompoundTag tag) {
         CitadelEntityData.setCitadelTag(enchanted, tag);
-        if (!enchanted.level.isClientSide) {
+        if (!enchanted.level.isClientSide()) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelTagUpdate", tag, enchanted.getId()));
         } else {
             Citadel.sendMSGToServer(new PropertiesMessage("CitadelTagUpdate", tag, enchanted.getId()));
@@ -74,7 +74,7 @@ public class TendonWhipUtil {
     public static EntityTendonSegment getLastTendon(LivingEntity player) {
         UUID uuid = getLastTendonUUID(player);
         int id = getLastTendonId(player);
-        if (!player.level.isClientSide) {
+        if (!player.level.isClientSide()) {
             if (uuid != null) {
                 Entity e = player.level.getEntity(id);
                 return e instanceof EntityTendonSegment ? (EntityTendonSegment) e : null;

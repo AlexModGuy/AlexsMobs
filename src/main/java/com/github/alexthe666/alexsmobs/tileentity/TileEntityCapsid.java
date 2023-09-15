@@ -109,7 +109,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
                     EntityEnderiophage phage = AMEntityRegistry.ENDERIOPHAGE.get().create(level);
                     phage.setPos(this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() - 1.0F, this.getBlockPos().getZ() + 0.5F);
                     phage.setVariant(0);
-                    if(!level.isClientSide){
+                    if(!level.isClientSide()){
                         level.addFreshEntity(phage);
                     }
                 }
@@ -127,7 +127,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
                         fnaf = false;
                         if(!current.isEmpty()){
                             ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
-                            if(!level.isClientSide){
+                            if(!level.isClientSide()){
                                 level.addFreshEntity(itemEntity);
                             }
                         }
@@ -200,7 +200,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
         }
         lastRecipe = AlexsMobs.PROXY.getCapsidRecipeManager().getRecipeFor(stack);
         this.saveAdditional(this.getUpdateTag());
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             AlexsMobs.sendMSGToAll(new MessageUpdateCapsid(this.getBlockPos().asLong(), stacks.get(0)));
         }
     }

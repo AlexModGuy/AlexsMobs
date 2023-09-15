@@ -212,7 +212,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                     flag = this.level.destroyBlock(blockpos, true, this) || flag;
                 }
             }
-            if (!flag && this.onGround) {
+            if (!flag && this.isOnGround()) {
                 this.jumpFromGround();
             }
         }
@@ -487,10 +487,10 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             } else {
                 this.mosco.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && mosco.onGround) {
+            if (!flightTarget && isFlying() && mosco.isOnGround()) {
                 mosco.setFlying(false);
             }
-            if (isFlying() && mosco.onGround && mosco.timeFlying > 10) {
+            if (isFlying() && mosco.isOnGround() && mosco.timeFlying > 10) {
                 mosco.setFlying(false);
             }
         }

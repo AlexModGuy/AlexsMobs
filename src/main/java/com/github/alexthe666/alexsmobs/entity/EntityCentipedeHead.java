@@ -156,8 +156,8 @@ public class EntityCentipedeHead extends Monster {
 
     public Entity getChild() {
         final UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && level instanceof ServerLevel serverLevel) {
+            return serverLevel.getEntity(id);
         }
         return null;
     }
@@ -224,7 +224,7 @@ public class EntityCentipedeHead extends Monster {
         }
         this.ringBuffer[this.ringBufferIndex] = this.getYRot();
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             final Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;

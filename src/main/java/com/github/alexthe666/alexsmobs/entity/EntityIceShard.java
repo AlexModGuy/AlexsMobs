@@ -72,7 +72,7 @@ public class EntityIceShard extends Entity {
         if (!this.leftOwner) {
             this.leftOwner = this.checkLeftOwner();
         }
-        if(level.isClientSide && random.nextInt(2) == 0){
+        if(level.isClientSide() && random.nextInt(2) == 0){
             float r1 = (random.nextFloat() - 0.5F) * 0.5F;
             float r2 = (random.nextFloat() - 0.5F) * 0.5F;
             float r3 = (random.nextFloat() - 0.5F) * 0.5F;

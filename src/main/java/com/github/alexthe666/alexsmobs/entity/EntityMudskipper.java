@@ -215,14 +215,14 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
                 mudProgress -= 0.5f;
         }
 
-        boolean swim = !this.onGround && this.isInWaterOrBubble();
+        boolean swim = !this.isOnGround() && this.isInWaterOrBubble();
         if(swimProgress < 5F && swim){
             swimProgress++;
         }
         if(swimProgress > 0 && !swim){
             swimProgress--;
         }
-        if (!this.level.isClientSide) {
+        if (!this.level.isClientSide()) {
             if (isInWaterOrBubble()) {
                 swimTimer++;
             } else {
@@ -232,7 +232,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         if (displayCooldown > 0) {
             displayCooldown--;
         }
-        if(!level.isClientSide){
+        if(!level.isClientSide()){
             if(this.getDisplayAngle() < nextDisplayAngleFromServer){
                 this.setDisplayAngle(this.getDisplayAngle() + 1);
 
@@ -296,8 +296,8 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     @javax.annotation.Nullable
     public Entity getDisplayingPartner() {
         UUID id = getDisplayingPartnerUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && level instanceof ServerLevel serverLevel) {
+            return serverLevel.getEntity(id);
         }
         return null;
     }

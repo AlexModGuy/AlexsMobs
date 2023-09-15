@@ -185,7 +185,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     public void tick() {
         super.tick();
         this.prevFishPitch = this.getFishPitch();
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             final double ydist = (this.yo - this.getY());//down 0.4 up -0.38
             final float fishDist = (float) ((Math.abs(this.getDeltaMovement().x) + Math.abs(this.getDeltaMovement().z)) * 6F) / getPitchSensitivity();
             this.incrementFishPitch((float) (ydist) * 10 * getPitchSensitivity());
@@ -207,7 +207,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         }
         if(teleportIn > 0){
             teleportIn--;
-            if(teleportIn == 0 && !level.isClientSide){
+            if(teleportIn == 0 && !level.isClientSide()){
                 final double range = 8;
                 final AABB bb = new AABB(this.getX() - range, this.getY() - range, this.getZ() - range, this.getX() + range, this.getY() + range, this.getZ() + range);
                 final List<EntityCosmicCod> list = this.level.getEntitiesOfClass(EntityCosmicCod.class, bb);

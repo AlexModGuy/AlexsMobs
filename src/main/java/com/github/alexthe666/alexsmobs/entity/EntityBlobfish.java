@@ -278,7 +278,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
         final float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * Mth.RAD_TO_DEG);
         this.setXRot(f2);
         if (!isInWater()) {
-            if (this.onGround) {
+            if (this.isOnGround()) {
                 if (!this.wasOnGround)
                     this.squishAmount = -0.35F;
             } else {
@@ -286,7 +286,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
                     this.squishAmount = 2F;
             }
         }
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.isOnGround();
 
         this.alterSquishAmount();
         final boolean clear = hasClearance();

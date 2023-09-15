@@ -324,7 +324,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 if (vec != null) {
                     this.getMoveControl().setWantedPosition(vec.getX(), vec.getY(), vec.getZ(), followSpeed);
                 }
-                if (this.onGround) {
+                if (this.isOnGround()) {
                     this.setFlying(false);
                 }
             } else {
@@ -378,10 +378,8 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             } else if (item == Items.SHEARS && this.hasCap()) {
                 this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                if (!level.isClientSide) {
-                    if (player instanceof ServerPlayer) {
-                        itemstack.hurt(1, random, (ServerPlayer) player);
-                    }
+                if (player instanceof ServerPlayer serverPlayer) {
+                    itemstack.hurt(1, random, serverPlayer);
                 }
                 this.spawnAtLocation(AMItemRegistry.FALCONRY_HOOD.get());
                 this.setCap(false);
@@ -578,7 +576,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 this.setFlying(true);
             }
 
-            if (this.onGround && this.timeFlying > 30 && isFlying() && !this.isInWaterOrBubble()) {
+            if (this.isOnGround() && this.timeFlying > 30 && isFlying() && !this.isInWaterOrBubble()) {
                 this.setFlying(false);
             }
         }
@@ -1006,13 +1004,13 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                     orbitResetCooldown = -400 - random.nextInt(400);
                 }
             }
-            if (eagle.horizontalCollision && !eagle.onGround) {
+            if (eagle.horizontalCollision && !eagle.isOnGround()) {
                 stop();
             }
             if (flightTarget) {
                 eagle.getMoveControl().setWantedPosition(x, y, z, 1F);
             } else {
-                if (!eagle.onGround && eagle.isFlying()) {
+                if (!eagle.isOnGround() && eagle.isFlying()) {
                     if (!eagle.isInWaterOrBubble()) {
                         eagle.setDeltaMovement(eagle.getDeltaMovement().multiply(1.2F, 0.6F, 1.2F));
                     }
@@ -1020,13 +1018,13 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                     this.eagle.getNavigation().moveTo(this.x, this.y, this.z, 1F);
                 }
             }
-            if (!flightTarget && eagle.onGround && isFlying()) {
+            if (!flightTarget && eagle.isOnGround() && isFlying()) {
                 eagle.setFlying(false);
                 orbitTime = 0;
                 eagle.orbitPos = null;
                 orbitResetCooldown = -400 - random.nextInt(400);
             }
-            if (eagle.timeFlying > 30 && isFlying() && (!level.isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.onGround) && !eagle.isInWaterOrBubble()) {
+            if (eagle.timeFlying > 30 && isFlying() && (!level.isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.isOnGround()) && !eagle.isInWaterOrBubble()) {
                 eagle.setFlying(false);
                 orbitTime = 0;
                 eagle.orbitPos = null;

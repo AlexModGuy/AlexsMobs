@@ -275,7 +275,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
                 danceProgress--;
         }
 
-        if (!this.onGround || random.nextInt(200) == 0) {
+        if (!this.isOnGround() || random.nextInt(200) == 0) {
             randomWingFlapTick = 5 + random.nextInt(15);
         }
         if (randomWingFlapTick > 0) {

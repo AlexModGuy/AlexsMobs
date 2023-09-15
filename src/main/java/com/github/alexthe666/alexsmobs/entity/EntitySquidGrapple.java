@@ -108,8 +108,8 @@ public class EntitySquidGrapple extends Entity {
 
     public Entity getOwner() {
         UUID id = getOwnerId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && level instanceof ServerLevel serverLevel) {
+            return serverLevel.getEntity(id);
         }
         return getOwnerId() == null ? null : level.getPlayerByUUID(getOwnerId());
     }
@@ -127,7 +127,7 @@ public class EntitySquidGrapple extends Entity {
         this.xRotO = this.getXRot();
         this.yRotO = this.getYRot();
         Entity entity = this.getOwner();
-        if(!level.isClientSide){
+        if(!level.isClientSide()){
             if(entity == null || !entity.isAlive()){
                 this.discard();
             }else if (entity.isShiftKeyDown()) {
@@ -147,7 +147,7 @@ public class EntitySquidGrapple extends Entity {
                 double d1 = this.getY() + vector3d.y;
                 double d2 = this.getZ() + vector3d.z;
                 float f = Mth.sqrt((float) (move.x * move.x + move.z * move.z));
-                if(!this.level.isClientSide){
+                if(!this.level.isClientSide()){
                     this.setYRot(Mth.wrapDegrees((float) (-Mth.atan2(move.x, move.z) * (double) Mth.RAD_TO_DEG)) - 180);
                     this.setXRot((float) (Mth.atan2(move.y, f) * (double) Mth.RAD_TO_DEG));
                     this.yRotO = this.getYRot();
@@ -157,7 +157,7 @@ public class EntitySquidGrapple extends Entity {
             }else{
                 this.discard();
             }
-        }else if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
+        }else if (this.level.isClientSide() || this.level.hasChunkAt(this.blockPosition())) {
             if(this.getStuckToPos() == null){
                 super.tick();
                 Vec3 vector3d = this.getDeltaMovement();
@@ -256,7 +256,7 @@ public class EntitySquidGrapple extends Entity {
 
     protected void onImpact(HitResult result) {
         HitResult.Type raytraceresult$type = result.getType();
-        if (!level.isClientSide && raytraceresult$type == HitResult.Type.BLOCK && this.getStuckToPos() == null) {
+        if (!level.isClientSide() && raytraceresult$type == HitResult.Type.BLOCK && this.getStuckToPos() == null) {
             this.setDeltaMovement(Vec3.ZERO);
             this.setStuckToPos(((BlockHitResult)result).getBlockPos());
             this.setAttachmentFacing(((BlockHitResult)result).getDirection());
