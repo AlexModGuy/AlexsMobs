@@ -598,12 +598,14 @@ public class ServerEvents {
         if (event.getNewTarget() != null && event.getEntity() instanceof Mob mob) {
             if (mob.getMobType() == MobType.ARTHROPOD) {
                 if (event.getNewTarget().hasEffect(AMEffectRegistry.BUG_PHEROMONES.get()) && event.getEntity().getLastHurtByMob() != event.getNewTarget()) {
-                    mob.setTarget(null);
+                    event.setCanceled(true);
+                    return;
                 }
             }
             if (mob.getMobType() == MobType.UNDEAD && !mob.getType().is(AMTagRegistry.IGNORES_KIMONO)) {
                 if (event.getNewTarget().getItemBySlot(EquipmentSlot.CHEST).is(AMItemRegistry.UNSETTLING_KIMONO.get()) && event.getEntity().getLastHurtByMob() != event.getNewTarget()) {
-                    mob.setTarget(null);
+                    event.setCanceled(true);
+                    return;
                 }
             }
         }
