@@ -18,3 +18,5 @@ O chicote pode ser reparado com tendões elásticos.
 <NEWLINE>
 o Quimono Perturbador pode funcionar como um peitoral. Embora tenha baixa armadura e durabilidade, aumenta a distância de posicionamento do usuário em dois blocos e torna a maioria dos mobs mortos-vivos hostis neutros à sua presença - exceto por outros murmúrios e o Wither.
 Pode ser reparado com lã.
+<NEWLINE>
+Embora os Murmúrios geralmente possam ser encontrados em grandes profundidades, eles também raramente podem aparecer na superfície em Cerejais.
