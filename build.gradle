@@ -127,7 +127,9 @@ dependencies {
 
 mixin {
     add sourceSets.main, "citadel.refmap.json"
+    add sourceSets.main, "alexsmobs.refmap.json"
     config 'citadel.mixins.json'
+    config 'alexsmobs.mixins.json'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
