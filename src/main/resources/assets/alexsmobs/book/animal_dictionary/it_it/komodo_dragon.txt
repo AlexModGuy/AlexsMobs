@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+I draghi di Komodo sono le lucertole più grandi del mondo, spesso trovate nelle giungle rade. Queste grandi lucertole vedono umani e bestie come cibo e attaccano quasi di tutto. Spesso possono essere visti a lottare contro altri della loro specie per la dominanza, stando sulle zampe posteriori.
+Sono inoltre cannibali e cercheranno di attaccare ogni altro drago di Komodo indebolito, particolarmente i cuccioli. Queste lucertole hanno un terribile morso velenoso con cui abbattono prede persino più grandi di loro.
+<NEWLINE>
+I draghi di Komodo amano la carne marcia e ne mangeranno interi stack se dati dai giocatori. Se gli vengono dati svariati stack di carne marcia, possono essere addomesticati.
+I draghi di Komodo addomesticati sono selvaggi quanto quelli selvatici, però ci puoi mettere una sella per un formidabile trasporto sorprendentemente veloce. Ai draghi di Komodo addomesticati puoi dire di stare immobili, seguire o vagare.
+<NEWLINE>
+I draghi di Komodo possono occasionalmente gocciolare la loro saliva nociva. Se distillata con una pozione di resistenza al veleno ne può aumentare la durata.
+Questo oggetto può essere imbottigliato e distillato con una zampa di centopiedi della caverna per creare un'alternativa per l'essenza velenosa.
+Tre sputi di drago di Komodo possono inoltre essere utilizzati per creare una palla di slime.

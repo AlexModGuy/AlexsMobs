@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+L'ornitorinco è una creatura che sembra una combinazione di diversi animali, ma è completamente unico nel suo genere. Può essere trovato raramente nei fiumi dell'overworld.
+Questo strano mammifero ha spine velenose sulle zampe, che può usare per infliggere effetti di veleno su chiunque lo attacchi.
+Il deboli sensi di olfatto, udito e vista dell'ornitorinco l'hanno portato a contare sull'elettroricezione per cacciare e per orientarsi. A causa di ciò, l'ornitorinco è naturalmente attiratto dalla redstone quando tenuta in mano. Se data da mangiare redstone, l'ornitorinco ricaricherà la sua elettrosensibilità, e cercherà delle larve nei blocchi di argilla nelle vicinanze.
+Durante la ricerca del cibo, l'ornitorinco scaverà svariata argilla e larve, che possono poi essere raccolte. Se dato da mangiare un intero blocco di redstone, la quantità di oggetti scavati aumenterà notevolmente.
+Come altre piccole creature acquatiche, l'ornitorinco può essere trasportato in un secchio d'acqua. Può essere fatto accoppiare con code di aragosta, il suo cibo preferito.
+

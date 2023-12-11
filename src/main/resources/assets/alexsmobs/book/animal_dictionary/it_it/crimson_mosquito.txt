@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+La zanzara cremisi è un orribile insetto volante mutante trovato nelle foreste cremisi nel nether. Questa bestia vorace andrà a
+caccia di quasi ogni animale dal sangue caldo per farsi uno spuntino, incluse le persone. Essa si lancia contro la sua preda, attaccandosi,
+e succhiando il suo sangue. Una volta riempita, inizierà a volare e utilizzare il sangue della sua preda contro di essa - sputandoglielo
+addosso.
+<NEWLINE>
+Se sconfitta mentre piena di sangue, la zanzara cremisi potrà rilasciare una sacca di sangue. Potrebbe inoltre rilasciare la sua proboscide.
+Entrambi i materiali possono essere utilizzati per costruire la spruzzasangue, un'arma unica che utilizza lo sputo di zanzara per infliggere danni 
+ad area. La spruzzasangue utilizza sacche di sangue come munizioni.
+<NEWLINE>
+Se una mosca dell'overworld in qualche modo riesce ad accedere al nether, si può trasformare in una zanzara cremisi.

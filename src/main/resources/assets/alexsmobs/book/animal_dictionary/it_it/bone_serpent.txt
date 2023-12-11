@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Il serpente d'ossa è una gigante creatura non morta dalle sembianze di un serpente che abita nei profondi laghi di lava del nether. Può occasionalmente essere
+visto saltare fuori dalla lava per poi scomparire poco dopo. Il serpente d'ossa non è soltanto ostile verso gli
+esploratori, infatti è pure il nemico mortale degli scheletri wither. Quando un serpente d'ossa prende di mira una creatura, fa un salto
+fuori dalla lava nel tentativo di schiacciare la sua preda sotto di sé.
+
+Se ucciso, il serpente d'ossa esplode in mucchi delle sue ossa, può inoltre rilasciare uno dei suoi denti. Quando distillato in una
+bottiglia di lava, creerai una pozione di visione attraverso la lava, che permette di vedere attraverso la lava come se essa fosse acqua.

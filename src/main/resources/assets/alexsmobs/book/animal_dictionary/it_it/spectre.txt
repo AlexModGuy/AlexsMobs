@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Lo spettro è un parente distante del phantom dell'overworld, e può essere trovato solo nel profondo vuoto tra le isole dell'end. Questi esseri spettrali non possono essere attaccati normalmente, eccetto tramite danno magico come le pozioni.
+Tuttavia, non ci dovrebbe essere bisogno di attaccarli, siccome gli spettri sono completamente passivi, differentemente dai loro cugini phantom.
+Gli spettri solitamente non sono interessati a materia fisica, ma trovano interesse nei cuori delle anime e seguiranno qualsiasi giocatore che ne abbia uno in mano.
+<NEWLINE>
+Se qualcuno riesce ad attirare uno spettro abbastanza vicino, può utilizzare un guinzaglio per attaccarsi alla creatura.
+Se attaccato tramite il guinzaglio, verrai trascinato dallo spettro. Questa creatura spettrale diventa un modo facile e veloce per esplorare l'end, siccome venire tirati da uno spettro in giro per il void è una strategia semplice per trovare nuove isole da perlustrare.
+Per staccarsi dallo spettro, semplicemente accucciati o interagisci di nuovo con il guinzaglio.

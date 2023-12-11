@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+I minatori fantasma sono rari abitanti spettrali delle miniere abbandonate. A causa della loro natura eterea, possono camminare facilmente attraverso i muri e possono essere feriti soltanto con la magia, come le pozioni lanciabili.
+La maggior parte dei minatori fantasma inizierà ad apparire solo dopo aver passato molto tempo in una miniera abbandonata.
+Tuttavia, non costituiscono una minaccia per i viventi, a meno che non vengano attaccati per primi. Tuttavia la loro diffidenza nei confronti dei nuovi arrivati è apparente - scompareranno temporaneamente se avvicinati. I minatori fantasma amano stalkerare nei corridoi delle miniere abbandonate, avendolo fatto per gli ultimi centinaia di anni.
+<NEWLINE>
+I minatori possono occasionalmente essere visti scavare blocchi con i loro picconi fantasma. Esistendo nel piano spirituale, non sono in grado di distruggere questi blocchi, ma le loro azioni possono rivelare minerali nascosti nelle mura delle miniere.
+Se uno specifico blocco di minerale grezzo viene lanciato vicino ad un minatore fantasma, smetterà di essere invisibile e inizierà a cercare e scavare i blocchi che nascondono tale blocco di minerale nei dintorni - potenzialmente rivelando vene di minerali.
+<NEWLINE>
+Se sconfitto utilizzando la magia, il minatore fantasma potrebbe rilasciare il suo piccone fantasma. Questo piccone, sebbene immateriale, è decentemente potente, ma il suo vero potere è l'essere in grado di conservare al suo interno fino a 9 stack dei drop dei blocchi scavati - solo se chi lo utilizza ha un inventario pieno. Una volta liberato spazio nell'inventario, gli oggetti verranno presi dal piccone. Il piccone fantasma può essere riparato con membrane di phantom.

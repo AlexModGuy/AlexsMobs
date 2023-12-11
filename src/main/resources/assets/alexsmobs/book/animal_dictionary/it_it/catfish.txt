@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+I pesci gatto sono pesci letargici trovati in paludi e fiumi. Nonostante i pesci gatto dei fiumi possano diventare piuttosto pesanti, i più grossi di questi pesci saranno trovabili solo nelle paludi.
+<NEWLINE>
+Essendo alimentatori inferiori, i pesci gatto non sono schizzinosi con il loro cibo. I pesci gatto piccoli e medi cercheranno di risucchiare ogni oggetto che vedono. Quelli grandi invece cercheranno di mangiare ogni entità più bassa di un blocco.
+I pesci gatto piccoli possono conservare solo tre stack di oggetti nelle loro pance, mentre quelli medi ne possono conservare nove. I pesci gatto grandi possono conservare solo un'entità per volta nella loro pancia.
+I pesci gatto rigurgiteranno ogni oggetto o entità che hanno ingoiato se feriti o se trovano un cetriolo di mare, siccome odiano il sapore dei cetrioli.
+<NEWLINE>
+Nonostante la loro vista non sia delle migliori, la luce di una lanterna marina attrae i pesci gatto. Queste possono essere utilizzate per attirarli in zone con o senza oggetti.
+<NEWLINE>
+Tutti i pesci gatto, persino quelli grandi, possono essere catturati con un secchio d'acqua. Il contenuto nella pancia del pesce gatto sarà preservato, perciò puoi effettivamente utilizzare un pesce gatto per trasportare oggetti o entità mettendolo in un secchio dopo avergli dato da mangiare.
+I pesci gatto che hanno mangiato oggetti o che sono stati messi in un secchio non scompariranno.

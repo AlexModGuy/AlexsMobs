@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+La gru del Sole è una mitica gru che puoi veder sorvolare le montagne più alte. Completamente passiva, la gru del Sole può
+garantire la sua benedizione a qualsiasi giocatore che riesca a raggiungerla. Se benedetto da una gru del Sole, sarà più facile volare con le elitre,
+e potrai fluttuare su e giù proprio come le gru del Sole. Tuttavia, se una gru del Sole viene attaccata, lancerà una
+maledizione, causando una caduta veloce e spesso fatale all'aggressore.
+<NEWLINE>
+Essendo creature sacre, le gru del Sole fanno prendere fuoco ai non-morti nelle vicinanze, come se
+si trovassero sotto il potente Sole. Le gru del Sole non possono prendere danno da alcun tipo di fiamma, calore o lava, essendo loro stesse
+l'incarnazione del fuoco.
