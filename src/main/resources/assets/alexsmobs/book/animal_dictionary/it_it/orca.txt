@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+L'orca è un grande cetaceo trovato negli oceani freddi dell'overworld. Può essere spesso vista saltare su e giù
+fuori dall'acqua e attaccare le popolazioni di orsi polari. Possono inoltre uccidere banchi di pesci schiaffeggiandoli con la loro enorme coda. Differentemente dai loro cugini delfini,
+queste creature non sono così amichevoli - attaccare una di esse potrebbe farti attaccare dall'intero branco.
+<NEWLINE>
+Il colore e l'aspetto di un'orca si basa sulla provenienza del branco, ovvero sud, nord, est o ovest.
+<NEWLINE>
+Nuotare con un branco di orche può garantirti l'effetto di forza dell'orca. Questo effetto garantisce velocità di attacco aumentata. Le orche possono spesso usare la loro forza contro annegati e guardiani.

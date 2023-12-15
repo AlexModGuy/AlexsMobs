@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+I guster sono spiriti del deserto vendicativi che si manifestano solo durante tempeste nei deserti.
+Queste creature sono ostili per natura e cercheranno di lanciare in aria i loro bersagli o sparargli della sabbia addosso.
+I guster possono inoltre sollevare ogni oggetto per terra e lanciarlo, rendendo raccogliere i rilasci dei mostri più difficile.
+I guster sono formati da sabbia e se in una zona con sabbia delle anime o sabbia rossa, assumeranno il colore di quest'ultime.
+Sebbene potenti, i guster non sono creature molto solide. Tuttavia, la loro presenza quasi eterea li rende più resistenti ai proiettili rispetto ad altri mostri.
+Se sconfitti, i guster rilasceranno sabbia e occasionalmente uno dei loro occhi. Questi occhi possono essere utilizzati per costruire un gustmaker, un blocco che, se azionato con della redstone, rilascerà una tempesta di piccoli gust.
+Questo piccolo gust può trasportare creature e oggetti in giro. L'occhio può inoltre essere utilizzato per creare una sacca di sabbia, che può essere utilizzata come arma accecante.

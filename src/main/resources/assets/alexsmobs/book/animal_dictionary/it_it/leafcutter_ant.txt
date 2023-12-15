@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Le formiche tagliafoglie sono piccoli insetti spesso trovati a staccare foglie dagli alberi nelle giungle. Formano enormi colonie composte da fino a venti formiche. Ci sono due tipi di formiche tagliafoglie - operaie, che raccolgono foglie e possono essere viste fuori dal formicaio, e regine, che appaiono solo quando calpesti un formicaio.
+Le regine sono più grandi e forti delle operaie e solitamente ce n'è solo una per colonia. Con una regina nel formicaio, c'è una possibilità per ogni 5 foglie raccolte di creare un'altra formica operaia, se il formicaio ha meno di 10 formiche.
+<NEWLINE>
+Senza una regina, i formicai non sono in grado di ripopolarsi. Queste colonie sono ben più grandi di quanto sembra - sotto terra ci sono varie camere di formiche tagliafoglie, grandi blocchi utilizzati dalle formiche per trasformare le foglie in funghi.
+Questi blocchi diventeranno terra se esposti alla luce del sole, tuttavia possono espandersi nei blocchi di terra adiecenti dopo la raccolta.
+<NEWLINE>
+Questi funghi sono chiamati gongilidia e sono le uniche cose che queste formiche sono in grado di produrre e mangiare.
+Oltre ad essere mangiato dalle formiche, puoi mangiarlo pure tu, nonostante non abbia un grande valore nutritivo fornisce molta saturazione.
+I gongilidia possono essere ottenuti interagendo con una camera ricoperta di funghi sottoterra, ma attenzione: A meno che non ci sia un fungolume nelle vicinanze, le formiche della colonia diventeranno ostili.
+I funghi possono essere dati da mangiare alle formiche per curarle e alla regina per aumentare il numero di formiche nella colonia. I gongilidia possono inoltre essere dati da mangiare ad una formica per pacificare tutte le formiche nella zona. Se una camera viene rotta, c'è una rara possibilità che rilasci una pupa di formica tagliafoglie, che può essere utilizzata su terra o erba per creare una nuova colonia.

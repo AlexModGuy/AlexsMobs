@@ -1,0 +1,17 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Lo stridio è una strano primate mutato orribilmente che può essere trovato aggrappato ai soffitti dei biomi del deep dark.
+Essendo il suo bioma nativo così buio, può essere distinto unicamente dai suoi enormi occhi luminosi.
+<NEWLINE>
+Nonostante sia considerato un mostro ostile, lo stridio non è in grado di combattere. Invece, quando trova la sua preda, inizia a creare un forte baccano, sia urlando che battendo i piedi.
+Nel giro di pochi secondi, un suono così forte in un bioma così sensibile al suono è destinato a risvegliare il sorvegliante, o warden, proprio sotto la preda.
+<NEWLINE>
+Fortunatamente per gli avventurieri, gli stridi hanno una vita estremamente bassa, e qualsiasi proiettile può temporaneamente fermarlo dal chiamare il warden - oltre a farlo precipitare per terra.
+La parte più difficile nell'incontrare queste bestie è identificarle prima che esse identifichino te.
+<NEWLINE>
+Se sconfitto, lo stridio ha una possibilità di rilasciare la sua anima. L'anima di stridio può essere utilizzata per creare un boomer di sculk.
+<NEWLINE>
+<NEWLINE>
+Quando attivato da un sensore di sculk, questo blocco emetterà un forte boom che può danneggiare entità nelle vicinanze che si trovano ad almeno 3 blocchi orizzontali di distanza dal boomer. Può essere temporaneamente disabilitato con un segnale di redstone, e i boom hanno un leggero tempo di ricarica, rendendo i boomer di sculk utili per le trappole.

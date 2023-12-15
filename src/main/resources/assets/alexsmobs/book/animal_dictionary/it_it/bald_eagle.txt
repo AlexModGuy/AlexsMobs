@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Le aquile sono grandi rapaci neutrali trovati nei biomi montuosi boscosi. Sono frequenti visitatrici dei laghi vicini, dove cercheranno di scendere in picchiata e catturare un salmone fuori dall'acqua.
+Amano attaccare anche i conigli nello stesso modo. Quando attaccano creature più grandi, le aquile preferiscono accerchiare, tagliare con i loro artigli e ripetere.
+<NEWLINE>
+Per via del loro amore verso i pesci, le aquile possono essere attirate con dell'olio di pesce. A un'aquila addomesticata può essere comandato di stare immobile, seguire o vagare, come svariate altre bestie, ma possono essere utilizzate anche per la falconeria.
+Per iniziare la falconeria, bisogna per prima cosa costruire un guanto da falconeria. Quando tenuto in mano destra o sinistra, questo guanto può essere utilizzato per prendere e tenere aquile in mano. Per lanciare un'aquila dalla mano, semplicemente tira un pugno.
+Se lanciata mentre osservi una creatura, l'aquila volerà per attaccarla e se sopravvissuta tornerà alla mano. Se nessun mob è selezionato l'aquila semplicemente scenderà dal guanto.
+<NEWLINE>
+Per migliorare le doti da falconeria, puoi costruire un cappuccio da falconeria. Il cappuccio può essere piazzato sull'aquila, e un'aquila con un cappuccio seguirà direttamente i comandi dati dal suo proprietario dopo essere stata lanciata dal guanto.
+Ciò significa che un'aquila può a tutti gli effetti essere pilotata dal proprietario. Se l'aquila vola via più di 150 blocchi dal proprietario, cercherà di tornare da esso. Per smettere di controllare l'aquila, il proprietario può anche accucciarsi.
+The hood can be removed from the eagle with shears.
+<NEWLINE>
+Le aquile vengono spesso ferite dalle loro prede mentre cacciano. Un'aquila addomesticata può essere curata con un qualsiasi pesce. Le aquile possono essere fatte accoppiare con della carne marcia.

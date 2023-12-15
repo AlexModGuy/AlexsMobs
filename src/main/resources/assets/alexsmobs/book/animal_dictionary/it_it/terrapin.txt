@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Le terrapin, o tartarughe dal dorso di diamante, sono piccoli rettili trovati occasionalmente sommersi nei biomi di fiume con l'assenza di ghiaccio.
+Sono completamente passive e si affidano al loro carapace per la protezione. Le terrapin selvatiche possono essere prese con un secchio d'acqua.
+<NEWLINE>
+Se salti su una terrapin, si nasconderà nel suo guscio. Saltando su di essa nuovamente, la tartaruga ruoterà nella direzione di chi ci ha saltato, rimbalzando sui muri.
+Schiantandosi contro un'altra entità, la tartaruga infliggerà una decente quantità di danno. Tuttavia, tale entità potrebbe diventare aggressiva nei confronti di chiunque le abbia lanciato la tartaruga addosso.
+<NEWLINE>
+Le terrapin hanno un'ampia varietà di colorazioni, di cui molte non compaiono in natura.
+Queste tartarughe possono essere fatte accoppiare con l'erba acquatica per produrre 1-4 uova. Sebbene la maggior parte di queste uova dovrebbe essere un diretto incrocio tra i suoi genitori, c'è una possibilità che una piccola tartaruga muti in un colore completamente casuale.
+Se la tartaruga non è mutata, allora i suoi colori potrebbero essere di uno dei genitori o un misto dei due.

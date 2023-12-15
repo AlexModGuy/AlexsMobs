@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+I rinoceronti sono grandi mammiferi corazzati trovati in gruppi nelle savane.
+Hanno grandi corna sulla loro testa che useranno per attaccare qualsiasi minaccia che si avvicina troppo.
+I rinoceronti odiano i predoni e cercheranno li attaccano appena li vedono. 
+Questi animali cornuti e corazzati possono infliggere alte quantità di danno molto velocemente.
+<NEWLINE>
+Inizialmente essi sono diffidenti dai giocatori, ma possono essere pacificati dandogli da mangiare del grano.
+Se una pozione viene utilizzata su un rinoceronte, la pozione verrà applicata sul suo corno. Qualsiasi creatura attaccata dal rinoceronte verrà inflitta con l'effetto della pozione.
+Queste pozioni rimarranno dai 15 fino ai 20 attacchi prima di svanire. I rinoceronti amichevoli possono aiutare chiunque gli abbia dato del grano e andranno in qualsiasi villaggio nelle vicinanze per mantenerlo al sicuro.
+<NEWLINE>
+I rinoceronti possono essere fatti accoppiare con erba alta o arbusti secchi.

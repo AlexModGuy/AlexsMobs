@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Le mosche sono piccoli insetti fastidiosi trovati comunemente nell'overworld. Attratte dai morti e chi sta morendo, possono essere trovate
+a inseguire e mordere zombi quasi fino alla morte. Le mosche possono essere fatte accoppiare con della carne marcia e morendo hanno una possibilità di rilasciare
+larve. Le larve di mosca possono essere utilizzate per far accoppiare altre creature, come i corridori della strada e le scimmie cappuccine, e, in caso di emergenza, utilizzate
+come spuntino leggero.
+<NEWLINE>
+Se una mosca dell'overworld in qualche modo riuscisse ad accedere al nether, questa piccola creatura si trasformerà nella mostruosa zanzara cremisi.

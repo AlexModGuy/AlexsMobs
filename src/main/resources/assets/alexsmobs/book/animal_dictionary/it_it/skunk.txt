@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Le puzzole sono mammiferi che possono occasionalmente essere trovati a vagare nelle foreste. Sono naturalmente molto diffidenti e cercheranno di scappare da qualsiasi grande predatore che incontrano.
+Se insistentemente seguite per la foresta o ferite in qualche modo, le puzzole si difenderanno rilasciando uno spruzzo nocivo sopra all'inseguitore, infliggendo nausea.
+<NEWLINE>
+Parte di questo spruzzo può pure rimanere nel mondo, attaccandosi alle superfici su cui ha spruzzato la puzzola. Esso può essre imbottigliato per ottenere la puzza in bottiglia, che è usata come carburante per lo spruzzapuzza.
+<NEWLINE>
+Lo spruzzapuzza è un potente utensile unico che può essere utilizzato per distrarre orde di entità ostili o neutrali. Se sparato ad una creatura, le creature neutrali e ostili nelle vicinanze lo incolperanno per la puzza orrenda e inizieranno a prenderlo di mira, mentre le entità passive cercheranno di scappare.
+Perciò lo spruzzapuzza può essere utilizzato velocemente per causare caos tra gruppi di entità. Ogni bottiglia consumata garantisce solo cinque utilizzi.
+<NEWLINE>
+Le puzzole possono essere fatte accoppiare con bacche dolci. Se a una puzzola viene inflitto un effetto di una pozione, nel momento dello spruzzo creerà una nuvola persistente di tale effetto. Solo le puzzole adulte possono spruzzare.

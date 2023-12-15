@@ -1,0 +1,23 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Il lungimirante è un essere che proviene da oltre le dimensioni, che vive in universi ortogonali al nostro. Possono raggiungere il nostro mondo dal loro pianeta natale soltanto ai bordi del mondo, che rende gli incontri con queste bestie estremamente rari.
+<NEWLINE>
+Tuttavia, ciò non significa che siano impossibili da trovare. Con della dedizione, puoi creare un distorsore dimensionale frantumato piazzando un distorsore dimensionale in un capside. Differentemente dalla variante normale di questo strumento, il distorsore frantumato creerà un portale che porta a un milione di blocchi nella direzione che desideri.
+Semplicemente utilizzando questo strumento molteplici volte nella stessa direzione potrebbe portarti nel territorio del lungimirante.
+<NEWLINE>
+Quando una preda è vicina al bordo del mondo, il lungimirante ha una possibilità di aprire un portale e apparire da esso in modo inaspettato.
+<NEWLINE>
+Se incontri un lungimirante, sarà indubbiamente estremamente ostile. Cercherà di dissolvere ogni avversario in statico puro utilizzando i suoi veloci artigli o un devastante raggio sparato dall'occhio. Se questi attacchi non sono schivati o superati, il lungimirante ha un'alta probabilità di vincere - I suoi attacchi passano attraverso armature e incantamenti.
+<NEWLINE>
+Se sconfitto, un lungimirante può rilasciare una delle sue diverse braccia. Queste, assieme a dell'ossidiana e una stella del nether, possono essere utilizzati per costruire un banco da trasmutazione.
+<NEWLINE>
+<NEWLINE>
+Utilizzando la stessa magia che i lungimiranti utilizzano per trasformare la materia in nulla, questo banco ti permette di trasmutare interi stack di oggetti in altri oggetti.
+Quando aperto, questo banco ha uno slot che può essere riempito con ogni oggetto stackabile. Una volta fatto compariranno tre opzioni, che possono essere selezionate per trasformare l'intero stack di oggetti nell'oggetto selezionato, per un costo in esperienza.
+Quando un oggetto viene trasmutato in un altro, c'è una piccola possibilità che le prossime opzioni di trasmutazione saranno l'oggetto in questione, che aumenta e diminuisce rispettivamente in base a quanto spesso tale oggetto viene trasmutato e quanto spesso viene selezionato.
+<NEWLINE>
+Il banco da trasmutazione potrebbe iniziare con solo semplici oggetti naturali come opzioni, ma può essere velocemente riempito con altri tipi di risorse.
+Se distrutto, il banco da trasmutazione perderà tutta la sua conoscenza degli oggetti e ne rimarrà soltanto una stella del nether, seguito da una violenta esplosione.

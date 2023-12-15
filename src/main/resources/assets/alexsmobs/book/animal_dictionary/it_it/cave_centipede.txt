@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Il centopiedi della caverna è un raro artropode sotterraneo che può essere trovato nelle profondità delle caverne. Esso è ostile contro chiunque si trovi nel suo territorio.
+Sebbene lento, questo ingombrante artropode gigante è in grado di infliggere una pericolosa quantità di danno e ha un morso velenoso.
+<NEWLINE>
+Quando sconfitto, ha una possibilità di rilasciare una o più delle sue gambe.
+Queste gambe possono essere utilizzate per costruire un paio di gambiere che permettono a chi le indossa di arrampicarsi sui muri, oltre ad aumentare la difesa.
+Possono inoltre essere distillate con una essenza velenosa o una bottiglia di sputo di drago di Komodo per creare una pozione di resistenza al veleno.
+Essa permette a chi la beve di non subire gli effetti del veleno.

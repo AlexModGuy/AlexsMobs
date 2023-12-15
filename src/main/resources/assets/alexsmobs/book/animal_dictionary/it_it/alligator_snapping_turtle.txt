@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+La tartaruga alligatore è un grosso rettile semi-acquatico trovato nelle paludi nell'overworld.
+Differentemente dalle sue cugine tartarughe marine passive, la tartaruga alligatore è una bestia feroce che attacca tutto ciò che passa vicino al suo affilato becco.
+È in grado di mordere e muoversi sorprendementemente veloce per una tartaruga, perciò è meglio lasciare queste creature da sole quando incontrate. 
+Le tartarughe alligatore si muovono raramente, ed è comune che del muschio si accumuli sui loro gusci dopo diversi giorni sott'acqua.
+<NEWLINE>
+Se muschiose, possono essere tosate per una possibilità di far cadere uno scuto appuntito. Questi possono essere utilizzati per migliorare il guscio 
+di tartaruga. Il guscio di tartaruga appuntito comporta resistenza al contraccolpo e permette al giocatore di respirare sott'acqua per 15 secondi aggiuntivi.
+Occasionalmente è inoltre in grado di respingere attacchi ravvicinati. Le tartarughe alligatore possono essere fatte accoppiare con merluzzo crudo.
