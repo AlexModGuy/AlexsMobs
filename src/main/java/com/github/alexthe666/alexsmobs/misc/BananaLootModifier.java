@@ -14,23 +14,40 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
+import org.jetbrains.annotations.NotNull;
 
-public class BananaLootModifier extends LootModifier {
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-    public BananaLootModifier(){
-        super(new LootItemCondition[0]);
-    }
+public class BananaLootModifier implements IGlobalLootModifier {
+
+    public static final Supplier<Codec<BananaLootModifier>> CODEC = () ->
+            RecordCodecBuilder.create(inst ->
+                    inst.group(
+                                    LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(lm -> lm.conditions)
+                            )
+                            .apply(inst, BananaLootModifier::new));
+
+    private final LootItemCondition[] conditions;
+
+    private final Predicate<LootContext> orConditions;
 
     public BananaLootModifier(LootItemCondition[] conditionsIn) {
-        super(conditionsIn);
+        this.conditions = conditionsIn;
+        this.orConditions = LootItemConditions.orConditions(conditionsIn);
     }
 
+    @NotNull
     @Override
+    public ObjectArrayList<ItemStack> apply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+        return this.orConditions.test(context) ? this.doApply(generatedLoot, context) : generatedLoot;
+    }
+
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context){
-        BlockState state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
-        if (AMConfig.bananasDropFromLeaves && state != null && state.is(AMTagRegistry.DROPS_BANANAS)){
+        if (AMConfig.bananasDropFromLeaves){
             ItemStack ctxTool = context.getParamOrNull(LootContextParams.TOOL);
             RandomSource random = context.getRandom();
             if(ctxTool != null){
@@ -49,14 +66,8 @@ public class BananaLootModifier extends LootModifier {
         return generatedLoot;
     }
 
-    private static final Codec<BananaLootModifier> CODEC = RecordCodecBuilder.create(inst -> codecStart(inst).apply(inst, BananaLootModifier::new)); ;
-
     @Override
     public Codec<? extends IGlobalLootModifier> codec() {
-        return CODEC;
-    }
-
-    public static Codec<BananaLootModifier> makeCodec() {
-        return Codec.unit(BananaLootModifier::new);
+        return CODEC.get();
     }
 }

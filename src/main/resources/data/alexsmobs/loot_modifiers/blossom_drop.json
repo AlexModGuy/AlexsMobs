@@ -2,8 +2,8 @@
   "type": "alexsmobs:blossom_drop",
   "conditions": [
     {
-      "condition": "block_state_property",
-      "block":"minecraft:acacia_leaves"
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:blocks/acacia_leaves"
     }
   ]
 }

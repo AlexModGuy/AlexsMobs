@@ -2,8 +2,8 @@
   "type": "alexsmobs:banana_drop",
   "conditions": [
     {
-      "condition": "block_state_property",
-      "block":"minecraft:jungle_leaves"
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:blocks/jungle_leaves"
     }
   ]
 }
