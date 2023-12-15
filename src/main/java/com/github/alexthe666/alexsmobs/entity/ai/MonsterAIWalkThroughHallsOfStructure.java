@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
@@ -22,16 +23,32 @@ public class MonsterAIWalkThroughHallsOfStructure extends RandomStrollGoal {
     private double maximumDistance = 0;
     private double maximumYDistance = 3;
 
+    private int errorCooldown = 0;
+
     public MonsterAIWalkThroughHallsOfStructure(PathfinderMob mob, double speed, int chance, TagKey<Structure> structureTagKey, double maximumDistance) {
         super(mob, speed, chance, false);
         this.structureTagKey = structureTagKey;
         this.maximumDistance = 32;
     }
 
+    public boolean canUse() {
+        if(errorCooldown > 0){
+            errorCooldown--;
+        }
+        return super.canUse();
+    }
+
+    public void tick(){
+        super.tick();
+        if(errorCooldown > 0){
+            errorCooldown--;
+        }
+    }
+
     @Nullable
     protected Vec3 getPosition() {
         StructureStart start = getNearestStructure(mob.blockPosition());
-        if(start.isValid()){
+        if(start != null && start.isValid() || errorCooldown > 0){
             List<BlockPos> validPieceCenters = new ArrayList<>();
             for(StructurePiece piece : start.getPieces()){
                 BoundingBox boundingbox = piece.getBoundingBox();
@@ -60,7 +77,14 @@ public class MonsterAIWalkThroughHallsOfStructure extends RandomStrollGoal {
 
     private StructureStart getNearestStructure(BlockPos pos){
         ServerLevel serverlevel = (ServerLevel)this.mob.level();
-        StructureStart start = serverlevel.structureManager().getStructureWithPieceAt(pos, structureTagKey);
+        StructureStart start;
+        try{
+            start = serverlevel.structureManager().getStructureWithPieceAt(pos, structureTagKey);
+        }catch (Exception e){
+            AlexsMobs.LOGGER.warn(this.mob + " encountered an issue searching for a nearby structure.");
+            errorCooldown = 2000 + this.mob.getRandom().nextInt(2000);
+            return null;
+        }
         if(start.isValid()){
             return start;
         }else{
