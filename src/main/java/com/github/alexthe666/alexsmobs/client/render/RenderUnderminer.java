@@ -31,14 +31,13 @@ import net.minecraftforge.client.event.RenderNameTagEvent;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<EntityUnderminer>> {
     private static final ResourceLocation TEXTURE_DWARF = new ResourceLocation("alexsmobs:textures/entity/underminer_dwarf.png");
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/underminer_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/underminer_1.png");
-    public static final List<ResourceLocation> BREAKING_LOCATIONS = ModelBakery.DESTROY_STAGES.stream().map((p_119371_) -> {
-        return new ResourceLocation("alexsmobs:textures/block/ghostly_pickaxe/" + p_119371_.getPath().substring(5) + ".png");
-    }).collect(Collectors.toList());
+    public static final List<ResourceLocation> BREAKING_LOCATIONS = IntStream.range(0, 10).mapToObj((destroyStage) -> new ResourceLocation("alexsmobs:textures/block/ghostly_pickaxe/destroy_stage_" + destroyStage + ".png")).collect(Collectors.toList());
     private static final ModelUnderminerDwarf DWARF_MODEL = new ModelUnderminerDwarf();
     private static HumanoidModel<EntityUnderminer> NORMAL_MODEL = null;
     private static final List<RenderType> DESTROY_TYPES = BREAKING_LOCATIONS.stream().map(AMRenderTypes::getGhostCrumbling).collect(Collectors.toList());
