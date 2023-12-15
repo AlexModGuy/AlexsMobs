@@ -7,7 +7,6 @@ import com.github.alexthe666.alexsmobs.client.render.misc.VoidWormMetadataSectio
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.client.model.EntityModel;
@@ -21,9 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.LivingEntity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLayer<T, EntityModel<T>>  {
 

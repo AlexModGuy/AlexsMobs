@@ -52,7 +52,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)

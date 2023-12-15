@@ -6,8 +6,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundSource;
 
-import java.util.Map;
-
 public class SoundLaCucaracha extends AbstractTickableSoundInstance {
     private final EntityCockroach cockroach;
 

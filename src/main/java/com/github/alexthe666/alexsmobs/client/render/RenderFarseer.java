@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.client.model.ModelFarseer;
 import com.github.alexthe666.alexsmobs.entity.EntityFarseer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;

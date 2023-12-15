@@ -13,6 +13,8 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -24,6 +26,8 @@ import java.util.Queue;
 public class BlockBananaSlugSlime extends HalfTransparentBlock {
 
     protected static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
+    private static final int MAXIMUM_BLOCKS_DRAINED = 64;
+    public static final int MAX_FLUID_SPREAD = 6;
 
     public BlockBananaSlugSlime() {
         super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).speedFactor(0.4F).jumpFactor(0.5F).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
@@ -84,44 +88,72 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
         Queue<Tuple<BlockPos, Integer>> queue = Lists.newLinkedList();
         queue.add(new Tuple<>(pos, 0));
         int i = 0;
-        BlockState state = level.getBlockState(pos);
-
+        int fullBlocks = 0;
+        FluidState lastFluidState = null;
         while (!queue.isEmpty()) {
             Tuple<BlockPos, Integer> tuple = queue.poll();
             BlockPos blockpos = tuple.getA();
+            BlockState state = level.getBlockState(blockpos);
             int j = tuple.getB();
-
+            if (!state.getFluidState().isEmpty()) {
+                fullBlocks++;
+                if (state.getBlock() instanceof BucketPickup) {
+                    ((BucketPickup) state.getBlock()).pickupBlock(level, blockpos, state);
+                    if(level.getBlockState(blockpos).isAir()){
+                        level.setBlockAndUpdate(blockpos, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState());
+                    }
+                }else{
+                    level.setBlockAndUpdate(blockpos, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState());
+                }
+            }
             for (Direction direction : Direction.values()) {
                 BlockPos blockpos1 = blockpos.relative(direction);
                 BlockState blockstate = level.getBlockState(blockpos1);
-                if (blockstate.getBlock() instanceof BucketPickup && !((BucketPickup) blockstate.getBlock()).pickupBlock(level, blockpos1, blockstate).isEmpty()) {
+                FluidState fluidstate = level.getFluidState(blockpos1);
+                if (lastFluidState != null && !fluidstate.isEmpty() && lastFluidState.getFluidType() != fluidstate.getFluidType()) {
+                    continue;
+                }
+                if (blockstate.getBlock() instanceof SimpleWaterloggedBlock) {
+                    if (!fluidstate.isEmpty()) {
+                        lastFluidState = fluidstate;
+                    }
                     ++i;
-                    level.setBlock(blockpos1, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState(), 3);
-                    if (j < 6) {
+                    fullBlocks++;
+                    level.setBlockAndUpdate(blockpos1, blockstate.setValue(BlockStateProperties.WATERLOGGED, false));
+                    if (j < MAX_FLUID_SPREAD) {
+                        queue.add(new Tuple<>(blockpos1, j + 1));
+                    }
+                } else if (blockstate.getBlock() instanceof BucketPickup) {
+                    if (!fluidstate.isEmpty()) {
+                        lastFluidState = fluidstate;
+                    }
+                    ++i;
+                    fullBlocks++;
+                    ((BucketPickup) blockstate.getBlock()).pickupBlock(level, blockpos1, blockstate);
+                    if(level.getBlockState(blockpos).isAir()){
+                        level.setBlockAndUpdate(blockpos, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState());
+                    }
+                    if (j < MAX_FLUID_SPREAD) {
                         queue.add(new Tuple<>(blockpos1, j + 1));
                     }
                 } else if (blockstate.getBlock() instanceof LiquidBlock) {
-                    level.setBlock(blockpos1, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState(), 3);
-                    ++i;
-                    if (j < 6) {
-                        queue.add(new Tuple<>(blockpos1, j + 1));
+                    if (!fluidstate.isEmpty()) {
+                        lastFluidState = fluidstate;
                     }
-                } else if (blockstate.is(Blocks.KELP) || blockstate.is(Blocks.KELP_PLANT) || blockstate.is(Blocks.SEAGRASS) || blockstate.is(Blocks.TALL_SEAGRASS)) {
-                    BlockEntity blockentity = blockstate.hasBlockEntity() ? level.getBlockEntity(blockpos1) : null;
-                    dropResources(blockstate, level, blockpos1, blockentity);
-                    level.setBlock(blockpos1, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState(), 3);
+                    level.setBlockAndUpdate(blockpos1, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState());
                     ++i;
-                    if (j < 6) {
+                    if (blockstate.getFluidState().isSource()) {
+                        fullBlocks++;
+                    }
+                    if (j < MAX_FLUID_SPREAD) {
                         queue.add(new Tuple<>(blockpos1, j + 1));
                     }
                 }
             }
-
-            if (i > 64) {
+            if (i > MAXIMUM_BLOCKS_DRAINED) {
                 break;
             }
         }
-
-        return i > 0;
+        return fullBlocks > 0;
     }
 }

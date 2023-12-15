@@ -8,9 +8,11 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class CrowAICircleCrops extends MoveToBlockGoal {
@@ -121,6 +123,11 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     private void destroyCrop() {
+        if(!canSeeBlock(blockPos)){
+            stop();
+            tryTicks = 1200;
+            return;
+        }
         if(crow.level().getBlockState(blockPos).getBlock() instanceof CropBlock){
             if(crow.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)){
                 CropBlock block = (CropBlock)crow.level().getBlockState(blockPos).getBlock();
@@ -138,6 +145,14 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
         }
         stop();
         tryTicks = 1200;
+    }
+
+
+    private boolean canSeeBlock(BlockPos destinationBlock) {
+        final Vec3 Vector3d = new Vec3(crow.getX(), crow.getEyeY(), crow.getZ());
+        final Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
+        final BlockHitResult result = crow.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        return result.getBlockPos().equals(destinationBlock);
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIPanicBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
-import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;

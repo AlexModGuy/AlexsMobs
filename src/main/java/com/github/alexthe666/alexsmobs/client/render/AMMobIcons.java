@@ -1,12 +1,9 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.Util;
 import net.minecraft.world.entity.EntityType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AMMobIcons {

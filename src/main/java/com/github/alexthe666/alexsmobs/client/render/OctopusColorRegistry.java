@@ -12,8 +12,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class OctopusColorRegistry {
