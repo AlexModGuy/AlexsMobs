@@ -21,7 +21,6 @@ public class AMCreativeTabRegistry {
             .title(Component.translatable("itemGroup." + AlexsMobs.MODID))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(AMItemRegistry.TAB_ICON.get()))
-            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
                 for(RegistryObject<Item> item : AMItemRegistry.DEF_REG.getEntries()){
                     if(item.get() instanceof CustomTabBehavior customTabBehavior){

@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.block.BlockReptileEgg;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
@@ -8,6 +10,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,8 +19,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -40,9 +46,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -59,6 +63,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     private static final EntityDataAccessor<Boolean> DIGGING = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FEDORA = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
     public float prevInWaterProgress;
     public float inWaterProgress;
     public float prevDigProgress;
@@ -160,6 +165,8 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         this.goalSelector.addGoal(0, new BreathAirGoal(this));
         this.goalSelector.addGoal(1, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(1, new AnimalAILeaveWater(this));
+        this.goalSelector.addGoal(2, new MateGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new LayEggGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8D));
         this.goalSelector.addGoal(3, new PanicGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.of(Items.REDSTONE, Items.REDSTONE_BLOCK), false){
@@ -269,6 +276,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         this.entityData.define(SENSING_VISUAL, false);
         this.entityData.define(FEDORA, false);
         this.entityData.define(FROM_BUCKET, false);
+        this.entityData.define(HAS_EGG, false);
     }
 
     protected void dropEquipment() {
@@ -308,6 +316,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         compound.putBoolean("Fedora", this.hasFedora());
         compound.putBoolean("Sensing", this.isSensing());
         compound.putBoolean("FromBucket", this.fromBucket());
+        compound.putBoolean("HasEgg", this.hasEgg());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -315,6 +324,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         this.setFedora(compound.getBoolean("Fedora"));
         this.setSensing(compound.getBoolean("Sensing"));
         this.setFromBucket(compound.getBoolean("FromBucket"));
+        this.setHasEgg(compound.getBoolean("HasEgg"));
     }
 
     @Override
@@ -421,12 +431,12 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
     @Override
     public boolean shouldEnterWater() {
-        return this.getLastHurtByMob() != null || swimTimer <= -1000 || this.isSensing();
+        return (this.getLastHurtByMob() != null || swimTimer <= -1000 || this.isSensing()) && !this.hasEgg();
     }
 
     @Override
     public boolean shouldLeaveWater() {
-        return swimTimer > 600 && !this.isSensing();
+        return swimTimer > 600 && !this.isSensing() || this.hasEgg();
     }
 
     @Override
@@ -459,6 +469,95 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             this.setSensing(true);
         }else{
             this.heal(6);
+        }
+    }
+
+    public boolean hasEgg() {
+        return this.entityData.get(HAS_EGG);
+    }
+
+    private void setHasEgg(boolean hasEgg) {
+        this.entityData.set(HAS_EGG, hasEgg);
+    }
+
+    static class MateGoal extends BreedGoal {
+        private final EntityPlatypus platypus;
+
+        MateGoal(EntityPlatypus platypus, double speedIn) {
+            super(platypus, speedIn);
+            this.platypus = platypus;
+        }
+
+        public boolean canUse() {
+            return super.canUse() && !this.platypus.hasEgg();
+        }
+
+        protected void breed() {
+            ServerPlayer serverplayerentity = this.animal.getLoveCause();
+            if (serverplayerentity == null && this.partner.getLoveCause() != null) {
+                serverplayerentity = this.partner.getLoveCause();
+            }
+
+            if (serverplayerentity != null) {
+                serverplayerentity.awardStat(Stats.ANIMALS_BRED);
+                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.partner, this.animal);
+            }
+
+            this.platypus.setHasEgg(true);
+            this.animal.resetLove();
+            this.partner.resetLove();
+            this.animal.setAge(6000);
+            this.partner.setAge(6000);
+
+            if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                final RandomSource random = this.animal.getRandom();
+                this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
+            }
+
+        }
+    }
+
+    static class LayEggGoal extends MoveToBlockGoal {
+        private final EntityPlatypus turtle;
+        private int digTime;
+
+        LayEggGoal(EntityPlatypus turtle, double speedIn) {
+            super(turtle, speedIn, 16);
+            this.turtle = turtle;
+        }
+
+        public void stop() {
+            digTime = 0;
+        }
+
+        public boolean canUse() {
+            return this.turtle.hasEgg() && super.canUse();
+        }
+
+        public boolean canContinueToUse() {
+            return super.canContinueToUse() && this.turtle.hasEgg();
+        }
+
+        public double acceptedDistance() {
+            return turtle.getBbWidth() + 0.5D;
+        }
+
+        public void tick() {
+            super.tick();
+            if (!this.turtle.isInWater() && this.isReachedTarget()) {
+                final BlockPos blockpos = this.turtle.blockPosition();
+                final Level world = this.turtle.level();
+                turtle.gameEvent(GameEvent.BLOCK_PLACE);
+                world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
+                world.setBlock(this.blockPos.above(), AMBlockRegistry.PLATYPUS_EGG.get().defaultBlockState().setValue(BlockReptileEgg.EGGS, Integer.valueOf(this.turtle.random.nextInt(1) + 1)), 3);
+                this.turtle.setHasEgg(false);
+                this.turtle.setDigging(false);
+                this.turtle.setInLoveTime(600);
+            }
+        }
+
+        protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
+            return worldIn.isEmptyBlock(pos.above()) && BlockReptileEgg.isProperHabitat(worldIn, pos);
         }
     }
 }
