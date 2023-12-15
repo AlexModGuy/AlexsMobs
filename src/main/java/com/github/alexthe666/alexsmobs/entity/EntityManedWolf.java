@@ -28,6 +28,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -147,7 +148,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
         if (this.getShakingTime() % 5 == 0) {
             List<Animal> list = this.level().getEntitiesOfClass(Animal.class, this.getBoundingBox().inflate(16, 8, 16));
             for (Animal e : list) {
-                if(!(e instanceof EntityManedWolf)){
+                if(!(e instanceof EntityManedWolf) && !(e instanceof TamableAnimal tamedMob && tamedMob.isInSittingPose())){
                     e.setTarget(null);
                     e.setLastHurtByMob(null);
                     Vec3 vec = LandRandomPos.getPosTowards(e, 20, 7, this.position());

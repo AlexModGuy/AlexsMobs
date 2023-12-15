@@ -151,7 +151,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     private boolean canSeeBlock(BlockPos destinationBlock) {
         final Vec3 Vector3d = new Vec3(crow.getX(), crow.getEyeY(), crow.getZ());
         final Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-        final BlockHitResult result = crow.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        final BlockHitResult result = crow.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, crow));
         return result.getBlockPos().equals(destinationBlock);
     }
 
