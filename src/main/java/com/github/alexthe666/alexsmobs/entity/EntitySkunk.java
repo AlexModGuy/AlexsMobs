@@ -281,8 +281,9 @@ public class EntitySkunk extends Animal {
                             pos = AMBlockPos.fromVec3(hitResult.getLocation());
                             dir = Direction.UP;
                         }
+                        BlockState currentState = level().getBlockState(pos);
                         BlockState sprayState = ((MultifaceBlock) AMBlockRegistry.SKUNK_SPRAY.get()).getStateForPlacement(level().getBlockState(pos), level(), pos, dir);
-                        if (sprayState != null && sprayState.is(AMBlockRegistry.SKUNK_SPRAY.get())) {
+                        if ((currentState.isAir() || currentState.canBeReplaced()) && sprayState != null && sprayState.is(AMBlockRegistry.SKUNK_SPRAY.get())) {
                             level().setBlockAndUpdate(pos, sprayState);
                         }
                         double sprayDist = hitResult.getLocation().subtract(skunkPos).length() / maxSprayDist;
