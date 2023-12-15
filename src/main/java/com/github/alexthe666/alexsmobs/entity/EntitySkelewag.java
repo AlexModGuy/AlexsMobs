@@ -112,11 +112,11 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 5.0D).add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.MAX_HEALTH, 24.0D);
+        return Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 3.0D).add(Attributes.MOVEMENT_SPEED, 0.45D).add(Attributes.MAX_HEALTH, 20.0D);
     }
 
     public int getMaxSpawnClusterSize() {
-        return 3;
+        return 1;
     }
 
     public void tick(){
@@ -294,7 +294,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
             }
         }
 
-        public void reset(){
+        public void stop(){
             isCharging = false;
         }
     }
