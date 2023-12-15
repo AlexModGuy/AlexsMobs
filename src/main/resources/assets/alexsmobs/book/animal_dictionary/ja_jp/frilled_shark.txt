@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+ラブカは、深海で見つかる無気力な生きた化石です。 これらの中立的なサメは、お気に入りの獲物であるブロブフィッシュとイカを狩ることにほとんどの時間を費やします。
+ラブカはイカを追いかける際、深海の薄暗い環境と、反射性の高い歯を使ってイカをおびき寄せることでイカの自然な本能を利用します。
+獲物を顎に着地させた後、サメは特別な鋸歯状の歯を使用してダメージを与え、同時に体力を急速に消耗させる失血効果を与えます。 イカを攻撃すると、これらの歯が抜けることがあります。
+<NEWLINE>
+鋸歯状のサメの歯を入手した場合、他の水生アイテムと一緒にそれを使用して深海の盾を作成できます。 このシールドは通常よりも耐久性が少し高くなりますが、近くの攻撃をブロックすると失血効果も与えられます。
+<NEWLINE>
+<NEWLINE>
+Frilled Sharks can be transported by placing them in a Bucket of Water. If a Frilled Shark is in less than 10 blocks of water pressure, it will be discolored and even slower than normal.
