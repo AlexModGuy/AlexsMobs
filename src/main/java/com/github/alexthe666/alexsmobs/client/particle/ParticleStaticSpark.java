@@ -81,7 +81,7 @@ public class ParticleStaticSpark extends Particle {
             quaternion.mul(Axis.ZP.rotation(f3));
         }
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer portalStatic = VertexMultiConsumer.create(multibuffersource$buffersource.getBuffer(AMRenderTypes.STATIC_PARTICLE), multibuffersource$buffersource.getBuffer(RenderType.entityTranslucent(TEXTURES[textureIndex])));
+        VertexConsumer portalStatic = AMRenderTypes.createMergedVertexConsumer(multibuffersource$buffersource.getBuffer(AMRenderTypes.STATIC_PARTICLE), multibuffersource$buffersource.getBuffer(RenderType.entityTranslucent(TEXTURES[textureIndex])));
         PoseStack posestack = new PoseStack();
         PoseStack.Pose posestack$pose = posestack.last();
         //Matrix4f matrix4f = posestack$pose.pose();

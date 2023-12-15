@@ -61,7 +61,7 @@ public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
         }else{
             tex = getIdleTexture(entityIn.tickCount % 9, shattered);
         }
-        VertexConsumer ivertexbuilder = shattered ? VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityCutoutNoCull(tex))) : bufferIn.getBuffer(AMRenderTypes.getFullBright(tex));
+        VertexConsumer ivertexbuilder = shattered ? AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityCutoutNoCull(tex))) : bufferIn.getBuffer(AMRenderTypes.getFullBright(tex));
         renderArc(matrixStackIn, ivertexbuilder);
     }
     private void renderArc(PoseStack matrixStackIn, VertexConsumer ivertexbuilder) {

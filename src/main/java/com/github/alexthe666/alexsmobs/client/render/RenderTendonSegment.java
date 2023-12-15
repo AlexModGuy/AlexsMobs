@@ -58,7 +58,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             Vec3 currentNeckButt = from;
             VertexConsumer neckConsumer;
             if(entity.hasGlint()){
-                neckConsumer = VertexMultiConsumer.create(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE)));
+                neckConsumer = AMRenderTypes.createMergedVertexConsumer(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE)));
             }else{
                 neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE));
             }
@@ -78,7 +78,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             ModelMurmurNeck.THIN = false;
             VertexConsumer clawConsumer;
             if(entity.hasGlint()){
-                clawConsumer = VertexMultiConsumer.create(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE)));
+                clawConsumer = AMRenderTypes.createMergedVertexConsumer(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE)));
             }else{
                 clawConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE));
             }

@@ -51,7 +51,7 @@ public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLa
                     this.layerModel = body.isTail() ? tailModel : bodyModel;
                 }
                 this.layerModel.setupAnim(worm, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                VertexConsumer consumer = VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY), bufferIn.getBuffer(RenderType.entityCutoutNoCull(texture)));
+                VertexConsumer consumer = AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY), bufferIn.getBuffer(RenderType.entityCutoutNoCull(texture)));
                 this.layerModel.renderToBuffer(matrixStackIn, consumer, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             }else{
                 float f = getAlpha(worm);

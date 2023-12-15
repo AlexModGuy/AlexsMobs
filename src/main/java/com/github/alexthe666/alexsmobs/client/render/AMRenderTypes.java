@@ -1,9 +1,12 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -14,6 +17,8 @@ import org.joml.Matrix4f;
 public class AMRenderTypes extends RenderType {
 
     public static final ResourceLocation STATIC_TEXTURE = new ResourceLocation("alexsmobs:textures/static.png");
+
+    private static boolean encounteredMultiConsumerError = false;
 
     protected static final RenderStateShard.TexturingStateShard RAINBOW_TEXTURING = new RenderStateShard.TexturingStateShard("entity_glint_texturing", () -> {
         setupRainbowTexturing(1.2F, 4L);
@@ -245,5 +250,18 @@ public class AMRenderTypes extends RenderType {
                 .setLayeringState(VIEW_OFFSET_Z_LAYERING)
                 .createCompositeState(false);
         return create("farseer_beam", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+    }
+
+    public static VertexConsumer createMergedVertexConsumer(VertexConsumer consumer1, VertexConsumer consumer2){
+        VertexConsumer vertexConsumer = consumer2;
+        if(!encounteredMultiConsumerError){
+            try{
+                vertexConsumer = VertexMultiConsumer.create(consumer1, consumer2);
+            }catch (Exception e){
+                AlexsMobs.LOGGER.warn("Encountered issue mixing two render types together. Likely an issue with Optifine or other rendering mod. This warning will only display once.");
+                encounteredMultiConsumerError = true;
+            }
+        }
+        return vertexConsumer;
     }
 }

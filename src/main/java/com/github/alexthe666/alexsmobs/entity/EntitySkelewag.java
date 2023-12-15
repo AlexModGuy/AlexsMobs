@@ -140,7 +140,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
             targetXRot = this.getXRot() + 5;
         }
         this.setXRot(targetXRot);
-        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0F + this.getTarget().getBbWidth() / 2) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 2.0F + this.getTarget().getBbWidth()) {
             this.lookAt(this.getTarget(), 350, 200);
             if(this.getAnimation() == ANIMATION_STAB && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget())){
                 float f1 = this.getYRot() * Mth.DEG_TO_RAD;

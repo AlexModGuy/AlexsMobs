@@ -185,7 +185,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             Matrix4f matrix4f = posestack$pose.pose();
             Matrix3f matrix3f = posestack$pose.normal();
             int portalTexture = Mth.clamp(entityIn.getPortalFrame(), 0, PORTAL_TEXTURES.length - 1);
-            VertexConsumer portalStatic = VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityTranslucent(PORTAL_TEXTURES[portalTexture])));
+            VertexConsumer portalStatic = AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityTranslucent(PORTAL_TEXTURES[portalTexture])));
             float portalAlpha =  entityIn.getPortalOpacity(partialTicks);
             portalVertex(portalStatic, matrix4f, matrix3f, packedLightIn, 0.0F, 0, 0, 1, portalAlpha);
             portalVertex(portalStatic, matrix4f, matrix3f, packedLightIn, 1.0F, 0, 1, 1, portalAlpha);
@@ -234,7 +234,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
 
     private void renderFarseerModel(PoseStack matrixStackIn, MultiBufferSource source, RenderType defRenderType, float partialTicks, int packedLightIn, int overlayColors, float alphaIn, EntityFarseer entityIn) {
         if(entityIn.hasLaser()){
-            VertexConsumer staticyInsides = VertexMultiConsumer.create(source.getBuffer(AMRenderTypes.STATIC_ENTITY), source.getBuffer(RenderType.entityTranslucent(TEXTURE_EYE)));
+            VertexConsumer staticyInsides = AMRenderTypes.createMergedVertexConsumer(source.getBuffer(AMRenderTypes.STATIC_ENTITY), source.getBuffer(RenderType.entityTranslucent(TEXTURE_EYE)));
             EYE_MODEL.renderToBuffer(matrixStackIn, staticyInsides, packedLightIn, NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1F);
         }
         VertexConsumer consumer;
@@ -243,7 +243,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         float afterimageSpeed = 0.3F;
         if(hurt > 0){
             afterimageSpeed = Math.min(hurt / 20F, 1F) + 0.3F;
-            VertexConsumer staticyScars = VertexMultiConsumer.create(source.getBuffer(AMRenderTypes.STATIC_ENTITY), source.getBuffer(RenderType.entityTranslucent(TEXTURE_SCARS)));
+            VertexConsumer staticyScars = AMRenderTypes.createMergedVertexConsumer(source.getBuffer(AMRenderTypes.STATIC_ENTITY), source.getBuffer(RenderType.entityTranslucent(TEXTURE_SCARS)));
             SCARS_MODEL.renderToBuffer(matrixStackIn, staticyScars, packedLightIn, overlayColors, 1.0F, 1.0F, 1.0F, 0.3F);
         }
         this.model.renderToBuffer(matrixStackIn, source.getBuffer(defRenderType), packedLightIn, overlayColors, 1.0F, 1.0F, 1.0F, alphaIn);
