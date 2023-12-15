@@ -70,7 +70,7 @@ public class RockyChestplateUtil {
         boolean update = false;
         int rollCounter = getRollingTicksLeft(roller);
         if(rollCounter == 0){
-            if(roller.isSprinting()  && !roller.isShiftKeyDown() && (!(roller instanceof Player) || !((Player) roller).getAbilities().flying) && canRollAgain(roller)){
+            if(roller.isSprinting()  && !roller.isShiftKeyDown() && (!(roller instanceof Player) || !((Player) roller).getAbilities().flying) && canRollAgain(roller) && !roller.isPassenger()){
                 update = true;
                 rollFor(roller, MAX_ROLL_TICKS);
             }

@@ -114,7 +114,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
     }
 
     public void rollPossiblity(Player player, int i){
-        if(player == null || player.level().isClientSide){
+        if(player == null || player.level().isClientSide || !(player.level() instanceof ServerLevel)){
             return;
         }
         ResourceLocation loot;
