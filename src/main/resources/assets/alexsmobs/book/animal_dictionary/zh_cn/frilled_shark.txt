@@ -1,0 +1,44 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+    皱鳃鲨是出没于深海懒散的活化石。
+<NEWLINE>
+这些中性的鲨鱼大部分时间都在寻找水
+<NEWLINE>
+滴鱼和鱿鱼，它们最喜欢的猎物。
+<NEWLINE>
+    在追逐鱿鱼时，皱鳃鲨利用深海的
+<NEWLINE>
+低光照和鱿鱼的趋光性，用牙齿的反光
+<NEWLINE>
+引诱它们。
+<NEWLINE>
+    在将猎物咬在嘴里后，皱鳃鲨将利
+<NEWLINE>
+用其特殊的锯齿状牙齿对其造成伤害，
+<NEWLINE>
+同时施加“血液流失”效果，迅速消耗生
+<NEWLINE>
+命值。
+<NEWLINE>
+    偶尔，皱鳃鲨在攻击鱿鱼时可能会
+<NEWLINE>
+脱落牙齿。
+<NEWLINE>
+    如果玩家获得了一些鲨鱼牙齿，可
+<NEWLINE>
+以将它们与其他一些水生物品一起合成
+<NEWLINE>
+出深澜之盾，比普通的盾牌更耐用，在
+<NEWLINE>
+阻挡攻击时也会对攻击者施加“血液流失”
+<NEWLINE>
+效果。
+<NEWLINE>
+<NEWLINE>
+    皱鳃鲨可以被放入水桶中进行运输。
+<NEWLINE>
+如果皱鳃鲨处于小于10格深的水压环境中，
+<NEWLINE>
+它将变色，并且比正常情况下游得更慢。
