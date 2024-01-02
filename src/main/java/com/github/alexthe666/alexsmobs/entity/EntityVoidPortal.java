@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import org.antlr.v4.runtime.misc.Triple;
@@ -130,7 +131,7 @@ public class EntityVoidPortal extends Entity {
             if (this.getDestination() != null && this.getLifespan() > 20 && tickCount > 20) {
                 BlockPos offsetPos = this.getDestination().relative(this.getAttachmentFacing().getOpposite(), 2);
                 for (Entity e : entities) {
-                    if(e.isOnPortalCooldown() || e.isShiftKeyDown() || e instanceof EntityVoidPortal || e.getParts() != null || e.getType().is(AMTagRegistry.VOID_PORTAL_IGNORES)){
+                    if(e.isOnPortalCooldown() || e.isShiftKeyDown() || e instanceof EntityVoidPortal || e.getParts() != null || e instanceof PartEntity<?> || e.getType().is(AMTagRegistry.VOID_PORTAL_IGNORES)){
                         continue;
                     }
                     if (e instanceof EntityVoidWormPart) {
