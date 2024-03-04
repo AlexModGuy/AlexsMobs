@@ -35,6 +35,7 @@ public class ItemMysteriousWorm extends Item {
                 worm.setSegmentCount(25 + new Random().nextInt(15));
                 worm.setXRot(-90.0F);
                 worm.updatePostSummon = true;
+                worm.setMaxHealth(AMConfig.voidWormMaxHealth, true);
 
                 if(!entity.level().isClientSide){
                     Entity thrower = entity.getOwner();

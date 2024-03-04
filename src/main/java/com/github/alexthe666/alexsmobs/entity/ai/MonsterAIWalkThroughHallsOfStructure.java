@@ -75,24 +75,24 @@ public class MonsterAIWalkThroughHallsOfStructure extends RandomStrollGoal {
         return DefaultRandomPos.getPos(this.mob, 10, 7);
     }
 
+    @Nullable
     private StructureStart getNearestStructure(BlockPos pos){
         ServerLevel serverlevel = (ServerLevel)this.mob.level();
-        StructureStart start;
         try{
-            start = serverlevel.structureManager().getStructureWithPieceAt(pos, structureTagKey);
+            StructureStart start = serverlevel.structureManager().getStructureWithPieceAt(pos, structureTagKey);
+            if(start.isValid()){
+                return start;
+            }else{
+                BlockPos nearestOf = serverlevel.findNearestMapStructure(structureTagKey, pos, (int)(this.maximumDistance / 16), false);
+                if(nearestOf == null || nearestOf.distToCenterSqr(this.mob.getX(), this.mob.getY(), this.mob.getZ()) > 256 || !serverlevel.isLoaded(nearestOf)){
+                    return null;
+                }
+                return serverlevel.structureManager().getStructureWithPieceAt(nearestOf, structureTagKey);
+            }
         }catch (Exception e){
             AlexsMobs.LOGGER.warn(this.mob + " encountered an issue searching for a nearby structure.");
             errorCooldown = 2000 + this.mob.getRandom().nextInt(2000);
             return null;
-        }
-        if(start.isValid()){
-            return start;
-        }else{
-            BlockPos nearestOf = serverlevel.findNearestMapStructure(structureTagKey, pos, (int)(this.maximumDistance / 16), false);
-            if(nearestOf == null || nearestOf.distToCenterSqr(this.mob.getX(), this.mob.getY(), this.mob.getZ()) > 256 || !serverlevel.isLoaded(nearestOf)){
-                return StructureStart.INVALID_START;
-            }
-            return serverlevel.structureManager().getStructureWithPieceAt(nearestOf, structureTagKey);
         }
     }
 }
