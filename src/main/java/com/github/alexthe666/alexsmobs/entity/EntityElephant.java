@@ -140,7 +140,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 65.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.35F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 85.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     @Nullable
@@ -813,11 +813,11 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     public void setTusked(boolean tusked) {
         boolean prev = isTusked();
         if (!prev && tusked) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0D);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(110.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(15.0D);
             this.setHealth(150.0F);
         } else {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(65.0D);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(85.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
         }
         this.entityData.set(TUSKED, tusked);

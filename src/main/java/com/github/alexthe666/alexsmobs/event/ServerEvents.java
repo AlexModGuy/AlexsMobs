@@ -617,30 +617,32 @@ public class ServerEvents {
             if (player.getEyeHeight() < player.getBbHeight() * 0.5D) {
                 player.refreshDimensions();
             }
-            final var attributes = entity.getAttribute(Attributes.MOVEMENT_SPEED);
-            if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get()
-                || attributes.hasModifier(SAND_SPEED_BONUS)) {
-                final boolean sand = player.level().getBlockState(getDownPos(player.blockPosition(), player.level()))
-                    .is(BlockTags.SAND);
-                if (sand && !attributes.hasModifier(SAND_SPEED_BONUS)) {
-                    attributes.addPermanentModifier(SAND_SPEED_BONUS);
+            if(entity.getAttributes().hasAttribute(Attributes.MOVEMENT_SPEED)){
+                final var attributes = entity.getAttribute(Attributes.MOVEMENT_SPEED);
+                if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get()
+                        || attributes.hasModifier(SAND_SPEED_BONUS)) {
+                    final boolean sand = player.level().getBlockState(getDownPos(player.blockPosition(), player.level()))
+                            .is(BlockTags.SAND);
+                    if (sand && !attributes.hasModifier(SAND_SPEED_BONUS)) {
+                        attributes.addPermanentModifier(SAND_SPEED_BONUS);
+                    }
+                    if (player.tickCount % 25 == 0
+                            && (player.getItemBySlot(EquipmentSlot.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS.get()
+                            || !sand)
+                            && attributes.hasModifier(SAND_SPEED_BONUS)) {
+                        attributes.removeModifier(SAND_SPEED_BONUS);
+                    }
                 }
-                if (player.tickCount % 25 == 0
-                    && (player.getItemBySlot(EquipmentSlot.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS.get()
-                        || !sand)
-                    && attributes.hasModifier(SAND_SPEED_BONUS)) {
-                    attributes.removeModifier(SAND_SPEED_BONUS);
-                }
-            }
-            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.FRONTIER_CAP.get()
-                || attributes.hasModifier(SNEAK_SPEED_BONUS)) {
-                final var shift = player.isShiftKeyDown();
-                if (shift && !attributes.hasModifier(SNEAK_SPEED_BONUS)) {
-                    attributes.addPermanentModifier(SNEAK_SPEED_BONUS);
-                }
-                if ((!shift || player.getItemBySlot(EquipmentSlot.HEAD).getItem() != AMItemRegistry.FRONTIER_CAP.get())
-                    && attributes.hasModifier(SNEAK_SPEED_BONUS)) {
-                    attributes.removeModifier(SNEAK_SPEED_BONUS);
+                if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.FRONTIER_CAP.get()
+                        || attributes.hasModifier(SNEAK_SPEED_BONUS)) {
+                    final var shift = player.isShiftKeyDown();
+                    if (shift && !attributes.hasModifier(SNEAK_SPEED_BONUS)) {
+                        attributes.addPermanentModifier(SNEAK_SPEED_BONUS);
+                    }
+                    if ((!shift || player.getItemBySlot(EquipmentSlot.HEAD).getItem() != AMItemRegistry.FRONTIER_CAP.get())
+                            && attributes.hasModifier(SNEAK_SPEED_BONUS)) {
+                        attributes.removeModifier(SNEAK_SPEED_BONUS);
+                    }
                 }
             }
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
