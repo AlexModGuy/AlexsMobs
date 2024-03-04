@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCaiman;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
+import com.github.alexthe666.alexsmobs.entity.EntityPlatypus;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -185,7 +186,7 @@ public class BlockReptileEgg extends Block {
     }
 
     private boolean canTrample(Level worldIn, Entity trampler) {
-        if (!(trampler instanceof EntityCrocodile || trampler instanceof EntityCaiman) && !(trampler instanceof Bat)) {
+        if (!(trampler instanceof EntityCrocodile || trampler instanceof EntityCaiman || trampler instanceof EntityPlatypus) && !(trampler instanceof Bat)) {
             if (!(trampler instanceof LivingEntity)) {
                 return false;
             } else {

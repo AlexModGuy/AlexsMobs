@@ -775,7 +775,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onHarvestCheck(PlayerEvent.HarvestCheck event){
-        if(event.getEntity().isHolding(AMItemRegistry.GHOSTLY_PICKAXE.get()) && ItemGhostlyPickaxe.shouldStoreInGhost(event.getEntity(), event.getEntity().getMainHandItem())){
+        if(event.getEntity() != null && event.getEntity().isHolding(AMItemRegistry.GHOSTLY_PICKAXE.get()) && ItemGhostlyPickaxe.shouldStoreInGhost(event.getEntity(), event.getEntity().getMainHandItem())){
             //stops drops from being spawned
             event.setCanHarvest(false);
         }
