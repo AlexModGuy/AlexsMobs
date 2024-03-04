@@ -1,3 +1,3 @@
 # AlexsMobs
  
-Minecraft mod that adds 15+ new creatures to the game.
+Minecraft mod that adds 80+ new creatures to the game.

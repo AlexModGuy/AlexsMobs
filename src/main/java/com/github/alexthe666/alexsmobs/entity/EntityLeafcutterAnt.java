@@ -686,7 +686,6 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         }
 
         public void start() {
-            this.hivePos = null;
             this.searchCooldown = 20;
             this.approachTime = 0;
             moveToCooldown = 10 + random.nextInt(10);
