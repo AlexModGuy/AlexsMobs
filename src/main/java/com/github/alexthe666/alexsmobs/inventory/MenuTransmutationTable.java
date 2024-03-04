@@ -56,7 +56,7 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
         }
         if(table != null && player != null){
             if(!table.hasPossibilities()){
-                table.randomizeResults(player);
+                table.setRerollPlayerUUID(player.getUUID());
             }
         }
     }
@@ -68,7 +68,7 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
     public void slotsChanged(Container container) {
         if(table != null){
             if(!table.hasPossibilities()){
-                table.randomizeResults(player);
+                table.setRerollPlayerUUID(player.getUUID());
             }
         }
     }
