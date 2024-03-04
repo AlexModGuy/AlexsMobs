@@ -260,7 +260,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         if(tentacleProgress == 5F && !entityData.get(TENTACLING)){
             if (squishCooldown == 0 && this.isFlying()) {
                 squishCooldown = 10;
-                this.playSound(AMSoundRegistry.FLUTTER_FLAP.get(), 3F, 1.5F * this.getVoicePitch());
+                this.playSound(AMSoundRegistry.FLUTTER_FLAP.get(), this.getSoundVolume(), 1.5F * this.getVoicePitch());
             }
         }
         if (tentacleProgress > 0F && !entityData.get(TENTACLING)) {

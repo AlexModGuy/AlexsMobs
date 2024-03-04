@@ -76,7 +76,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         if (!levelAccessor.getFluidState(below.below()).is(FluidTags.WATER)) {
             return false;
         } else {
-            return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, below, random) && (p_32352_ == MobSpawnType.SPAWNER || random.nextInt(4) == 0 && levelAccessor.getFluidState(below).is(FluidTags.WATER));
+            return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, below, random) && (p_32352_ == MobSpawnType.SPAWNER || random.nextInt(40) == 0 && levelAccessor.getFluidState(below).is(FluidTags.WATER));
         }
     }
 
