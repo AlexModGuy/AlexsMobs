@@ -31,10 +31,12 @@ public class ModelAMElytra extends HumanoidModel {
     }
 
     public ModelAMElytra withAnimations(LivingEntity entity){
-        final float partialTick = Minecraft.getInstance().getFrameTime();
-        final float limbSwingAmount = entity.walkAnimation.speed(partialTick);
-        final float limbSwing = entity.walkAnimation.position() + partialTick;
-        setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
+        if(entity != null) {
+            final float partialTick = Minecraft.getInstance().getFrameTime();
+            final float limbSwingAmount = entity.walkAnimation.speed(partialTick);
+            final float limbSwing = entity.walkAnimation.position() + partialTick;
+            setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
+        }
         return  this;
     }
 

@@ -52,42 +52,43 @@ public class ModelFlyingFishBoots extends HumanoidModel {
     }
 
     public ModelFlyingFishBoots withAnimations(LivingEntity entity){
-        float partialTick = Minecraft.getInstance().getFrameTime();
-        float ageInTicks = entity.tickCount + partialTick;
-        float fly = Mth.cos(ageInTicks * 0.2F) * 0.1F;
-        float fly2 = fly * 0.35F;
-        boolean flying = FlyingFishBootsUtil.getBoostTicks(entity) > 0;
-        if(flying){
-            fly = (1 + Mth.sin(ageInTicks * 1.2F)) * 0.8F;
-            fly2 = fly;
-        }
-        rightWingOuter.yRot = -0.5672F - fly;
-        leftWingOuter.yRot = 0.5672F + fly;
-        rightWingInner.yRot = 0.5672F + fly2;
-        leftWingInner.yRot = -0.5672F - fly2;
-        if(flying || entity.getPose() == Pose.SWIMMING){
-            leftFish.xRot = Maths.rad(-45);
-            rightFish.xRot = Maths.rad(-45);
-            rightFish.y = 11.0F;
-            leftFish.y = 11.0F;
-            rightFish.z = -1.5F;
-            leftFish.z = -1.5F;
-        }else if(entity.getPose() == Pose.CROUCHING){
-            leftFish.xRot = 0F;
-            rightFish.xRot = 0F;
-            rightFish.y = 8.0F;
-            leftFish.y = 8.0F;
-            rightFish.z = 0.0F;
-            leftFish.z = 0.0F;
-        }else{
-            leftFish.xRot = 0F;
-            rightFish.xRot = 0F;
-            rightFish.y = 10.0F;
-            leftFish.y = 10.0F;
-            rightFish.z = 0.0F;
-            leftFish.z = 0.0F;
+        if(entity != null) {
+            float partialTick = Minecraft.getInstance().getFrameTime();
+            float ageInTicks = entity.tickCount + partialTick;
+            float fly = Mth.cos(ageInTicks * 0.2F) * 0.1F;
+            float fly2 = fly * 0.35F;
+            boolean flying = FlyingFishBootsUtil.getBoostTicks(entity) > 0;
+            if (flying) {
+                fly = (1 + Mth.sin(ageInTicks * 1.2F)) * 0.8F;
+                fly2 = fly;
+            }
+            rightWingOuter.yRot = -0.5672F - fly;
+            leftWingOuter.yRot = 0.5672F + fly;
+            rightWingInner.yRot = 0.5672F + fly2;
+            leftWingInner.yRot = -0.5672F - fly2;
+            if (flying || entity.getPose() == Pose.SWIMMING) {
+                leftFish.xRot = Maths.rad(-45);
+                rightFish.xRot = Maths.rad(-45);
+                rightFish.y = 11.0F;
+                leftFish.y = 11.0F;
+                rightFish.z = -1.5F;
+                leftFish.z = -1.5F;
+            } else if (entity.getPose() == Pose.CROUCHING) {
+                leftFish.xRot = 0F;
+                rightFish.xRot = 0F;
+                rightFish.y = 8.0F;
+                leftFish.y = 8.0F;
+                rightFish.z = 0.0F;
+                leftFish.z = 0.0F;
+            } else {
+                leftFish.xRot = 0F;
+                rightFish.xRot = 0F;
+                rightFish.y = 10.0F;
+                leftFish.y = 10.0F;
+                rightFish.z = 0.0F;
+                leftFish.z = 0.0F;
+            }
         }
         return this;
     }
-
 }

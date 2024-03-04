@@ -594,7 +594,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return isCrowEdible(stack) || this.isTame();
+        return stack != null && isCrowEdible(stack) || this.isTame();
     }
 
     private boolean isCrowEdible(ItemStack stack) {
