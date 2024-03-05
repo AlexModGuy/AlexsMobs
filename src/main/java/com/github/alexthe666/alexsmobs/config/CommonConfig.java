@@ -203,6 +203,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> mimicreamBlacklist;
     public final ForgeConfigSpec.BooleanValue raccoonStealFromChests;
+    public final ForgeConfigSpec.BooleanValue crowsStealCrops;
     public final ForgeConfigSpec.BooleanValue fishOilMeme;
     public final ForgeConfigSpec.BooleanValue soulVultureSpawnOnFossil;
     public final ForgeConfigSpec.BooleanValue acaciaBlossomsDropFromLeaves;
@@ -272,6 +273,7 @@ public class CommonConfig {
         mimicreamRepair = buildBoolean(builder, "mimicreamRepair", "all", true, "Whether mimicream can be used to duplicate items.");
         mimicreamBlacklist = builder.comment("Blacklist for items that mimicream cannot make a copy of. Ex: \"minecraft:stone_sword\", \"alexsmobs:blood_sprayer\"").defineList("mimicreamBlacklist", Lists.newArrayList("alexsmobs:blood_sprayer", "alexsmobs:hemolymph_blaster"), o -> o instanceof String);
         raccoonStealFromChests = buildBoolean(builder, "raccoonStealFromChests", "all", true, "Whether wild raccoons steal food from chests.");
+        crowsStealCrops = buildBoolean(builder, "crowsStealCrops", "all", true, "Whether wild crows steal crops from farmland.");
         fishOilMeme = buildBoolean(builder, "fishOilMeme", "all", true, "Whether fish oil gives players a special levitation effect.");
         soulVultureSpawnOnFossil = buildBoolean(builder, "soulVultureSpawnOnFossil", "all", true, "Whether soul vulture spawns should be restricted solely to the nether fossil structure or to whatever biome is specified in their respective biome config.");
         acaciaBlossomsDropFromLeaves = buildBoolean(builder, "acaciaBlossomsDropFromLeaves", "all", true, "Whether acacia blossoms should drop from blocks tagged with #alexsmobs:drops_acacia_blossoms");

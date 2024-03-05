@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
@@ -41,11 +42,11 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     public boolean canUse() {
-        return !crow.isBaby() && (crow.getTarget() == null || !crow.getTarget().isAlive()) && !crow.isTame() && crow.fleePumpkinFlag == 0 && !crow.aiItemFlag && super.canUse();
+        return !crow.isBaby() && AMConfig.crowsStealCrops && (crow.getTarget() == null || !crow.getTarget().isAlive()) && !crow.isTame() && crow.fleePumpkinFlag == 0 && !crow.aiItemFlag && super.canUse();
     }
 
     public boolean canContinueToUse() {
-        return blockPos != null && (crow.getTarget() == null || !crow.getTarget().isAlive()) && !crow.isTame() && !crow.aiItemFlag && crow.fleePumpkinFlag == 0 && super.canContinueToUse();
+        return blockPos != null && AMConfig.crowsStealCrops && (crow.getTarget() == null || !crow.getTarget().isAlive()) && !crow.isTame() && !crow.aiItemFlag && crow.fleePumpkinFlag == 0 && super.canContinueToUse();
     }
 
     public void stop() {

@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.StructureTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -41,7 +42,13 @@ public class ItemEcholocator extends Item {
         if(type == EchoType.ENDER){
             PoiManager pointofinterestmanager = world.getPoiManager();
             Stream<BlockPos> stream = pointofinterestmanager.findAll(poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.END_PORTAL_FRAME.getKey()), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
-            return stream.collect(Collectors.toList());
+            List<BlockPos> portals = stream.collect(Collectors.toList());
+            if(portals.isEmpty()){
+                BlockPos nearestMapStructure = world.findNearestMapStructure(StructureTags.EYE_OF_ENDER_LOCATED, blockpos, 100, false);
+                return nearestMapStructure == null ? Collections.emptyList() : List.of(nearestMapStructure);
+            }else{
+                return portals;
+            }
         }else  if(type == EchoType.PUPFISH){
             AMWorldData data = AMWorldData.get(world);
             if(data != null && data.getPupfishChunk() != null){

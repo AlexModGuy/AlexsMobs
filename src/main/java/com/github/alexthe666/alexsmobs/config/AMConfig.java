@@ -205,6 +205,7 @@ public class AMConfig {
     public static boolean mimicreamRepair = true;
     public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer", "alexsmobs:hemolymph_blaster");
     public static boolean raccoonsStealFromChests = true;
+    public static boolean crowsStealCrops = true;
     public static boolean fishOilMeme = true;
     public static double elephantTraderSpawnChance = 0.6F;
     public static boolean limitElephantTraderBiomes = true;
@@ -466,6 +467,7 @@ public class AMConfig {
             mimicreamBlacklist = (List<? extends String>) ConfigHolder.COMMON.mimicreamBlacklist.get();
             fishOilMeme = ConfigHolder.COMMON.fishOilMeme.get();
             raccoonsStealFromChests = ConfigHolder.COMMON.raccoonStealFromChests.get();
+            crowsStealCrops = ConfigHolder.COMMON.crowsStealCrops.get();
             acaciaBlossomsDropFromLeaves = ConfigHolder.COMMON.acaciaBlossomsDropFromLeaves.get();
             soulVultureSpawnOnFossil = ConfigHolder.COMMON.soulVultureSpawnOnFossil.get();
             wanderingTraderOffers = ConfigHolder.COMMON.wanderingTraderOffers.get();
