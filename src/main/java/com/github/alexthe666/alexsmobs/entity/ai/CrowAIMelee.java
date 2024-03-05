@@ -45,30 +45,31 @@ public class CrowAIMelee extends Goal {
     }
 
     public void tick() {
+        LivingEntity target = crow.getTarget();
+        if(target != null){
+            if(circlingTime > maxCircleTime){
+                crow.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() / 2F, target.getZ(), 1.3F);
+                if(crow.distanceTo(target) < 2){
+                    crow.peck();
+                    if(target.getMobType() == MobType.UNDEAD){
+                        target.hurt(target.damageSources().generic(), 4);
+                    }else{
+                        target.hurt(target.damageSources().generic(), 1);
+                    }
+
+                    stop();
+                }
+            }else{
+                Vec3 circlePos = getVultureCirclePos(target.position());
+                if (circlePos == null) {
+                    circlePos = target.position();
+                }
+                crow.setFlying(true);
+                crow.getMoveControl().setWantedPosition(circlePos.x(), circlePos.y() + target.getEyeHeight() + 0.2F, circlePos.z(), 1F);
+            }
+        }
         if (this.crow.isFlying()) {
             circlingTime++;
-        }
-        LivingEntity target = crow.getTarget();
-        if(circlingTime > maxCircleTime){
-            crow.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() / 2F, target.getZ(), 1.3F);
-            if(crow.distanceTo(target) < 2){
-               crow.peck();
-                if(target.getMobType() == MobType.UNDEAD){
-                    target.hurt(target.damageSources().generic(), 4);
-                }else{
-                    target.hurt(target.damageSources().generic(), 1);
-                }
-
-                stop();
-            }
-        }else{
-            Vec3 circlePos = getVultureCirclePos(target.position());
-            if (circlePos == null) {
-                circlePos = target.position();
-            }
-            crow.setFlying(true);
-            crow.getMoveControl().setWantedPosition(circlePos.x(), circlePos.y() + target.getEyeHeight() + 0.2F, circlePos.z(), 1F);
-
         }
     }
 

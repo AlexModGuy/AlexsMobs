@@ -75,6 +75,10 @@ public class RecipeMimicreamRepair extends CustomRecipe {
         if (!damageableStack.isEmpty() && mimicreamCount >= 8) {
             ItemStack itemstack2 = damageableStack.copy();
             CompoundTag compoundnbt = damageableStack.getTag().copy();
+
+            if(damageableStack.is(AMItemRegistry.GHOSTLY_PICKAXE.get()) && compoundnbt.contains("Items")){
+                compoundnbt.remove("Items");
+            }
             ListTag oldNBTList = compoundnbt.getList("Enchantments", 10);
             ListTag newNBTList = new ListTag();
             ResourceLocation mendingName = ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING);
