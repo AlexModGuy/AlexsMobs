@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FFF",
+    "SSS",
+    "BBB"
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:sculk"
+    },
+    "S": {
+      "item": "alexsmobs:skreecher_soul"
+    },
+    "B": {
+      "item": "minecraft:bone_block"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:sculk_boomer",
+    "count": 1
+  }
+}

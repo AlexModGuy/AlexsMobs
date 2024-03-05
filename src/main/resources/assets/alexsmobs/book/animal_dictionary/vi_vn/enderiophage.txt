@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Enderiophage là một cơ chế tự động hóa sinh quái dị được tìm thấy ở vùng cao nguyên End. Sinh vật phi tự nhiên này dường như được tạo ra với một mục đích duy nhất - loại bỏ những con Endergrades đang sống ở the End.
+Tuy nhiên, do dân số thưa thớt, không chắc nỗ lực người sáng tạo ra chủng loài này đã thành công hay chưa. Đòn tấn công của Enderiophage gây ra một căn bệnh được gọi là cúm Ender lên con mồi của nó. Mặc dù nó kéo dài mười phút, khi hiệu ứng trôi qua, vật chủ sẽ sản sinh ra các con mới nhỏ hơn và chết ngay lập tức vì sát thương lớn.
+Căn bệnh này có thể được điều trị bằng cách ăn trái chorus hoặc uống sữa. Những sinh vật bị nhiễm bệnh khác cũng có thể được đưa trái chorus để chữa lành.
+<NEWLINE>
+Enderiophage, mặc dù trung lập với hầu hết các sinh vật, cũng có thù hằn với người Ender. Sau khi tấn công con mồi bằng cúm Ender, Mắt Ender bên trong thể thực khuẩn sẽ vỡ tan, khiến chúng phải tìm kiếm Endermen.
+Để khôi phục khả năng này, nó sẽ bám vào một người Ender và khiến con mồi bị mù, trong khi đó nó sẽ cố gắng đánh cắp lại con mắt. Enderiophage không thể tấn công nếu không có mắt bên trong.
+<NEWLINE>
+Khi bị tiêu diệt, Enderiophage có thể rơi ra một khối độc nhất được gọi là Capsid. Capsid có thể chứa tối đa một stack vật phẩm bên trong nó và khi một capsid hoặc vật chứa (như rương) khác được đặt lên trên nó, vật phẩm đó sẽ nổi lên.
+Theo cách này, capsid có thể được sử dụng để vận chuyển các vật phẩm lên trên. Capsid cũng có thể được chế tạo với sắt và đá end để tạo ra Tên lửa Enderiophage, có thể được sử dụng thay cho Pháo hoa khi bay với Elytra.
+Nếu Mắt Ender được đặt trên Capsid phía trên một Thanh gậy End thẳng đứng, nó sẽ biến đổi thành một Enderiophage! Nếu không được xây dựng theo cách này, bất kỳ Enderiophage nào tồn tại tự nhiên dường như được tạo ra từ các vật liệu phổ biến ở môi trường xung quanh chúng. Có lẽ đó là cách những sinh vật này được sinh ra...

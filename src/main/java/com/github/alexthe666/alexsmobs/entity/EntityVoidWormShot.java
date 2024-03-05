@@ -1,77 +1,76 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.monster.VexEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.UUID;
 
 public class EntityVoidWormShot extends Entity {
-    private UUID field_234609_b_;
-    private int field_234610_c_;
-    private boolean field_234611_d_;
-    private static final DataParameter<Boolean> PORTALLING = EntityDataManager.createKey(EntityVoidWormShot.class, DataSerializers.BOOLEAN);
+    private UUID ownerUUID;
+    private int ownerNetworkId;
+    private boolean leftOwner;
+    private static final EntityDataAccessor<Float> STOP_HOMING_PROGRESS = SynchedEntityData.defineId(EntityVoidWormShot.class, EntityDataSerializers.FLOAT);
+    public float prevStopHomingProgress = 0.0F;
+    public static final float HOME_FOR = 40F;
 
-    public EntityVoidWormShot(EntityType p_i50162_1_, World p_i50162_2_) {
+    public EntityVoidWormShot(EntityType p_i50162_1_, Level p_i50162_2_) {
         super(p_i50162_1_, p_i50162_2_);
     }
 
-    public EntityVoidWormShot(World worldIn, EntityVoidWorm p_i47273_2_) {
-        this(AMEntityRegistry.VOID_WORM_SHOT, worldIn);
+    public EntityVoidWormShot(Level worldIn, EntityVoidWorm p_i47273_2_) {
+        this(AMEntityRegistry.VOID_WORM_SHOT.get(), worldIn);
         this.setShooter(p_i47273_2_);
-        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.sin(p_i47273_2_.renderYawOffset * ((float) Math.PI / 180F)), p_i47273_2_.getPosY() + (double) 1F, p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.cos(p_i47273_2_.renderYawOffset * ((float) Math.PI / 180F)));
+        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.sin(p_i47273_2_.yBodyRot * Mth.DEG_TO_RAD), p_i47273_2_.getY() + (double) 1F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.cos(p_i47273_2_.yBodyRot * Mth.DEG_TO_RAD));
     }
 
-    public EntityVoidWormShot(World worldIn, LivingEntity p_i47273_2_, boolean right) {
-        this(AMEntityRegistry.VOID_WORM_SHOT, worldIn);
+    public EntityVoidWormShot(Level worldIn, LivingEntity p_i47273_2_, boolean right) {
+        this(AMEntityRegistry.VOID_WORM_SHOT.get(), worldIn);
         this.setShooter(p_i47273_2_);
-        float rot = p_i47273_2_.rotationYawHead + (right ? 60 : -60);
-        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth()) * 0.9F * (double) MathHelper.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getPosY() + (double) 1F, p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth()) * 0.9D * (double) MathHelper.cos(rot * ((float) Math.PI / 180F)));
+        float rot = p_i47273_2_.yHeadRot + (right ? 60 : -60);
+        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.9F * (double) Mth.sin(rot * Mth.DEG_TO_RAD), p_i47273_2_.getY() + (double) 1F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.9D * (double) Mth.cos(rot * Mth.DEG_TO_RAD));
     }
 
     @OnlyIn(Dist.CLIENT)
-    public EntityVoidWormShot(World worldIn, double x, double y, double z, double p_i47274_8_, double p_i47274_10_, double p_i47274_12_) {
-        this(AMEntityRegistry.VOID_WORM_SHOT, worldIn);
-        this.setPosition(x, y, z);
-        this.setMotion(p_i47274_8_, p_i47274_10_, p_i47274_12_);
+    public EntityVoidWormShot(Level worldIn, double x, double y, double z, double p_i47274_8_, double p_i47274_10_, double p_i47274_12_) {
+        this(AMEntityRegistry.VOID_WORM_SHOT.get(), worldIn);
+        this.setPos(x, y, z);
+        this.setDeltaMovement(p_i47274_8_, p_i47274_10_, p_i47274_12_);
     }
 
-    public EntityVoidWormShot(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
-        this(AMEntityRegistry.VOID_WORM_SHOT, world);
+    public EntityVoidWormShot(PlayMessages.SpawnEntity spawnEntity, Level world) {
+        this(AMEntityRegistry.VOID_WORM_SHOT.get(), world);
     }
 
-    protected static float func_234614_e_(float p_234614_0_, float p_234614_1_) {
+    protected static float lerpRotation(float p_234614_0_, float p_234614_1_) {
         while (p_234614_1_ - p_234614_0_ < -180.0F) {
             p_234614_0_ -= 360.0F;
         }
@@ -80,149 +79,150 @@ public class EntityVoidWormShot extends Entity {
             p_234614_0_ += 360.0F;
         }
 
-        return MathHelper.lerp(0.2F, p_234614_0_, p_234614_1_);
+        return Mth.lerp(0.2F, p_234614_0_, p_234614_1_);
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public void tick() {
-        if (!this.field_234611_d_) {
-            this.field_234611_d_ = this.func_234615_h_();
+        this.prevStopHomingProgress = this.getStopHomingProgress();
+        if (!this.leftOwner) {
+            this.leftOwner = this.checkLeftOwner();
         }
-        if (this.ticksExisted > 40) {
+        if (this.tickCount > 400) {
+            this.remove(RemovalReason.DISCARDED);
+        }
+        if (this.tickCount > 40) {
             Entity entity = this.getShooter();
-            if(isPortalType()){
-                this.setMotion(Vector3d.ZERO);
-                if (this.ticksExisted > 60) {
-                    this.remove();
+            float stopHomingProgress = this.getStopHomingProgress();
+            if(stopHomingProgress < HOME_FOR){
+                stopHomingProgress += 1.0F;
+                this.setStopHomingProgress(stopHomingProgress);
+            }
+            final float homeScale = 1F - (stopHomingProgress / HOME_FOR);
+            if (entity instanceof Mob && ((Mob) entity).getTarget() != null && homeScale > 0.0F) {
+                LivingEntity target = ((Mob) entity).getTarget();
+                if(target == null){
+                    this.kill();
                 }
+                final double d0 = target.getX() - this.getX();
+                final double d1 = target.getEyeY() - this.getY();
+                final double d2 = target.getZ() - this.getZ();
+                Vec3 vec = new Vec3(d0, d1, d2).normalize().scale(Math.max(homeScale, 0.5F) * 1.2F);
+                this.setDeltaMovement(vec);
             }else{
-                if (entity instanceof MobEntity && ((MobEntity) entity).getAttackTarget() != null) {
-                    LivingEntity target = ((MobEntity) entity).getAttackTarget();
-                    if(target == null){
-                        this.onKillCommand();
-                    }
-                    double d0 = target.getPosX() - this.getPosX();
-                    double d1 = target.getPosY() + target.getHeight() * 0.5F - this.getPosY();
-                    double d2 = target.getPosZ() - this.getPosZ();
-                    Vector3d vector3d = new Vector3d(d0, d1, d2);
-                    float speed = 0.05F;
-                    shoot(d0, d1, d2, 1, 0);
-                    this.rotationYaw = -((float) MathHelper.atan2(d0, d2)) * (180F / (float) Math.PI);
-                }
+                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.09, 0));
             }
         }
         super.tick();
-        Vector3d vector3d = this.getMotion();
-        RayTraceResult raytraceresult = ProjectileHelper.func_234618_a_(this, this::func_230298_a_);
-        if (raytraceresult != null && raytraceresult.getType() != RayTraceResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
+        Vec3 vector3d = this.getDeltaMovement();
+        HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }
-        double d0 = this.getPosX() + vector3d.x;
-        double d1 = this.getPosY() + vector3d.y;
-        double d2 = this.getPosZ() + vector3d.z;
+        final double d0 = this.getX() + vector3d.x;
+        final double d1 = this.getY() + vector3d.y;
+        final double d2 = this.getZ() + vector3d.z;
         this.setNoGravity(true);
-        this.func_234617_x_();
-        float f = 0.99F;
-        float f1 = 0.06F;
-        if (this.world.func_234853_a_(this.getBoundingBox()).noneMatch(AbstractBlock.AbstractBlockState::isAir)) {
-            this.remove();
-        } else if (this.isInWaterOrBubbleColumn()) {
-            this.remove();
+        this.updateRotation();
+        if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
+            this.remove(RemovalReason.DISCARDED);
+        } else if (this.isInWaterOrBubble()) {
+            this.remove(RemovalReason.DISCARDED);
         } else {
-            this.setMotion(vector3d.scale(0.99F));
-            this.setPosition(d0, d1, d2);
+            this.setDeltaMovement(vector3d.scale(0.99F));
+            this.setPos(d0, d1, d2);
         }
     }
 
-    protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
+    protected void onEntityHit(EntityHitResult p_213868_1_) {
         Entity entity = this.getShooter();
         if (entity instanceof LivingEntity && !(p_213868_1_.getEntity() instanceof EntityVoidWorm || p_213868_1_.getEntity() instanceof EntityVoidWormPart)) {
-            boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), (float) (AMConfig.voidWormDamageModifier * 4F));
-            if(b && p_213868_1_.getEntity() instanceof PlayerEntity){
-                PlayerEntity player = ((PlayerEntity)p_213868_1_.getEntity());
-                if(player.getActiveItemStack().isShield(player)){
+            final boolean b = wormAttack(p_213868_1_.getEntity(), damageSources().mobProjectile(this, (LivingEntity) entity), (float) (AMConfig.voidWormDamageModifier * 4F));
+            if(b && p_213868_1_.getEntity() instanceof Player){
+                Player player = ((Player)p_213868_1_.getEntity());
+                if(player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)){
                     player.disableShield(true);
                 }
             }
         }
 
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
     }
 
     private boolean wormAttack(Entity entity, DamageSource source, float dmg){
-        return entity.attackEntityFrom(source, dmg);
+        return entity.hurt(source, dmg);
     }
 
 
-    protected void func_230299_a_(BlockRayTraceResult p_230299_1_) {
-        BlockState blockstate = this.world.getBlockState(p_230299_1_.getPos());
-        if (!this.world.isRemote) {
-            this.remove();
+    protected void onHitBlock(BlockHitResult p_230299_1_) {
+        BlockState blockstate = this.level().getBlockState(p_230299_1_.getBlockPos());
+        if (!this.level().isClientSide) {
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
-    protected void registerData() {
-        this.dataManager.register(PORTALLING, false);
+    protected void defineSynchedData() {
+        this.entityData.define(STOP_HOMING_PROGRESS, 0.0F);
     }
 
-    public boolean isPortalType(){
-        return this.dataManager.get(PORTALLING);
+    public float getStopHomingProgress() {
+        return this.entityData.get(STOP_HOMING_PROGRESS);
     }
 
-    public void setPortalType(boolean portalType){
-        this.dataManager.set(PORTALLING, portalType);
+    public void setStopHomingProgress(float progress) {
+        this.entityData.set(STOP_HOMING_PROGRESS, progress);
     }
 
     public void setShooter(@Nullable Entity entityIn) {
         if (entityIn != null) {
-            this.field_234609_b_ = entityIn.getUniqueID();
-            this.field_234610_c_ = entityIn.getEntityId();
+            this.ownerUUID = entityIn.getUUID();
+            this.ownerNetworkId = entityIn.getId();
         }
 
     }
 
     @Nullable
     public Entity getShooter() {
-        if (this.field_234609_b_ != null && this.world instanceof ServerWorld) {
-            return ((ServerWorld) this.world).getEntityByUuid(this.field_234609_b_);
+        if (this.ownerUUID != null && this.level() instanceof ServerLevel) {
+            return ((ServerLevel) this.level()).getEntity(this.ownerUUID);
         } else {
-            return this.field_234610_c_ != 0 ? this.world.getEntityByID(this.field_234610_c_) : null;
+            return this.ownerNetworkId != 0 ? this.level().getEntity(this.ownerNetworkId) : null;
         }
     }
 
-    protected void writeAdditional(CompoundNBT compound) {
-        if (this.field_234609_b_ != null) {
-            compound.putUniqueId("Owner", this.field_234609_b_);
+    protected void addAdditionalSaveData(CompoundTag compound) {
+        if (this.ownerUUID != null) {
+            compound.putUUID("Owner", this.ownerUUID);
         }
 
-        if (this.field_234611_d_) {
+        if (this.leftOwner) {
             compound.putBoolean("LeftOwner", true);
         }
-
+        compound.putFloat("HomeTime", this.getStopHomingProgress());
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    protected void readAdditional(CompoundNBT compound) {
-        if (compound.hasUniqueId("Owner")) {
-            this.field_234609_b_ = compound.getUniqueId("Owner");
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        if (compound.hasUUID("Owner")) {
+            this.ownerUUID = compound.getUUID("Owner");
         }
-
-        this.field_234611_d_ = compound.getBoolean("LeftOwner");
+        this.setStopHomingProgress(compound.getFloat("HomeTime"));
+        this.leftOwner = compound.getBoolean("LeftOwner");
     }
 
-    private boolean func_234615_h_() {
+    private boolean checkLeftOwner() {
         Entity entity = this.getShooter();
         if (entity != null) {
-            for (Entity entity1 : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(this.getMotion()).grow(1.0D), (p_234613_0_) -> {
-                return !p_234613_0_.isSpectator() && p_234613_0_.canBeCollidedWith();
+            for (Entity entity1 : this.level().getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
+                return !p_234613_0_.isSpectator() && p_234613_0_.isPickable();
             })) {
-                if (entity1.getLowestRidingEntity() == entity.getLowestRidingEntity()) {
+                if (entity1.getRootVehicle() == entity.getRootVehicle()) {
                     return false;
                 }
             }
@@ -232,65 +232,58 @@ public class EntityVoidWormShot extends Entity {
     }
 
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
-        this.setMotion(vector3d);
-        float f = MathHelper.sqrt(horizontalMag(vector3d));
-        this.rotationYaw = (float) (MathHelper.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI));
-        this.rotationPitch = (float) (MathHelper.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI));
-        this.prevRotationYaw = this.rotationYaw;
-        this.prevRotationPitch = this.rotationPitch;
+        Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
+        this.setDeltaMovement(this.getDeltaMovement().add(vector3d));
+        float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
+        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG));
+        this.yRotO = this.getYRot();
+        this.xRotO = this.getXRot();
     }
 
-    public void func_234612_a_(Entity p_234612_1_, float p_234612_2_, float p_234612_3_, float p_234612_4_, float p_234612_5_, float p_234612_6_) {
-        float f = -MathHelper.sin(p_234612_3_ * ((float) Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float) Math.PI / 180F));
-        float f1 = -MathHelper.sin((p_234612_2_ + p_234612_4_) * ((float) Math.PI / 180F));
-        float f2 = MathHelper.cos(p_234612_3_ * ((float) Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float) Math.PI / 180F));
-        this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
-        Vector3d vector3d = p_234612_1_.getMotion();
-        this.setMotion(this.getMotion().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
-    }
 
     /**
      * Called when this EntityFireball hits a block or entity.
      */
-    protected void onImpact(RayTraceResult result) {
-        RayTraceResult.Type raytraceresult$type = result.getType();
-        if (raytraceresult$type == RayTraceResult.Type.ENTITY) {
-            this.onEntityHit((EntityRayTraceResult) result);
-        } else if (raytraceresult$type == RayTraceResult.Type.BLOCK) {
-            this.func_230299_a_((BlockRayTraceResult) result);
+    protected void onImpact(HitResult result) {
+        HitResult.Type raytraceresult$type = result.getType();
+        if (raytraceresult$type == HitResult.Type.ENTITY) {
+            this.onEntityHit((EntityHitResult) result);
+        } else if (raytraceresult$type == HitResult.Type.BLOCK) {
+            this.onHitBlock((BlockHitResult) result);
         }
-        this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1F, 0.5F);
+        this.gameEvent(GameEvent.ENTITY_DIE);
+        this.playSound(SoundEvents.GLASS_BREAK, 1F, 0.5F);
         Entity entity = this.getShooter();
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void setVelocity(double x, double y, double z) {
-        this.setMotion(x, y, z);
-        if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-            float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float) (MathHelper.atan2(y, f) * (double) (180F / (float) Math.PI));
-            this.rotationYaw = (float) (MathHelper.atan2(x, z) * (double) (180F / (float) Math.PI));
-            this.prevRotationPitch = this.rotationPitch;
-            this.prevRotationYaw = this.rotationYaw;
-            this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
+    public void lerpMotion(double x, double y, double z) {
+        this.setDeltaMovement(x, y, z);
+        if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
+            final float f = Mth.sqrt((float) (x * x + z * z));
+            this.setXRot((float) (Mth.atan2(y, f) * (double) Mth.RAD_TO_DEG));
+            this.setYRot( (float) (Mth.atan2(x, z) * (double) Mth.RAD_TO_DEG));
+            this.xRotO = this.getXRot();
+            this.yRotO = this.getYRot();
+            this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
         }
 
     }
 
-    protected boolean func_230298_a_(Entity p_230298_1_) {
-        if (!p_230298_1_.isSpectator() && p_230298_1_.isAlive() && p_230298_1_.canBeCollidedWith()) {
+    protected boolean canHitEntity(Entity p_230298_1_) {
+        if (!p_230298_1_.isSpectator() && p_230298_1_.isAlive() && p_230298_1_.isPickable()) {
             Entity entity = this.getShooter();
-            return (entity == null || this.field_234611_d_ || !entity.isRidingSameEntity(p_230298_1_)) && !(p_230298_1_ instanceof EntityVoidWormShot || p_230298_1_ instanceof EntityVoidWormPart);
+            return (entity == null || this.leftOwner || !entity.isPassengerOfSameVehicle(p_230298_1_)) && !(p_230298_1_ instanceof EntityVoidWormShot || p_230298_1_ instanceof EntityVoidWormPart);
         } else {
             return false;
         }
     }
 
-    protected void func_234617_x_() {
-        Vector3d vector3d = this.getMotion();
-        float f = MathHelper.sqrt(horizontalMag(vector3d));
-        this.rotationPitch = func_234614_e_(this.prevRotationPitch, (float) (MathHelper.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
-        this.rotationYaw = func_234614_e_(this.prevRotationYaw, (float) (MathHelper.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
+    protected void updateRotation() {
+        Vec3 vector3d = this.getDeltaMovement();
+        final float f = Mth.sqrt((float) vector3d.horizontalDistance());
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG)));
+        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG)));
     }
 }

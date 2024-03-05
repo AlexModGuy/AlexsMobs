@@ -1,42 +1,43 @@
 package com.github.alexthe666.alexsmobs.misc;
 
-import com.github.alexthe666.alexsmobs.CommonProxy;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class RecipeMimicreamRepair extends SpecialRecipe {
-    public RecipeMimicreamRepair(ResourceLocation idIn) {
-        super(idIn);
+public class RecipeMimicreamRepair extends CustomRecipe {
+    public RecipeMimicreamRepair(ResourceLocation idIn, CraftingBookCategory category) {
+        super(idIn, category);
     }
 
     /**
      * Used to check if a recipe matches current crafting inventory
      */
-    public boolean matches(CraftingInventory inv, World worldIn) {
+    public boolean matches(CraftingContainer inv, Level worldIn) {
         if(!AMConfig.mimicreamRepair){
             return false;
         }
         ItemStack damageableStack = ItemStack.EMPTY;
         int mimicreamCount = 0;
 
-        for (int j = 0; j < inv.getSizeInventory(); ++j) {
-            ItemStack itemstack1 = inv.getStackInSlot(j);
+        for (int j = 0; j < inv.getContainerSize(); ++j) {
+            ItemStack itemstack1 = inv.getItem(j);
             if (!itemstack1.isEmpty()) {
-                if (itemstack1.isDamageable() && !isBlacklisted(itemstack1)) {
+                if (itemstack1.isDamageableItem() && !isBlacklisted(itemstack1)) {
                     damageableStack = itemstack1;
                 } else {
-                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM) {
+                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM.get()) {
                         mimicreamCount++;
                     }
                 }
@@ -47,24 +48,24 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
     }
 
     public boolean isBlacklisted(ItemStack stack) {
-        String name = stack.getItem().getRegistryName().toString();
-        return AMConfig.mimicreamBlacklist.contains(name);
+        ResourceLocation name = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        return name != null && AMConfig.mimicreamBlacklist.contains(name.toString());
     }
 
     /**
      * Returns an Item that is the result of this recipe
      */
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
         ItemStack damageableStack = ItemStack.EMPTY;
         int mimicreamCount = 0;
 
-        for (int j = 0; j < inv.getSizeInventory(); ++j) {
-            ItemStack itemstack1 = inv.getStackInSlot(j);
+        for (int j = 0; j < inv.getContainerSize(); ++j) {
+            ItemStack itemstack1 = inv.getItem(j);
             if (!itemstack1.isEmpty()) {
-                if (itemstack1.isDamageable() && !isBlacklisted(itemstack1)) {
+                if (itemstack1.isDamageableItem() && !isBlacklisted(itemstack1)) {
                     damageableStack = itemstack1;
                 } else {
-                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM) {
+                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM.get()) {
                         mimicreamCount++;
                     }
                 }
@@ -73,34 +74,38 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
 
         if (!damageableStack.isEmpty() && mimicreamCount >= 8) {
             ItemStack itemstack2 = damageableStack.copy();
-            CompoundNBT compoundnbt = damageableStack.getTag().copy();
-            ListNBT oldNBTList = compoundnbt.getList("Enchantments", 10);
-            ListNBT newNBTList = new ListNBT();
-            ResourceLocation mendingName = Registry.ENCHANTMENT.getKey(Enchantments.MENDING);
+            CompoundTag compoundnbt = damageableStack.getTag().copy();
+
+            if(damageableStack.is(AMItemRegistry.GHOSTLY_PICKAXE.get()) && compoundnbt.contains("Items")){
+                compoundnbt.remove("Items");
+            }
+            ListTag oldNBTList = compoundnbt.getList("Enchantments", 10);
+            ListTag newNBTList = new ListTag();
+            ResourceLocation mendingName = ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING);
             for (int i = 0; i < oldNBTList.size(); ++i) {
-                CompoundNBT compoundnbt2 = oldNBTList.getCompound(i);
-                ResourceLocation resourcelocation1 = ResourceLocation.tryCreate(compoundnbt2.getString("id"));
+                CompoundTag compoundnbt2 = oldNBTList.getCompound(i);
+                ResourceLocation resourcelocation1 = ResourceLocation.tryParse(compoundnbt2.getString("id"));
                 if (resourcelocation1 == null || !resourcelocation1.equals(mendingName)) {
                     newNBTList.add(compoundnbt2);
                 }
             }
             compoundnbt.put("Enchantments", newNBTList);
             itemstack2.setTag(compoundnbt);
-            itemstack2.setDamage(itemstack2.getMaxDamage());
+            itemstack2.setDamageValue(itemstack2.getMaxDamage());
             return itemstack2;
         } else {
             return ItemStack.EMPTY;
         }
     }
 
-    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+    public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i) {
-            ItemStack itemstack = inv.getStackInSlot(i);
-            if (itemstack.hasContainerItem()) {
-                nonnulllist.set(i, itemstack.getContainerItem());
-            } else if (itemstack.getItem().isDamageable()) {
+            ItemStack itemstack = inv.getItem(i);
+            if (itemstack.hasCraftingRemainingItem()) {
+                nonnulllist.set(i, itemstack.getCraftingRemainingItem());
+            } else if (itemstack.getItem().canBeDepleted()) {
                 ItemStack itemstack1 = itemstack.copy();
                 itemstack1.setCount(1);
                 nonnulllist.set(i, itemstack1);
@@ -111,14 +116,14 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
         return nonnulllist;
     }
 
-    public IRecipeSerializer<?> getSerializer() {
-        return CommonProxy.MIMICREAM_RECIPE;
+    public RecipeSerializer<?> getSerializer() {
+        return AMRecipeRegistry.MIMICREAM_RECIPE.get();
     }
 
     /**
      * Used to determine if this recipe can fit in a grid of the given width/height
      */
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 3 && height >= 3;
     }
 }

@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Toucans are colorful little birds with massive beaks. They can often be found on trees in jungle biomes. Toucans come in a variety of dazzling colors.
+<NEWLINE>
+These passive birds have a serious affinity for fruits of all kinds. When fed an apple, banana, or other fruit that comes from a tree, there is a chance for a toucan to place a sapling of this tree somewhere in the world with its beak. Feeding it an apple will result in an Oak sapling, and a banana will result in a Jungle sapling.
+<NEWLINE>
+When fed a golden apple, a toucan will momentarily transform into a golden toucan, and plant saplings at a much faster rate. Feeding a toucan an Enchanted Golden Apple results in a toucan that does not need to constantly be fed fruits in order to place saplings. Toucans can be bred with eggs.

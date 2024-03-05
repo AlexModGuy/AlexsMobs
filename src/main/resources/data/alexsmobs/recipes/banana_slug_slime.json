@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alexsmobs:banana_slug_slime_block"
+    }
+  ],
+  "result": {
+    "item": "alexsmobs:banana_slug_slime",
+    "count": 9
+  }
+}

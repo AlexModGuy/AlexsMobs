@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "flutter.txt",
+  "title": "entity.alexsmobs.flutter",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:flutter",
+      "x": 98,
+      "y": 75,
+      "page" : 0,
+      "scale": 2.2,
+      "rot_x": 30,
+      "rot_y": 230,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

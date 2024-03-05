@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Gli avvoltoi delle anime sono i resti avvizziti degli uccelli morti che infestano le valli delle anime nel nether. Questi uccelli non-morti possono essere visti circondare gli svariati scheletri giganti che occupano il paesaggio.
+Se avvicinati, gli avvoltoi effettueranno un attacco ruba-vita su qualsiasi esploratore, con cui possono rubare la salute fino ad un massimo di 5 volte dalla loro preda. Se sconfitti in seguito a ciò, c'è una possibilità che rilascino il loro cuore infuso di anima.
+Il cuore delle anime può essere utilizzato per distillare una pozione di ruba anime, che garantisce a chi la beve lo stesso potere succhia-salute del volatile.
+<NEWLINE>
+Come le loro controparti, gli scheletri wither, gli avvoltoi delle anime sono i nemici naturali dei piglin. Sono inoltre una frequente preda del serpente d'ossa.

@@ -1,69 +1,69 @@
 package com.github.alexthe666.alexsmobs.client.particle;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ParticleSimpleHeart extends SpriteTexturedParticle {
+public class ParticleSimpleHeart extends TextureSheetParticle {
 
-    protected ParticleSimpleHeart(ClientWorld world, double x, double y, double z) {
+    protected ParticleSimpleHeart(ClientLevel world, double x, double y, double z) {
         super(world, x, y, z);
-        this.motionX *= (double)0.01F;
-        this.motionY *= (double)0.01F;
-        this.motionZ *= (double)0.01F;
-        this.motionY += 0.1D;
-        this.particleScale *= 2F;
-        this.maxAge = 32;
-        this.canCollide = false;
+        this.xd *= (double)0.01F;
+        this.yd *= (double)0.01F;
+        this.zd *= (double)0.01F;
+        this.yd += 0.1D;
+        this.quadSize *= 2F;
+        this.lifetime = 32;
+        this.hasPhysics = false;
     }
 
-    public float getScale(float scaleFactor) {
-        return this.particleScale * MathHelper.clamp(((float)this.age + scaleFactor) / (float)this.maxAge * 16.0F, 0.0F, 1.0F);
+    public float getQuadSize(float scaleFactor) {
+        return this.quadSize * Mth.clamp(((float)this.age + scaleFactor) / (float)this.lifetime * 16.0F, 0.0F, 1.0F);
     }
 
     public void tick() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
-        if (this.age++ >= this.maxAge) {
-            this.setExpired();
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
+        if (this.age++ >= this.lifetime) {
+            this.remove();
         } else {
-            this.move(this.motionX, this.motionY, this.motionZ);
-            if (this.posY == this.prevPosY) {
-                this.motionX *= 1.1D;
-                this.motionZ *= 1.1D;
+            this.move(this.xd, this.yd, this.zd);
+            if (this.y == this.yo) {
+                this.xd *= 1.1D;
+                this.zd *= 1.1D;
             }
 
-            this.motionX *= (double)0.86F;
-            this.motionY *= (double)0.86F;
-            this.motionZ *= (double)0.86F;
+            this.xd *= (double)0.86F;
+            this.yd *= (double)0.86F;
+            this.zd *= (double)0.86F;
             if (this.onGround) {
-                this.motionX *= (double)0.7F;
-                this.motionZ *= (double)0.7F;
+                this.xd *= (double)0.7F;
+                this.zd *= (double)0.7F;
             }
 
         }
     }
 
     @Override
-    public IParticleRenderType getRenderType() {
-        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class Factory implements IParticleFactory<BasicParticleType> {
-        private final IAnimatedSprite spriteSet;
+    public static class Factory implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(SpriteSet spriteSet) {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             ParticleSimpleHeart heartparticle = new ParticleSimpleHeart(worldIn, x, y, z);
-            heartparticle.selectSpriteRandomly(this.spriteSet);
+            heartparticle.pickSprite(this.spriteSet);
             return heartparticle;
         }
     }

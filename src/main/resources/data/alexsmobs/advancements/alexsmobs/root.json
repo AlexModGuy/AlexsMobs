@@ -19,7 +19,9 @@
             "trigger": "minecraft:consume_item",
             "conditions": {
                 "item": {
-                    "item": "alexsmobs:animal_dictionary"
+                    "items": [
+                        "alexsmobs:animal_dictionary"
+                    ]
                 }
             }
         }

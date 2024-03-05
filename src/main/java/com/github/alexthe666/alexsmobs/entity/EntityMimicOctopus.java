@@ -3,71 +3,84 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.GuardianEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.fish.PufferfishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.WalkNodeProcessor;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.tags.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.animal.Pufferfish;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Guardian;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, IFollower {
+public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, IFollower, Bucketable {
 
-    private static final DataParameter<Boolean> STOP_CHANGE = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> UPGRADED = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> MIMIC_ORDINAL = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> PREV_MIMIC_ORDINAL = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
-    private static final DataParameter<Optional<BlockState>> MIMICKED_BLOCK = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.OPTIONAL_BLOCK_STATE);
-    private static final DataParameter<Optional<BlockState>> PREV_MIMICKED_BLOCK = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.OPTIONAL_BLOCK_STATE);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> LAST_SCARED_MOB_ID = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> UPGRADED_LASER_ENTITY_ID = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
+    private static final EntityDataAccessor<Boolean> STOP_CHANGE = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> UPGRADED = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> MIMIC_ORDINAL = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> PREV_MIMIC_ORDINAL = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<BlockState>> MIMICKED_BLOCK = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
+    private static final EntityDataAccessor<Optional<BlockState>> PREV_MIMICKED_BLOCK = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> LAST_SCARED_MOB_ID = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> UPGRADED_LASER_ENTITY_ID = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
     public MimicState localMimicState = MimicState.OVERLAY;
     public float transProgress = 0F;
     public float prevTransProgress = 0F;
@@ -79,7 +92,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     public float prevSitProgress = 0F;
     private boolean isLandNavigator;
     private int moistureAttackTime = 0;
-    private int camoCooldown = 120 + rand.nextInt(1200);
+    private int camoCooldown = 120 + random.nextInt(1200);
     private int mimicCooldown = 0;
     private int stopMimicCooldown = -1;
     private int fishFeedings;
@@ -89,79 +102,79 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     private LivingEntity laserTargetEntity;
     private int guardianLaserTime;
 
-    protected EntityMimicOctopus(EntityType type, World worldIn) {
+    protected EntityMimicOctopus(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(false);
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 16D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
-    public static boolean canMimicOctopusSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+    public static boolean canMimicOctopusSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockPos downPos = pos;
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
-            downPos = downPos.down();
+            downPos = downPos.below();
         }
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_SPAWNS).contains(worldIn.getBlockState(downPos).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(downPos).is(AMTagRegistry.MIMIC_OCTOPUS_SPAWNS);
         return spawnBlock && downPos.getY() < worldIn.getSeaLevel() + 1;
     }
 
     public static MimicState getStateForItem(ItemStack stack) {
-        if (ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_CREEPER_ITEMS).contains(stack.getItem())) {
+        if (stack.is(AMTagRegistry.MIMIC_OCTOPUS_CREEPER_ITEMS)) {
             return MimicState.CREEPER;
         }
-        if (ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_GUARDIAN_ITEMS).contains(stack.getItem())) {
+        if (stack.is(AMTagRegistry.MIMIC_OCTOPUS_GUARDIAN_ITEMS)) {
             return MimicState.GUARDIAN;
         }
-        if (ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_PUFFERFISH_ITEMS).contains(stack.getItem())) {
+        if (stack.is(AMTagRegistry.MIMIC_OCTOPUS_PUFFERFISH_ITEMS)) {
             return MimicState.PUFFERFISH;
         }
         return null;
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.MIMIC_OCTOPUS_IDLE;
+        return AMSoundRegistry.MIMIC_OCTOPUS_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
+        return AMSoundRegistry.MIMIC_OCTOPUS_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
+        return AMSoundRegistry.MIMIC_OCTOPUS_HURT.get();
     }
 
-    public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this);
+    public boolean checkSpawnObstruction(LevelReader worldIn) {
+        return worldIn.isUnobstructed(this);
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.mimicOctopusSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.mimicOctopusSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.dataManager.set(PREV_MIMIC_ORDINAL, 0);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        this.entityData.set(PREV_MIMIC_ORDINAL, 0);
         this.setMimickedBlock(null);
         this.setMimicState(MimicState.OVERLAY);
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        this.dataManager.set(MIMIC_ORDINAL, compound.getInt("MimicState"));
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.entityData.set(MIMIC_ORDINAL, compound.getInt("MimicState"));
         this.setUpgraded(compound.getBoolean("Upgraded"));
-        this.setSitting(compound.getBoolean("Sitting"));
+        this.setOrderedToSit(compound.getBoolean("Sitting"));
         this.setStopChange(compound.getBoolean("StopChange"));
         this.setCommand(compound.getInt("OctoCommand"));
         this.setMoistness(compound.getInt("Moistness"));
         this.setFromBucket(compound.getBoolean("FromBucket"));
         BlockState blockstate = null;
         if (compound.contains("MimickedBlockState", 10)) {
-            blockstate = NBTUtil.readBlockState(compound.getCompound("MimickedBlockState"));
+            blockstate = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("MimickedBlockState"));
             if (blockstate.isAir()) {
                 blockstate = null;
             }
@@ -174,18 +187,18 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         this.mimicreamFeedings = compound.getInt("MimicreamFeedings");
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("MimicState", this.getMimicState().ordinal());
         compound.putBoolean("Upgraded", this.isUpgraded());
         compound.putBoolean("Sitting", this.isSitting());
         compound.putInt("OctoCommand", this.getCommand());
         compound.putInt("Moistness", this.getMoistness());
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
         compound.putBoolean("StopChange", this.isStopChange());
         BlockState blockstate = this.getMimickedBlock();
         if (blockstate != null) {
-            compound.put("MimickedBlockState", NBTUtil.writeBlockState(blockstate));
+            compound.put("MimickedBlockState", NbtUtils.writeBlockState(blockstate));
         }
         compound.putInt("CamoCooldown", this.camoCooldown);
         compound.putInt("MimicCooldown", this.mimicCooldown);
@@ -194,19 +207,37 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         compound.putInt("MimicreamFeedings", this.mimicreamFeedings);
     }
 
-    protected ItemStack getFishBucket() {
-        ItemStack stack = new ItemStack(AMItemRegistry.MIMIC_OCTOPUS_BUCKET);
-        CompoundNBT platTag = new CompoundNBT();
-        this.writeAdditional(platTag);
-        stack.getOrCreateTag().put("MimicOctopusData", platTag);
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
+        ItemStack stack = new ItemStack(AMItemRegistry.MIMIC_OCTOPUS_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setDisplayName(this.getCustomName());
+            stack.setHoverName(this.getCustomName());
         }
         return stack;
     }
 
-    protected float getJumpUpwardsMotion() {
-        return super.getJumpUpwardsMotion() * (this.isInWaterOrBubbleColumn() ? 1.3F : 1F);
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        if (this.hasCustomName()) {
+            bucket.setHoverName(this.getCustomName());
+        }
+        CompoundTag platTag = new CompoundTag();
+        this.addAdditionalSaveData(platTag);
+        CompoundTag compound = bucket.getOrCreateTag();
+        compound.put("MimicOctopusData", platTag);
+    }
+
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        if (compound.contains("MimicOctopusData")) {
+            this.readAdditionalSaveData(compound.getCompound("MimicOctopusData"));
+        }
+        this.setMoistness(60000);
+    }
+
+    protected float getJumpPower() {
+        return super.getJumpPower() * (this.isInWaterOrBubble() ? 1.3F : 1F);
     }
 
     @Override
@@ -214,33 +245,33 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         return this.getCommand() == 1;
     }
 
-    public boolean isOnSameTeam(Entity entityIn) {
-        if (this.isTamed()) {
+    public boolean isAlliedTo(Entity entityIn) {
+        if (this.isTame()) {
             LivingEntity livingentity = this.getOwner();
             if (entityIn == livingentity) {
                 return true;
             }
-            if (entityIn instanceof TameableEntity) {
-                return ((TameableEntity) entityIn).isOwner(livingentity);
+            if (entityIn instanceof TamableAnimal) {
+                return ((TamableAnimal) entityIn).isOwnedBy(livingentity);
             }
             if (livingentity != null) {
-                return livingentity.isOnSameTeam(entityIn);
+                return livingentity.isAlliedTo(entityIn);
             }
         }
-        return super.isOnSameTeam(entityIn);
+        return super.isAlliedTo(entityIn);
     }
 
-    public boolean isPushedByWater() {
+    public boolean isPushedByFluid() {
         return false;
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new AIAttack());
-        this.goalSelector.addGoal(1, new SitGoal(this));
-        this.goalSelector.addGoal(2, new FollowOwner(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new TameableAIFollowOwnerWater(this, 1.3D, 4.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL, Items.TROPICAL_FISH), false) {
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(AMItemRegistry.LOBSTER_TAIL.get(), AMItemRegistry.COOKED_LOBSTER_TAIL.get(), Items.TROPICAL_FISH), false) {
             @Override
             public void tick() {
                 EntityMimicOctopus.this.setMimickedBlock(null);
@@ -254,41 +285,43 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         this.goalSelector.addGoal(8, new AIMimicNearbyMobs());
         this.goalSelector.addGoal(9, new BreedGoal(this, 0.8D));
         this.goalSelector.addGoal(10, new AISwim());
-        this.goalSelector.addGoal(11, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(11, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this) {
             @Override
-            public boolean shouldExecute() {
-                return EntityMimicOctopus.this.isTamed() && super.shouldExecute();
+            public boolean canUse() {
+                return EntityMimicOctopus.this.isTame() && super.canUse();
             }
         });
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         Item item = stack.getItem();
-        return isTamed() && (item == Items.TROPICAL_FISH);
+        return isTame() && (item == Items.TROPICAL_FISH);
     }
 
     public boolean isActiveCamo() {
         return this.getMimicState() == MimicState.OVERLAY && this.getMimickedBlock() != null;
     }
 
-    public double getVisibilityMultiplier(@Nullable Entity lookingEntity) {
+    public double getVisibilityPercent(@Nullable Entity lookingEntity) {
         if (isActiveCamo()) {
-            return super.getVisibilityMultiplier(lookingEntity) * 0.1F;
+            return super.getVisibilityPercent(lookingEntity) * 0.1F;
         } else {
-            return super.getVisibilityMultiplier(lookingEntity);
+            return super.getVisibilityPercent(lookingEntity);
         }
     }
 
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(hand);
+    @Override
+    @Nonnull
+    public InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         MimicState readState = getStateForItem(itemstack);
-        ActionResultType type = super.getEntityInteractionResult(player, hand);
-        if (readState != null && this.isTamed()) {
+        InteractionResult type = super.mobInteract(player, hand);
+        if (readState != null && this.isTame()) {
             if (mimicCooldown == 0) {
                 this.setMimicState(readState);
                 mimicCooldown = 20;
@@ -296,104 +329,100 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 camoCooldown = stopMimicCooldown;
                 this.setMimickedBlock(null);
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        if (isTamed() && (item == Items.INK_SAC)) {
+        final boolean tame = isTame();
+        if (tame && (item == Items.INK_SAC)) {
             this.setStopChange(!this.isStopChange());
             if (this.isStopChange()) {
                 this.makeEatingParticles(itemstack);
             } else {
-                this.world.setEntityState(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
                 this.mimicEnvironment();
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        if (!isTamed() && (item == AMItemRegistry.LOBSTER_TAIL || item == AMItemRegistry.COOKED_LOBSTER_TAIL)) {
-            this.consumeItemFromStack(player, itemstack);
-            this.playSound(SoundEvents.ENTITY_DOLPHIN_EAT, this.getSoundVolume(), this.getSoundPitch());
+        if (!tame && (item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get())) {
+            this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
+            this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
             fishFeedings++;
             if (this.getMimicState() == MimicState.OVERLAY && this.getMimickedBlock() == null) {
-                if (fishFeedings > 5 && getRNG().nextInt(2) == 0 || fishFeedings > 8) {
-                    this.setTamedBy(player);
-                    this.world.setEntityState(this, (byte) 7);
+                if (fishFeedings > 5 && getRandom().nextInt(2) == 0 || fishFeedings > 8) {
+                    this.tame(player);
+                    this.level().broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    this.world.setEntityState(this, (byte) 6);
+                    this.level().broadcastEntityEvent(this, (byte) 6);
                 }
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        if (isTamed() && (item == AMItemRegistry.LOBSTER_TAIL || item == AMItemRegistry.COOKED_LOBSTER_TAIL)) {
+        if (tame && (item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get())) {
             if (this.getHealth() < this.getMaxHealth()) {
-                this.consumeItemFromStack(player, itemstack);
-                this.playSound(SoundEvents.ENTITY_DOLPHIN_EAT, this.getSoundVolume(), this.getSoundPitch());
+                this.usePlayerItem(player, hand, itemstack);
+                this.gameEvent(GameEvent.EAT);
+                this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
-        if (this.isTamed() && itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
-            ItemStack itemstack1 = this.getFishBucket();
-            if (!this.world.isRemote) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) player, itemstack1);
+        if (tame) {
+            Optional<InteractionResult> result = Bucketable.bucketMobPickup(player, hand, this);
+            if (result.isPresent()) {
+                return result.get();
             }
 
-            if (itemstack.isEmpty()) {
-                player.setHeldItem(hand, itemstack1);
-            } else if (!player.inventory.addItemStackToInventory(itemstack1)) {
-                player.dropItem(itemstack1, false);
+            if (item == Items.SLIME_BALL && this.getMoistness() < 24000) {
+                this.setMoistness(48000);
+                this.makeEatingParticles(itemstack);
+                this.usePlayerItem(player, hand, itemstack);
+                return InteractionResult.SUCCESS;
             }
 
-            this.remove();
-            return ActionResultType.func_233537_a_(this.world.isRemote);
-        }
-        if (this.isTamed() && item == Items.SLIME_BALL && this.getMoistness() < 24000) {
-            this.setMoistness(48000);
-            this.makeEatingParticles(itemstack);
-            this.consumeItemFromStack(player, itemstack);
-            return ActionResultType.SUCCESS;
-        }
-        if (this.isTamed() && !this.isUpgraded() && item == AMItemRegistry.MIMICREAM) {
-            mimicreamFeedings++;
-            if (mimicreamFeedings > 5 || mimicreamFeedings > 2 && rand.nextInt(2) == 0) {
-                this.world.setEntityState(this, (byte) 46);
-                this.setUpgraded(true);
-                this.setMimicState(MimicState.MIMICUBE);
-                this.setStopChange(false);
-                this.setMimickedBlock(null);
-                this.stopMimicCooldown = 40;
+            if (!this.isUpgraded() && item == AMItemRegistry.MIMICREAM.get()) {
+                mimicreamFeedings++;
+                if (mimicreamFeedings > 5 || mimicreamFeedings > 2 && random.nextInt(2) == 0) {
+                    this.level().broadcastEntityEvent(this, (byte) 46);
+                    this.setUpgraded(true);
+                    this.setMimicState(MimicState.MIMICUBE);
+                    this.setStopChange(false);
+                    this.setMimickedBlock(null);
+                    this.stopMimicCooldown = 40;
+                }
+                this.makeEatingParticles(itemstack);
+                this.usePlayerItem(player, hand, itemstack);
+                return InteractionResult.SUCCESS;
             }
-            this.makeEatingParticles(itemstack);
-            this.consumeItemFromStack(player, itemstack);
-            return ActionResultType.SUCCESS;
         }
-        if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player)) {
-            if (player.isSneaking()) {
-                if (this.getHeldItemMainhand().isEmpty()) {
+
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
+            if (player.isShiftKeyDown()) {
+                if (this.getMainHandItem().isEmpty()) {
                     ItemStack cop = itemstack.copy();
                     cop.setCount(1);
-                    this.setHeldItem(Hand.MAIN_HAND, cop);
+                    this.setItemInHand(InteractionHand.MAIN_HAND, cop);
                     itemstack.shrink(1);
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 } else {
-                    this.entityDropItem(this.getHeldItemMainhand().copy());
-                    this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
-                    return ActionResultType.SUCCESS;
+                    this.spawnAtLocation(this.getMainHandItem().copy());
+                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                    return InteractionResult.SUCCESS;
                 }
-            } else if (!isBreedingItem(itemstack)) {
+            } else if (!isFood(itemstack)) {
                 this.setCommand(this.getCommand() + 1);
                 if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
-                player.sendStatusMessage(new TranslationTextComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
-                    this.setSitting(true);
-                    return ActionResultType.SUCCESS;
+                    this.setOrderedToSit(true);
+                    return InteractionResult.SUCCESS;
                 } else {
-                    this.setSitting(false);
-                    return ActionResultType.SUCCESS;
+                    this.setOrderedToSit(false);
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
@@ -401,35 +430,27 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     }
 
     public int getCommand() {
-        return this.dataManager.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.dataManager.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, Integer.valueOf(command));
     }
 
     private void makeEatingParticles(ItemStack item) {
-        for (int i = 0; i < 6 + rand.nextInt(3); i++) {
-            double d2 = this.rand.nextGaussian() * 0.02D;
-            double d0 = this.rand.nextGaussian() * 0.02D;
-            double d1 = this.rand.nextGaussian() * 0.02D;
-            this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, item), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
+        for (int i = 0; i < 6 + random.nextInt(3); i++) {
+            double d2 = this.random.nextGaussian() * 0.02D;
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
         }
     }
 
     @Override
-    public void func_233629_a_(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.prevLimbSwingAmount = p_233629_1_.limbSwingAmount;
-        double d0 = p_233629_1_.getPosX() - p_233629_1_.prevPosX;
-        double d1 = p_233629_1_.getPosY() - p_233629_1_.prevPosY;
-        double d2 = p_233629_1_.getPosZ() - p_233629_1_.prevPosZ;
-        float f = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (groundProgress < 2.5F ? 4.0F : 8.0F);
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        p_233629_1_.limbSwingAmount += (f - p_233629_1_.limbSwingAmount) * 0.4F;
-        p_233629_1_.limbSwing += p_233629_1_.limbSwingAmount;
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float)Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * (groundProgress < 2.5F ? 4.0F : 8.0F), 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public boolean canBreatheUnderwater() {
@@ -438,12 +459,12 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.moveController = new MovementController(this);
-            this.navigator = new GroundPathNavigatorWide(this, world);
+            this.moveControl = new MoveControl(this);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
-            this.moveController = new AnimalSwimMoveControllerSink(this, 1.3F, 1);
-            this.navigator = new SemiAquaticPathNavigator(this, world);
+            this.moveControl = new AnimalSwimMoveControllerSink(this, 1.3F, 1);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -458,14 +479,17 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             localMimicState = this.getPrevMimicState();
             transProgress = 0.0F;
         }
-        if (this.isInWater() && this.isLandNavigator) {
-            switchNavigator(false);
+
+        if (this.isInWater()) {
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
-        if (!this.isInWater() && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
-        BlockPos pos = new BlockPos(this.getPosX(), this.getPosYEye() - 1F, this.getPosZ());
-        boolean ground = world.getBlockState(pos).isSolidSide(world, pos, Direction.UP) && this.getMimicState() != MimicState.GUARDIAN || !this.isInWaterOrBubbleColumn() || this.isSitting();
+
+        BlockPos pos = AMBlockPos.fromCoords(this.getX(), this.getEyeY() - 1F, this.getZ());
+        boolean ground = level().getBlockState(pos).isFaceSturdy(level(), pos, Direction.UP) && this.getMimicState() != MimicState.GUARDIAN || !this.isInWaterOrBubble() || this.isSitting();
         this.prevTransProgress = transProgress;
         this.prevColorShiftProgress = colorShiftProgress;
         this.prevGroundProgress = groundProgress;
@@ -494,9 +518,9 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         if (!isSitting() && sitProgress > 0F) {
             sitProgress -= 0.5F;
         }
-        if (this.isInWaterOrBubbleColumn()) {
-            float f2 = (float) -((float) this.getMotion().y * 3 * (double) (180F / (float) Math.PI));
-            this.rotationPitch = f2;
+        if (this.isInWaterOrBubble()) {
+            float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) Mth.RAD_TO_DEG);
+            this.setXRot(f2);
         }
         if (camoCooldown > 0) {
             camoCooldown--;
@@ -507,38 +531,38 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         if (stopMimicCooldown > 0) {
             stopMimicCooldown--;
         }
-        if (this.isAIDisabled()) {
-            this.setAir(this.getMaxAir());
+        if (this.isNoAi()) {
+            this.setAirSupply(this.getMaxAirSupply());
         } else {
-            if (this.isInWaterRainOrBubbleColumn() || this.getHeldItemMainhand().getItem() == Items.WATER_BUCKET) {
+            if (this.isInWaterRainOrBubble() || this.getMainHandItem().getItem() == Items.WATER_BUCKET) {
                 this.setMoistness(60000);
             } else {
                 this.setMoistness(this.getMoistness() - 1);
                 if (this.getMoistness() <= 0 && moistureAttackTime-- <= 0) {
-                    this.setSitting(false);
-                    this.attackEntityFrom(DamageSource.DRYOUT, rand.nextInt(2) == 0 ? 1.0F : 0F);
+                    this.setOrderedToSit(false);
+                    this.hurt(damageSources().dryOut(), random.nextInt(2) == 0 ? 1.0F : 0F);
                     moistureAttackTime = 20;
                 }
             }
         }
-        if (camoCooldown <= 0 && rand.nextInt(300) == 0) {
+        if (camoCooldown <= 0 && random.nextInt(300) == 0) {
             mimicEnvironment();
-            camoCooldown = this.getRNG().nextInt(2200) + 200;
+            camoCooldown = this.getRandom().nextInt(2200) + 200;
         }
         if ((this.getMimicState() != MimicState.OVERLAY || this.getMimickedBlock() != null) && stopMimicCooldown == 0 && !this.isStopChange()) {
             this.setMimicState(MimicState.OVERLAY);
             this.setMimickedBlock(null);
             stopMimicCooldown = -1;
         }
-        if (world.isRemote && exclaimTime > 0) {
+        if (this.level().isClientSide && exclaimTime > 0) {
             exclaimTime--;
             if (exclaimTime == 0) {
-                Entity e = world.getEntityByID(this.dataManager.get(LAST_SCARED_MOB_ID));
+                Entity e = level().getEntity(this.entityData.get(LAST_SCARED_MOB_ID));
                 if (e != null && transProgress >= 5.0F) {
-                    double d2 = this.rand.nextGaussian() * 0.1D;
-                    double d0 = this.rand.nextGaussian() * 0.1D;
-                    double d1 = this.rand.nextGaussian() * 0.1D;
-                    this.world.addParticle(AMParticleRegistry.SHOCKED, e.getPosX(), e.getPosYEye() + e.getHeight() * 0.15F + (double) (this.rand.nextFloat() * e.getHeight() * 0.15F), e.getPosZ(), d0, d1, d2);
+                    double d2 = this.random.nextGaussian() * 0.1D;
+                    double d0 = this.random.nextGaussian() * 0.1D;
+                    double d1 = this.random.nextGaussian() * 0.1D;
+                    this.level().addParticle(AMParticleRegistry.SHOCKED.get(), e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
                 }
             }
         }
@@ -548,30 +572,30 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 ++this.guardianLaserTime;
             }
             LivingEntity livingentity = this.getGuardianLaser();
-            if (livingentity != null && this.isInWaterOrBubbleColumn()) {
-                this.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
-                this.getLookController().tick();
+            if (livingentity != null && this.isInWaterOrBubble()) {
+                this.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
+                this.getLookControl().tick();
                 double d5 = this.getLaserAttackAnimationScale(0.0F);
-                double d0 = livingentity.getPosX() - this.getPosX();
-                double d1 = livingentity.getPosYHeight(0.5D) - this.getPosYEye();
-                double d2 = livingentity.getPosZ() - this.getPosZ();
+                double d0 = livingentity.getX() - this.getX();
+                double d1 = livingentity.getY(0.5D) - this.getEyeY();
+                double d2 = livingentity.getZ() - this.getZ();
                 double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                 d0 = d0 / d3;
                 d1 = d1 / d3;
                 d2 = d2 / d3;
-                double d4 = this.rand.nextDouble();
+                double d4 = this.random.nextDouble();
                 while (d4 < d3) {
-                    d4 += 1.8D - d5 + this.rand.nextDouble() * (1.7D - d5);
-                    this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() + d0 * d4, this.getPosYEye() + d1 * d4, this.getPosZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
+                    d4 += 1.8D - d5 + this.random.nextDouble() * (1.7D - d5);
+                    this.level().addParticle(ParticleTypes.BUBBLE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
                 }
                 if (guardianLaserTime == 30) {
-                    livingentity.attackEntityFrom(DamageSource.causeMobDamage(this), 5);
+                    livingentity.hurt(this.damageSources().mobAttack(this), 5);
                     guardianLaserTime = 0;
-                    this.dataManager.set(UPGRADED_LASER_ENTITY_ID, -1);
+                    this.entityData.set(UPGRADED_LASER_ENTITY_ID, -1);
                 }
             }
         }
-        if (!world.isRemote && ticksExisted % 40 == 0) {
+        if (!this.level().isClientSide && tickCount % 40 == 0) {
             this.heal(2);
         }
     /*if(!world.isRemote){
@@ -589,7 +613,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if (id == 68) {
             if (exclaimTime == 0) {
                 exclaimTime = 20;
@@ -597,100 +621,108 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         } else if (id == 69) {
             this.creeperExplode();
         } else {
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 
     public void mimicEnvironment() {
         if (!this.isStopChange()) {
             BlockPos down = getPositionDown();
-            if (!world.isAirBlock(down)) {
+            if (!level().isEmptyBlock(down)) {
                 this.setMimicState(MimicState.OVERLAY);
-                this.setMimickedBlock(world.getBlockState(down));
+                this.setMimickedBlock(level().getBlockState(down));
             }
-            stopMimicCooldown = this.getRNG().nextInt(2200);
+            stopMimicCooldown = this.getRandom().nextInt(2200);
         }
     }
 
     public int getMoistness() {
-        return this.dataManager.get(MOISTNESS);
+        return this.entityData.get(MOISTNESS);
     }
 
     public void setMoistness(int p_211137_1_) {
-        this.dataManager.set(MOISTNESS, p_211137_1_);
+        this.entityData.set(MOISTNESS, p_211137_1_);
     }
 
     private BlockPos getPositionDown() {
-        BlockPos pos = new BlockPos(this.getPosX(), this.getPosYEye(), this.getPosZ());
-        while (pos.getY() > 1 && (world.isAirBlock(pos) || world.getBlockState(pos).getMaterial() == Material.WATER)) {
-            pos = pos.down();
+        BlockPos pos = AMBlockPos.fromCoords(this.getX(), this.getEyeY(), this.getZ());
+        while (pos.getY() > 1 && (level().isEmptyBlock(pos) || level().isWaterAt(pos))) {
+            pos = pos.below();
         }
         return pos;
     }
 
-    public void travel(Vector3d travelVector) {
+    public void travel(Vec3 travelVector) {
         if (this.isSitting()) {
-            if (this.getNavigator().getPath() != null) {
-                this.getNavigator().clearPath();
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
             }
-            travelVector = Vector3d.ZERO;
+            travelVector = Vec3.ZERO;
             super.travel(travelVector);
             return;
         }
-        if (this.isServerWorld() && this.isInWater()) {
-            this.moveRelative(this.getAIMoveSpeed(), travelVector);
-            this.move(MoverType.SELF, this.getMotion());
-            this.setMotion(this.getMotion().scale(0.9D));
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(this.getSpeed(), travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
         } else {
             super.travel(travelVector);
         }
     }
 
     public boolean isSitting() {
-        return this.dataManager.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
-    public void setSitting(boolean sit) {
-        this.dataManager.set(SITTING, Boolean.valueOf(sit));
+    public void setOrderedToSit(boolean sit) {
+        this.entityData.set(SITTING, Boolean.valueOf(sit));
     }
 
-    public boolean isFromBucket() {
-        return this.dataManager.get(FROM_BUCKET).booleanValue();
+    @Override
+    public boolean fromBucket() {
+        return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean sit) {
-        this.dataManager.set(FROM_BUCKET, Boolean.valueOf(sit));
+        this.entityData.set(FROM_BUCKET, sit);
+    }
+
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
     }
 
     public boolean isUpgraded() {
-        return this.dataManager.get(FROM_BUCKET).booleanValue();
+        return this.entityData.get(FROM_BUCKET);
     }
 
     public void setUpgraded(boolean sit) {
-        this.dataManager.set(FROM_BUCKET, Boolean.valueOf(sit));
+        this.entityData.set(FROM_BUCKET, Boolean.valueOf(sit));
     }
 
     public boolean isStopChange() {
-        return this.dataManager.get(STOP_CHANGE).booleanValue();
+        return this.entityData.get(STOP_CHANGE);
     }
 
     public void setStopChange(boolean sit) {
-        this.dataManager.set(STOP_CHANGE, Boolean.valueOf(sit));
+        this.entityData.set(STOP_CHANGE, Boolean.valueOf(sit));
     }
 
     public boolean hasGuardianLaser() {
-        return this.dataManager.get(UPGRADED_LASER_ENTITY_ID) != -1 && this.isUpgraded() && this.isInWaterOrBubbleColumn();
+        return this.entityData.get(UPGRADED_LASER_ENTITY_ID) != -1 && this.isUpgraded() && this.isInWaterOrBubble();
     }
 
     @Nullable
     public LivingEntity getGuardianLaser() {
         if (!this.hasGuardianLaser()) {
             return null;
-        } else if (this.world.isRemote) {
+        } else if (this.level().isClientSide) {
             if (this.laserTargetEntity != null) {
                 return this.laserTargetEntity;
             } else {
-                Entity lvt_1_1_ = this.world.getEntityByID(this.dataManager.get(UPGRADED_LASER_ENTITY_ID));
+                Entity lvt_1_1_ = this.level().getEntity(this.entityData.get(UPGRADED_LASER_ENTITY_ID));
                 if (lvt_1_1_ instanceof LivingEntity) {
                     this.laserTargetEntity = (LivingEntity) lvt_1_1_;
                     return this.laserTargetEntity;
@@ -699,91 +731,96 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 }
             }
         } else {
-            return this.getAttackTarget();
+            return this.getTarget();
         }
     }
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return AMEntityRegistry.MIMIC_OCTOPUS.create(serverWorld);
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
+        return AMEntityRegistry.MIMIC_OCTOPUS.get().create(serverWorld);
     }
 
-    public boolean canDespawn(double distanceToClosestPlayer) {
-        return !this.isTamed() && !this.isFromBucket();
+    @Override
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromBucket() || this.isTame();
     }
 
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(MIMIC_ORDINAL, 0);
-        this.dataManager.register(PREV_MIMIC_ORDINAL, -1);
-        this.dataManager.register(MOISTNESS, 60000);
-        this.dataManager.register(MIMICKED_BLOCK, Optional.empty());
-        this.dataManager.register(PREV_MIMICKED_BLOCK, Optional.empty());
-        this.dataManager.register(SITTING, false);
-        this.dataManager.register(COMMAND, 0);
-        this.dataManager.register(LAST_SCARED_MOB_ID, -1);
-        this.dataManager.register(FROM_BUCKET, false);
-        this.dataManager.register(UPGRADED, false);
-        this.dataManager.register(STOP_CHANGE, false);
-        this.dataManager.register(UPGRADED_LASER_ENTITY_ID, -1);
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return !this.isTame() && !this.fromBucket();
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(MIMIC_ORDINAL, 0);
+        this.entityData.define(PREV_MIMIC_ORDINAL, -1);
+        this.entityData.define(MOISTNESS, 60000);
+        this.entityData.define(MIMICKED_BLOCK, Optional.empty());
+        this.entityData.define(PREV_MIMICKED_BLOCK, Optional.empty());
+        this.entityData.define(SITTING, false);
+        this.entityData.define(COMMAND, 0);
+        this.entityData.define(LAST_SCARED_MOB_ID, -1);
+        this.entityData.define(FROM_BUCKET, false);
+        this.entityData.define(UPGRADED, false);
+        this.entityData.define(STOP_CHANGE, false);
+        this.entityData.define(UPGRADED_LASER_ENTITY_ID, -1);
     }
 
     public MimicState getMimicState() {
-        return MimicState.values()[MathHelper.clamp(dataManager.get(MIMIC_ORDINAL), 0, 4)];
+        return MimicState.values()[Mth.clamp(entityData.get(MIMIC_ORDINAL), 0, 4)];
     }
 
     public void setMimicState(MimicState state) {
         if (getMimicState() != state) {
-            this.dataManager.set(PREV_MIMIC_ORDINAL, this.dataManager.get(MIMIC_ORDINAL));
+            this.entityData.set(PREV_MIMIC_ORDINAL, this.entityData.get(MIMIC_ORDINAL));
         }
-        this.dataManager.set(MIMIC_ORDINAL, state.ordinal());
+        this.entityData.set(MIMIC_ORDINAL, state.ordinal());
     }
 
     public MimicState getPrevMimicState() {
-        if (dataManager.get(PREV_MIMIC_ORDINAL) == -1) {
+        if (entityData.get(PREV_MIMIC_ORDINAL) == -1) {
             return null;
         }
-        return MimicState.values()[MathHelper.clamp(dataManager.get(PREV_MIMIC_ORDINAL), 0, 4)];
+        return MimicState.values()[Mth.clamp(entityData.get(PREV_MIMIC_ORDINAL), 0, 4)];
     }
 
     @Nullable
     public BlockState getMimickedBlock() {
-        return this.dataManager.get(MIMICKED_BLOCK).orElse(null);
+        return this.entityData.get(MIMICKED_BLOCK).orElse(null);
     }
 
     public void setMimickedBlock(@Nullable BlockState state) {
         if (getMimickedBlock() != state) {
-            this.dataManager.set(PREV_MIMICKED_BLOCK, Optional.ofNullable(getMimickedBlock()));
+            this.entityData.set(PREV_MIMICKED_BLOCK, Optional.ofNullable(getMimickedBlock()));
         }
-        this.dataManager.set(MIMICKED_BLOCK, Optional.ofNullable(state));
+        this.entityData.set(MIMICKED_BLOCK, Optional.ofNullable(state));
     }
 
     @Nullable
     public BlockState getPrevMimickedBlock() {
-        return this.dataManager.get(PREV_MIMICKED_BLOCK).orElse(null);
+        return this.entityData.get(PREV_MIMICKED_BLOCK).orElse(null);
     }
 
     protected void updateAir(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubbleColumn()) {
-            this.setAir(p_209207_1_ - 1);
-            if (this.getAir() == -20) {
-                this.setAir(0);
-                this.attackEntityFrom(DamageSource.DROWN, 2.0F);
+        if (this.isAlive() && !this.isInWaterOrBubble()) {
+            this.setAirSupply(p_209207_1_ - 1);
+            if (this.getAirSupply() == -20) {
+                this.setAirSupply(0);
+                this.hurt(damageSources().dryOut(), 2.0F);
             }
         } else {
-            this.setAir(1200);
+            this.setAirSupply(1200);
         }
     }
 
     @Override
     public boolean shouldEnterWater() {
-        return !this.isSitting() && (this.getAttackTarget() == null || this.getAttackTarget().isInWaterOrBubbleColumn());
+        return !this.isSitting() && (this.getTarget() == null || this.getTarget().isInWaterOrBubble());
     }
 
     @Override
     public boolean shouldLeaveWater() {
-        return this.getAttackTarget() != null && !this.getAttackTarget().isInWaterOrBubbleColumn();
+        return this.getTarget() != null && !this.getTarget().isInWaterOrBubble();
     }
 
     @Override
@@ -796,35 +833,35 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         return 16;
     }
 
-    public boolean isTargetBlocked(Vector3d target) {
-        Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+    public boolean isTargetBlocked(Vec3 target) {
+        Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.world.rayTraceBlocks(new RayTraceContext(Vector3d, target, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() != RayTraceResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
-    public Vector3d getBlockInViewAway(Vector3d fleePos, float radiusAdd) {
-        float radius = 0.75F * (0.7F * 6) * -3 - this.getRNG().nextInt(24) - radiusAdd;
-        float neg = this.getRNG().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.renderYawOffset;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRNG().nextFloat() * neg);
-        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-        double extraZ = radius * MathHelper.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
+    public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
+        float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
+        float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        float renderYawOffset = this.yBodyRot;
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
+        double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getOctopusGround(radialPos);
 
-        return ground != null ? Vector3d.copyCentered(ground) : null;
+        return ground != null ? Vec3.atCenterOf(ground) : null;
     }
 
     private BlockPos getOctopusGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getPosY(), in.getZ());
-        while (position.getY() > 2 && world.getFluidState(position).isTagged(FluidTags.WATER)) {
-            position = position.down();
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
+        while (position.getY() > 2 && level().getFluidState(position).is(FluidTags.WATER)) {
+            position = position.below();
         }
         return position;
     }
 
-    public void notifyDataManagerChange(DataParameter<?> key) {
-        super.notifyDataManagerChange(key);
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
         if (UPGRADED_LASER_ENTITY_ID.equals(key)) {
             this.guardianLaserTime = 0;
             this.laserTargetEntity = null;
@@ -833,9 +870,9 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     }
 
     private void creeperExplode() {
-        Explosion explosion = new Explosion(world, this,  DamageSource.causeMobDamage(this), (ExplosionContext)null, this.getPosX(), this.getPosY(), this.getPosZ(), 1 + rand.nextFloat(), false, Explosion.Mode.NONE);
-        explosion.doExplosionA();
-        explosion.doExplosionB(true);
+        Explosion explosion = new Explosion(level(), this,  this.damageSources().mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.KEEP);
+        explosion.explode();
+        explosion.finalizeExplosion(true);
     }
 
     public enum MimicState {
@@ -852,16 +889,16 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             super(EntityMimicOctopus.this, 1, 35);
         }
 
-        protected Vector3d findSurfaceTarget(CreatureEntity creature, int i, int i1) {
-            if (creature.getRNG().nextInt(5) == 0) {
+        protected Vec3 findSurfaceTarget(PathfinderMob creature, int i, int i1) {
+            if (creature.getRandom().nextInt(5) == 0) {
                 return super.findSurfaceTarget(creature, i, i1);
             } else {
-                BlockPos downPos = creature.getPosition();
-                while (creature.world.getFluidState(downPos).isTagged(FluidTags.WATER) || creature.world.getFluidState(downPos).isTagged(FluidTags.LAVA)) {
-                    downPos = downPos.down();
+                BlockPos downPos = creature.blockPosition();
+                while (creature.level().getFluidState(downPos).is(FluidTags.WATER) || creature.level().getFluidState(downPos).is(FluidTags.LAVA)) {
+                    downPos = downPos.below();
                 }
-                if (world.getBlockState(downPos).isSolid() && world.getBlockState(downPos).getBlock() != Blocks.MAGMA_BLOCK) {
-                    return new Vector3d(downPos.getX() + 0.5F, downPos.getY(), downPos.getZ() + 0.5F);
+                if (level().getBlockState(downPos).canOcclude() && level().getBlockState(downPos).getBlock() != Blocks.MAGMA_BLOCK) {
+                    return new Vec3(downPos.getX() + 0.5F, downPos.getY(), downPos.getZ() + 0.5F);
                 }
             }
             return null;
@@ -875,37 +912,35 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         protected int executionChance = 8;
         protected boolean mustUpdate;
         private Entity targetEntity;
-        private Vector3d flightTarget = null;
+        private Vec3 flightTarget = null;
         private int cooldown = 0;
-        private ITag tag;
 
         AIFlee() {
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
-            tag = EntityTypeTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_FEARS);
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
             this.theNearestAttackableTargetSorter = new EntitySorter(EntityMimicOctopus.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && e.getType().isContained(tag) || e instanceof PlayerEntity && !((PlayerEntity) e).isCreative();
+                    return e.isAlive() && e.getType().is(AMTagRegistry.MIMIC_OCTOPUS_FEARS) || e instanceof Player && !((Player) e).isCreative();
                 }
             };
         }
 
         @Override
-        public boolean shouldExecute() {
-            if (EntityMimicOctopus.this.isPassenger() || EntityMimicOctopus.this.isBeingRidden() || EntityMimicOctopus.this.isTamed()) {
+        public boolean canUse() {
+            if (EntityMimicOctopus.this.isPassenger() || EntityMimicOctopus.this.isVehicle() || EntityMimicOctopus.this.isTame()) {
                 return false;
             }
             if (!this.mustUpdate) {
-                long worldTime = EntityMimicOctopus.this.world.getGameTime() % 10;
-                if (EntityMimicOctopus.this.getIdleTime() >= 100 && worldTime != 0) {
+                long worldTime = EntityMimicOctopus.this.level().getGameTime() % 10;
+                if (EntityMimicOctopus.this.getNoActionTime() >= 100 && worldTime != 0) {
                     return false;
                 }
-                if (EntityMimicOctopus.this.getRNG().nextInt(this.executionChance) != 0 && worldTime != 0) {
+                if (EntityMimicOctopus.this.getRandom().nextInt(this.executionChance) != 0 && worldTime != 0) {
                     return false;
                 }
             }
-            List<Entity> list = EntityMimicOctopus.this.world.getEntitiesWithinAABB(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<Entity> list = EntityMimicOctopus.this.level().getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             } else {
@@ -917,11 +952,11 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
-            return targetEntity != null && !EntityMimicOctopus.this.isTamed() && EntityMimicOctopus.this.getDistance(targetEntity) < 20;
+        public boolean canContinueToUse() {
+            return targetEntity != null && !EntityMimicOctopus.this.isTame() && EntityMimicOctopus.this.distanceTo(targetEntity) < 20;
         }
 
-        public void resetTask() {
+        public void stop() {
             flightTarget = null;
             this.targetEntity = null;
             EntityMimicOctopus.this.setMimicState(MimicState.OVERLAY);
@@ -937,7 +972,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 EntityMimicOctopus.this.mimicEnvironment();
             }
             if (flightTarget != null) {
-                EntityMimicOctopus.this.getNavigator().tryMoveToXYZ(flightTarget.x, flightTarget.y, flightTarget.z, 1.2F);
+                EntityMimicOctopus.this.getNavigation().moveTo(flightTarget.x, flightTarget.y, flightTarget.z, 1.2F);
                 if (cooldown == 0 && EntityMimicOctopus.this.isTargetBlocked(flightTarget)) {
                     cooldown = 30;
                     flightTarget = null;
@@ -945,15 +980,15 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             }
 
             if (targetEntity != null) {
-                if (flightTarget == null || flightTarget != null && EntityMimicOctopus.this.getDistanceSq(flightTarget) < 6) {
-                    Vector3d vec;
-                    vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(EntityMimicOctopus.this, 16, 7, targetEntity.getPositionVec());
+                if (flightTarget == null || flightTarget != null && EntityMimicOctopus.this.distanceToSqr(flightTarget) < 6) {
+                    Vec3 vec;
+                    vec = DefaultRandomPos.getPosAway(EntityMimicOctopus.this, 16, 7, targetEntity.position());
                     if (vec != null) {
                         flightTarget = vec;
                     }
                 }
-                if (EntityMimicOctopus.this.getDistance(targetEntity) > 20.0F) {
-                    this.resetTask();
+                if (EntityMimicOctopus.this.distanceTo(targetEntity) > 20.0F) {
+                    this.stop();
                 }
             }
         }
@@ -962,153 +997,18 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             return 10;
         }
 
-        protected AxisAlignedBB getTargetableArea(double targetDistance) {
-            Vector3d renderCenter = new Vector3d(EntityMimicOctopus.this.getPosX(), EntityMimicOctopus.this.getPosY() + 0.5, EntityMimicOctopus.this.getPosZ());
-            AxisAlignedBB aabb = new AxisAlignedBB(-targetDistance, -targetDistance, -targetDistance, targetDistance, targetDistance, targetDistance);
-            return aabb.offset(renderCenter);
+        protected AABB getTargetableArea(double targetDistance) {
+            Vec3 renderCenter = new Vec3(EntityMimicOctopus.this.getX(), EntityMimicOctopus.this.getY() + 0.5, EntityMimicOctopus.this.getZ());
+            AABB aabb = new AABB(-targetDistance, -targetDistance, -targetDistance, targetDistance, targetDistance, targetDistance);
+            return aabb.move(renderCenter);
         }
     }
 
-    public class EntitySorter implements Comparator<Entity> {
-        private final Entity theEntity;
-
-        public EntitySorter(Entity theEntityIn) {
-            this.theEntity = theEntityIn;
-        }
-
+    public record EntitySorter(Entity theEntity) implements Comparator<Entity> {
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-            double d0 = this.theEntity.getDistanceSq(p_compare_1_);
-            double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
-        }
-    }
-
-    public class FollowOwner extends Goal {
-        private final EntityMimicOctopus tameable;
-        private final IWorldReader world;
-        private final double followSpeed;
-        private final float maxDist;
-        private final float minDist;
-        private final boolean teleportToLeaves;
-        private LivingEntity owner;
-        private int timeToRecalcPath;
-        private float oldWaterCost;
-
-        public FollowOwner(EntityMimicOctopus p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_) {
-            this.tameable = p_i225711_1_;
-            this.world = p_i225711_1_.world;
-            this.followSpeed = p_i225711_2_;
-            this.minDist = p_i225711_4_;
-            this.maxDist = p_i225711_5_;
-            this.teleportToLeaves = p_i225711_6_;
-            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        public boolean shouldExecute() {
-            LivingEntity lvt_1_1_ = this.tameable.getOwner();
-            if (lvt_1_1_ == null) {
-                return false;
-            } else if (lvt_1_1_.isSpectator()) {
-                return false;
-            } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
-                return false;
-            } else if (this.tameable.getDistanceSq(lvt_1_1_) < (double) (this.minDist * this.minDist)) {
-                return false;
-            } else if (this.tameable.getAttackTarget() != null && this.tameable.getAttackTarget().isAlive()) {
-                return false;
-            } else {
-                this.owner = lvt_1_1_;
-                return true;
-            }
-        }
-
-        public boolean shouldContinueExecuting() {
-            if (this.tameable.getNavigator().noPath()) {
-                return false;
-            } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
-                return false;
-            } else if (this.tameable.getAttackTarget() != null && this.tameable.getAttackTarget().isAlive()) {
-                return false;
-            } else {
-                return this.tameable.getDistanceSq(this.owner) > (double) (this.maxDist * this.maxDist);
-            }
-        }
-
-        public void startExecuting() {
-            this.timeToRecalcPath = 0;
-            this.oldWaterCost = this.tameable.getPathPriority(PathNodeType.WATER);
-            this.tameable.setPathPriority(PathNodeType.WATER, 0.0F);
-        }
-
-        public void resetTask() {
-            this.owner = null;
-            this.tameable.getNavigator().clearPath();
-            this.tameable.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
-        }
-
-        public void tick() {
-
-            this.tameable.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float) this.tameable.getVerticalFaceSpeed());
-            if (--this.timeToRecalcPath <= 0) {
-                this.timeToRecalcPath = 10;
-                if (!this.tameable.getLeashed() && !this.tameable.isPassenger()) {
-                    if (this.tameable.getDistanceSq(this.owner) >= 144.0D) {
-                        this.tryToTeleportNearEntity();
-                    } else {
-                        this.tameable.getNavigator().tryMoveToEntityLiving(this.owner, this.followSpeed);
-                    }
-
-                }
-            }
-        }
-
-        private void tryToTeleportNearEntity() {
-            BlockPos lvt_1_1_ = this.owner.getPosition();
-
-            for (int lvt_2_1_ = 0; lvt_2_1_ < 10; ++lvt_2_1_) {
-                int lvt_3_1_ = this.getRandomNumber(-3, 3);
-                int lvt_4_1_ = this.getRandomNumber(-1, 1);
-                int lvt_5_1_ = this.getRandomNumber(-3, 3);
-                boolean lvt_6_1_ = this.tryToTeleportToLocation(lvt_1_1_.getX() + lvt_3_1_, lvt_1_1_.getY() + lvt_4_1_, lvt_1_1_.getZ() + lvt_5_1_);
-                if (lvt_6_1_) {
-                    return;
-                }
-            }
-
-        }
-
-        private boolean tryToTeleportToLocation(int p_226328_1_, int p_226328_2_, int p_226328_3_) {
-            if (Math.abs((double) p_226328_1_ - this.owner.getPosX()) < 2.0D && Math.abs((double) p_226328_3_ - this.owner.getPosZ()) < 2.0D) {
-                return false;
-            } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
-                return false;
-            } else {
-                this.tameable.setLocationAndAngles((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.rotationYaw, this.tameable.rotationPitch);
-                this.tameable.getNavigator().clearPath();
-                return true;
-            }
-        }
-
-        private boolean isTeleportFriendlyBlock(BlockPos p_226329_1_) {
-            PathNodeType lvt_2_1_ = WalkNodeProcessor.getFloorNodeType(this.world, p_226329_1_.toMutable());
-            if (world.getFluidState(p_226329_1_).isTagged(FluidTags.WATER) || !world.getFluidState(p_226329_1_).isTagged(FluidTags.WATER) && world.getFluidState(p_226329_1_.down()).isTagged(FluidTags.WATER)) {
-                return true;
-            }
-            if (lvt_2_1_ != PathNodeType.WALKABLE || tameable.getMoistness() < 2000) {
-                return false;
-            } else {
-                BlockState lvt_3_1_ = this.world.getBlockState(p_226329_1_.down());
-                if (!this.teleportToLeaves && lvt_3_1_.getBlock() instanceof LeavesBlock) {
-                    return false;
-                } else {
-                    BlockPos lvt_4_1_ = p_226329_1_.subtract(this.tameable.getPosition());
-                    return this.world.hasNoCollisions(this.tameable, this.tameable.getBoundingBox().offset(lvt_4_1_));
-                }
-            }
-        }
-
-        private int getRandomNumber(int p_226327_1_, int p_226327_2_) {
-            return this.tameable.getRNG().nextInt(p_226327_2_ - p_226327_1_ + 1) + p_226327_1_;
+            final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
+            final double d1 = this.theEntity.distanceToSqr(p_compare_2_);
+            return Double.compare(d0, d1);
         }
     }
 
@@ -1118,35 +1018,35 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         protected int executionChance = 30;
         protected boolean mustUpdate;
         private Entity targetEntity;
-        private Vector3d flightTarget = null;
+        private Vec3 flightTarget = null;
         private int cooldown = 0;
 
         AIMimicNearbyMobs() {
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
             this.theNearestAttackableTargetSorter = new EntitySorter(EntityMimicOctopus.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && (e instanceof CreeperEntity || e instanceof GuardianEntity || e instanceof PufferfishEntity);
+                    return e.isAlive() && (e instanceof Creeper || e instanceof Guardian || e instanceof Pufferfish);
                 }
             };
         }
 
         @Override
-        public boolean shouldExecute() {
-            if (EntityMimicOctopus.this.isPassenger() || EntityMimicOctopus.this.isBeingRidden() || EntityMimicOctopus.this.getMimicState() != MimicState.OVERLAY || mimicCooldown > 0) {
+        public boolean canUse() {
+            if (EntityMimicOctopus.this.isPassenger() || EntityMimicOctopus.this.isVehicle() || EntityMimicOctopus.this.getMimicState() != MimicState.OVERLAY || mimicCooldown > 0) {
                 return false;
             }
             if (!this.mustUpdate) {
-                long worldTime = EntityMimicOctopus.this.world.getGameTime() % 10;
-                if (EntityMimicOctopus.this.getIdleTime() >= 100 && worldTime != 0) {
+                long worldTime = EntityMimicOctopus.this.level().getGameTime() % 10;
+                if (EntityMimicOctopus.this.getNoActionTime() >= 100 && worldTime != 0) {
                     return false;
                 }
-                if (EntityMimicOctopus.this.getRNG().nextInt(this.executionChance) != 0 && worldTime != 0) {
+                if (EntityMimicOctopus.this.getRandom().nextInt(this.executionChance) != 0 && worldTime != 0) {
                     return false;
                 }
             }
-            List<Entity> list = EntityMimicOctopus.this.world.getEntitiesWithinAABB(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<Entity> list = EntityMimicOctopus.this.level().getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             } else {
@@ -1158,12 +1058,12 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
-            return targetEntity != null && EntityMimicOctopus.this.getDistance(targetEntity) < 10 && EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY;
+        public boolean canContinueToUse() {
+            return targetEntity != null && EntityMimicOctopus.this.distanceTo(targetEntity) < 10 && EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY;
         }
 
-        public void resetTask() {
-            EntityMimicOctopus.this.getNavigator().clearPath();
+        public void stop() {
+            EntityMimicOctopus.this.getNavigation().stop();
             flightTarget = null;
             this.targetEntity = null;
         }
@@ -1174,27 +1074,27 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 cooldown--;
             }
             if (targetEntity != null) {
-                EntityMimicOctopus.this.getNavigator().tryMoveToEntityLiving(targetEntity, 1.2F);
-                if (EntityMimicOctopus.this.getDistance(targetEntity) > 20.0F) {
-                    this.resetTask();
+                EntityMimicOctopus.this.getNavigation().moveTo(targetEntity, 1.2F);
+                if (EntityMimicOctopus.this.distanceTo(targetEntity) > 20.0F) {
+                    this.stop();
                     EntityMimicOctopus.this.setMimicState(MimicState.OVERLAY);
                     EntityMimicOctopus.this.setMimickedBlock(null);
-                } else if (EntityMimicOctopus.this.getDistance(targetEntity) < 5.0F && EntityMimicOctopus.this.canEntityBeSeen(targetEntity)) {
+                } else if (EntityMimicOctopus.this.distanceTo(targetEntity) < 5.0F && EntityMimicOctopus.this.hasLineOfSight(targetEntity)) {
                     int i = 1200;
                     EntityMimicOctopus.this.stopMimicCooldown = i;
                     EntityMimicOctopus.this.camoCooldown = i + 40;
                     EntityMimicOctopus.this.mimicCooldown = 40;
-                    if (targetEntity instanceof CreeperEntity) {
+                    if (targetEntity instanceof Creeper) {
                         EntityMimicOctopus.this.setMimicState(MimicState.CREEPER);
-                    } else if (targetEntity instanceof GuardianEntity) {
+                    } else if (targetEntity instanceof Guardian) {
                         EntityMimicOctopus.this.setMimicState(MimicState.GUARDIAN);
-                    } else if (targetEntity instanceof PufferfishEntity) {
+                    } else if (targetEntity instanceof Pufferfish) {
                         EntityMimicOctopus.this.setMimicState(MimicState.PUFFERFISH);
                     } else {
                         EntityMimicOctopus.this.setMimicState(MimicState.OVERLAY);
                         EntityMimicOctopus.this.setMimickedBlock(null);
                     }
-                    resetTask();
+                    stop();
                 }
 
             }
@@ -1204,107 +1104,107 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             return 10;
         }
 
-        protected AxisAlignedBB getTargetableArea(double targetDistance) {
-            Vector3d renderCenter = new Vector3d(EntityMimicOctopus.this.getPosX(), EntityMimicOctopus.this.getPosY() + 0.5, EntityMimicOctopus.this.getPosZ());
-            AxisAlignedBB aabb = new AxisAlignedBB(-targetDistance, -targetDistance, -targetDistance, targetDistance, targetDistance, targetDistance);
-            return aabb.offset(renderCenter);
+        protected AABB getTargetableArea(double targetDistance) {
+            Vec3 renderCenter = new Vec3(EntityMimicOctopus.this.getX(), EntityMimicOctopus.this.getY() + 0.5, EntityMimicOctopus.this.getZ());
+            AABB aabb = new AABB(-targetDistance, -targetDistance, -targetDistance, targetDistance, targetDistance, targetDistance);
+            return aabb.move(renderCenter);
         }
     }
 
     private class AIAttack extends Goal {
         private int executionCooldown = 0;
         private int scareMobTime = 0;
-        private Vector3d fleePosition = null;
+        private Vec3 fleePosition = null;
 
         public AIAttack() {
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         @Override
-        public boolean shouldExecute() {
+        public boolean canUse() {
             if (executionCooldown > 0) {
-                EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, -1);
+                EntityMimicOctopus.this.entityData.set(UPGRADED_LASER_ENTITY_ID, -1);
                 executionCooldown--;
             }
             if (EntityMimicOctopus.this.isStopChange() && EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY) {
                 return false;
             }
-            return executionCooldown == 0 && EntityMimicOctopus.this.isTamed() && EntityMimicOctopus.this.getAttackTarget() != null && EntityMimicOctopus.this.getAttackTarget().isAlive();
+            return executionCooldown == 0 && EntityMimicOctopus.this.isTame() && EntityMimicOctopus.this.getTarget() != null && EntityMimicOctopus.this.getTarget().isAlive();
         }
 
-        public void resetTask() {
+        public void stop() {
             fleePosition = null;
             scareMobTime = 0;
-            executionCooldown = 100 + rand.nextInt(200);
+            executionCooldown = 100 + random.nextInt(200);
             if (EntityMimicOctopus.this.isUpgraded()) {
                 executionCooldown = 30;
             } else {
-                EntityMimicOctopus.this.setRevengeTarget(null);
-                EntityMimicOctopus.this.setAttackTarget(null);
+                EntityMimicOctopus.this.setLastHurtByMob(null);
+                EntityMimicOctopus.this.setTarget(null);
             }
             if (EntityMimicOctopus.this.stopMimicCooldown <= 0) {
                 EntityMimicOctopus.this.mimicEnvironment();
             }
-            EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, -1);
+            EntityMimicOctopus.this.entityData.set(UPGRADED_LASER_ENTITY_ID, -1);
         }
 
-        public Vector3d generateFleePosition(LivingEntity fleer) {
+        public Vec3 generateFleePosition(LivingEntity fleer) {
             for (int i = 0; i < 15; i++) {
-                BlockPos pos = fleer.getPosition().add(rand.nextInt(32) - 16, rand.nextInt(16), rand.nextInt(32) - 16);
-                while (fleer.world.isAirBlock(pos) && pos.getY() > 1) {
-                    pos = pos.down();
+                BlockPos pos = fleer.blockPosition().offset(random.nextInt(32) - 16, random.nextInt(16), random.nextInt(32) - 16);
+                while (fleer.level().isEmptyBlock(pos) && pos.getY() > 1) {
+                    pos = pos.below();
                 }
-                if (fleer instanceof CreatureEntity) {
-                    if (((CreatureEntity) fleer).getBlockPathWeight(pos) >= 0.0F) {
-                        return Vector3d.copyCentered(pos);
+                if (fleer instanceof PathfinderMob) {
+                    if (((PathfinderMob) fleer).getWalkTargetValue(pos) >= 0.0F) {
+                        return Vec3.atCenterOf(pos);
                     }
                 } else {
-                    return Vector3d.copyCentered(pos);
+                    return Vec3.atCenterOf(pos);
                 }
             }
             return null;
         }
 
         public void tick() {
-            LivingEntity target = EntityMimicOctopus.this.getAttackTarget();
+            LivingEntity target = EntityMimicOctopus.this.getTarget();
             if (target != null) {
                 if (scareMobTime > 0) {
-                    if (fleePosition == null || target.getDistanceSq(fleePosition) < target.getWidth() * target.getWidth() * 2) {
+                    if (fleePosition == null || target.distanceToSqr(fleePosition) < target.getBbWidth() * target.getBbWidth() * 2) {
                         fleePosition = generateFleePosition(target);
                     }
-                    if (target instanceof MobEntity) {
+                    if (target instanceof Mob) {
                         if (fleePosition != null) {
-                            ((MobEntity) target).getNavigator().tryMoveToXYZ(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
-                            ((MobEntity) target).getMoveHelper().setMoveTo(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
-                            ((MobEntity) target).setAttackTarget(null);
+                            ((Mob) target).getNavigation().moveTo(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
+                            ((Mob) target).getMoveControl().setWantedPosition(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
+                            ((Mob) target).setTarget(null);
                         }
                     }
                     camoCooldown = Math.max(camoCooldown, 20);
                     stopMimicCooldown = Math.max(stopMimicCooldown, 20);
                     scareMobTime--;
                     if (scareMobTime == 0) {
-                        resetTask();
+                        stop();
                         return;
                     }
                 }
-                double dist = EntityMimicOctopus.this.getDistance(target);
+                double dist = EntityMimicOctopus.this.distanceTo(target);
                 boolean move = true;
-                if (dist < 7F && EntityMimicOctopus.this.canEntityBeSeen(target) && EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN && EntityMimicOctopus.this.isUpgraded()) {
-                    EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, target.getEntityId());
+                if (dist < 7F && EntityMimicOctopus.this.hasLineOfSight(target) && EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN && EntityMimicOctopus.this.isUpgraded()) {
+                    EntityMimicOctopus.this.entityData.set(UPGRADED_LASER_ENTITY_ID, target.getId());
                     move = false;
                 }
                 if (dist < 3) {
-                    EntityMimicOctopus.this.dataManager.set(LAST_SCARED_MOB_ID, target.getEntityId());
+                    EntityMimicOctopus.this.entityData.set(LAST_SCARED_MOB_ID, target.getId());
                     if (move) {
                         move = EntityMimicOctopus.this.isUpgraded() && dist > 2;
                     }
-                    EntityMimicOctopus.this.getNavigator().clearPath();
+                    EntityMimicOctopus.this.getNavigation().stop();
                     if (!EntityMimicOctopus.this.isStopChange()) {
                         EntityMimicOctopus.this.setMimickedBlock(null);
                         MimicState prev = EntityMimicOctopus.this.getMimicState();
-                        if (EntityMimicOctopus.this.isInWaterOrBubbleColumn()) {
+                        if (EntityMimicOctopus.this.isInWaterOrBubble()) {
                             if (prev != MimicState.GUARDIAN && prev != MimicState.PUFFERFISH) {
-                                if (rand.nextBoolean()) {
+                                if (random.nextBoolean()) {
                                     EntityMimicOctopus.this.setMimicState(MimicState.GUARDIAN);
                                 } else {
                                     EntityMimicOctopus.this.setMimicState(MimicState.PUFFERFISH);
@@ -1320,31 +1220,31 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                     }
                     if (EntityMimicOctopus.this.isUpgraded() && EntityMimicOctopus.this.transProgress >= 5.0F) {
                         if (EntityMimicOctopus.this.getMimicState() == MimicState.PUFFERFISH) {
-                            if (EntityMimicOctopus.this.getBoundingBox().expand(2, 1.3, 2).intersects(target.getBoundingBox())) {
-                                target.attackEntityFrom(DamageSource.causeMobDamage(EntityMimicOctopus.this), 4);
-                                target.addPotionEffect(new EffectInstance(Effects.POISON, 400, 2));
+                            if (EntityMimicOctopus.this.getBoundingBox().expandTowards(2, 1.3, 2).intersects(target.getBoundingBox())) {
+                                target.hurt(EntityMimicOctopus.this.damageSources().mobAttack(EntityMimicOctopus.this), 4);
+                                target.addEffect(new MobEffectInstance(MobEffects.POISON, 400, 2));
                             }
                         }
                         if (EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN) {
-                            if (EntityMimicOctopus.this.getBoundingBox().expand(1, 1, 1).intersects(target.getBoundingBox())) {
-                                target.attackEntityFrom(DamageSource.causeMobDamage(EntityMimicOctopus.this), 1);
+                            if (EntityMimicOctopus.this.getBoundingBox().expandTowards(1, 1, 1).intersects(target.getBoundingBox())) {
+                                target.hurt(EntityMimicOctopus.this.damageSources().mobAttack(EntityMimicOctopus.this), 1);
                             }
-                            EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, target.getEntityId());
+                            EntityMimicOctopus.this.entityData.set(UPGRADED_LASER_ENTITY_ID, target.getId());
                         }
                         if (EntityMimicOctopus.this.getMimicState() == MimicState.CREEPER) {
                             EntityMimicOctopus.this.creeperExplode();
-                            EntityMimicOctopus.this.world.setEntityState(EntityMimicOctopus.this, (byte) 69);
+                            EntityMimicOctopus.this.level().broadcastEntityEvent(EntityMimicOctopus.this, (byte) 69);
                             executionCooldown = 300;
                         }
                     }
                     if (scareMobTime == 0) {
-                        EntityMimicOctopus.this.world.setEntityState(EntityMimicOctopus.this, (byte) 68);
-                        scareMobTime = 60 + rand.nextInt(60);
+                        EntityMimicOctopus.this.level().broadcastEntityEvent(EntityMimicOctopus.this, (byte) 68);
+                        scareMobTime = 60 + random.nextInt(60);
                     }
                 }
                 if (move) {
-                    EntityMimicOctopus.this.faceEntity(target, 30, 30);
-                    EntityMimicOctopus.this.getNavigator().tryMoveToEntityLiving(target, 1.2F);
+                    EntityMimicOctopus.this.lookAt(target, 30, 30);
+                    EntityMimicOctopus.this.getNavigation().moveTo(target, 1.2F);
                 }
             }
         }

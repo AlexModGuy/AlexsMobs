@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "rhinoceros.txt",
+  "title": "entity.alexsmobs.rhinoceros",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:rhinoceros",
+      "x": 88,
+      "y": 93,
+      "page" : 0,
+      "scale": 0.86,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

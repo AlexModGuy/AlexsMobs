@@ -2,9 +2,44 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Snow Leopards are big cats that can be found in snowy, mountainous areas. These cats, although voracious hunters, are not aggressive towards humans.
-They will, however, be found stalking livestock, especially the sheep that are their favorite prey. Snow Leopards will arch their back and sneak up behind their prey, before dealing a devastating leap attack.
-These big cats can also use their claws to attack in close combat. Snow Leopards are such proficient predators that their kills often yield extra drops, as if the creature had a high looting level.
+    雪豹是一种大型猫科动物，可以在
 <NEWLINE>
-Although Snow Leopards cannot be tamed, they can be bred with Moose Ribs, meat from a creature they could only ever dream of hunting.
-These big cats are no pushovers, and will defend themselves or their offspring from any attacks.
+雪地和山区里发现。这些大猫尽管都是
+<NEWLINE>
+贪婪的猎手，但是对于人类却不会进行
+<NEWLINE>
+主动攻击。
+<NEWLINE>
+    在雪峰上经常会发现它们的身影，
+<NEWLINE>
+它们可能在睡觉，或者是在趴着。它们
+<NEWLINE>
+经常也会被发现在跟踪家畜，尤其是绵
+<NEWLINE>
+羊，因为这是它们最喜欢的猎物。它们
+<NEWLINE>
+会弓着背，小心翼翼地来到猎物身边，
+<NEWLINE>
+接着会跳起来发动毁灭性的攻击。这些
+<NEWLINE>
+大猫在近身战斗中，还会使用它们的利
+<NEWLINE>
+爪来进行攻击。雪豹就如同一位经验老
+<NEWLINE>
+道的捕食者一样，在它们的猎杀之中往
+<NEWLINE>
+往会有额外的掉落物，仿佛这些生物具
+<NEWLINE>
+有高等级的掠夺一样。
+<NEWLINE>
+    虽然雪豹不能被驯服，但是可以通
+<NEWLINE>
+过喂食驼鹿排来进行繁殖，因为驼鹿排
+<NEWLINE>
+是它们梦寐以求的食物。
+<NEWLINE>
+    这些大猫可不是轻易屈服的，它们
+<NEWLINE>
+会保护它们自身以及它们的孩子免遭任
+<NEWLINE>
+何外来攻击。

@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:lobster",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": ["arm_right"],
+  "left_arm": ["arm_left"],
+  "right_leg": ["legs_front", "legs_back"],
+  "left_leg": ["legs_front", "legs_back"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.8,
+  "face_forwards": true
+}

@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+I corvi sono uccelli rumorosi trovati nelle foreste e nelle pianure. Queste creature sono considerate pesti siccome possono essere spesso trovate a circondare campi e danneggiare coltivazioni. Una semplice zucca intagliata è abbastanza per spaventare via ogni corvo dal proprio campo.
+Questi uccelli spesso si divideranno e voleranno via quando proverai ad avvicinarti. I corvi raccoglieranno ogni cibo che può entrare nella loro bocca e lo divoreranno.
+<NEWLINE>
+Nonostante il loro aspetto cupo, i corvi possono essere addomesticati dandogli dei semi di zucca. I corvi addomesticati sono creature estremamente utili con una varietà di diversi utilizzi. Li puoi far sedere, vagare, seguire o raccogliere oggetti.
+Ogni corvo seduto su un blocco di fieno rigenererà lentamente la sua vita. Inoltre voleranno attorno a questo blocco di fieno quando gli dirai di raccogliere oggetti. Quando un corvo a cui viene detto di raccogliere raccoglie un oggetto, cercherà per un contenitore, come un baule o una fornace, con una cornice sopra su cui è esposto lo stesso oggetto che porta.
+<NEWLINE>
+Se l'oggetto nella cornice coincide con quello che porta il corvo, esso lo depositerà nel contenitore. Quando gli viene detto di seguire, i corvi voleranno attorno al loro proprietario e dopo un po' cercheranno di sedersi sulle sue spalle.
+I corvi possono essere fatti scendere dalle spalle accucciandosi. Quando difendono il proprietario, beccano gli attaccanti, infliggendo danni abbastanza bassi da non rendere il mostro aggressivo. Tuttavia, i corvi infliggono danno extra contro le creature non-morte.

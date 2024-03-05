@@ -1,160 +1,219 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityRoadrunner;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
     private final AdvancedModelBox root;
     private final AdvancedModelBox body;
-    private final AdvancedModelBox cube_r1;
-    private final AdvancedModelBox head;
-    private final AdvancedModelBox crest;
-    private final AdvancedModelBox beak;
-    private final AdvancedModelBox legL;
-    private final AdvancedModelBox legR;
-    private final AdvancedModelBox wingL;
-    private final AdvancedModelBox cube_r2;
-    private final AdvancedModelBox wingR;
-    private final AdvancedModelBox cube_r3;
+    private final AdvancedModelBox left_wing;
+    private final AdvancedModelBox right_wing;
     private final AdvancedModelBox tail;
+    private final AdvancedModelBox neck;
+    private final AdvancedModelBox beak;
+    private final AdvancedModelBox right_spin;
+    private final AdvancedModelBox left_spin;
+    private final AdvancedModelBox left_leg;
+    private final AdvancedModelBox left_knee;
+    private final AdvancedModelBox left_foot;
+    private final AdvancedModelBox right_leg;
+    private final AdvancedModelBox right_knee;
+    private final AdvancedModelBox right_foot;
 
     public ModelRoadrunner() {
-        textureWidth = 64;
-        textureHeight = 64;
-        root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, -0.5F);
-        body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -7.5F, 0.0F);
+        texWidth = 64;
+        texHeight = 64;
+
+        root = new AdvancedModelBox(this, "root");
+        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+
+
+        body = new AdvancedModelBox(this, "body");
+        body.setRotationPoint(0.0F, -7.0F, 0.0F);
         root.addChild(body);
-        cube_r1 = new AdvancedModelBox(this);
-        cube_r1.setRotationPoint(0.0F, 0.0F, 0.0F);
-        body.addChild(cube_r1);
-        setRotationAngle(cube_r1, -0.1309F, 0.0F, 0.0F);
-        cube_r1.setTextureOffset(0, 0).addBox(-2.0F, -2.5F, -4.5F, 4.0F, 5.0F, 9.0F, 0.0F, false);
-        head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, -1.8F, -3.3F);
-        body.addChild(head);
-        setRotationAngle(head, 0.5236F, 0.0F, 0.0F);
-        head.setTextureOffset(0, 27).addBox(-1.5F, -5.7F, -1.2F, 3.0F, 6.0F, 3.0F, 0.0F, false);
-        crest = new AdvancedModelBox(this);
-        crest.setRotationPoint(0.0F, -4.7F, 0.4F);
-        head.addChild(crest);
-        crest.setTextureOffset(0, 0).addBox(0.0F, -3.0F, -1.5F, 0.0F, 4.0F, 4.0F, 0.0F, false);
-        beak = new AdvancedModelBox(this);
-        beak.setRotationPoint(0.0F, -4.6F, -1.1F);
-        head.addChild(beak);
-        setRotationAngle(beak, -0.48F, 0.0F, 0.0F);
-        beak.setTextureOffset(18, 0).addBox(-0.5F, -0.506F, -3.3706F, 1.0F, 1.0F, 4.0F, 0.0F, false);
-        legL = new AdvancedModelBox(this);
-        legL.setRotationPoint(1.0F, 2.5F, 1.0F);
-        body.addChild(legL);
-        legL.setTextureOffset(0, 15).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, 0.0F, false);
-        legR = new AdvancedModelBox(this);
-        legR.setRotationPoint(-1.0F, 2.5F, 1.0F);
-        body.addChild(legR);
-        legR.setTextureOffset(0, 15).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, 0.0F, true);
-        wingL = new AdvancedModelBox(this);
-        wingL.setRotationPoint(2.5F, -1.8F, -2.0F);
-        body.addChild(wingL);
-        setRotationAngle(wingL, -0.1309F, 0.0F, 0.0F);
-        cube_r2 = new AdvancedModelBox(this);
-        cube_r2.setRotationPoint(-0.5F, 2.0F, 2.0F);
-        wingL.addChild(cube_r2);
-        setRotationAngle(cube_r2, -0.1309F, 0.0F, 0.0F);
-        cube_r2.setTextureOffset(18, 18).addBox(0.0F, -2.5F, -3.5F, 1.0F, 5.0F, 9.0F, 0.0F, false);
-        wingR = new AdvancedModelBox(this);
-        wingR.setRotationPoint(-2.5F, -1.8F, -2.0F);
-        body.addChild(wingR);
-        setRotationAngle(wingR, -0.1309F, 0.0F, 0.0F);
-        cube_r3 = new AdvancedModelBox(this);
-        cube_r3.setRotationPoint(0.5F, 2.0F, 2.0F);
-        wingR.addChild(cube_r3);
-        setRotationAngle(cube_r3, -0.1309F, 0.0F, 0.0F);
-        cube_r3.setTextureOffset(18, 18).addBox(-1.0F, -2.5F, -3.5F, 1.0F, 5.0F, 9.0F, 0.0F, true);
-        tail = new AdvancedModelBox(this);
-        tail.setRotationPoint(-0.5F, -0.9F, 4.8F);
+        body.setTextureOffset(23, 14).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 7.0F, 0.0F, false);
+
+        left_wing = new AdvancedModelBox(this, "left_wing");
+        left_wing.setRotationPoint(2.0F, -1.0F, -3.0F);
+        body.addChild(left_wing);
+        setRotationAngle(left_wing, -0.0873F, 0.1309F, -0.1745F);
+        left_wing.setTextureOffset(0, 14).addBox(0.0F, 0.0F, 0.0F, 0.0F, 4.0F, 11.0F, 0.0F, false);
+
+        right_wing = new AdvancedModelBox(this, "right_wing");
+        right_wing.setRotationPoint(-2.0F, -1.0F, -3.0F);
+        body.addChild(right_wing);
+        setRotationAngle(right_wing, -0.0873F, -0.1309F, 0.1745F);
+        right_wing.setTextureOffset(0, 14).addBox(0.0F, 0.0F, 0.0F, 0.0F, 4.0F, 11.0F, 0.0F, true);
+
+        tail = new AdvancedModelBox(this, "tail");
+        tail.setRotationPoint(0.0F, -1.6F, 4.0F);
         body.addChild(tail);
-        setRotationAngle(tail, 0.2182F, 0.0F, 0.0F);
-        tail.setTextureOffset(0, 15).addBox(-1.0F, -1.0F, -0.3F, 3.0F, 1.0F, 10.0F, 0.0F, false);
-        this.updateDefaultPose();
+        setRotationAngle(tail, 0.6545F, 0.0F, 0.0F);
+        tail.setTextureOffset(0, 0).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 0.0F, 13.0F, 0.0F, false);
+
+        neck = new AdvancedModelBox(this, "neck");
+        neck.setRotationPoint(0.0F, -0.7F, -2.9F);
+        body.addChild(neck);
+        setRotationAngle(neck, 0.6545F, 0.0F, 0.0F);
+        neck.setTextureOffset(0, 0).addBox(-1.5F, -6.0F, -1.3F, 3.0F, 8.0F, 3.0F, 0.0F, false);
+        neck.setTextureOffset(0, 14).addBox(0.0F, -8.0F, -1.3F, 0.0F, 4.0F, 5.0F, 0.0F, false);
+
+        beak = new AdvancedModelBox(this, "beak");
+        beak.setRotationPoint(0.0F, -4.5F, -0.8F);
+        neck.addChild(beak);
+        setRotationAngle(beak, -0.3491F, 0.0F, 0.0F);
+        beak.setTextureOffset(12, 14).addBox(-0.5F, -0.5F, -4.2F, 1.0F, 1.0F, 4.0F, 0.0F, false);
+        beak.setTextureOffset(47, 22).addBox(-1.0F, -0.1F, -2.1F, 2.0F, 1.0F, 2.0F, 0.0F, false);
+
+        right_spin = new AdvancedModelBox(this, "right_spin");
+        right_spin.setRotationPoint(-1.5F, 4.5F, 1.5F);
+        body.addChild(right_spin);
+        setRotationAngle(right_spin, 0.5236F, 0.0F, 0.0F);
+        right_spin.setTextureOffset(42, 9).addBox(-1.0F, -2.5F, -2.5F, 2.0F, 5.0F, 5.0F, 0.0F, true);
+
+        left_spin = new AdvancedModelBox(this, "left_spin");
+        left_spin.setRotationPoint(1.5F, 4.5F, 1.5F);
+        body.addChild(left_spin);
+        setRotationAngle(left_spin, 0.5236F, 0.0F, 0.0F);
+        left_spin.setTextureOffset(42, 9).addBox(-1.0F, -2.5F, -2.5F, 2.0F, 5.0F, 5.0F, 0.0F, false);
+
+        left_leg = new AdvancedModelBox(this, "left_leg");
+        left_leg.setRotationPoint(1.5F, 2.0F, 3.0F);
+        body.addChild(left_leg);
+        setRotationAngle(left_leg, 0.5672F, 0.0F, 0.0F);
+        left_leg.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 2.0F, 0.0F, 0.0F, false);
+
+        left_knee = new AdvancedModelBox(this, "left_knee");
+        left_knee.setRotationPoint(0.0F, 2.0F, 0.0F);
+        left_leg.addChild(left_knee);
+        setRotationAngle(left_knee, -1.1781F, 0.0F, 0.0F);
+        left_knee.setTextureOffset(0, 14).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 4.0F, 0.0F, 0.0F, false);
+
+        left_foot = new AdvancedModelBox(this, "left_foot");
+        left_foot.setRotationPoint(0.0F, 4.0F, 0.0F);
+        left_knee.addChild(left_foot);
+        setRotationAngle(left_foot, -0.9599F, 0.0F, 0.0F);
+        left_foot.setTextureOffset(23, 14).addBox(-1.5F, -2.5F, 0.0F, 3.0F, 5.0F, 0.0F, 0.0F, false);
+
+        right_leg = new AdvancedModelBox(this, "right_leg");
+        right_leg.setRotationPoint(-1.5F, 2.0F, 3.0F);
+        body.addChild(right_leg);
+        setRotationAngle(right_leg, 0.5672F, 0.0F, 0.0F);
+        right_leg.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 2.0F, 0.0F, 0.0F, true);
+
+        right_knee = new AdvancedModelBox(this, "right_knee");
+        right_knee.setRotationPoint(0.0F, 2.0F, 0.0F);
+        right_leg.addChild(right_knee);
+        setRotationAngle(right_knee, -1.1781F, 0.0F, 0.0F);
+        right_knee.setTextureOffset(0, 14).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 4.0F, 0.0F, 0.0F, true);
+
+        right_foot = new AdvancedModelBox(this, "right_foot");
+        right_foot.setRotationPoint(0.0F, 4.0F, 0.0F);
+        right_knee.addChild(right_foot);
+        setRotationAngle(right_foot, -0.9599F, 0.0F, 0.0F);
+        right_foot.setTextureOffset(23, 14).addBox(-1.5F, -2.5F, 0.0F, 3.0F, 5.0F, 0.0F, 0.0F, true);   this.updateDefaultPose();
     }
 
     @Override
-    public void setRotationAngles(EntityRoadrunner entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityRoadrunner entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netneckYaw, float neckPitch) {
         this.resetToDefaultPose();
-        float walkSpeed = 0.7F;
+        float walkSpeed = 0.9F;
         float walkDegree = 0.4F;
         float idleSpeed = 0.1F;
         float idleDegree = 0.4F;
         float runProgress = 5F * limbSwingAmount;
-        float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+        float partialTick = Minecraft.getInstance().getFrameTime();
+        boolean spinnyLegs = limbSwingAmount > 0.5F && entityIn.isMeep();
         float biteProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTick;
-        progressRotationPrev(head, biteProgress, (float)Math.toRadians(55), 0, 0, 5F);
-        progressRotationPrev(body, runProgress, (float)Math.toRadians(15), 0, 0, 5F);
-        progressRotationPrev(head, runProgress, (float)Math.toRadians(5), 0, 0, 5F);
-        progressRotationPrev(crest, runProgress, (float)Math.toRadians(-10), 0, 0, 5F);
-        progressRotationPrev(legR, runProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(legL, runProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(tail, runProgress, (float)Math.toRadians(-10), 0, 0, 5F);
-        progressRotationPrev(wingR, runProgress, (float)Math.toRadians(-10),  (float)Math.toRadians(-30),  (float)Math.toRadians(40), 5F);
-        progressRotationPrev(wingL, runProgress, (float)Math.toRadians(-10),  (float)Math.toRadians(30),  (float)Math.toRadians(-40), 5F);
-
+        progressRotationPrev(neck, biteProgress, Maths.rad(55), 0, 0, 5F);
+        progressRotationPrev(body, runProgress, Maths.rad(-5), 0, 0, 5F);
+        progressRotationPrev(neck, runProgress, Maths.rad(25), 0, 0, 5F);
+        progressRotationPrev(right_leg, runProgress, Maths.rad(-15), 0, 0, 5F);
+        progressRotationPrev(left_leg, runProgress, Maths.rad(-15), 0, 0, 5F);
+        progressRotationPrev(tail, runProgress, Maths.rad(-10), 0, 0, 5F);
+        progressRotationPrev(right_wing, runProgress, Maths.rad(-10),  Maths.rad(-30),  Maths.rad(40), 5F);
+        progressRotationPrev(left_wing, runProgress, Maths.rad(-10),  Maths.rad(30),  Maths.rad(-40), 5F);
         this.swing(tail, idleSpeed, idleDegree, false, 0F, 0F, ageInTicks, 1);
-        this.walk(tail, walkSpeed, walkDegree, false, 2F, 0F, limbSwing, limbSwingAmount);
-        this.walk(head, walkSpeed, walkDegree, false, 1F, -0.2F, limbSwing, limbSwingAmount);
-        this.walk(legR, walkSpeed, walkDegree * 1.85F, false, 0F, -0.3F, limbSwing, limbSwingAmount);
-        this.walk(legL, walkSpeed, walkDegree * 1.85F, true, 0F, 0F, limbSwing, limbSwingAmount);
-        this.flap(wingL, walkSpeed, walkDegree, true, 2F, 0.1F, limbSwing, limbSwingAmount);
-        this.flap(wingR, walkSpeed, walkDegree, false, 2F, 0.1F, limbSwing, limbSwingAmount);
-        this.bob(body, walkSpeed * 2, walkDegree * 2.4F, false, limbSwing, limbSwingAmount);
-        float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
-        float f = MathHelper.lerp(partialTicks, entityIn.oFlap, entityIn.wingRotation);
-        float f1 = MathHelper.lerp(partialTicks, entityIn.oFlapSpeed, entityIn.destPos);
-        float wingSwing = (MathHelper.sin(f) + 1.0F) * f1;
-        this.flap(wingL, 0.95F,  0.9F, true, 0F, 0.2F, wingSwing, wingSwing > 0 ? 1 : 0);
-        this.flap(wingR, 0.95F, 0.9F, false, 0F, 0.2F, wingSwing, wingSwing > 0 ? 1 : 0);
-        this.faceTarget(netHeadYaw, headPitch, 1, head);
-
+        this.walk(neck, idleSpeed, idleDegree * 0.2F, false, 0F, -0.1F, ageInTicks, 1);
+        this.walk(right_leg, walkSpeed, walkDegree * 1.2F, false, 0F, 0F, limbSwing, limbSwingAmount);
+        this.walk(left_leg, walkSpeed, walkDegree * 1.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
+        this.walk(right_knee, walkSpeed, walkDegree * 0.5F, false, 0F, 0F, limbSwing, limbSwingAmount);
+        this.walk(left_knee, walkSpeed, walkDegree  * 0.5F, true, 0F, 0F, limbSwing, limbSwingAmount);
+        this.flap(left_wing, walkSpeed, walkDegree, true, 2F, 0.1F, limbSwing, limbSwingAmount);
+        this.flap(right_wing, walkSpeed, walkDegree, false, 2F, 0.1F, limbSwing, limbSwingAmount);
+        this.left_foot.rotateAngleX = -(left_leg.rotateAngleX + left_knee.rotateAngleX + body.rotateAngleX) - (float)(Math.PI/ 2F);
+        this.right_foot.rotateAngleX = -(right_leg.rotateAngleX + right_knee.rotateAngleX + body.rotateAngleX) - (float)(Math.PI/ 2F);
+        this.left_leg.rotationPointY += 1.5F * (float) (Math.sin((double) (limbSwing * walkSpeed) + 2) * (double) limbSwingAmount * (double) walkDegree - (double) (limbSwingAmount * walkDegree));
+        this.right_leg.rotationPointY += 1.5F * (float) (Math.sin(-(double) (limbSwing * walkSpeed) - 2) * (double) limbSwingAmount * (double) walkDegree - (double) (limbSwingAmount * walkDegree));
+        float partialTicks = Minecraft.getInstance().getFrameTime();
+        float f = Mth.lerp(partialTicks, entityIn.oFlap, entityIn.wingRotation);
+        float f1 = Mth.lerp(partialTicks, entityIn.oFlapSpeed, entityIn.destPos);
+        float wingSwing = (Mth.sin(f) + 1.0F) * f1;
+        this.flap(left_wing, 0.95F,  0.9F, true, 0F, 0.2F, wingSwing, wingSwing > 0 ? 1 : 0);
+        this.flap(right_wing, 0.95F, 0.9F, false, 0F, 0.2F, wingSwing, wingSwing > 0 ? 1 : 0);
+        this.faceTarget(netneckYaw, neckPitch, 1, neck);
+        if(spinnyLegs){
+            this.right_spin.showModel = true;
+            this.left_spin.showModel = true;
+            this.right_leg.showModel = false;
+            this.left_leg.showModel = false;
+            float wobbleXZ = 1F + (1F + (float)Math.sin(ageInTicks * 0.6F - 3F)) * 0.6F;
+            float wobbleY = 1F + (1F + (float)Math.sin(ageInTicks * 0.6F - 2F)) * 0.6F;
+            this.right_spin.setScale(1, wobbleY, wobbleXZ);
+            this.left_spin.setScale(1, wobbleY, wobbleXZ);
+            this.right_spin.rotateAngleX += limbSwingAmount * ageInTicks * 2;
+            this.left_spin.rotateAngleX += limbSwingAmount * ageInTicks * 2;
+            this.bob(body, walkSpeed, walkDegree * 5F, true, limbSwing, limbSwingAmount);
+        }else{
+            this.right_spin.showModel = false;
+            this.left_spin.showModel = false;
+            this.right_leg.showModel = true;
+            this.left_leg.showModel = true;
+            this.walk(tail, walkSpeed, walkDegree, false, 2F, 0F, limbSwing, limbSwingAmount);
+            this.walk(neck, walkSpeed, walkDegree * 0.7F, false, 1F, -0.2F, limbSwing, limbSwingAmount);
+            this.bob(body, walkSpeed * 2F, walkDegree * 2F, false, limbSwing, limbSwingAmount);
+        }
     }
 
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if (this.isChild) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
             float f = 1.75F;
-            head.setScale(f, f, f);
-            head.setShouldScaleChildren(true);
-            matrixStackIn.push();
+            neck.setScale(f, f, f);
+            neck.setShouldScaleChildren(true);
+            matrixStackIn.pushPose();
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0.125D);
-            getParts().forEach((p_228292_8_) -> {
+            parts().forEach((p_228292_8_) -> {
                 p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
-            head.setScale(1, 1, 1);
+            matrixStackIn.popPose();
+            neck.setScale(1, 1, 1);
         } else {
-            matrixStackIn.push();
-            getParts().forEach((p_228290_8_) -> {
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
                 p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
 
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
-        return ImmutableList.of(root,body, cube_r1, head, crest, beak, legL, legR, wingL, cube_r2, wingR, cube_r3, tail);
+        return ImmutableList.of(root,body, neck, beak, left_leg, right_leg, left_wing, right_wing, left_leg, tail, right_spin, left_spin, beak, left_knee, right_knee, left_foot, right_foot);
     }
 
 

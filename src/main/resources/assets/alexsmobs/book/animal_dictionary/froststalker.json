@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "froststalker.txt",
+  "title": "entity.alexsmobs.froststalker",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:froststalker_helmet",
+      "shapeless": false,
+      "x": 210,
+      "y": 50,
+      "page": 1,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:froststalker",
+      "x": 96,
+      "y": 102,
+      "page" : 0,
+      "scale": 1.7,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

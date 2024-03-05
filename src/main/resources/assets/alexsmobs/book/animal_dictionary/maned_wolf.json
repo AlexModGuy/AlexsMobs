@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "maned_wolf.txt",
+  "title": "entity.alexsmobs.maned_wolf",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:maned_wolf",
+      "x": 98,
+      "y": 95,
+      "page" : 0,
+      "scale": 1.7,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

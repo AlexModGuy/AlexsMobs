@@ -1,0 +1,208 @@
+{
+  "variants": {
+    "eggs=1,hatch=0": [
+      {
+        "model": "alexsmobs:block/terrapin_egg"
+      },
+      {
+        "model": "alexsmobs:block/terrapin_egg",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/terrapin_egg",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/terrapin_egg",
+        "y": 270
+      }
+    ],
+    "eggs=1,hatch=1": [
+      {
+        "model": "alexsmobs:block/slightly_cracked_terrapin_egg"
+      },
+      {
+        "model": "alexsmobs:block/slightly_cracked_terrapin_egg",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/slightly_cracked_terrapin_egg",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/slightly_cracked_terrapin_egg",
+        "y": 270
+      }
+    ],
+    "eggs=1,hatch=2": [
+      {
+        "model": "alexsmobs:block/very_cracked_terrapin_egg"
+      },
+      {
+        "model": "alexsmobs:block/very_cracked_terrapin_egg",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/very_cracked_terrapin_egg",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/very_cracked_terrapin_egg",
+        "y": 270
+      }
+    ],
+    "eggs=2,hatch=0": [
+      {
+        "model": "alexsmobs:block/two_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/two_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/two_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/two_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=2,hatch=1": [
+      {
+        "model": "alexsmobs:block/two_slightly_cracked_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/two_slightly_cracked_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/two_slightly_cracked_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/two_slightly_cracked_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=2,hatch=2": [
+      {
+        "model": "alexsmobs:block/two_very_cracked_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/two_very_cracked_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/two_very_cracked_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/two_very_cracked_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=3,hatch=0": [
+      {
+        "model": "alexsmobs:block/three_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/three_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/three_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/three_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=3,hatch=1": [
+      {
+        "model": "alexsmobs:block/three_slightly_cracked_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/three_slightly_cracked_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/three_slightly_cracked_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/three_slightly_cracked_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=3,hatch=2": [
+      {
+        "model": "alexsmobs:block/three_very_cracked_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/three_very_cracked_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/three_very_cracked_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/three_very_cracked_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=4,hatch=0": [
+      {
+        "model": "alexsmobs:block/four_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/four_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/four_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/four_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=4,hatch=1": [
+      {
+        "model": "alexsmobs:block/four_slightly_cracked_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/four_slightly_cracked_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/four_slightly_cracked_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/four_slightly_cracked_terrapin_eggs",
+        "y": 270
+      }
+    ],
+    "eggs=4,hatch=2": [
+      {
+        "model": "alexsmobs:block/four_very_cracked_terrapin_eggs"
+      },
+      {
+        "model": "alexsmobs:block/four_very_cracked_terrapin_eggs",
+        "y": 90
+      },
+      {
+        "model": "alexsmobs:block/four_very_cracked_terrapin_eggs",
+        "y": 180
+      },
+      {
+        "model": "alexsmobs:block/four_very_cracked_terrapin_eggs",
+        "y": 270
+      }
+    ]
+  }
+}

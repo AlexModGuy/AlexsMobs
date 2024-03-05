@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+As Águas-Vivas-de-Pente são simples criaturas gelatinosas que estão no limite da definição de vida animal.
+Eles podem ser encontrados à noite em oceanos congelados, onde suas cores prismáticas cintilantes contrastam com o azul profundo.
+Longe de ser inteligente, as Águas-Vivas-de-Pente simplesmente flutuam na água, peneirando presas microscópicas. Eles podem ser capturados com um balde de água e vêm em várias cores.
+<NEWLINE>
+Se morto, Águas-Vivas-de-Pente pode dropar Geléia Arco-Íris. Esta Geléia Arco-Íris pode ser usada em quase qualquer mob para colori-lo em um padrão de arco-íris piscando, semelhante as Águas-Vivas-de-Pente.
+Este arco-íris pode ser removido usando uma esponja na criatura. Pode-se também comer a geleia para aplicar esse efeito a si mesmo.
+<NEWLINE>
+Geléia Arco-Íris também pode ser combinado com 8 vidros para criar Vidro Arco-Íris, que muda de cor com base em sua posição no mundo. Ao contrário do vidro escuro, o Vidro Arco-Íris também emite luz.

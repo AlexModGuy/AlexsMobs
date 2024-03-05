@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "crocodile.txt",
-  "title": "Crocodile",
+  "title": "entity.alexsmobs.crocodile",
   "linked_page_buttons": [
   ],
   "images": [
@@ -20,7 +20,7 @@
       "page" : 0,
       "scale": 0.85,
       "rot_x": 30,
-      "rot_y": 235,
+      "rot_y": 225,
       "rot_z": 0,
       "follow_cursor": false
     }

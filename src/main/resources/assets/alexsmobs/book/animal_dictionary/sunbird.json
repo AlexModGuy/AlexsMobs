@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "sunbird.txt",
-  "title": "Sunbird",
+  "title": "entity.alexsmobs.sunbird",
   "linked_page_buttons": [
   ],
   "images": [
@@ -15,10 +15,10 @@
   "entity_renders": [
     {
       "entity": "alexsmobs:sunbird",
-      "x": 90,
-      "y": 62,
+      "x": 96,
+      "y": 72,
       "page" : 0,
-      "scale": 1.0,
+      "scale": 0.415,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,

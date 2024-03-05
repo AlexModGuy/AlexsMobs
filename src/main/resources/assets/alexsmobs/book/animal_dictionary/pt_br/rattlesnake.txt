@@ -2,9 +2,9 @@
 <NEWLINE>
 <NEWLINE>
 A cascavel é um réptil de tamanho médio encontrado nos biomas deserto e mesa. Na maioria das vezes, a cascavel é ouvida, não
- vista, uma vez que produz um som de alerta de chocalho alto quando um predador potencial está próximo. Se alguém se aproximar
- o suficiente de uma cascavel enquanto ela chocalha, a criatura se tornará hostil e usará sua mordida venenosa para se defender. As cascavéis
- são inimigas declaradas dos Papa-Léguas, seu predador mais comum.
+vista, uma vez que produz um som de alerta de chocalho alto quando um predador potencial está próximo. Se alguém se aproximar
+o suficiente de uma cascavel enquanto ela chocalha, a criatura se tornará hostil e usará sua mordida venenosa para se defender. As cascavéis
+são inimigas declaradas dos Papa-Léguas, seu predador mais comum. As cascavéis podem ser procriadas com qualquer tipo de carne.
 <NEWLINE>
-Se uma cascavel é morta, ela tem uma chance de soltar seu chocalho. Esses chocalhos podem ser fermentados com Saliva de Dragão de Komodo engarrafada
+Se uma cascavel é morta, ela tem uma chance de soltar seu chocalho. Esses chocalhos podem ser fermentados com Poções de Veneno
 para criar uma essência tóxica e venenosa. Fermentar esta essência com uma Perna de Centopéia da Caverna pode resultar na cobiçada poção de resistência ao veneno.

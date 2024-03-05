@@ -1,0 +1,8 @@
+{
+  "__comment": "mobs the bunfungus should not damage during AOE attacks.",
+  "replace": false,
+  "values": [
+    "#alexsmobs:bunfungus_ignores",
+    "minecraft:creeper"
+  ]
+}

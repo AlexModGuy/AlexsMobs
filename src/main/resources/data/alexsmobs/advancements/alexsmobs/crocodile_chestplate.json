@@ -14,12 +14,12 @@
     },
     "parent": "alexsmobs:alexsmobs/breed_crocodile",
     "criteria": {
-        "rat_upgrade_basic": {
+        "crocodile_chestplate": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:crocodile_chestplate"
+                        "items": ["alexsmobs:crocodile_chestplate"]
                     }
                 ]
             }

@@ -1,31 +1,31 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 
 public class AnimalAIHurtByTargetNotBaby extends HurtByTargetGoal {
 
-    private AnimalEntity animal;
+    private final Animal animal;
 
-    public AnimalAIHurtByTargetNotBaby(AnimalEntity creatureIn, Class<?>... excludeReinforcementTypes) {
+    public AnimalAIHurtByTargetNotBaby(Animal creatureIn, Class<?>... excludeReinforcementTypes) {
         super(creatureIn, excludeReinforcementTypes);
         this.animal = creatureIn;
     }
 
-    public void startExecuting() {
-        super.startExecuting();
-        if (animal.isChild()) {
+    public void start() {
+        super.start();
+        if (animal.isBaby()) {
             this.alertOthers();
-            this.resetTask();
+            this.stop();
         }
 
     }
 
-    protected void setAttackTarget(MobEntity mobIn, LivingEntity targetIn) {
-        if (!mobIn.isChild()) {
-            super.setAttackTarget(mobIn, targetIn);
+    protected void alertOther(Mob mobIn, LivingEntity targetIn) {
+        if (!mobIn.isBaby()) {
+            super.alertOther(mobIn, targetIn);
         }
     }
 }

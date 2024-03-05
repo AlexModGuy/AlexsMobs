@@ -2,10 +2,44 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-A Spectre is the distant relative of the Overworld's Phantom, and can only be found in the great void between the islands of the end. These spectral beings cannot be attacked by any normal means, except for magical damage like potions.
-However, there should be no need to attack them, since Spectres are completely passive, unlike their Phantom cousins.
-Spectres usually take no interest in worldly matters, but they do find special interest in Soul Hearts, and will follow any player holding one.
+    灵翼是主世界幻翼的远亲，只能在
 <NEWLINE>
-If one can lure a Spectre close enough, they can use a Lead to attach themselves to the beast.
-When attached via a lead, one will find themselves pulled along by the Spectre. The ghostly creature then becomes a quick and easy way to navigate the end, as being pulled by a Spectre across the void is an easy way to find new end islands to explore.
-To detach from the Spectre, simply sneak or interact again with the lead.
+末地岛屿之间的宽广的虚空中找到。除
+<NEWLINE>
+了药水之类造成的魔法伤害以外，任何
+<NEWLINE>
+正常方式的攻击都不会对这些幽灵生物
+<NEWLINE>
+造成伤害。
+<NEWLINE>
+    不过与它们的亲戚幻翼不同，它们
+<NEWLINE>
+是完全被动的生物，所以没有必要去攻
+<NEWLINE>
+击它们。
+<NEWLINE>
+    灵翼通常不会对一些世俗的东西产
+<NEWLINE>
+生兴趣，但是唯有灵魂之心能让它们产
+<NEWLINE>
+生特别的喜爱，它们会跟随着任何持有
+<NEWLINE>
+灵魂之心的玩家。
+<NEWLINE>
+    当一个人与灵翼足够近时，那么他
+<NEWLINE>
+就可以使用一条拴绳，来将其与灵翼拴
+<NEWLINE>
+在一起。在通过拴绳连接后，你就会发
+<NEWLINE>
+现灵翼在拖着你。随后这种幽灵生物就
+<NEWLINE>
+变成了一种又快又简便的末地导航，因
+<NEWLINE>
+为被灵翼拖着飞，是一种简单的穿过虚
+<NEWLINE>
+空找到新的末地岛屿进行探索的方法。
+<NEWLINE>
+    若要脱离灵翼，只需潜行或者再次
+<NEWLINE>
+与拴绳互动。

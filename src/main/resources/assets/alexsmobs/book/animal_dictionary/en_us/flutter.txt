@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Flutters are small, plantoid creatures found in the lush caves biome. They are completely passive, and avoid most harm by floating up in the air by flapping their giant flower.
+Flutters have a curious interest in any flower, and can be tamed by giving them 4-6 flowers. Each of these flowers must be different from each other, as otherwise the Flutter will be disinterested.
+<NEWLINE>
+When tamed, Flutters can be made to stay, follow or wander. When defending their owner from any threat, the Flutter will float into the sky and shoot pollen balls down at the attacker. These pollen balls can home-in on the attacker, making several flutters very useful to cave explorers.
+Although they have low health, Flutters can be equipped with a flower pot to give them additional armor. A Flutter in a pot can also be picked up by sneaking. Flutters can be healed with flowers.
+<NEWLINE>
+Since Flutters are plants, they can be bred with bonemeal. When breeding flutters near azalea bushes or leaves, there is a chance for the azalea bushes or leaves to bloom. If slain, Flutters can drop a spore blossom.

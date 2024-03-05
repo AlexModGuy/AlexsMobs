@@ -1,0 +1,12 @@
+{
+  "ingredients": [
+    {
+      "item": "minecraft:cod"
+    }
+  ],
+  "result": {
+    "item": "alexsmobs:cosmic_cod",
+    "count": 1
+  },
+  "time": 120
+}

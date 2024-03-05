@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Lulas Gigantes são grandes invertebrados encontrados apenas nos biomas oceânicos mais profundos. Embora temível, a Lula Gigante é neutra para a maioria, a menos que seja um guardião ou um peixe.
+Esses invertebrados possuem o maior olho do reino animal. Se morta, uma Lula G deixará cair pouco mais do que alguns sacos de tinta. No entanto, se for atacada por um de seus únicos predadores, a Baleia Cachalote, esta lula pode perder um tentáculo na batalha que se segue.
+Esses tentáculos perdidos podem ser reunidos por um jogador para criar o Tentáculo Gancho.
+<NEWLINE>
+<NEWLINE>
+Este aparato de agarrar permite disparar até quatro tentáculos de cada vez, prendendo-se em qualquer superfície e puxando-os em direção a ela. É muito conveniente para espeleologia e exploração oceânica.
+<NEWLINE>
+A Lula Gigante pode ficar despressurizada se estiver sob menos de dez blocos de água e assumirá uma coloração pálida.
+Raramente, se uma lula normal for atingida por um raio, ela pode se transformar em uma lula gigante azul única.

@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "anteater.txt",
+  "title": "entity.alexsmobs.anteater",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:anteater",
+      "x": 98,
+      "y": 97,
+      "page" : 0,
+      "scale": 1.4,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

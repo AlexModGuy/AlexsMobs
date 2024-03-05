@@ -1,27 +1,27 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class AnimalAIFindWater extends Goal {
-    private final CreatureEntity creature;
+    private final PathfinderMob creature;
     private BlockPos targetPos;
-    private int executionChance = 30;
+    private final int executionChance = 30;
 
-    public AnimalAIFindWater(CreatureEntity creature) {
+    public AnimalAIFindWater(PathfinderMob creature) {
         this.creature = creature;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
-    public boolean shouldExecute() {
-        if (this.creature.isOnGround() && !this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.WATER)){
-            if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getAttackTarget() != null || this.creature.getRNG().nextInt(executionChance) == 0)){
+    public boolean canUse() {
+        if (this.creature.onGround() && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER)) {
+            if (this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)) {
                 targetPos = generateTarget();
                 return targetPos != null;
             }
@@ -29,37 +29,38 @@ public class AnimalAIFindWater extends Goal {
         return false;
     }
 
-    public void startExecuting() {
-        if(targetPos != null){
-            this.creature.getNavigator().tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
+    public void start() {
+        if (targetPos != null) {
+            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
     }
 
     public void tick() {
-        if(targetPos != null){
-            this.creature.getNavigator().tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
+        if (targetPos != null) {
+            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
     }
 
-    public boolean shouldContinueExecuting() {
-        if(this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldEnterWater()){
-            this.creature.getNavigator().clearPath();
+    public boolean canContinueToUse() {
+        if (this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldEnterWater()) {
+            this.creature.getNavigation().stop();
             return false;
         }
-        return !this.creature.getNavigator().noPath() && targetPos != null && !this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.WATER);
+        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER);
     }
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;
-        Random random = new Random();
-        int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
-        for(int i = 0; i < 15; i++){
-            BlockPos blockpos1 = this.creature.getPosition().add(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
-            while(this.creature.world.isAirBlock(blockpos1) && blockpos1.getY() > 1){
-                blockpos1 = blockpos1.down();
+        final RandomSource random = this.creature.getRandom();
+        final int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
+        for(int i = 0; i < 15; i++) {
+            BlockPos blockPos = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
+            while (this.creature.level().isEmptyBlock(blockPos) && blockPos.getY() > 1) {
+                blockPos = blockPos.below();
             }
-            if(this.creature.world.getFluidState(blockpos1).isTagged(FluidTags.WATER)){
-                blockpos = blockpos1;
+
+            if (this.creature.level().getFluidState(blockPos).is(FluidTags.WATER)) {
+                blockpos = blockPos;
             }
         }
         return blockpos;

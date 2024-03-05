@@ -3,5 +3,5 @@
 <NEWLINE>
 As focas são mamíferos principalmente aquáticos que podem ser encontrados nas praias e icebergs do Overworld. Essas criaturas aparentemente preguiçosas muitas vezes se aquecem e dormem em qualquer areia ou gelo que podem encontrar.
 Quando não está descansando na terra, a foca é um nadador extremamente hábil, capaz de nadar em círculos ao redor da maioria das outras espécies aquáticas, exceto para seu predador final: a Orca. Se uma Foca for atacada,
-todo o cardume tentará fugir para a água, onde será mais ágil. Alimentar uma foca-frade em terra com três peixes iniciará uma forma primitiva de "comércio" entre uma pessoa e a foca: em troca dos três peixes, a foca vasculhará o fundo do mar e retornara com um item.
-Embora esse item geralmente seja lixo sem valor, como algas ou areia, às vezes pode ser itens muito mais raros, como dentes de tubarão, escamas ou conchas de nautilus. Focas podem ser procriadas com caudas de lagosta.
+todo o grupo tentará fugir para a água, onde são mais ágeis. Alimentar uma foca-frade em terra com três peixes iniciará uma forma primitiva de "comércio" entre uma pessoa e a foca: em troca dos três peixes, a foca vasculhará o fundo do mar e retornara com um item.
+Embora esse item geralmente seja lixo sem valor, como algas ou areia, às vezes pode ser itens muito mais raros, como dentes de tubarão, escamas ou conchas de náutilos. Focas podem ser procriadas com caudas de lagosta.

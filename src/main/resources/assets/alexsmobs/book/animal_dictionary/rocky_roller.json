@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "rocky_roller.txt",
+  "title": "entity.alexsmobs.rocky_roller",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:rocky_roller",
+      "x": 90,
+      "y": 105,
+      "page" : 0,
+      "scale": 1.35,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

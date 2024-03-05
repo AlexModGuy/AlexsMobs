@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Terrapins, or River Turtles, are small reptiles occasionally found submersed in ice-free river biomes.
+They are completely passive and rely on their shell for protection. Wild terrapins can be picked up with a water bucket.
+<NEWLINE>
+If a Terrapin is jumped on, it will recede into its shell. If jumped on again, the turtle will spin in the direction of the jumper, ricocheting off of walls.
+If it collides with another mob, the speedy turtle will deal a decent amount of damage. However, this mob could become aggressive towards whomever launched a turtle at them.
+<NEWLINE>
+Terrapins come in a vast array of patterns and colors, many of which do not appear in nature.
+These turtles can be bred with seagrass in order to produce 1-4 eggs. Although most of these eggs should be a direct cross between their parents, there is a chance for a baby turtle to mutate a completely random color.
+If the turtle is not mutated then its colors may be one of its parents or an average of the two.

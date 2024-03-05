@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "bison.txt",
+  "title": "entity.alexsmobs.bison",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:bison",
+      "x": 92,
+      "y": 102,
+      "page" : 0,
+      "scale": 0.97,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

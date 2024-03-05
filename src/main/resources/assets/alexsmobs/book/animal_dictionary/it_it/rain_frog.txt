@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Le rane della pioggia sono piccole rane che possono essere trovate solo nelle giornate nuvolose nei deserti.
+Differentemente dalle altre rane, non sono in grado di saltare o nuotare molto bene, e non creano girini.
+Possono spesso essere viste cercare di sotterrarsi e nascondersi nella sabbia.
+Se minacciate, le rane della pioggia si gonfieranno ed emetteranno un forte suono cigolante.
+<NEWLINE>
+Le rane della pioggia si accoppieranno dopo aver mangiato larve.
+Mangeranno qualsiasi piccolo insetto che sono in grado di trovare.
+Se viene utilizzata una pala su una rana nascosta, verrà disturbata e non despawnerà.
+<NEWLINE>
+Queste rane sono associate con la pioggia a causa della credenza che possano portare la pioggia se compiaciute.
+Sono note per apprezzare i dischi musicali...

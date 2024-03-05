@@ -1,95 +1,99 @@
 package com.github.alexthe666.alexsmobs.effect;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IServerWorld;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
 
-public class EffectDebilitatingSting extends Effect {
+import java.util.function.Predicate;
+
+public class EffectDebilitatingSting extends MobEffect {
 
     private int lastDuration = -1;
 
     protected EffectDebilitatingSting() {
-        super(EffectType.NEUTRAL, 0XFFF385);
-        this.addAttributesModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", -1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
-        this.setRegistryName(AlexsMobs.MODID, "debilitating_sting");
+        super(MobEffectCategory.NEUTRAL, 0XFFF385);
+        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", -1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
-    public void removeAttributesModifiersFromEntity(LivingEntity entityLivingBaseIn, AttributeModifierManager attributeMapIn, int amplifier) {
-        if (entityLivingBaseIn.getCreatureAttribute() == CreatureAttribute.ARTHROPOD) {
-            super.removeAttributesModifiersFromEntity(entityLivingBaseIn, attributeMapIn, amplifier);
+    public void removeAttributeModifiers(LivingEntity entityLivingBaseIn, AttributeMap attributeMapIn, int amplifier) {
+        if (entityLivingBaseIn.getMobType() == MobType.ARTHROPOD) {
+            super.removeAttributeModifiers(entityLivingBaseIn, attributeMapIn, amplifier);
         }
     }
 
-    public void applyAttributesModifiersToEntity(LivingEntity entityLivingBaseIn, AttributeModifierManager attributeMapIn, int amplifier) {
-        if (entityLivingBaseIn.getCreatureAttribute() == CreatureAttribute.ARTHROPOD) {
-            super.applyAttributesModifiersToEntity(entityLivingBaseIn, attributeMapIn, amplifier);
+    public void addAttributeModifiers(LivingEntity entityLivingBaseIn, AttributeMap attributeMapIn, int amplifier) {
+        if (entityLivingBaseIn.getMobType() == MobType.ARTHROPOD) {
+            super.addAttributeModifiers(entityLivingBaseIn, attributeMapIn, amplifier);
         }
     }
 
-    public void performEffect(LivingEntity entity, int amplifier) {
-        if (entity.getCreatureAttribute() != CreatureAttribute.ARTHROPOD) {
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
+        if (entity.getMobType() != MobType.ARTHROPOD) {
             if (entity.getHealth() > entity.getMaxHealth() * 0.5F) {
-                entity.attackEntityFrom(DamageSource.MAGIC, 1.0F);
+                entity.hurt(entity.damageSources().magic(), 1.0F);
             }
         } else {
             boolean suf = isEntityInsideOpaqueBlock(entity);
             if (suf) {
-                entity.setMotion(Vector3d.ZERO);
-                entity.noClip = true;
+                entity.setDeltaMovement(Vec3.ZERO);
+                entity.noPhysics = true;
             }
             entity.setNoGravity(suf);
             entity.setJumping(false);
-            if (!entity.isPassenger() && entity instanceof MobEntity && !(((MobEntity) entity).getMoveHelper().getClass() == MovementController.class)) {
-                entity.setMotion(new Vector3d(0, -1, 0));
+            if (!entity.isPassenger() && entity instanceof Mob && !(((Mob) entity).getMoveControl().getClass() == MoveControl.class)) {
+                entity.setDeltaMovement(new Vec3(0, -1, 0));
             }
             if (lastDuration == 1) {
-                entity.attackEntityFrom(DamageSource.MAGIC, (amplifier + 1) * 30);
+                entity.hurt(entity.damageSources().magic(), (amplifier + 1) * 30);
                 if (amplifier > 0) {
-                    BlockPos surface = entity.getPosition();
-                    while (!entity.world.isAirBlock(surface) && surface.getY() < 256) {
-                        surface = surface.up();
+                    BlockPos surface = entity.blockPosition();
+                    while (!entity.level().isEmptyBlock(surface) && surface.getY() < 256) {
+                        surface = surface.above();
                     }
-                    EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.create(entity.world);
-                    baby.setChild(true);
-                    baby.setPosition(entity.getPosX(), surface.getY() + 0.1F, entity.getPosZ());
-                    if (!entity.world.isRemote) {
-                        baby.onInitialSpawn((IServerWorld) entity.world, entity.world.getDifficultyForLocation(entity.getPosition()), SpawnReason.BREEDING, null, null);
-                        entity.world.addEntity(baby);
+                    EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.get().create(entity.level());
+                    baby.setBaby(true);
+                    baby.setPos(entity.getX(), surface.getY() + 0.1F, entity.getZ());
+                    if (!entity.level().isClientSide) {
+                        baby.finalizeSpawn((ServerLevelAccessor) entity.level(), entity.level().getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.BREEDING, null, null);
+                        entity.level().addFreshEntity(baby);
                     }
                 }
                 entity.setNoGravity(false);
-                entity.noClip = false;
+                entity.noPhysics = false;
             }
         }
     }
 
     public boolean isEntityInsideOpaqueBlock(Entity entity) {
-        float f = 0.1F;
-        float f1 = entity.getSize(entity.getPose()).width * 0.8F;
-        AxisAlignedBB axisalignedbb = AxisAlignedBB.withSizeAtOrigin(f1, 0.1F, f1).offset(entity.getPosX(), entity.getPosYEye(), entity.getPosZ());
-        return entity.world.func_241457_a_(entity, axisalignedbb, (p_241338_1_, p_241338_2_) -> {
-            return p_241338_1_.isSuffocating(entity.world, p_241338_2_);
-        }).findAny().isPresent();
+        Vec3 vec3 = entity.getEyePosition();
+        float f = entity.getDimensions(entity.getPose()).width * 0.8F;
+        AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
+        return entity.level().getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
+            BlockPos blockpos = AMBlockPos.fromVec3(vec3);
+            return p_185969_.isSuffocating(entity.level(), blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(entity.level(), blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
+        });
     }
 
-    public boolean isReady(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         lastDuration = duration;
         return duration > 0;
     }
 
-    public String getName() {
+    public String getDescriptionId() {
         return "alexsmobs.potion.debilitating_sting";
     }
 }

@@ -1,0 +1,25 @@
+{
+  "pools": [
+    {
+      "name": "froststalker",
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "random_chance_with_looting",
+          "chance": 0.23,
+          "looting_multiplier": 0.1
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alexsmobs:froststalker_horn",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

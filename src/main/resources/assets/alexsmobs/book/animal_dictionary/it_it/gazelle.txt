@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+La gazzella è un piccolo mammifero endemico nelle savene dell'overworld. Essendo una creatura delicata, la gazzella è piuttosto timida, e
+può essere vista foraggiare in grandi branchi. Quando una gazzella viene attaccata, tutti i membri del suo gruppo cercheranno di scappare dal
+pericolo, correndo estremamente veloce da ogni minaccia percepita.
+<NEWLINE>
+Le gazzelle occasionalmente rilasciano le loro corna quando uccise. Queste corna possono essere distillate con una pozione di velocità II per creare una
+rara pozione di velocità III. Possono inoltre rilasciare carne ovina.

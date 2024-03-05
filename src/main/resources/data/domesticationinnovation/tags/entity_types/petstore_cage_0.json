@@ -1,0 +1,9 @@
+{
+  "#comment": "For the plains & taiga pet store cage",
+  "replace": false,
+  "values": [
+    "minecraft:wolf",
+    "minecraft:cat",
+    "minecraft:rabbit"
+  ]
+}

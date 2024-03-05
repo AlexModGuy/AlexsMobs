@@ -1,16 +1,15 @@
 package com.github.alexthe666.alexsmobs.misc;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MerchantOffer;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.block.Block;
 
-import java.util.Random;
-
-public class ItemsForEmeraldsTrade  implements VillagerTrades.ITrade {
+public class ItemsForEmeraldsTrade  implements VillagerTrades.ItemListing {
     private final ItemStack sellingItem;
     private final int emeraldCount;
     private final int sellingItemCount;
@@ -43,7 +42,7 @@ public class ItemsForEmeraldsTrade  implements VillagerTrades.ITrade {
         this.priceMultiplier = priceMultiplier;
     }
 
-    public MerchantOffer getOffer(Entity trader, Random rand) {
+    public MerchantOffer getOffer(Entity trader, RandomSource rand) {
         return new MerchantOffer(new ItemStack(Items.EMERALD, this.emeraldCount), new ItemStack(this.sellingItem.getItem(), this.sellingItemCount), this.maxUses, this.xpValue, this.priceMultiplier);
     }
 }

@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "gorilla.txt",
-  "title": "Gorilla",
+  "title": "entity.alexsmobs.gorilla",
   "linked_page_buttons": [
   ],
   "images": [
@@ -16,7 +16,7 @@
     {
       "entity": "alexsmobs:gorilla",
       "x": 90,
-      "y": 80,
+      "y": 75,
       "page" : 0,
       "scale": 1.4,
       "rot_x": 30,

@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "age=0": [
+      {
+        "model": "alexsmobs:block/ender_residue_0"
+      }
+    ],
+    "age=1": [
+      {
+        "model": "alexsmobs:block/ender_residue_1"
+      }
+    ],
+    "age=2": [
+      {
+        "model": "alexsmobs:block/ender_residue_2"
+      }
+    ],
+    "age=3": [
+      {
+        "model": "alexsmobs:block/ender_residue_3"
+      }
+    ]
+  }
+}

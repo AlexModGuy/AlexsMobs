@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+I mungus sono strane creature fungine trovate nelle isole dei funghi. Queste strane creature sono parenti dei guardiani e degli strider, e somigliano ad essi.
+Differentemente dai guardiani, i mungus sono completamente passivi. Occasionalmente, possono essere visti funghi crescere dallo strato di micelio che li ricopre.
+Se dati vari funghi uguali, cresceranno più funghi sopra al mungus. Con uno o più funghi, il mungus sparerà un raggio simile a quello di un guardiano ad un
+fungo dello stesso tipo. Facendo ciò, cresceranno più funghi di quel tipo, e se il fungo si trova sopra a del micelio potrebbe diventare un fungo gigante. Ciò
+stancherà il mungus e diminuirà la quantità di funghi su di esso. Se ucciso con cinque funghi sul dorso, il mungus scoppierà con una violenta esplosione e converterà l'area
+circostante nel bioma relativo ai loro funghi: Per i funghi rossi e marroni l'isola dei funghi, e per i funghi cremisi e distorti, rispettivamente le foreste cremisi e distorta.
+La conversione di un bioma può essere annullata dando da mangiare a un mungus una patata velenosa. I mungus possono essere fatti accoppiare con spore fungine, che sono occasionalmente rilasciate da essi ogni pochi giorni.

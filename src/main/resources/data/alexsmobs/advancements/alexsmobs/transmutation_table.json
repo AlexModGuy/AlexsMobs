@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:transmutation_table"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.transmutation_table.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.transmutation_table.desc"
+        }
+    },
+    "frame": "goal",
+    "parent": "alexsmobs:alexsmobs/farseer",
+    "criteria": {
+        "sopa_de_macaco": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:transmutation_table"]
+                    }
+                ]
+            }
+        }
+    }
+}

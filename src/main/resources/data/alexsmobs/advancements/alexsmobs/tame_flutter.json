@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:flutter\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_flutter.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.tame_flutter.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:flutter"
+        }
+      }
+    }
+  }
+}

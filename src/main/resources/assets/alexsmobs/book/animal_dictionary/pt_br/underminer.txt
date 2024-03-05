@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mineiros Fantasmas são habitantes raros e fantasmagóricos de minas abandonadas. Devido à sua natureza etérea, eles podem atravessar paredes com facilidade e só podem ser danificados com magia, como poções de arremessáveis.
+A maioria dos Mineiros Fantasmas só começará a aparecer se passar bastante tempo em uma mina.
+No entanto, eles não representam ameaça para os vivos, desde que não sejam atacados primeiro. No entanto, sua desconfiança em relação aos recém-chegados é aparente - eles desaparecerão temporariamente se forem abordados. Os mineiros se contentam em perseguir os corredores da mina, como vêm fazendo há centenas de anos.
+<NEWLINE>
+Underminers podem ocasionalmente ser vistos minerando blocos com suas picaretas fantasmagóricas. Devido a eles existirem no plano espiritual, eles não podem destruir esses blocos, mas suas ações podem revelar minérios escondidos nas paredes da mina abandonada.
+Se um bloco de minério específico for jogado perto de um minerador, ele deixará de ser invisível e começará a procurar e minerar blocos obscurecendo aquele bloco de minério específico escondido na mina abandonada - potencialmente revelando veios de minério.
+<NEWLINE>
+Se morto usando magia, o Mineiro Fantasma pode largar sua Picareta Espectral. Esta picareta, embora imaterial, é decentemente poderosa, mas seu verdadeiro poder é que ela pode armazenar até 9 pilhas de blocos minerados dentro de si - somente se o usuário tiver um inventário completo. Assim que houver espaço no inventário, os itens serão devolvidos da picareta. A Picareta Fantasma pode ser reparada com Membranas Phantom.

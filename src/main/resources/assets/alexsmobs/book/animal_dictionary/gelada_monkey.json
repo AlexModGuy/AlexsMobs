@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "gelada_monkey.txt",
+  "title": "entity.alexsmobs.gelada_monkey",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:gelada_monkey",
+      "x": 100,
+      "y": 95,
+      "page" : 0,
+      "scale": 1.6,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

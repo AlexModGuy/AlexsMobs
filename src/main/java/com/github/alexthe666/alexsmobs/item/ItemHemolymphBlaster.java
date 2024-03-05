@@ -1,26 +1,26 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntityHemolymph;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 public class ItemHemolymphBlaster extends Item {
 
     public static final Predicate<ItemStack> HEMOLYMPH = (stack) -> {
-        return stack.getItem() == AMItemRegistry.HEMOLYMPH_SAC;
+        return stack.getItem() == AMItemRegistry.HEMOLYMPH_SAC.get();
     };
 
     public ItemHemolymphBlaster(Item.Properties properties) {
@@ -31,19 +31,23 @@ public class ItemHemolymphBlaster extends Item {
         return isUsable(stack) ? Integer.MAX_VALUE : 0;
     }
 
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW;
+    public boolean isBarVisible(ItemStack itemStack) {
+        return super.isBarVisible(itemStack) && isUsable(itemStack);
+    }
+
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.BOW;
     }
 
     public static boolean isUsable(ItemStack stack) {
-        return stack.getDamage() < stack.getMaxDamage() - 1;
+        return stack.getDamageValue() < stack.getMaxDamage() - 1;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 
-        ItemStack itemstack = playerIn.getHeldItem(handIn);
-        playerIn.setActiveHand(handIn);
+        ItemStack itemstack = playerIn.getItemInHand(handIn);
+        playerIn.startUsingItem(handIn);
         if(!isUsable(itemstack)){
             ItemStack ammo = findAmmo(playerIn);
             boolean flag = playerIn.isCreative();
@@ -52,18 +56,18 @@ public class ItemHemolymphBlaster extends Item {
                 flag = true;
             }
             if(flag){
-                itemstack.setDamage(0);
+                itemstack.setDamageValue(0);
             }
         }
-        return ActionResult.resultConsume(itemstack);
+        return InteractionResultHolder.consume(itemstack);
     }
 
-    public ItemStack findAmmo(PlayerEntity entity) {
+    public ItemStack findAmmo(Player entity) {
         if(entity.isCreative()){
             return ItemStack.EMPTY;
         }
-        for(int i = 0; i < entity.inventory.getSizeInventory(); ++i) {
-            ItemStack itemstack1 = entity.inventory.getStackInSlot(i);
+        for(int i = 0; i < entity.getInventory().getContainerSize(); ++i) {
+            ItemStack itemstack1 = entity.getInventory().getItem(i);
             if (HEMOLYMPH.test(itemstack1)) {
                 return itemstack1;
             }
@@ -72,42 +76,42 @@ public class ItemHemolymphBlaster extends Item {
     }
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.isItemEqual(newStack);
+        return !ItemStack.isSameItem(oldStack, newStack);
     }
 
-    public void onUse(World worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
+    public void onUseTick(Level worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
         if(isUsable(stack)) {
             if (count % 2 == 0) {
                 boolean left = false;
-                if (livingEntityIn.getActiveHand() == Hand.OFF_HAND && livingEntityIn.getPrimaryHand() == HandSide.RIGHT || livingEntityIn.getActiveHand() == Hand.MAIN_HAND && livingEntityIn.getPrimaryHand() == HandSide.LEFT) {
+                if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
                     left = true;
                 }
                 EntityHemolymph blood = new EntityHemolymph(worldIn, livingEntityIn, !left);
-                Vector3d vector3d = livingEntityIn.getLook(1.0F);
-                Vector3f vector3f = new Vector3f(vector3d);
-                Random rand = new Random();
-                livingEntityIn.playSound(SoundEvents.BLOCK_LAVA_POP,1.0F, 0.5F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
-                blood.shoot((double) vector3f.getX(), (double) vector3f.getY(), (double) vector3f.getZ(), 1F, 3);
-                if (!worldIn.isRemote) {
-                    worldIn.addEntity(blood);
+                Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
+                RandomSource rand = worldIn.getRandom();
+                livingEntityIn.gameEvent(GameEvent.ITEM_INTERACT_START);
+                livingEntityIn.playSound(SoundEvents.LAVA_POP,1.0F, 0.5F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                blood.shoot((double) vector3d.x(), (double) vector3d.y(), (double) vector3d.z(), 1F, 3);
+                if (!worldIn.isClientSide) {
+                    worldIn.addFreshEntity(blood);
                 }
-                stack.damageItem(1, livingEntityIn, (player) -> {
-                    player.sendBreakAnimation(livingEntityIn.getActiveHand());
+                stack.hurtAndBreak(1, livingEntityIn, (player) -> {
+                    player.broadcastBreakEvent(livingEntityIn.getUsedItemHand());
                 });
             }
         }else{
-            if(livingEntityIn instanceof PlayerEntity){
-                ItemStack ammo = findAmmo((PlayerEntity)livingEntityIn);
-                boolean flag = ((PlayerEntity) livingEntityIn).isCreative();
+            if(livingEntityIn instanceof Player){
+                ItemStack ammo = findAmmo((Player)livingEntityIn);
+                boolean flag = ((Player) livingEntityIn).isCreative();
                 if(!ammo.isEmpty()){
                     ammo.shrink(1);
                     flag = true;
                 }
                 if(flag){
-                    ((PlayerEntity) livingEntityIn).getCooldownTracker().setCooldown(this, 20);
-                    stack.setDamage(0);
+                    ((Player) livingEntityIn).getCooldowns().addCooldown(this, 20);
+                    stack.setDamageValue(0);
                 }
-                livingEntityIn.resetActiveHand();
+                livingEntityIn.stopUsingItem();
             }
         }
     }

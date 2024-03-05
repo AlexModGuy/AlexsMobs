@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:froststalker_helmet"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.froststalker_helmet.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.froststalker_helmet.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/froststalker_kill",
+    "criteria": {
+        "froststalker_helmet": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:froststalker_helmet"]
+                    }
+                ]
+            }
+        }
+    }
+}

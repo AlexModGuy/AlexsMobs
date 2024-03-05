@@ -1,0 +1,69 @@
+{
+	"parent": "block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"particle": "#0"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 5],
+			"to": [10, 5, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [2, 2, 4, 4.5], "texture": "#0"},
+				"east": {"uv": [0, 2, 2, 4.5], "texture": "#0"},
+				"south": {"uv": [6, 2, 8, 4.5], "texture": "#0"},
+				"west": {"uv": [4, 2, 6, 4.5], "texture": "#0"},
+				"up": {"uv": [4, 2, 2, 0], "texture": "#0"},
+				"down": {"uv": [6, 0, 4, 2], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 0, 7],
+			"to": [8, 4, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [2, 7, 4, 9], "texture": "#0"},
+				"east": {"uv": [0, 7, 2, 9], "texture": "#0"},
+				"south": {"uv": [6, 7, 8, 9], "texture": "#0"},
+				"west": {"uv": [4, 7, 6, 9], "texture": "#0"},
+				"up": {"uv": [4, 7, 2, 5], "texture": "#0"},
+				"down": {"uv": [6, 5, 4, 7], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9, 0, 9],
+			"to": [12, 4, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [8.5, 9.5, 10, 11.5], "texture": "#0"},
+				"east": {"uv": [7, 9.5, 8.5, 11.5], "texture": "#0"},
+				"south": {"uv": [11.5, 9.5, 13, 11.5], "texture": "#0"},
+				"west": {"uv": [10, 9.5, 11.5, 11.5], "texture": "#0"},
+				"up": {"uv": [10, 9.5, 8.5, 8], "texture": "#0"},
+				"down": {"uv": [11.5, 8, 10, 9.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 0, 2],
+			"to": [12, 3, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [8.5, 5, 10.5, 6.5], "texture": "#0"},
+				"east": {"uv": [7, 5, 8.5, 6.5], "texture": "#0"},
+				"south": {"uv": [12, 5, 14, 6.5], "texture": "#0"},
+				"west": {"uv": [10.5, 5, 12, 6.5], "texture": "#0"},
+				"up": {"uv": [10.5, 5, 8.5, 3.5], "texture": "#0"},
+				"down": {"uv": [12.5, 3.5, 10.5, 5], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "eggs",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2, 3]
+		}
+	]
+}

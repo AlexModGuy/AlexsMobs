@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:skunk",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["rightArm", "rightLeg"],
+  "left_leg": ["leftArm", "leftLeg"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": true
+}

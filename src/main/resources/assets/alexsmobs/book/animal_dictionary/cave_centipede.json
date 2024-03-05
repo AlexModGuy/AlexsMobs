@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "cave_centipede.txt",
-  "title": "Cave Centipede",
+  "title": "entity.alexsmobs.centipede_head",
   "linked_page_buttons": [
   ],
   "images": [
@@ -15,8 +15,19 @@
   "entity_renders": [
     {
       "entity": "alexsmobs:centipede_tail",
-      "x": 60,
+      "x": 65,
       "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 300,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_body",
+      "x": 87,
+      "y": 68,
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
@@ -26,45 +37,34 @@
     },
     {
       "entity": "alexsmobs:centipede_body",
-      "x": 80,
-      "y": 70,
+      "x": 107,
+      "y": 67,
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 270,
+      "rot_y": 250,
       "rot_z": 0,
       "follow_cursor": false
     },
     {
       "entity": "alexsmobs:centipede_body",
-      "x": 102,
+      "x": 130,
       "y": 70,
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 270,
-      "rot_z": 0,
-      "follow_cursor": false
-    },
-    {
-      "entity": "alexsmobs:centipede_body",
-      "x": 124,
-      "y": 70,
-      "page" : 0,
-      "scale": 0.8,
-      "rot_x": 30,
-      "rot_y": 270,
+      "rot_y": 240,
       "rot_z": 0,
       "follow_cursor": false
     },
     {
       "entity": "alexsmobs:centipede_head",
       "x": 145,
-      "y": 70,
+      "y": 76,
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 270,
+      "rot_y": 220,
       "rot_z": 0,
       "follow_cursor": false
     }

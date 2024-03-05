@@ -3,11 +3,10 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaHawk> {
     private final AdvancedModelBox root;
@@ -15,27 +14,27 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
     private final AdvancedModelBox head;
 
     public ModelTarantulaHawkBaby() {
-        textureWidth = 64;
-        textureHeight = 64;
+        texWidth = 64;
+        texHeight = 64;
 
-        root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root = new AdvancedModelBox(this, "root");
+        root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -3.0F, -7.0F);
+        body = new AdvancedModelBox(this, "body");
+        body.setPos(0.0F, -3.0F, -7.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-4.0F, -3.0F, 0.0F, 8.0F, 6.0F, 15.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, 0.9F, 0.0F);
+        head = new AdvancedModelBox(this, "head");
+        head.setPos(0.0F, 0.9F, 0.0F);
         body.addChild(head);
         head.setTextureOffset(0, 22).addBox(-3.5F, -3.0F, -3.0F, 7.0F, 5.0F, 3.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
-    public void setRotationAngles(EntityTarantulaHawk entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityTarantulaHawk entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float walkSpeed = 1;
         float walkDegree = 0.75F;
@@ -48,7 +47,7 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -58,7 +57,7 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
     }
 
     @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
         root.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 

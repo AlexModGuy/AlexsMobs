@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mrówki Liściaste to małe owady, które często można zobaczyć zrywające liście z drzew w dżungli. Tworzą one masywne kolonie składające się z maksymalnie dwudziestu mrówek. Istnieją dwie formy mrówek liściastych - robotnice, które zbierają liście i można je zobaczyć poza mrowiskiem, oraz królowe, które można przywołać jedynie poprzez stąpanie po mrowisku.
+Królowe są znacznie większe i silniejsze od robotnic, a na jedną kolonię przypada zwykle tylko jedna. Z królową obecną w mrowisku istnieje szansa, że na każde 5 zebranych liści powstanie kolejna mrówka robotnica, podczas gdy mrowisko liczy mniej niż 10 mrówek.
+<NEWLINE>
+Bez królowej mrówki nie są w stanie rozmnorzyć. Kolonie te są znacznie większe niż się wydaje - pod kopcem znajduje się sieć komór mrówek liściastych, dużych bloków, które są używane przez mrówki do przekształcania liści w grzyby.
+Komory te przekształcają się w ziemię, jeśli są pod wpływem światła słonecznego, jednak mogą rozprzestrzeniać się na sąsiednie bloki ziemi, gdy są zbierane.
+<NEWLINE>
+Grzyb ten nazywa się Gongylidia i jest to jedyna rzecz, którą mrówki są w stanie hodować i jeść.
+Oprócz jego zastosowań dla mrówek, może być również spożywany, choć może nie ma wiele wartości odżywczych, jest bardzo syty.
+Gongylidię można zdobyć wchodząc w interakcję z porośniętą grzybami komnatą pod ziemią, ale uwaga: O ile w pobliżu nie znajduje się Światłogrzyb, mrówki z kolonii staną się wrogie.
+Grzybami można karmić mrówki, aby je uzdrowić, oraz królową, aby zwiększyć liczbę mrówek w kolonii. Gongylidia mogą być również podawane mrówce w celu spacyfikowania wszystkich mrówek w najbliższej okolicy. Jeśli komora zostanie zniszczona, istnieje mała szansa, że upuści on poczwarkę mrówki liściastej, którą można wykorzystać na ziemi lub trawie do stworzenia nowej kolonii.

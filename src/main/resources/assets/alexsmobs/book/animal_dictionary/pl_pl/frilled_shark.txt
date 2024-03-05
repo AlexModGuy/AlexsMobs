@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Płaszczaki to letargiczne żywe skamieliny występujące w głębokich oceanach. Te neutralne rekiny spędzają większość czasu polując na blobfisze i kałamarnice, które są ich ulubioną zdobyczą.
+Podczas polowania na kałamarnice, rekiny te wykorzystują niski poziom światła w głębinach morskich oraz naturalne instynkty kałamarnic, wabiąc je za pomocą swoich bardzo odblaskowych zębów.
+Po złapaniu ofiary w szczęki, rekin użyje swoich specjalnych ząbkowanych zębów, aby zadać jej obrażenia wraz z efektem Wykrwawienia, który szybko pozbawia ją zdrowia. Czasami zęby te mogą zostać wyrzucone podczas ataku na kałamarnicę.
+<NEWLINE>
+Jeśli ktoś zdobędzie kilka zębów rekina, może ich użyć, wraz z innymi wodnymi przedmiotami, do stworzenia Tarczy Głębin. Tarcza ta jest nieco bardziej wytrzymała niż zwykła, ale również zadaje efekt Wykrwawienia, gdy blokuje pobliskie ataki.
+<NEWLINE>
+<NEWLINE>
+Płaszczaki mogą być transportowane poprzez umieszczenie ich w wiadrze z wodą. Jeśli Płaszczak znajdzie się w mniej niż 10 blokach wody, będzie odbarwiony i jeszcze wolniejszy niż normalnie.

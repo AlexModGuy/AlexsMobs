@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "cosmaw.txt",
+  "title": "entity.alexsmobs.cosmaw",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:cosmaw",
+      "x": 90,
+      "y": 98,
+      "page" : 0,
+      "scale": 0.9,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

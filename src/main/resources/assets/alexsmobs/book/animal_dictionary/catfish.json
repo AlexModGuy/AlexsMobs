@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "catfish.txt",
+  "title": "entity.alexsmobs.catfish",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:catfish",
+      "x": 115,
+      "y": 88,
+      "page" : 0,
+      "scale": 2.1,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

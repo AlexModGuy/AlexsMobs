@@ -12,19 +12,6 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 6,
-          "functions": [
-            {
-              "function": "minecraft:exploration_map",
-              "decoration": "red_x",
-              "zoom": 1,
-              "skip_existing_chunks": false
-            }
-          ],
-          "name": "minecraft:map"
-        },
-        {
-          "type": "minecraft:item",
           "weight": 10,
           "functions": [
             {
@@ -54,6 +41,13 @@
           "functions": [
           ],
           "name": "alexsmobs:shark_tooth"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "functions": [
+          ],
+          "name": "alexsmobs:serrated_shark_tooth"
         },
         {
           "type": "minecraft:item",
@@ -124,6 +118,11 @@
           "type": "minecraft:item",
           "weight": 1,
           "name": "minecraft:nautilus_shell"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "alexsmobs:fish_bones"
         },
         {
           "type": "minecraft:item",

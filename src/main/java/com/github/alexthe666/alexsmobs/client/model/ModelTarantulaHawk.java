@@ -4,12 +4,13 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.8
 
 
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk> {
     private final AdvancedModelBox root;
@@ -31,98 +32,98 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
     private final AdvancedModelBox stinger;
 
     public ModelTarantulaHawk() {
-        textureWidth = 128;
-        textureHeight = 128;
+        texWidth = 128;
+        texHeight = 128;
 
-        root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root = new AdvancedModelBox(this, "root");
+        root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -15.0F, 0.0F);
+        body = new AdvancedModelBox(this, "body");
+        body.setPos(0.0F, -15.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(33, 54).addBox(-3.0F, -3.0F, -5.0F, 6.0F, 6.0F, 10.0F, 0.0F, false);
 
-        wing_left = new AdvancedModelBox(this);
-        wing_left.setRotationPoint(1.0F, -3.0F, -3.0F);
+        wing_left = new AdvancedModelBox(this, "wing_left");
+        wing_left.setPos(1.0F, -3.0F, -3.0F);
         body.addChild(wing_left);
         setRotationAngle(wing_left, 0.0F, 0.0F, -0.1309F);
         wing_left.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -1.0F, 20.0F, 0.0F, 21.0F, 0.0F, false);
 
-        wing_right = new AdvancedModelBox(this);
-        wing_right.setRotationPoint(-1.0F, -3.0F, -3.0F);
+        wing_right = new AdvancedModelBox(this, "wing_right");
+        wing_right.setPos(-1.0F, -3.0F, -3.0F);
         body.addChild(wing_right);
         setRotationAngle(wing_right, 0.0F, 0.0F, 0.1309F);
         wing_right.setTextureOffset(0, 0).addBox(-20.0F, 0.0F, -1.0F, 20.0F, 0.0F, 21.0F, 0.0F, true);
 
-        legback_left = new AdvancedModelBox(this);
-        legback_left.setRotationPoint(2.0F, 3.0F, 3.0F);
+        legback_left = new AdvancedModelBox(this, "legback_left");
+        legback_left.setPos(2.0F, 3.0F, 3.0F);
         body.addChild(legback_left);
         setRotationAngle(legback_left, 0.0F, -0.3054F, 0.0F);
         legback_left.setTextureOffset(0, 41).addBox(0.0F, -3.0F, 0.0F, 21.0F, 15.0F, 0.0F, 0.0F, false);
 
-        legback_right = new AdvancedModelBox(this);
-        legback_right.setRotationPoint(-2.0F, 3.0F, 3.0F);
+        legback_right = new AdvancedModelBox(this, "legback_right");
+        legback_right.setPos(-2.0F, 3.0F, 3.0F);
         body.addChild(legback_right);
         setRotationAngle(legback_right, 0.0F, 0.3054F, 0.0F);
         legback_right.setTextureOffset(0, 41).addBox(-21.0F, -3.0F, 0.0F, 21.0F, 15.0F, 0.0F, 0.0F, true);
 
-        legmid_left = new AdvancedModelBox(this);
-        legmid_left.setRotationPoint(2.0F, 3.0F, 0.0F);
+        legmid_left = new AdvancedModelBox(this, "legmid_left");
+        legmid_left.setPos(2.0F, 3.0F, 0.0F);
         body.addChild(legmid_left);
         legmid_left.setTextureOffset(43, 38).addBox(0.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, false);
 
-        legmid_right = new AdvancedModelBox(this);
-        legmid_right.setRotationPoint(-2.0F, 3.0F, 0.0F);
+        legmid_right = new AdvancedModelBox(this, "legmid_right");
+        legmid_right.setPos(-2.0F, 3.0F, 0.0F);
         body.addChild(legmid_right);
         legmid_right.setTextureOffset(43, 38).addBox(-19.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, true);
 
-        legfront_left = new AdvancedModelBox(this);
-        legfront_left.setRotationPoint(2.0F, 3.0F, -3.0F);
+        legfront_left = new AdvancedModelBox(this, "legfront_left");
+        legfront_left.setPos(2.0F, 3.0F, -3.0F);
         body.addChild(legfront_left);
         setRotationAngle(legfront_left, 0.0F, 0.2618F, 0.0F);
         legfront_left.setTextureOffset(41, 22).addBox(0.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, false);
 
-        legfront_right = new AdvancedModelBox(this);
-        legfront_right.setRotationPoint(-2.0F, 3.0F, -3.0F);
+        legfront_right = new AdvancedModelBox(this, "legfront_right");
+        legfront_right.setPos(-2.0F, 3.0F, -3.0F);
         body.addChild(legfront_right);
         setRotationAngle(legfront_right, 0.0F, -0.2618F, 0.0F);
         legfront_right.setTextureOffset(41, 22).addBox(-19.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, true);
 
-        head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, 0.0F, -5.0F);
+        head = new AdvancedModelBox(this, "head");
+        head.setPos(0.0F, 0.0F, -5.0F);
         body.addChild(head);
         head.setTextureOffset(0, 57).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 7.0F, 4.0F, 0.0F, false);
 
-        fang_left = new AdvancedModelBox(this);
-        fang_left.setRotationPoint(1.0F, 4.5F, -3.3F);
+        fang_left = new AdvancedModelBox(this, "fang_left");
+        fang_left.setPos(1.0F, 4.5F, -3.3F);
         head.addChild(fang_left);
         fang_left.setTextureOffset(0, 22).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 4.0F, 1.0F, 0.0F, false);
 
-        fang_right = new AdvancedModelBox(this);
-        fang_right.setRotationPoint(-1.0F, 4.5F, -3.3F);
+        fang_right = new AdvancedModelBox(this, "fang_right");
+        fang_right.setPos(-1.0F, 4.5F, -3.3F);
         head.addChild(fang_right);
         fang_right.setTextureOffset(0, 22).addBox(-2.0F, -1.0F, -1.0F, 3.0F, 4.0F, 1.0F, 0.0F, true);
 
-        antenna_left = new AdvancedModelBox(this);
-        antenna_left.setRotationPoint(1.0F, -2.0F, -4.0F);
+        antenna_left = new AdvancedModelBox(this, "antenna_left");
+        antenna_left.setPos(1.0F, -2.0F, -4.0F);
         head.addChild(antenna_left);
         setRotationAngle(antenna_left, 0.0F, -0.3927F, -0.3491F);
         antenna_left.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -8.0F, 0.0F, 11.0F, 8.0F, 0.0F, false);
 
-        antenna_right = new AdvancedModelBox(this);
-        antenna_right.setRotationPoint(-1.0F, -2.0F, -4.0F);
+        antenna_right = new AdvancedModelBox(this, "antenna_right");
+        antenna_right.setPos(-1.0F, -2.0F, -4.0F);
         head.addChild(antenna_right);
         setRotationAngle(antenna_right, 0.0F, 0.3927F, 0.3491F);
         antenna_right.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -8.0F, 0.0F, 11.0F, 8.0F, 0.0F, true);
 
-        abdomen = new AdvancedModelBox(this);
-        abdomen.setRotationPoint(0.0F, -2.0F, 5.0F);
+        abdomen = new AdvancedModelBox(this, "abdomen");
+        abdomen.setPos(0.0F, -2.0F, 5.0F);
         body.addChild(abdomen);
         abdomen.setTextureOffset(0, 22).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 6.0F, 12.0F, 0.0F, false);
 
-        stinger = new AdvancedModelBox(this);
-        stinger.setRotationPoint(0.0F, 3.0F, 12.0F);
+        stinger = new AdvancedModelBox(this, "stinger");
+        stinger.setPos(0.0F, 3.0F, 12.0F);
         abdomen.addChild(stinger);
         stinger.setTextureOffset(9, 0).addBox(0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
         this.updateDefaultPose();
@@ -134,7 +135,7 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
     }
 
     @Override
-    public void setRotationAngles(EntityTarantulaHawk entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityTarantulaHawk entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float idleSpeed = 0.25F;
         float idleDegree = 0.25F;
@@ -144,7 +145,7 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
         float flyDegree = 0.6F;
         float digSpeed = 0.85F;
         float digDegree = 0.6F;
-        float partialTick = ageInTicks - entity.ticksExisted;
+        float partialTick = ageInTicks - entity.tickCount;
         float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
         float dragProgress = entity.prevDragProgress + (entity.dragProgress - entity.prevDragProgress) * partialTick;
         float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
@@ -164,60 +165,60 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
         progressPositionPrev(body, flyProgress, 0, -3, -2, 5F);
         progressPositionPrev(legfront_right, flyProgress, 0, -1, 2, 5F);
         progressPositionPrev(legfront_left, flyProgress, 0, -1, 2, 5F);
-        progressRotationPrev(legfront_left, flyProgress, (float) Math.toRadians(35), (float) Math.toRadians(-20), (float) Math.toRadians(30), 5F);
-        progressRotationPrev(legfront_right, flyProgress, (float) Math.toRadians(35), (float) Math.toRadians(20), (float) Math.toRadians(-30), 5F);
-        progressRotationPrev(legmid_left, flyProgress, (float) Math.toRadians(35), (float) Math.toRadians(-35), (float) Math.toRadians(20), 5F);
-        progressRotationPrev(legmid_right, flyProgress, (float) Math.toRadians(35), (float) Math.toRadians(35), (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(legback_left, flyProgress, (float) Math.toRadians(35), (float) Math.toRadians(-35), (float) Math.toRadians(20), 5F);
-        progressRotationPrev(legback_right, flyProgress, (float) Math.toRadians(35), (float) Math.toRadians(35), (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(wing_left, flyProgress, 0, (float) Math.toRadians(35), 0, 5F);
-        progressRotationPrev(wing_right, flyProgress, 0, (float) Math.toRadians(-35), 0, 5F);
-        progressRotationPrev(head, flyProgress, (float) Math.toRadians(-20), 0, 0, 5F);
-        progressRotationPrev(wing_left, walkProgress, (float) Math.toRadians(20), (float) Math.toRadians(-20), (float) Math.toRadians(20), 5F);
-        progressRotationPrev(wing_right, walkProgress, (float) Math.toRadians(20), (float) Math.toRadians(20), (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(wing_right, walkProgress * limbSwingAmount, (float) Math.toRadians(20), (float) Math.toRadians(15), 0, 5F);
-        progressRotationPrev(wing_left, walkProgress * limbSwingAmount, (float) Math.toRadians(20), (float) Math.toRadians(-15), 0, 5F);
-        progressRotationPrev(head, dragProgress, (float) Math.toRadians(-70), 0, 0, 5F);
-        progressRotationPrev(fang_right, dragProgress, 0, 0, (float) Math.toRadians(20), 5F);
-        progressRotationPrev(fang_left, dragProgress, 0, 0, (float) Math.toRadians(-20), 5F);
+        progressRotationPrev(legfront_left, flyProgress, Maths.rad(35), Maths.rad(-20), Maths.rad(30), 5F);
+        progressRotationPrev(legfront_right, flyProgress, Maths.rad(35), Maths.rad(20), Maths.rad(-30), 5F);
+        progressRotationPrev(legmid_left, flyProgress, Maths.rad(35), Maths.rad(-35), Maths.rad(20), 5F);
+        progressRotationPrev(legmid_right, flyProgress, Maths.rad(35), Maths.rad(35), Maths.rad(-20), 5F);
+        progressRotationPrev(legback_left, flyProgress, Maths.rad(35), Maths.rad(-35), Maths.rad(20), 5F);
+        progressRotationPrev(legback_right, flyProgress, Maths.rad(35), Maths.rad(35), Maths.rad(-20), 5F);
+        progressRotationPrev(wing_left, flyProgress, 0, Maths.rad(35), 0, 5F);
+        progressRotationPrev(wing_right, flyProgress, 0, Maths.rad(-35), 0, 5F);
+        progressRotationPrev(head, flyProgress, Maths.rad(-20), 0, 0, 5F);
+        progressRotationPrev(wing_left, walkProgress, Maths.rad(20), Maths.rad(-20), Maths.rad(20), 5F);
+        progressRotationPrev(wing_right, walkProgress, Maths.rad(20), Maths.rad(20), Maths.rad(-20), 5F);
+        progressRotationPrev(wing_right, walkProgress * limbSwingAmount, Maths.rad(20), Maths.rad(15), 0, 5F);
+        progressRotationPrev(wing_left, walkProgress * limbSwingAmount, Maths.rad(20), Maths.rad(-15), 0, 5F);
+        progressRotationPrev(head, dragProgress, Maths.rad(-70), 0, 0, 5F);
+        progressRotationPrev(fang_right, dragProgress, 0, 0, Maths.rad(20), 5F);
+        progressRotationPrev(fang_left, dragProgress, 0, 0, Maths.rad(-20), 5F);
         progressPositionPrev(head, dragProgress, 0, 3, -1, 5F);
         progressPositionPrev(fang_right, dragProgress, 0, 1, 0, 5F);
         progressPositionPrev(fang_left, dragProgress, 0, 1, 0, 5F);
         progressPositionPrev(body, sitProgress, 0, 7, 0, 5F);
-        progressRotationPrev(legfront_right, sitProgress, 0, (float) Math.toRadians(-25), (float) Math.toRadians(27), 5F);
-        progressRotationPrev(legfront_left, sitProgress, 0, (float) Math.toRadians(25), (float) Math.toRadians(-27), 5F);
-        progressRotationPrev(legmid_right, sitProgress, 0, 0, (float) Math.toRadians(21), 5F);
-        progressRotationPrev(legmid_left, sitProgress, 0, 0, (float) Math.toRadians(-21), 5F);
-        progressRotationPrev(legback_right, sitProgress, 0, (float) Math.toRadians(25), (float) Math.toRadians(27), 5F);
-        progressRotationPrev(legback_left, sitProgress, 0, (float) Math.toRadians(-25), (float) Math.toRadians(-27), 5F);
-        progressRotationPrev(head, sitProgress, (float) Math.toRadians(-20), 0, 0, 5F);
-        progressRotationPrev(abdomen, stingGroundProgress, (float) Math.toRadians(-70), 0, 0, 5F);
-        progressRotationPrev(stinger, stingGroundProgress, (float) Math.toRadians(-30), 0, 0, 5F);
-        progressRotationPrev(body, stingGroundProgress, (float) Math.toRadians(-40), 0, 0, 5F);
+        progressRotationPrev(legfront_right, sitProgress, 0, Maths.rad(-25), Maths.rad(27), 5F);
+        progressRotationPrev(legfront_left, sitProgress, 0, Maths.rad(25), Maths.rad(-27), 5F);
+        progressRotationPrev(legmid_right, sitProgress, 0, 0, Maths.rad(21), 5F);
+        progressRotationPrev(legmid_left, sitProgress, 0, 0, Maths.rad(-21), 5F);
+        progressRotationPrev(legback_right, sitProgress, 0, Maths.rad(25), Maths.rad(27), 5F);
+        progressRotationPrev(legback_left, sitProgress, 0, Maths.rad(-25), Maths.rad(-27), 5F);
+        progressRotationPrev(head, sitProgress, Maths.rad(-20), 0, 0, 5F);
+        progressRotationPrev(abdomen, stingGroundProgress, Maths.rad(-70), 0, 0, 5F);
+        progressRotationPrev(stinger, stingGroundProgress, Maths.rad(-30), 0, 0, 5F);
+        progressRotationPrev(body, stingGroundProgress, Maths.rad(-40), 0, 0, 5F);
         progressPositionPrev(body, stingGroundProgress, 0, -2, 0, 5F);
         progressPositionPrev(abdomen, stingGroundProgress, 0, 0, 2, 5F);
         progressPositionPrev(stinger, stingGroundProgress, 0, 1, 0, 5F);
-        progressRotationPrev(legfront_right, stingGroundProgress,  (float) Math.toRadians(40), 0, (float) Math.toRadians(-40), 5F);
-        progressRotationPrev(legfront_left, stingGroundProgress,  (float) Math.toRadians(40), 0, (float) Math.toRadians(40), 5F);
-        progressRotationPrev(legmid_right, stingGroundProgress,  (float) Math.toRadians(40), 0, (float) Math.toRadians(-10), 5F);
-        progressRotationPrev(legmid_left, stingGroundProgress,  (float) Math.toRadians(40), 0, (float) Math.toRadians(10), 5F);
-        progressRotationPrev(legback_left, stingGroundProgress,  (float) Math.toRadians(40), 0, (float) Math.toRadians(-10), 5F);
-        progressRotationPrev(legback_right, stingGroundProgress,  (float) Math.toRadians(40), 0, (float) Math.toRadians(10), 5F);
-        progressRotationPrev(body, stingFlyProgress, (float) Math.toRadians(-70), 0, 0, 5F);
-        progressRotationPrev(abdomen, stingFlyProgress, (float) Math.toRadians(-50), 0, 0, 5F);
-        progressRotationPrev(stinger, stingFlyProgress, (float) Math.toRadians(-30), 0, 0, 5F);
+        progressRotationPrev(legfront_right, stingGroundProgress,  Maths.rad(40), 0, Maths.rad(-40), 5F);
+        progressRotationPrev(legfront_left, stingGroundProgress,  Maths.rad(40), 0, Maths.rad(40), 5F);
+        progressRotationPrev(legmid_right, stingGroundProgress,  Maths.rad(40), 0, Maths.rad(-10), 5F);
+        progressRotationPrev(legmid_left, stingGroundProgress,  Maths.rad(40), 0, Maths.rad(10), 5F);
+        progressRotationPrev(legback_left, stingGroundProgress,  Maths.rad(40), 0, Maths.rad(-10), 5F);
+        progressRotationPrev(legback_right, stingGroundProgress,  Maths.rad(40), 0, Maths.rad(10), 5F);
+        progressRotationPrev(body, stingFlyProgress, Maths.rad(-70), 0, 0, 5F);
+        progressRotationPrev(abdomen, stingFlyProgress, Maths.rad(-50), 0, 0, 5F);
+        progressRotationPrev(stinger, stingFlyProgress, Maths.rad(-30), 0, 0, 5F);
         progressPositionPrev(body, stingFlyProgress, 0, -5, 0, 5F);
         progressPositionPrev(abdomen, stingFlyProgress, 0, 0, 2, 5F);
         progressPositionPrev(stinger, 5F - stingProgress, 0, 0, -3, 5F);
         this.stinger.setScale(1F, 1F, 1F + stingProgress * 0.15F);
-        progressRotationPrev(body, digProgress, (float) Math.toRadians(40), 0, 0, 5F);
-        progressRotationPrev(head, digProgress, (float) Math.toRadians(-20), 0, 0, 5F);
-        progressRotationPrev(legfront_right, digProgress,  (float) Math.toRadians(-50), 0, (float) Math.toRadians(20), 5F);
-        progressRotationPrev(legfront_left, digProgress,  (float) Math.toRadians(-50), 0, (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(legmid_right, digProgress,  (float) Math.toRadians(-10), 0, (float) Math.toRadians(-10), 5F);
-        progressRotationPrev(legmid_left, digProgress,  (float) Math.toRadians(-10), 0, (float) Math.toRadians(10), 5F);
-        progressRotationPrev(legback_left, digProgress,  (float) Math.toRadians(-30), 0, (float) Math.toRadians(30), 5F);
-        progressRotationPrev(legback_right, digProgress,  (float) Math.toRadians(-30), 0, (float) Math.toRadians(-30), 5F);
+        progressRotationPrev(body, digProgress, Maths.rad(40), 0, 0, 5F);
+        progressRotationPrev(head, digProgress, Maths.rad(-20), 0, 0, 5F);
+        progressRotationPrev(legfront_right, digProgress,  Maths.rad(-50), 0, Maths.rad(20), 5F);
+        progressRotationPrev(legfront_left, digProgress,  Maths.rad(-50), 0, Maths.rad(-20), 5F);
+        progressRotationPrev(legmid_right, digProgress,  Maths.rad(-10), 0, Maths.rad(-10), 5F);
+        progressRotationPrev(legmid_left, digProgress,  Maths.rad(-10), 0, Maths.rad(10), 5F);
+        progressRotationPrev(legback_left, digProgress,  Maths.rad(-30), 0, Maths.rad(30), 5F);
+        progressRotationPrev(legback_right, digProgress,  Maths.rad(-30), 0, Maths.rad(-30), 5F);
         this.swing(legfront_left, digSpeed, digDegree * 1, false, 1, -0.5F, ageInTicks, digProgress * 0.2F);
         this.swing(legfront_right, digSpeed, digDegree * 1, false, 1, 0.5F, ageInTicks, digProgress * 0.2F);
         this.swing(head, digSpeed, digDegree * 1, false, 0, 0F, ageInTicks, digProgress * 0.2F);
@@ -252,7 +253,7 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
             this.swing(abdomen, walkSpeed, walkDegree * 0.4F, false, 3, 0, limbSwing, limbSwingAmount);
             this.walk(head, walkSpeed, walkDegree * 0.4F, false, 3, 0, limbSwing, limbSwingAmount);
         }
-        float f = (float) Math.toRadians(flyAngle);
+        float f = Maths.rad(flyAngle);
         this.body.rotateAngleZ += f;
         if(dragProgress == 0){
             this.faceTarget(netHeadYaw, headPitch, 1.2F, head);
@@ -260,12 +261,12 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
     }
 
     @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         root.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 

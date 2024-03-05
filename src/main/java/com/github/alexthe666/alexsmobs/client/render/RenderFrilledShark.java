@@ -2,15 +2,13 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelFrilledShark;
 import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.mojang.blaze3d.vertex.VertexBuilderUtils;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.resources.ResourceLocation;
 
 import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
@@ -21,29 +19,29 @@ public class RenderFrilledShark extends MobRenderer<EntityFrilledShark, ModelFri
     private static final ResourceLocation TEXTURE_KAIJU_DEPRESSURIZED = new ResourceLocation("alexsmobs:textures/entity/frilled_shark_kaiju_depressurized.png");
     private static final ResourceLocation TEXTURE_TEETH = new ResourceLocation("alexsmobs:textures/entity/frilled_shark_teeth.png");
 
-    public RenderFrilledShark(EntityRendererManager renderManagerIn) {
+    public RenderFrilledShark(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelFrilledShark(), 0.4F);
         this.addLayer(new TeethLayer(this));
     }
 
-    protected void preRenderCallback(EntityFrilledShark entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityFrilledShark entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
         matrixStackIn.scale(0.85F, 0.85F, 0.85F);
     }
 
-    public ResourceLocation getEntityTexture(EntityFrilledShark entity) {
+    public ResourceLocation getTextureLocation(EntityFrilledShark entity) {
         return entity.isKaiju() ? (entity.isDepressurized() ? TEXTURE_KAIJU_DEPRESSURIZED : TEXTURE_KAIJU) : (entity.isDepressurized() ? TEXTURE_DEPRESSURIZED : TEXTURE);
     }
 
-    class TeethLayer extends LayerRenderer<EntityFrilledShark, ModelFrilledShark> {
+    static class TeethLayer extends RenderLayer<EntityFrilledShark, ModelFrilledShark> {
 
 
         public TeethLayer(RenderFrilledShark render) {
             super(render);
         }
 
-        public void render(MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLightIn, EntityFrilledShark entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            IVertexBuilder glintBuilder = buffer.getBuffer(AMRenderTypes.getEyesFlickering(TEXTURE_TEETH, 240));
-            this.getEntityModel().render(matrixStackIn, glintBuilder, 240, NO_OVERLAY, 1, 1, 1, 1);
+        public void render(PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, EntityFrilledShark entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+            VertexConsumer glintBuilder = buffer.getBuffer(AMRenderTypes.getEyesFlickering(TEXTURE_TEETH, 240));
+            this.getParentModel().renderToBuffer(matrixStackIn, glintBuilder, 240, NO_OVERLAY, 1, 1, 1, 1);
 
         }
     }

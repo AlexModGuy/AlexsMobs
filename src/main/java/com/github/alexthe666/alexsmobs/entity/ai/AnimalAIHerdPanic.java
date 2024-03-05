@@ -1,38 +1,40 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.entity.EntityLaviathan;
 import com.github.alexthe666.alexsmobs.entity.IHerdPanic;
 import com.google.common.base.Predicate;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
 public class AnimalAIHerdPanic extends Goal {
-    protected final CreatureEntity creature;
+    protected final PathfinderMob creature;
     protected final double speed;
-    protected final Predicate<? super CreatureEntity> targetEntitySelector;
+    protected final Predicate<? super PathfinderMob> targetEntitySelector;
     protected double randPosX;
     protected double randPosY;
     protected double randPosZ;
     protected boolean running;
 
-    public AnimalAIHerdPanic(CreatureEntity creature, double speedIn) {
+    public AnimalAIHerdPanic(PathfinderMob creature, double speedIn) {
         this.creature = creature;
         this.speed = speedIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
-        this.targetEntitySelector = new Predicate<CreatureEntity>() {
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.targetEntitySelector = new Predicate<PathfinderMob>() {
             @Override
-            public boolean apply(@Nullable CreatureEntity animal) {
+            public boolean apply(@Nullable PathfinderMob animal) {
                 if (animal instanceof IHerdPanic && animal.getType() == creature.getType()) {
                     return ((IHerdPanic) animal).canPanic();
                 }
@@ -41,12 +43,12 @@ public class AnimalAIHerdPanic extends Goal {
         };
     }
 
-    public boolean shouldExecute() {
-        if (this.creature.getRevengeTarget() == null && !this.creature.isBurning()) {
+    public boolean canUse() {
+        if (this.creature.getLastHurtByMob() == null || !this.creature.getLastHurtByMob().isAlive()) {
             return false;
         } else {
-            if (this.creature.isBurning()) {
-                BlockPos blockpos = this.getRandPos(this.creature.world, this.creature, 5, 4);
+            if (this.creature.isOnFire() && !this.creature.fireImmune()) {
+                BlockPos blockpos = this.getRandPos(this.creature.level(), this.creature, 5, 4);
                 if (blockpos != null) {
                     this.randPosX = blockpos.getX();
                     this.randPosY = blockpos.getY();
@@ -54,20 +56,24 @@ public class AnimalAIHerdPanic extends Goal {
                     return true;
                 }
             }
-            if (this.creature.getRevengeTarget() != null && this.creature instanceof IHerdPanic && ((IHerdPanic) this.creature).canPanic()) {
-
-                List<CreatureEntity> list = this.creature.world.getEntitiesWithinAABB(this.creature.getClass(), this.getTargetableArea(), this.targetEntitySelector);
-                for (CreatureEntity creatureEntity : list) {
-                    creatureEntity.setRevengeTarget(this.creature.getRevengeTarget());
+            if (this.creature.getLastHurtByMob() != null && this.creature instanceof IHerdPanic && ((IHerdPanic) this.creature).canPanic()) {
+                List<? extends PathfinderMob> list = this.creature.level().getEntitiesOfClass(this.creature.getClass(), this.getTargetableArea(), this.targetEntitySelector);
+                for (PathfinderMob creatureEntity : list) {
+                    creatureEntity.setLastHurtByMob(this.creature.getLastHurtByMob());
                 }
-                return this.findRandomPositionFrom(this.creature.getRevengeTarget());
+                return this.findRandomPositionFrom(this.creature.getLastHurtByMob());
             }
             return this.findRandomPosition();
         }
     }
 
     private boolean findRandomPositionFrom(LivingEntity revengeTarget) {
-        Vector3d vector3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.creature, 16, 7, revengeTarget.getPositionVec());
+        Vec3 vector3d;
+        if(this.creature instanceof EntityLaviathan){
+            vector3d = DefaultRandomPos.getPosAway(this.creature, 32, 16, revengeTarget.position());
+        }else{
+            vector3d = LandRandomPos.getPosAway(this.creature, 16, 7, revengeTarget.position());
+        }
         if (vector3d == null) {
             return false;
         } else {
@@ -78,15 +84,15 @@ public class AnimalAIHerdPanic extends Goal {
         }
     }
 
-    protected AxisAlignedBB getTargetableArea() {
-        Vector3d renderCenter = new Vector3d(this.creature.getPosX() + 0.5, this.creature.getPosY() + 0.5D, this.creature.getPosZ() + 0.5D);
+    protected AABB getTargetableArea() {
+        Vec3 renderCenter = new Vec3(this.creature.getX() + 0.5, this.creature.getY() + 0.5D, this.creature.getZ() + 0.5D);
         double searchRadius = 15;
-        AxisAlignedBB aabb = new AxisAlignedBB(-searchRadius, -searchRadius, -searchRadius, searchRadius, searchRadius, searchRadius);
-        return aabb.offset(renderCenter);
+        AABB aabb = new AABB(-searchRadius, -searchRadius, -searchRadius, searchRadius, searchRadius, searchRadius);
+        return aabb.move(renderCenter);
     }
 
     protected boolean findRandomPosition() {
-        Vector3d vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 5, 4);
+        Vec3 vector3d = LandRandomPos.getPos(this.creature, 5, 4);
         if (vector3d == null) {
             return false;
         } else {
@@ -104,43 +110,44 @@ public class AnimalAIHerdPanic extends Goal {
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting() {
+    public void start() {
         if (this.creature instanceof IHerdPanic) {
             ((IHerdPanic) this.creature).onPanic();
         }
-        this.creature.getNavigator().tryMoveToXYZ(this.randPosX, this.randPosY, this.randPosZ, this.speed);
+        this.creature.getNavigation().moveTo(this.randPosX, this.randPosY, this.randPosZ, this.speed);
+
         this.running = true;
     }
 
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
-    public void resetTask() {
+    public void stop() {
         this.running = false;
     }
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean shouldContinueExecuting() {
-        return !this.creature.getNavigator().noPath();
+    public boolean canContinueToUse() {
+        return !this.creature.getNavigation().isDone();
     }
 
     @Nullable
-    protected BlockPos getRandPos(IBlockReader worldIn, Entity entityIn, int horizontalRange, int verticalRange) {
-        BlockPos blockpos = entityIn.getPosition();
+    protected BlockPos getRandPos(BlockGetter worldIn, Entity entityIn, int horizontalRange, int verticalRange) {
+        BlockPos blockpos = entityIn.blockPosition();
         int i = blockpos.getX();
         int j = blockpos.getY();
         int k = blockpos.getZ();
         float f = (float) (horizontalRange * horizontalRange * verticalRange * 2);
         BlockPos blockpos1 = null;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
         for (int l = i - horizontalRange; l <= i + horizontalRange; ++l) {
             for (int i1 = j - verticalRange; i1 <= j + verticalRange; ++i1) {
                 for (int j1 = k - horizontalRange; j1 <= k + horizontalRange; ++j1) {
-                    blockpos$mutable.setPos(l, i1, j1);
-                    if (worldIn.getFluidState(blockpos$mutable).isTagged(FluidTags.WATER)) {
+                    blockpos$mutable.set(l, i1, j1);
+                    if (worldIn.getFluidState(blockpos$mutable).is(FluidTags.WATER)) {
                         float f1 = (float) ((l - i) * (l - i) + (i1 - j) * (i1 - j) + (j1 - k) * (j1 - k));
                         if (f1 < f) {
                             f = f1;

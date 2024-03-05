@@ -8,120 +8,118 @@ import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.*;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
+public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketable {
 
-    private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(EntityLobster.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> ATTACK_TICK = EntityDataManager.createKey(EntityLobster.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityLobster.class, DataSerializers.VARINT);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityLobster.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(EntityLobster.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityLobster.class, EntityDataSerializers.INT);
     public float attackProgress;
     public float prevAttackProgress;
     private int attackCooldown = 0;
 
-    protected EntityLobster(EntityType type, World p_i48565_2_) {
+    protected EntityLobster(EntityType type, Level p_i48565_2_) {
         super(type, p_i48565_2_);
-        this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
     }
 
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 7;
     }
 
-    public boolean isMaxGroupSize(int sizeIn) {
+    public boolean isMaxGroupSizeReached(int sizeIn) {
         return false;
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 5D).createMutableAttribute(Attributes.ARMOR, 2.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 5D).add(Attributes.ARMOR, 2.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.lobsterSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.lobsterSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.LOBSTER_HURT;
+        return AMSoundRegistry.LOBSTER_HURT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.LOBSTER_HURT;
+        return AMSoundRegistry.LOBSTER_HURT.get();
     }
 
-    public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this);
+    public boolean checkSpawnObstruction(LevelReader worldIn) {
+        return worldIn.isUnobstructed(this);
     }
 
     public static String getVariantName(int variant) {
-        switch (variant) {
-            case 1:
-                return "blue";
-            case 2:
-                return "yellow";
-            case 3:
-                return "redblue";
-            case 4:
-                return "black";
-            case 5:
-                return "white";
-            default:
-                return "red";
-        }
+        return switch (variant) {
+            case 1 -> "blue";
+            case 2 -> "yellow";
+            case 3 -> "redblue";
+            case 4 -> "black";
+            case 5 -> "white";
+            default -> "red";
+        };
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(1, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(3, new BottomFeederAIWander(this, 1.0D, 10, 50));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
     }
 
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.ARTHROPOD;
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
     }
 
-    public void travel(Vector3d travelVector) {
-        if (this.isServerWorld() && this.isInWater()) {
-            this.moveRelative(this.getAIMoveSpeed(), travelVector);
-            this.move(MoverType.SELF, this.getMotion());
-            if(this.isJumping){
-                this.setMotion(this.getMotion().scale(1.4D));
-                this.setMotion(this.getMotion().add(0.0D, 0.72D, 0.0D));
+    public void travel(Vec3 travelVector) {
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(this.getSpeed(), travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            if(this.jumping){
+                this.setDeltaMovement(this.getDeltaMovement().scale(1.4D));
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.72D, 0.0D));
             }else{
-                this.setMotion(this.getMotion().scale(0.4D));
-                this.setMotion(this.getMotion().add(0.0D, -0.08D, 0.0D));
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.4D));
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.08D, 0.0D));
             }
 
         } else {
@@ -131,77 +129,75 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(VARIANT, 0);
-        this.dataManager.register(ATTACK_TICK, 0);
-        this.dataManager.register(FROM_BUCKET, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(VARIANT, 0);
+        this.entityData.define(ATTACK_TICK, 0);
+        this.entityData.define(FROM_BUCKET, false);
     }
 
-    protected ItemStack getFishBucket(){
-        ItemStack stack = new ItemStack(AMItemRegistry.LOBSTER_BUCKET);
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
+        ItemStack stack = new ItemStack(AMItemRegistry.LOBSTER_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setDisplayName(this.getCustomName());
+            stack.setHoverName(this.getCustomName());
         }
         return stack;
     }
 
-    protected void setBucketData(ItemStack bucket) {
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setDisplayName(this.getCustomName());
+            bucket.setHoverName(this.getCustomName());
         }
-        CompoundNBT compoundnbt = bucket.getOrCreateTag();
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
+        CompoundTag compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putInt("BucketVariantTag", this.getVariant());
     }
 
-    public boolean preventDespawn() {
-        return super.preventDespawn() || this.isFromBucket();
-    }
-
-    protected ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
-        ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
-        if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
-            ItemStack itemstack1 = this.getFishBucket();
-            this.setBucketData(itemstack1);
-            if (!this.world.isRemote) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)p_230254_1_, itemstack1);
-            }
-
-            if (itemstack.isEmpty()) {
-                p_230254_1_.setHeldItem(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.inventory.addItemStackToInventory(itemstack1)) {
-                p_230254_1_.dropItem(itemstack1, false);
-            }
-
-            this.remove();
-            return ActionResultType.func_233537_a_(this.world.isRemote);
-        } else {
-            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
+        if (compound.contains("BucketVariantTag", 3)) {
+            this.setVariant(compound.getInt("BucketVariantTag"));
         }
     }
 
-    public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
-        return worldIn.getFluidState(pos.down()).isEmpty() && worldIn.getFluidState(pos).isTagged(FluidTags.WATER) ? 10.0F : super.getBlockPathWeight(pos, worldIn);
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromBucket();
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-        this.dataManager.set(ATTACK_TICK, 5);
-        return super.attackEntityAsMob(entityIn);
+    public boolean removeWhenFarAway(double p_27492_) {
+        return !this.fromBucket() && !this.hasCustomName();
+    }
+
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+    }
+
+    public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
+        return worldIn.getFluidState(pos.below()).isEmpty() && worldIn.getFluidState(pos).is(FluidTags.WATER) ? 10.0F : super.getWalkTargetValue(pos, worldIn);
+    }
+
+    public boolean doHurtTarget(Entity entityIn) {
+        this.entityData.set(ATTACK_TICK, 5);
+        return super.doHurtTarget(entityIn);
     }
 
     public void tick() {
         super.tick();
         prevAttackProgress = attackProgress;
-        if (this.dataManager.get(ATTACK_TICK) > 0) {
+        if (this.entityData.get(ATTACK_TICK) > 0) {
             if(attackProgress == 3){
-                this.playSound(AMSoundRegistry.LOBSTER_ATTACK, this.getSoundVolume(), this.getSoundPitch());
+                this.playSound(AMSoundRegistry.LOBSTER_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
             }
-            if (this.dataManager.get(ATTACK_TICK) == 2 && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 1.3D) {
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 2);
+            if (this.entityData.get(ATTACK_TICK) == 2 && this.getTarget() != null && this.distanceTo(this.getTarget()) < 1.3D) {
+                this.getTarget().hurt(this.damageSources().mobAttack(this), 2);
             }
-            this.dataManager.set(ATTACK_TICK, this.dataManager.get(ATTACK_TICK) - 1);
+            this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
             if (attackProgress < 5F) {
                 attackProgress++;
             }
@@ -213,49 +209,56 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         if(attackCooldown > 0){
             attackCooldown--;
         }
-        if(this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) <= 1F && attackCooldown == 0){
-            this.faceEntity(this.getAttackTarget(), 180F, 20F);
-            attackEntityAsMob(this.getAttackTarget());
+        if(this.getTarget() != null && this.distanceTo(this.getTarget()) <= 1F && attackCooldown == 0){
+            this.lookAt(this.getTarget(), 180F, 20F);
+            doHurtTarget(this.getTarget());
             attackCooldown = 20;
         }
     }
 
-    protected void updateAir(int air) {
+    protected void handleAirSupply(int air) {
 
     }
 
     public int getVariant() {
-        return this.dataManager.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.dataManager.set(VARIANT, Integer.valueOf(variant));
+        this.entityData.set(VARIANT, Integer.valueOf(variant));
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getVariant());
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setVariant(compound.getInt("Variant"));
         this.setFromBucket(compound.getBoolean("FromBucket"));
     }
 
-
-    private boolean isFromBucket() {
-        return this.dataManager.get(FROM_BUCKET);
+    @Override
+    public boolean fromBucket() {
+        return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean p_203706_1_) {
-        this.dataManager.set(FROM_BUCKET, p_203706_1_);
+        this.entityData.set(FROM_BUCKET, p_203706_1_);
+    }
+
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        float variantChange = this.getRNG().nextFloat();
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        float variantChange = this.getRandom().nextFloat();
         if(variantChange <= 0.00001){
             this.setVariant(5);
         }else if(variantChange <= 0.00002){
@@ -269,13 +272,13 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         }else{
             this.setVariant(0);
         }
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    protected PathNavigator createNavigator(World worldIn) {
+    protected PathNavigation createNavigation(Level worldIn) {
         SemiAquaticPathNavigator flyingpathnavigator = new SemiAquaticPathNavigator(this, worldIn) {
-            public boolean canEntityStandOnPos(BlockPos pos) {
-                return this.world.getBlockState(pos).getFluidState().isEmpty();
+            public boolean isStableDestination(BlockPos pos) {
+                return this.level.getBlockState(pos).getFluidState().isEmpty();
             }
         };
         return flyingpathnavigator;
@@ -301,9 +304,8 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         return 5;
     }
 
-    public static <T extends MobEntity> boolean canLobsterSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        ITag<Block> tag = BlockTags.getCollection().get(AMTagRegistry.LOBSTER_SPAWNS);
-        boolean spawnBlock = tag != null && tag.contains(worldIn.getBlockState(pos.down()).getBlock());
-        return tag == null || spawnBlock || worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
+    public static <T extends Mob> boolean canLobsterSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.LOBSTER_SPAWNS);
+        return spawnBlock || worldIn.getFluidState(pos).is(FluidTags.WATER);
     }
 }

@@ -1,112 +1,98 @@
 package com.github.alexthe666.alexsmobs.item;
 
-import com.github.alexthe666.alexsmobs.entity.*;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityCatfish;
+import com.github.alexthe666.alexsmobs.entity.EntityLobster;
+import com.github.alexthe666.alexsmobs.entity.util.TerrapinTypes;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Supplier;
 
-public class ItemModFishBucket extends BucketItem {
-    private final EntityType<?> fishType;
+public class ItemModFishBucket extends MobBucketItem {
 
-    public ItemModFishBucket(EntityType<?> fishTypeIn, Fluid fluid, Item.Properties builder) {
-        super(fluid, builder.maxStackSize(1));
-        this.fishType = fishTypeIn;
-        this.fishTypeSupplier = () -> fishTypeIn;
-    }
-
-    public void onLiquidPlaced(World worldIn, ItemStack p_203792_2_, BlockPos pos) {
-        if (worldIn instanceof ServerWorld) {
-            this.placeFish((ServerWorld)worldIn, p_203792_2_, pos);
-        }
-    }
-
-    protected void playEmptySound(@Nullable PlayerEntity player, IWorld worldIn, BlockPos pos) {
-        worldIn.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY_FISH, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-    }
-
-    private void placeFish(ServerWorld worldIn, ItemStack stack, BlockPos pos) {
-        Entity entity = this.fishType.spawn(worldIn, stack, (PlayerEntity)null, pos, SpawnReason.BUCKET, true, false);
-        if (entity != null && entity instanceof EntityLobster) {
-            ((EntityLobster)entity).setFromBucket(true);
-            CompoundNBT compoundnbt = stack.getOrCreateTag();
-            if(compoundnbt.contains("BucketVariantTag", 3)){
-                int i = compoundnbt.getInt("BucketVariantTag");
-                ((EntityLobster) entity).setVariant(i);
-            }
-
-        }
-        if (entity != null && entity instanceof EntityBlobfish) {
-            ((EntityBlobfish)entity).setFromBucket(true);
-            CompoundNBT compoundnbt = stack.getOrCreateTag();
-            if(compoundnbt.contains("BucketScale")){
-                ((EntityBlobfish) entity).setBlobfishScale(compoundnbt.getFloat("BucketScale"));
-            }
-            if(compoundnbt.contains("Slimed")){
-                ((EntityBlobfish) entity).setSlimed(compoundnbt.getBoolean("Slimed"));
-            }
-        }
-        if (entity != null && entity instanceof EntityStradpole) {
-            ((EntityStradpole) entity).setFromBucket(true);
-        }
-        if (entity != null && entity instanceof EntityPlatypus) {
-            CompoundNBT compoundnbt = stack.getOrCreateTag();
-            if(compoundnbt.contains("PlatypusData")){
-                ((EntityPlatypus)entity).readAdditional(compoundnbt.getCompound("PlatypusData"));
-            }
-
-        }
-        if (entity != null && entity instanceof EntityFrilledShark) {
-            CompoundNBT compoundnbt = stack.getOrCreateTag();
-            if(compoundnbt.contains("FrilledSharkData")){
-                ((EntityFrilledShark)entity).readAdditional(compoundnbt.getCompound("FrilledSharkData"));
-            }
-
-        }
-        if (entity != null && entity instanceof EntityMimicOctopus) {
-            CompoundNBT compoundnbt = stack.getOrCreateTag();
-            if(compoundnbt.contains("MimicOctopusData")){
-                ((EntityMimicOctopus)entity).readAdditional(compoundnbt.getCompound("MimicOctopusData"));
-            }
-            ((EntityMimicOctopus)entity).setMoistness(60000);
-        }
+    public ItemModFishBucket(Supplier<? extends EntityType<?>> fishTypeIn, Fluid fluid, Item.Properties builder) {
+        super(fishTypeIn, () -> fluid, () -> SoundEvents.BUCKET_EMPTY_FISH, builder.stacksTo(1));
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (this.fishType == AMEntityRegistry.LOBSTER) {
-            CompoundNBT compoundnbt = stack.getTag();
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        EntityType fishType = getFishType();
+        if (fishType == AMEntityRegistry.LOBSTER.get()) {
+            CompoundTag compoundnbt = stack.getTag();
             if (compoundnbt != null && compoundnbt.contains("BucketVariantTag", 3)) {
                 int i = compoundnbt.getInt("BucketVariantTag");
                 String s = "entity.alexsmobs.lobster.variant_" + EntityLobster.getVariantName(i);
-                tooltip.add((new TranslationTextComponent(s)).mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.ITALIC));
+                tooltip.add((Component.translatable(s)).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+            }
+        }
+        if (fishType == AMEntityRegistry.TERRAPIN.get()) {
+            CompoundTag compoundnbt = stack.getTag();
+            if (compoundnbt != null && compoundnbt.contains("TerrapinData")) {
+                int i = compoundnbt.getCompound("TerrapinData").getInt("TurtleType");
+                tooltip.add((Component.translatable(TerrapinTypes.values()[Mth.clamp(i, 0, TerrapinTypes.values().length - 1)].getTranslationName())).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+            }
+        }
+        if (fishType == AMEntityRegistry.COMB_JELLY.get()) {
+            CompoundTag compoundnbt = stack.getTag();
+            if (compoundnbt != null && compoundnbt.contains("BucketVariantTag", 3)) {
+                int i = compoundnbt.getInt("BucketVariantTag");
+                String s = "entity.alexsmobs.comb_jelly.variant_" + i;
+                tooltip.add((Component.translatable(s)).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+            }
+        }
+    }
+
+    @Override
+    public void checkExtraContent(@Nullable Player player, Level level, ItemStack stack, BlockPos pos) {
+        if (level instanceof ServerLevel) {
+            this.spawnFish((ServerLevel)level, stack, pos);
+            level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+        }
+    }
+
+    private void spawnFish(ServerLevel serverLevel, ItemStack stack, BlockPos pos) {
+        Entity entity = getFishType().spawn(serverLevel, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
+        if (entity instanceof Bucketable) {
+            Bucketable bucketable = (Bucketable)entity;
+            bucketable.loadFromBucketTag(stack.getOrCreateTag());
+            bucketable.setFromBucket(true);
+        }
+        addExtraAttributes(entity, stack);
+    }
+
+    private void addExtraAttributes(Entity entity, ItemStack stack) {
+        if(entity instanceof EntityCatfish catfish){
+            if(stack.is(AMItemRegistry.SMALL_CATFISH_BUCKET.get())){
+                catfish.setCatfishSize(0);
+            }else if(stack.is(AMItemRegistry.MEDIUM_CATFISH_BUCKET.get())){
+                catfish.setCatfishSize(1);
+            }else if(stack.is(AMItemRegistry.LARGE_CATFISH_BUCKET.get())){
+                catfish.setCatfishSize(2);
             }
         }
     }
 
 
-    private final java.util.function.Supplier<? extends EntityType<?>> fishTypeSupplier;
-    protected EntityType<?> getFishType() {
-        return fishTypeSupplier.get();
-    }
 }

@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "warped_toad.txt",
-  "title": "Warped Toad",
+  "title": "entity.alexsmobs.warped_toad",
   "linked_page_buttons": [
   ],
   "images": [
@@ -15,7 +15,7 @@
   "entity_renders": [
     {
       "entity": "alexsmobs:warped_toad",
-      "x": 90,
+      "x": 100,
       "y": 90,
       "page" : 0,
       "scale": 1.4,

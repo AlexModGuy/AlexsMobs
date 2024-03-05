@@ -1,0 +1,22 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Il mormor è un'anima torturata trovabile solo nelle profonde viscere dell'overworld, persino più in profondità del centopiedi della caverna.
+Quella che sembra essere una persona innocua è in realtà un mostro non-morto con un collo serpentino, che può estendere a più di 50 blocchi.
+Quando un mormor trova la sua preda, estenderà il suo collo in alto per avere una buona visione, poi si lancia velocemente in avanti per mordere la sua preda e ritirarsi in fretta.
+Se la testa di un mormor viene colpita invece che il suo corpo, riceverà solo metà dei danni.
+<NEWLINE>
+Se sconfitto, il mormor può rilasciare lana rossa, un tendine elastico o, raramente, un kimono inquietante.
+I tendini elastici possono essere uniti ad artigli di dropbear per creare la frusta di tendine.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Quest'arma ravvicinata da gittata media può essere brandita come una spada e infliggerà danno a fino a tre entità nelle vicinanze, con danno decrescente. Può essere utilizzata da 8 blocchi di distanza e può trovare un bersaglio in automatico.
+La frusta può essere riparata con tendini elastici.
+<NEWLINE>
+Il kimono inquietante può fungere da corazza. Pur avendo difesa e durabilità basse, aumenta la distanza di piazzamento di chi la indossa di due blocchi e rende la maggior parte dei mostri non-morti neutrali - eccetto altri mormor e il wither.
+Può essere riparato con della lana.
+<NEWLINE>
+Nonostante i mormor si trovino solitamente ad alte profondità, possono pure apparire raramente in superficie nelle foreste di ciliegi.

@@ -1,0 +1,22 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+The Murmur is a tortured soul that can only be found deep in the bowels of the overworld, even deeper than Cave Centipedes.
+What appears to be a harmless person is actually an undead monster with a serpentine neck, which it can extend further than 50 blocks.
+When a Murmur spots prey, it will extend its neck upwards to get a good look, then sweep forwards quickly to bite its prey and quickly retreat.
+If a Murmur's head is hit rather than its body, it will only receive half of the damage.
+<NEWLINE>
+If slain, a Murmur can drop red wool, an Elastic Tendon or, rarely, a Unsettling Kimono.
+The Elastic Tendons can be combined with Dropbear claws to create the Tendon Whip.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+This medium-range melee weapon can be swung like a sword, and will deal damage to up to three nearby mobs, with descending damage. It can be used from over 8 blocks away, and can automatically find a target.
+The whip can be repaired with Elastic Tendons.
+<NEWLINE>
+the Unsettling Kimono can be work as a chestplate. Although it has low armor and durability, it increases the wearer's placement distance by two blocks, and makes most undead hostile mobs neutral to their presence - except for other murmurs and the Wither.
+It can be repaired with wool.
+<NEWLINE>
+Although Murmurs can usually be found at great depths, they can also rarely appear at the surface in Cherry Groves.

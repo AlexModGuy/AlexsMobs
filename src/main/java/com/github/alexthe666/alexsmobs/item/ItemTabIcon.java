@@ -1,15 +1,17 @@
 package com.github.alexthe666.alexsmobs.item;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
-public class ItemTabIcon extends Item {
+public class ItemTabIcon extends ItemInventoryOnly {
     public ItemTabIcon(Item.Properties properties) {
         super(properties);
     }
@@ -22,11 +24,16 @@ public class ItemTabIcon extends Item {
         return stack.getTag().getString("DisplayEntityType");
     }
 
+    @Override
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions)AlexsMobs.PROXY.getISTERProperties());
+    }
+
     @Nullable
-    public static EntityType getEntityType(@Nullable CompoundNBT tag) {
+    public static EntityType getEntityType(@Nullable CompoundTag tag) {
         if (tag != null && tag.contains("DisplayEntityType")) {
             String entityType = tag.getString("DisplayEntityType");
-           return Registry.ENTITY_TYPE.getOptional(ResourceLocation.tryCreate(entityType)).orElse(null);
+           return ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(entityType));
         }
         return null;
     }

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "alexsmobs:block/purpur_planks_slab"
+    },
+    "type=top": {
+      "model": "alexsmobs:block/purpur_planks_upper_slab"
+    },
+    "type=double": {
+      "model": "alexsmobs:block/purpur_planks"
+    }
+  }
+}

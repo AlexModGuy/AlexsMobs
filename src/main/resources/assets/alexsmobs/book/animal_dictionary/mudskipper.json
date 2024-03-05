@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "mudskipper.txt",
+  "title": "entity.alexsmobs.mudskipper",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:mudskipper",
+      "x": 92,
+      "y": 70,
+      "page" : 0,
+      "scale": 2.3,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:soul_vulture",
+  "body": ["body"],
+  "head": ["neck"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["rightLeg"],
+  "left_leg": ["leftLeg"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.7,
+  "face_forwards": false
+}

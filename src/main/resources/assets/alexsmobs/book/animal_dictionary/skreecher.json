@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "skreecher.txt",
+  "title": "entity.alexsmobs.skreecher",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:sculk_boomer",
+      "shapeless": false,
+      "x": 220,
+      "y": 50,
+      "page": 1,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:skreecher",
+      "x": 90,
+      "y": 100,
+      "page" : 0,
+      "scale": 1.55,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

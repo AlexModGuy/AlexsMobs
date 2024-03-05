@@ -2,26 +2,28 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageCrowMountPlayer;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.WalkNodeProcessor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorldReader;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
 public class CrowAIFollowOwner extends Goal {
     private final EntityCrow crow;
-    private final IWorldReader world;
+    private final LevelReader world;
     private final double followSpeed;
-    private final PathNavigator navigator;
+    private final PathNavigation navigator;
     private final float maxDist;
     private final float minDist;
     private final boolean teleportToLeaves;
@@ -36,16 +38,16 @@ public class CrowAIFollowOwner extends Goal {
 
     public CrowAIFollowOwner(EntityCrow p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_) {
         this.crow = p_i225711_1_;
-        this.world = p_i225711_1_.world;
+        this.world = p_i225711_1_.level();
         this.followSpeed = p_i225711_2_;
-        this.navigator = p_i225711_1_.getNavigator();
+        this.navigator = p_i225711_1_.getNavigation();
         this.minDist = p_i225711_4_;
         this.maxDist = p_i225711_5_;
         this.teleportToLeaves = p_i225711_6_;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
-    public boolean shouldExecute() {
+    public boolean canUse() {
         LivingEntity lvt_1_1_ = this.crow.getOwner();
         if (lvt_1_1_ == null) {
             return false;
@@ -55,49 +57,49 @@ public class CrowAIFollowOwner extends Goal {
             return false;
         } else if (crow.getCommand() != 1) {
             return false;
-        } else if (this.crow.getDistanceSq(lvt_1_1_) < (double) (this.minDist * this.minDist)) {
+        } else if (this.crow.distanceToSqr(lvt_1_1_) < (double) (this.minDist * this.minDist)) {
             return false;
         } else {
             this.owner = lvt_1_1_;
-            return (crow.getAttackTarget() == null || !crow.getAttackTarget().isAlive());
+            return (crow.getTarget() == null || !crow.getTarget().isAlive());
         }
     }
 
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         if (this.crow.isSitting()) {
             return false;
         } else {
-            return crow.getCommand() == 1 && !crow.isPassenger() && (crow.getAttackTarget() == null || !crow.getAttackTarget().isAlive());
+            return crow.getCommand() == 1 && !crow.isPassenger() && (crow.getTarget() == null || !crow.getTarget().isAlive());
         }
     }
 
-    public void startExecuting() {
+    public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.crow.getPathPriority(PathNodeType.WATER);
-        this.crow.setPathPriority(PathNodeType.WATER, 0.0F);
-        clockwise = crow.getRNG().nextBoolean();
-        yLevel = crow.getRNG().nextInt(1);
+        this.oldWaterCost = this.crow.getPathfindingMalus(BlockPathTypes.WATER);
+        this.crow.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        clockwise = crow.getRandom().nextBoolean();
+        yLevel = crow.getRandom().nextInt(1);
         circlingTime = 0;
-        maxCircleTime = 20 + crow.getRNG().nextInt(100);
-        circleDistance = 1F + crow.getRNG().nextFloat() * 2F;
+        maxCircleTime = 20 + crow.getRandom().nextInt(100);
+        circleDistance = 1F + crow.getRandom().nextFloat() * 2F;
     }
 
-    public void resetTask() {
+    public void stop() {
         this.owner = null;
-        this.navigator.clearPath();
+        this.navigator.stop();
         circlingTime = 0;
-        this.crow.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        this.crow.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
     }
 
     public void tick() {
-        this.crow.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float) this.crow.getVerticalFaceSpeed());
-        if (!this.crow.getLeashed() && !this.crow.isPassenger()) {
-            double dist = this.crow.getDistanceSq(this.owner);
+        this.crow.getLookControl().setLookAt(this.owner, 10.0F, (float) this.crow.getMaxHeadXRot());
+        if (!this.crow.isLeashed() && !this.crow.isPassenger()) {
+            double dist = this.crow.distanceToSqr(this.owner);
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 if (dist >= 144.0D && !crow.aiItemFlag) {
                     crow.setFlying(true);
-                    crow.getMoveHelper().setMoveTo(owner.getPosX(), owner.getPosY() + owner.getEyeHeight() + 0.2F, owner.getPosZ(), 1F);
+                    crow.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight() + 0.2F, owner.getZ(), 1F);
                     this.tryToTeleportNearEntity();
                     circlingTime = 0;
                 }
@@ -108,20 +110,20 @@ public class CrowAIFollowOwner extends Goal {
                     circlingTime++;
                 }
                 if(circlingTime > maxCircleTime && crow.getRidingCrows(owner) < 2){
-                    crow.getMoveHelper().setMoveTo(owner.getPosX(), owner.getPosY() + owner.getEyeHeight() + 0.2F, owner.getPosZ(), 0.7F);
-                    if(crow.getDistance(owner) < 2){
+                    crow.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight() + 0.2F, owner.getZ(), 0.7F);
+                    if(crow.distanceTo(owner) < 2){
                         crow.startRiding(owner, true);
-                        if (!crow.world.isRemote) {
-                            AlexsMobs.sendMSGToAll(new MessageCrowMountPlayer(crow.getEntityId(), owner.getEntityId()));
+                        if (!crow.level().isClientSide) {
+                            AlexsMobs.sendMSGToAll(new MessageCrowMountPlayer(crow.getId(), owner.getId()));
                         }
                     }
                 }else{
-                    Vector3d circlePos = getVultureCirclePos(owner.getPositionVec());
+                    Vec3 circlePos = getVultureCirclePos(owner.position());
                     if (circlePos == null) {
-                        circlePos = owner.getPositionVec();
+                        circlePos = owner.position();
                     }
                     crow.setFlying(true);
-                    crow.getMoveHelper().setMoveTo(circlePos.getX(), circlePos.getY() + owner.getEyeHeight() + 0.2F, circlePos.getZ(), 0.7F);
+                    crow.getMoveControl().setWantedPosition(circlePos.x(), circlePos.y() + owner.getEyeHeight() + 0.2F, circlePos.z(), 0.7F);
 
                 }
 
@@ -129,12 +131,12 @@ public class CrowAIFollowOwner extends Goal {
         }
     }
 
-    public Vector3d getVultureCirclePos(Vector3d target) {
-        float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
-        double extraX = circleDistance * MathHelper.sin((angle));
-        double extraZ = circleDistance * MathHelper.cos(angle);
-        Vector3d pos = new Vector3d(target.getX() + extraX, target.getY() + yLevel, target.getZ() + extraZ);
-        if (crow.world.isAirBlock(new BlockPos(pos))) {
+    public Vec3 getVultureCirclePos(Vec3 target) {
+        final float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
+        final double extraX = circleDistance * Mth.sin((angle));
+        final double extraZ = circleDistance * Mth.cos(angle);
+        Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
+        if (crow.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;
@@ -142,7 +144,7 @@ public class CrowAIFollowOwner extends Goal {
 
 
     private void tryToTeleportNearEntity() {
-        BlockPos lvt_1_1_ = this.owner.getPosition();
+        BlockPos lvt_1_1_ = this.owner.blockPosition();
 
         for (int lvt_2_1_ = 0; lvt_2_1_ < 10; ++lvt_2_1_) {
             int lvt_3_1_ = this.getRandomNumber(-3, 3);
@@ -157,33 +159,33 @@ public class CrowAIFollowOwner extends Goal {
     }
 
     private boolean tryToTeleportToLocation(int p_226328_1_, int p_226328_2_, int p_226328_3_) {
-        if (Math.abs((double) p_226328_1_ - this.owner.getPosX()) < 2.0D && Math.abs((double) p_226328_3_ - this.owner.getPosZ()) < 2.0D) {
+        if (Math.abs((double) p_226328_1_ - this.owner.getX()) < 2.0D && Math.abs((double) p_226328_3_ - this.owner.getZ()) < 2.0D) {
             return false;
         } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
             return false;
         } else {
-            this.crow.setLocationAndAngles((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.crow.rotationYaw, this.crow.rotationPitch);
-            this.navigator.clearPath();
+            this.crow.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.crow.getYRot(), this.crow.getXRot());
+            this.navigator.stop();
             return true;
         }
     }
 
     private boolean isTeleportFriendlyBlock(BlockPos p_226329_1_) {
-        PathNodeType lvt_2_1_ = WalkNodeProcessor.getFloorNodeType(this.world, p_226329_1_.toMutable());
-        if (lvt_2_1_ != PathNodeType.WALKABLE) {
+        BlockPathTypes lvt_2_1_ = WalkNodeEvaluator.getBlockPathTypeStatic(this.world, p_226329_1_.mutable());
+        if (lvt_2_1_ != BlockPathTypes.WALKABLE) {
             return false;
         } else {
-            BlockState lvt_3_1_ = this.world.getBlockState(p_226329_1_.down());
+            BlockState lvt_3_1_ = this.world.getBlockState(p_226329_1_.below());
             if (!this.teleportToLeaves && lvt_3_1_.getBlock() instanceof LeavesBlock) {
                 return false;
             } else {
-                BlockPos lvt_4_1_ = p_226329_1_.subtract(this.crow.getPosition());
-                return this.world.hasNoCollisions(this.crow, this.crow.getBoundingBox().offset(lvt_4_1_));
+                BlockPos lvt_4_1_ = p_226329_1_.subtract(this.crow.blockPosition());
+                return this.world.noCollision(this.crow, this.crow.getBoundingBox().move(lvt_4_1_));
             }
         }
     }
 
     private int getRandomNumber(int p_226327_1_, int p_226327_2_) {
-        return this.crow.getRNG().nextInt(p_226327_2_ - p_226327_1_ + 1) + p_226327_1_;
+        return this.crow.getRandom().nextInt(p_226327_2_ - p_226327_1_ + 1) + p_226327_1_;
     }
 }

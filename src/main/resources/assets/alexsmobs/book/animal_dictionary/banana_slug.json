@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "banana_slug.txt",
+  "title": "entity.alexsmobs.banana_slug",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:banana_slug_slime_block",
+      "shapeless": false,
+      "x": 220,
+      "y": 80,
+      "page": 0,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:banana_slug",
+      "x": 90,
+      "y": 70,
+      "page" : 0,
+      "scale": 3.1,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

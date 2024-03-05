@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:jerboa",
+  "body": ["body"],
+  "head": ["body"],
+  "right_arm": ["rightArm"],
+  "left_arm": ["leftArm"],
+  "right_leg": ["legs"],
+  "left_leg": ["legs"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.8,
+  "face_forwards": false
+}

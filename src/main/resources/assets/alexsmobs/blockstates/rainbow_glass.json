@@ -1,0 +1,24 @@
+{
+    "multipart": [
+        {   "apply": { "model": "alexsmobs:block/rainbow_glass" }},
+
+        {   "when": { "up": "false" },
+            "apply": { "model": "alexsmobs:block/rainbow_glass_up", "uvlock": false }
+        },
+        {   "when": { "down": "false" },
+            "apply": { "model": "alexsmobs:block/rainbow_glass_down", "uvlock": false }
+        },
+        {   "when": { "east": "false" },
+            "apply": { "model": "alexsmobs:block/rainbow_glass_right", "y" : 0, "uvlock": false }
+        },
+        {   "when": { "west": "false" },
+            "apply": { "model": "alexsmobs:block/rainbow_glass_left", "y" : 0, "uvlock": false }
+        },
+        {   "when": { "north": "false" },
+            "apply": { "model": "alexsmobs:block/rainbow_glass_left", "y" : 90, "uvlock": false }
+        },
+        {   "when": { "south": "false" },
+            "apply": { "model": "alexsmobs:block/rainbow_glass_right", "y" : 90, "uvlock": false }
+        }
+    ]
+}

@@ -1,73 +1,81 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.RandomWalkingGoal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.pathfinding.PathType;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class AnimalAIRandomSwimming extends RandomWalkingGoal {
-    private int xzSpread;
-    private boolean submerged;
+public class AnimalAIRandomSwimming extends RandomStrollGoal {
+    private final int xzSpread;
+    private final boolean submerged;
+    private int ySpread = 3;
 
-    public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance, int xzSpread) {
+    public AnimalAIRandomSwimming(PathfinderMob creature, double speed, int chance, int xzSpread) {
         super(creature, speed, chance, false);
         this.xzSpread = xzSpread;
         this.submerged = false;
     }
 
-    public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance, int xzSpread, boolean submerged) {
+    public AnimalAIRandomSwimming(PathfinderMob creature, double speed, int chance, int xzSpread, boolean submerged) {
         super(creature, speed, chance, false);
         this.xzSpread = xzSpread;
         this.submerged = submerged;
     }
 
-    public boolean shouldExecute() {
-        if (this.creature.isBeingRidden()|| creature.getAttackTarget() != null || !this.creature.isInWater() && !this.creature.isInLava()) {
+    public AnimalAIRandomSwimming(PathfinderMob creature, double speed, int chance, int xzSpread, int ySpread, boolean submerged) {
+        super(creature, speed, chance, false);
+        this.xzSpread = xzSpread;
+        this.ySpread = ySpread;
+        this.submerged = submerged;
+    }
+
+    public boolean canUse() {
+        if (this.mob.isVehicle()|| mob.getTarget() != null || !this.mob.isInWater() && !this.mob.isInLava()) {
             return false;
         } else {
-            if (!this.mustUpdate) {
-                if (this.creature.getRNG().nextInt(this.executionChance) != 0) {
+            if (!this.forceTrigger) {
+                if (this.mob.getRandom().nextInt(this.interval) != 0) {
                     return false;
                 }
             }
-            Vector3d vector3d = this.getPosition();
+            Vec3 vector3d = this.getPosition();
             if (vector3d == null) {
                 return false;
             } else {
-                this.x = vector3d.x;
-                this.y = vector3d.y;
-                this.z = vector3d.z;
-                this.mustUpdate = false;
+                this.wantedX = vector3d.x;
+                this.wantedY = vector3d.y;
+                this.wantedZ = vector3d.z;
+                this.forceTrigger = false;
                 return true;
             }
         }
     }
 
     @Nullable
-    protected Vector3d getPosition() {
-        if(this.creature.detachHome() && this.creature.getDistanceSq(Vector3d.copyCentered(this.creature.getHomePosition())) > this.creature.getMaximumHomeDistance() * this.creature.getMaximumHomeDistance()){
-            return RandomPositionGenerator.findRandomTargetBlockTowards(this.creature, xzSpread, 3, Vector3d.copyCenteredHorizontally(this.creature.getHomePosition()));
+    protected Vec3 getPosition() {
+        if(this.mob.hasRestriction() && this.mob.distanceToSqr(Vec3.atCenterOf(this.mob.getRestrictCenter())) > this.mob.getRestrictRadius() * this.mob.getRestrictRadius()){
+            return DefaultRandomPos.getPosTowards(this.mob, xzSpread, 3, Vec3.atBottomCenterOf(this.mob.getRestrictCenter()), 3);
         }
-        if(this.creature.getRNG().nextFloat() < 0.3F){
-            Vector3d vector3d = findSurfaceTarget(this.creature, xzSpread, 7);
+        if(this.mob.getRandom().nextFloat() < 0.3F){
+            Vec3 vector3d = findSurfaceTarget(this.mob, xzSpread, ySpread * 2);
             if(vector3d != null){
                 return vector3d;
             }
         }
-        Vector3d vector3d = RandomPositionGenerator.findRandomTarget(this.creature, xzSpread, 3);
+        Vec3 vector3d = DefaultRandomPos.getPos(this.mob, xzSpread, ySpread);
 
-        for(int i = 0; vector3d != null && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 15; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.mob.level().getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level(), AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, ySpread)) {
         }
         if(submerged && vector3d != null){
-            if(!this.creature.world.getFluidState(new BlockPos(vector3d).up()).isTagged(FluidTags.WATER)){
+            if(!this.mob.level().getFluidState(AMBlockPos.fromVec3(vector3d).above()).is(FluidTags.WATER)){
                 vector3d = vector3d.add(0, -2, 0);
-            }else if(!this.creature.world.getFluidState(new BlockPos(vector3d).up(2)).isTagged(FluidTags.WATER)){
+            }else if(!this.mob.level().getFluidState(AMBlockPos.fromVec3(vector3d).above(2)).is(FluidTags.WATER)){
                 vector3d = vector3d.add(0, -3, 0);
             }
         }
@@ -75,21 +83,21 @@ public class AnimalAIRandomSwimming extends RandomWalkingGoal {
     }
 
     private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
-        BlockPos blockpos = pos.add(dx * scale, 0, dz * scale);
-        return this.creature.world.getFluidState(blockpos).isTagged(FluidTags.LAVA) || this.creature.world.getFluidState(blockpos).isTagged(FluidTags.WATER) && !this.creature.world.getBlockState(blockpos).getMaterial().blocksMovement();
+        BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
+        return this.mob.level().getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level().getBlockState(blockpos).blocksMotion();
     }
 
     private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {
-        return this.creature.world.getBlockState(pos.add(dx * scale, 1, dz * scale)).isAir() && this.creature.world.getBlockState(pos.add(dx * scale, 2, dz * scale)).isAir();
+        return this.mob.level().getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.mob.level().getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
     }
 
-    private Vector3d findSurfaceTarget(CreatureEntity creature, int i, int i1) {
-        BlockPos upPos = creature.getPosition();
-        while(creature.world.getFluidState(upPos).isTagged(FluidTags.WATER) || creature.world.getFluidState(upPos).isTagged(FluidTags.LAVA)){
-            upPos = upPos.up();
+    private Vec3 findSurfaceTarget(PathfinderMob creature, int i, int i1) {
+        BlockPos upPos = creature.blockPosition();
+        while(creature.level().getFluidState(upPos).is(FluidTags.WATER) || creature.level().getFluidState(upPos).is(FluidTags.LAVA)){
+            upPos = upPos.above();
         }
-        if(isAirAbove(upPos.down(), 0, 0, 0) && canJumpTo(upPos.down(), 0, 0, 0)){
-            return new Vector3d(upPos.getX() + 0.5F, upPos.getY() - 1F, upPos.getZ() + 0.5F);
+        if(isAirAbove(upPos.below(), 0, 0, 0) && canJumpTo(upPos.below(), 0, 0, 0)){
+            return new Vec3(upPos.getX() + 0.5F, upPos.getY() - 1F, upPos.getZ() + 0.5F);
         }
         return null;
     }

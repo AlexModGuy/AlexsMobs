@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "capuchin_monkey.txt",
-  "title": "Capuchin Monkey",
+  "title": "entity.alexsmobs.capuchin_monkey",
   "linked_page_buttons": [
   ],
   "images": [
@@ -13,7 +13,7 @@
       "recipe": "alexsmobs:sopa_de_macaco",
       "shapeless": true,
       "x": 210,
-      "y": 10,
+      "y": 50,
       "page": 1,
       "scale": 1.3
     }

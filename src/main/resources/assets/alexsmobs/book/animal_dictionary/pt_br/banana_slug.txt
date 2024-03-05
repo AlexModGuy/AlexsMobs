@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+As lesmas-banana são pequenos moluscos que só podem ser encontrados em florestas altas e antigas, onde seu alimento fúngico é abundante.
+Muitas vezes, eles podem ser encontrados grudados nas laterais dos blocos ou abrindo caminho lentamente pela vegetação rasteira.
+Ocasionalmente, uma Lesma-Banana deixa cair um pouco de seu slime enquanto se move pelo mundo, que pode ser coletado.
+Este slime pode ser usado para criar um bloco de slime de lesmas-banana.
+<NEWLINE>
+O slime desta lesma em particular é um dos materiais mais absorventes do mundo natural. Quando um bloco toca a água, instantaneamente transforma grande parte da água em muco cristalizado.
+Se o bloco de slime for quebrado depois disso, os blocos de muco cristalizado também começarão a se decompor. Esses cristais de muco são frágeis e só cairão se forem extraídos com toque de suave.
+Isso torna o Bloco de Slime de Lesmas-Banana particularmente útil para drenar grandes massas de água.
+<NEWLINE>
+Lesmas-Banana podem ser procriados com cogumelos marrons e vêm em uma variedade de cores diferentes, nem todas amarelo-banana.

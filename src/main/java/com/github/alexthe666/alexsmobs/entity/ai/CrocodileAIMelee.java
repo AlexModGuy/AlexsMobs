@@ -1,34 +1,34 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
 public class CrocodileAIMelee extends MeleeAttackGoal {
 
-    private EntityCrocodile crocodile;
+    private final EntityCrocodile crocodile;
 
     public CrocodileAIMelee(EntityCrocodile crocodile, double speedIn, boolean useLongMemory) {
         super(crocodile, speedIn, useLongMemory);
         this.crocodile = crocodile;
     }
 
-    public boolean shouldExecute() {
+    public boolean canUse() {
 
-        return super.shouldExecute() && crocodile.getPassengers().isEmpty();
+        return super.canUse() && crocodile.getPassengers().isEmpty();
     }
 
-    public boolean shouldContinueExecuting() {
-        return super.shouldContinueExecuting() && crocodile.getPassengers().isEmpty();
+    public boolean canContinueToUse() {
+        return super.canContinueToUse() && crocodile.getPassengers().isEmpty();
     }
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
         if (distToEnemySqr <= d0) {
-            this.resetSwingCooldown();
-            this.attacker.swingArm(Hand.MAIN_HAND);
-            this.attacker.attackEntityAsMob(enemy);
+            this.resetAttackCooldown();
+            this.mob.swing(InteractionHand.MAIN_HAND);
+            this.mob.doHurtTarget(enemy);
         }
 
     }

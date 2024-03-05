@@ -13,12 +13,12 @@
     },
     "parent": "alexsmobs:alexsmobs/spiked_scute",
     "criteria": {
-        "rat_upgrade_basic": {
+        "spiked_turtle_shell": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:spiked_turtle_shell"
+                        "items": ["alexsmobs:spiked_turtle_shell"]
                     }
                 ]
             }

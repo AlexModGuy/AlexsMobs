@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "giant_squid.txt",
+  "title": "entity.alexsmobs.giant_squid",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:squid_grapple",
+      "shapeless": false,
+      "x": 10,
+      "y": 15,
+      "page": 1,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:giant_squid",
+      "x": 60,
+      "y": 57,
+      "page" : 0,
+      "scale": 0.5,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

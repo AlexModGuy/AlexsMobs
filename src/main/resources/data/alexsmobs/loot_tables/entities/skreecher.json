@@ -1,0 +1,20 @@
+{
+  "pools": [
+    {
+      "name": "skreecher",
+      "conditions": [
+        {
+          "condition": "killed_by_player"
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:skreecher_soul",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

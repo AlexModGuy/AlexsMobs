@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:sunbird",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": [],
+  "left_leg": [],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.2,
+  "face_forwards": true
+}

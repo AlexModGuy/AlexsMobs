@@ -1,0 +1,21 @@
+{
+  "parent": "block/block",
+  "render_type": "translucent",
+  "ambientocclusion": false,
+    "textures": {
+        "particle": "#sail"
+    },
+    "elements": [
+  {   	"from": [ 0, 0, 7 ],
+            "to": [ 16, 16, 9 ],
+            "faces": {
+                "down":  { "uv": [ 0, 14, 16, 16 ], "texture": "#bottom", "cullface": "down" },
+                "up":    { "uv": [ 16, 0, 0, 2 ], "texture": "#top", "cullface": "up" },
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#sail" },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#sail" },
+                "west":  { "uv": [ 7, 0, 9, 16 ], "texture": "#sail" },
+                "east":  { "uv": [ 7, 0, 9, 16 ], "texture": "#sail" }
+            }
+        }
+    ]
+}

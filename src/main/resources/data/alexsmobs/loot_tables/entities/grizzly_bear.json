@@ -26,6 +26,24 @@
           ]
         }
       ]
+    },
+    {
+      "name": "bear_dust",
+      "conditions": [
+        {
+          "condition": "random_chance_with_looting",
+          "chance": 0.01,
+          "looting_multiplier": 0.01
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:bear_dust",
+          "weight": 1
+        }
+      ]
     }
   ]
 }

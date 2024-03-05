@@ -1,0 +1,12 @@
+{
+  "ingredients": [
+    {
+      "tag": "minecraft:music_discs"
+    }
+  ],
+  "result": {
+    "item": "alexsmobs:music_disc_daze",
+    "count": 1
+  },
+  "time": 120
+}

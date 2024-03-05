@@ -1,35 +1,39 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
 public class ItemPocketSand extends Item {
 
     public static final Predicate<ItemStack> IS_SAND = (stack) -> {
-        return ItemTags.SAND.contains(stack.getItem());
+        return stack.is(ItemTags.SAND);
     };
 
     public ItemPocketSand(Properties properties) {
         super(properties);
     }
 
-    public ItemStack findAmmo(PlayerEntity entity) {
+    public ItemStack findAmmo(Player entity) {
         if(entity.isCreative()){
             return ItemStack.EMPTY;
         }
-        for(int i = 0; i < entity.inventory.getSizeInventory(); ++i) {
-            ItemStack itemstack1 = entity.inventory.getStackInSlot(i);
+        for(int i = 0; i < entity.getInventory().getContainerSize(); ++i) {
+            ItemStack itemstack1 = entity.getInventory().getItem(i);
             if (IS_SAND.test(itemstack1)) {
                 return itemstack1;
             }
@@ -37,33 +41,33 @@ public class ItemPocketSand extends Item {
         return ItemStack.EMPTY;
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity livingEntityIn, Hand handIn) {
-        ItemStack itemstack = livingEntityIn.getHeldItem(handIn);
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player livingEntityIn, InteractionHand handIn) {
+        ItemStack itemstack = livingEntityIn.getItemInHand(handIn);
         ItemStack ammo = findAmmo(livingEntityIn);
         if(livingEntityIn.isCreative()){
             ammo = new ItemStack(Items.SAND);
         }
-        if (!worldIn.isRemote && !ammo.isEmpty()) {
-            worldIn.playSound((PlayerEntity)null, livingEntityIn.getPosX(), livingEntityIn.getPosY(), livingEntityIn.getPosZ(), SoundEvents.BLOCK_SAND_BREAK, SoundCategory.PLAYERS, 0.5F, 0.4F + (random.nextFloat() * 0.4F + 0.8F));
+        if (!worldIn.isClientSide && !ammo.isEmpty()) {
+            livingEntityIn.gameEvent(GameEvent.ITEM_INTERACT_START);
+            worldIn.playSound((Player)null, livingEntityIn.getX(), livingEntityIn.getY(), livingEntityIn.getZ(), SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 0.5F, 0.4F + (livingEntityIn.getRandom().nextFloat() * 0.4F + 0.8F));
             boolean left = false;
-            if (livingEntityIn.getActiveHand() == Hand.OFF_HAND && livingEntityIn.getPrimaryHand() == HandSide.RIGHT || livingEntityIn.getActiveHand() == Hand.MAIN_HAND && livingEntityIn.getPrimaryHand() == HandSide.LEFT) {
+            if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
                 left = true;
             }
             EntitySandShot blood = new EntitySandShot(worldIn, livingEntityIn, !left);
-            Vector3d vector3d = livingEntityIn.getLook(1.0F);
-            Vector3f vector3f = new Vector3f(vector3d);
-            blood.shoot((double) vector3f.getX(), (double) vector3f.getY(), (double) vector3f.getZ(), 1.2F, 11);
-            if (!worldIn.isRemote) {
-                worldIn.addEntity(blood);
+            Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
+            blood.shoot((double) vector3d.x(), (double) vector3d.y(), (double) vector3d.z(), 1.2F, 11);
+            if (!worldIn.isClientSide) {
+                worldIn.addFreshEntity(blood);
             }
-            livingEntityIn.getCooldownTracker().setCooldown(this, 2);
+            livingEntityIn.getCooldowns().addCooldown(this, 2);
             ammo.shrink(1);
-            itemstack.damageItem(1, livingEntityIn, (player) -> {
-                player.sendBreakAnimation(livingEntityIn.getActiveHand());
+            itemstack.hurtAndBreak(1, livingEntityIn, (player) -> {
+                player.broadcastBreakEvent(livingEntityIn.getUsedItemHand());
             });
         }
-        livingEntityIn.addStat(Stats.ITEM_USED.get(this));
-        return ActionResult.func_233538_a_(itemstack, worldIn.isRemote());
+        livingEntityIn.awardStat(Stats.ITEM_USED.get(this));
+        return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide());
     }
 
 

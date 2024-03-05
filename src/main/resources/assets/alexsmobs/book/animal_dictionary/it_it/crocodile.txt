@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Il coccodrillo è un enorme rettile trovabile raramente in fiumi e paludi nell'overworld. Questa bestia si lancia verso la
+sua preda, prendendola e tirandola sott'acqua, dove procede con un devastante rotolo della morte. Questo attacco può essere bloccato con lo scudo per stordire temporaneamente il coccodrillo. Esso è naturalmente ostile
+verso umani e altre bestie come lui.
+<NEWLINE>
+Sebbene ostili, i coccodrilli possono essere fatti accoppiare con della carne marcia. Dopo essersi accoppiati, i coccodrilli andranno sulla costa per deporre le uova. Se queste uova sono danneggiate, i coccodrilli genitori diventeranno aggressivi.
+Dopo un po' di tempo, le uova di coccodrillo si schiuderanno e il cucciolo potrà imprintare sul giocatore più vicino. Esso difenderà l'area della sua nascita dai mostri. Interagire con lui può anche farlo sedere o vagare.
+ <NEWLINE>
+Gli scuti di coccodrillo sono rilasciati quando la creatura diventa adulta o quando muore. Questi scuti possono essere utilizzati per costruire una corazza
+che aumenta la velocità di nuoto di chi la indossa. Possono inoltre essere utilizzati per creare una copia di questo libro.

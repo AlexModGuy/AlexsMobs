@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Rolete Rochoso é um monstro gigante e agressivo encontrado exclusivamente dentro das Cavernas de Espeleotemas. Trajado com uma concha coberta de Espeleotemas Pontiagudos, esse monstro não gosta de intrusos e procura esmagá-los rolando em direção a eles em alta velocidade.
+Embora eles tenham uma saúde relativamente baixa para um monstro, eles têm uma armadura extremamente espessa e alto dano, tornando-os uma ameaça para qualquer Espeleólogo.
+<NEWLINE>
+Se morto, o Rolete Rochoso pode soltar Tufo, Espeleotema Pontiagudo e uma Concha Rochosa. Esta concha pode ser usada para criar um peitoral que permite ao usuário rolar como um Rolete Rochoso ao correr. Essa habilidade de rolamento permite que um viaje rapidamente e bata nos outros para causar uma pequena quantidade de dano.
+O dano de queda também é reduzido ao usar este item, mas se usado na água, pode-se afundar rapidamente sob seu peso impressionante.

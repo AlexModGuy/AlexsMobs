@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "flying_fish.txt",
+  "title": "entity.alexsmobs.flying_fish",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:flying_fish",
+      "x": 100,
+      "y": 70,
+      "page" : 0,
+      "scale": 2.25,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

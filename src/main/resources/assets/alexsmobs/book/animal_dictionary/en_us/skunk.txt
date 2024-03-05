@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Skunks are mammals that can occasionally be found wandering through forests. They are naturally very skittish and will attempt to flee from any large predator they encounter.
+If relentlessly chased through the forest or hurt somehow, the Skunk will defend itself by releasing a noxious spray all over its pursuer, inflicting nausea.
+<NEWLINE>
+Some of this spray can even linger in the world, clinging to the surfaces the Skunk has sprayed apon. It can be bottled in order to obtain Stink in a Bottle, which is used as fuel for the Stink Ray.
+<NEWLINE>
+The Stink Ray is a uniquely powerful tool that can be used to distract swarms of hostile or neutral mobs. If fired at a creature, nearby neutral and hostile creatures will blame it for the horrendous smell and begin targeting it, whilst passive animals will attempt to flee.
+Thus the Stink Ray can be used to quickly cause havoc amongst a group of mobs. Each bottle consumed only supplies it five uses.
+<NEWLINE>
+Skunks can be bred with sweet berries. If a skunk is inflicted with a potion effect whilst spraying, it will create a lingering cloud of the effect nearby. Only adult skunks can spray.

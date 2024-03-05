@@ -1,0 +1,22 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Murmúrio é uma alma torturada que só pode ser encontrada nas profundezas do mundo superior, ainda mais profunda do que as Centopeias das Cavernas.
+O que parece ser uma pessoa inofensiva é na verdade um monstro morto-vivo com um pescoço serpentino, que pode se estender por mais de 50 blocos.
+Quando um Murmúrio avista uma presa, ele estende o pescoço para cima para dar uma boa olhada, depois avança rapidamente para morder sua presa e recuar rapidamente.
+Se a cabeça de um Murmúrio for atingida em vez de seu corpo, ele receberá apenas metade do dano.
+<NEWLINE>
+Se morto, um Murmur pode dropar lã vermelha, um Tendão Elástico ou raramente um Quimono Perturbador.
+Os tendões elásticos podem ser combinados com Garras de Urso Caido para criar o Chicote de Tendão.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Esta arma corpo a corpo de médio alcance pode ser balançada como uma espada e causará dano a até três mobs próximos, com dano descendente. Ele pode ser usado a mais de 8 blocos de distância e pode encontrar um alvo automaticamente.
+O chicote pode ser reparado com tendões elásticos.
+<NEWLINE>
+o Quimono Perturbador pode funcionar como um peitoral. Embora tenha baixa armadura e durabilidade, aumenta a distância de posicionamento do usuário em dois blocos e torna a maioria dos mobs mortos-vivos hostis neutros à sua presença - exceto por outros murmúrios e o Wither.
+Pode ser reparado com lã.
+<NEWLINE>
+Embora os Murmúrios geralmente possam ser encontrados em grandes profundidades, eles também raramente podem aparecer na superfície em Cerejais.

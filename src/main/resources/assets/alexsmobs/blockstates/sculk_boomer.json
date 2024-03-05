@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "powered=false,open=true": [
+      {
+        "model": "alexsmobs:block/sculk_boomer_open"
+      }
+    ],
+    "powered=false,open=false": [
+      {
+        "model": "alexsmobs:block/sculk_boomer_closed"
+      }
+    ],
+    "powered=true,open=true": [
+      {
+        "model": "alexsmobs:block/sculk_boomer_locked"
+      }
+    ],
+    "powered=true,open=false": [
+      {
+        "model": "alexsmobs:block/sculk_boomer_locked"
+      }
+    ]
+  }
+}

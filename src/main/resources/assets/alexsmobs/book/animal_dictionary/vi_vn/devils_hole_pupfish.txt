@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Cá nhám hang quỷ - loài cá được biết đến như là loài hiếm nhất thế giới, do phạm vi quá sinh sống của chúng quá nhỏ. Những con cá này chỉ có thể sinh sản ở các tầng nước ngầm trong các chunk đơn lẻ.
+Để tìm được chunk mà cá nhám hang quỷ này có thể gọi là nhà, bạn cần phải chế tạo ra Máy tìm cá kỳ lạ.
+<NEWLINE>
+<NEWLINE>
+Thiết bị này sẽ phát ra sóng âm thanh theo hướng của chunk.
+<NEWLINE>
+Một khi bạn tìm thấy cá nhám, bạn sẽ thấy chúng đuổi bắt nhau xung quanh chunk. Cá nhám tồn tại bằng cách ăn bề mặt của các khối rêu ngập nước.
+Đôi lúc trong khi mổ những khối này, chúng có thể đánh bật ra một quả bóng chất nhờn. Thỉnh thoảng, chúng sẽ sinh sản với những con cá nhám khác sau khi ăn rêu. Cá nhám hang quỷ có thể bắt được bằng xô nước như những con cá khác.

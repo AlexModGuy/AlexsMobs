@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:dropbear",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["leg_right", "arm_right"],
+  "left_leg": ["leg_left", "arm_left"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": true
+}

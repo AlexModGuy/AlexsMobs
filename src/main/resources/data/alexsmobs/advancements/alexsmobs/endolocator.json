@@ -17,7 +17,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:endolocator"
+                        "items": ["alexsmobs:endolocator"]
                     }
                 ]
             }

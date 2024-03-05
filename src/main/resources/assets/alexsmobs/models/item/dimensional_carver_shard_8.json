@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "alexsmobs:item/dimensional_carver_shards/8"
+  }
+}

@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Il rotolatore roccioso è un gigante mostro aggressivo trovato esclusivamente nelle caverne di speleotemi. Munito di un guscio coperto di speleotemi appuntiti, questo mostro non accoglie gli intrusi e cercherà di schiacciarli rotolando verso di loro ad alte velocità.
+Nonostante abbiano relativamente poca vita per un mostro, hanno un'armatura estremamente spessa e danno alto, rendendoli una minaccia per ogni speleologo.
+<NEWLINE>
+Se sconfitti, i rotolatori rocciosi possono rilasciare tufo, speleotemi appuntiti e un guscio roccioso. Questo guscio può essere utilizzato per costruire una corazza che permette a chi la indossa di rotolare proprio come il rotolatore roccioso mentre corri. Questa abilità di rotolare permette di viaggiare velocemente e scontrarsi sugli altri per infliggere un po' di danno.
+Il danno di caduta è inoltre ridotto mentre indossi questa corazza, ma se indossata in acqua, affonderai a causa del suo peso impressionante.

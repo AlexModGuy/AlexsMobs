@@ -17,7 +17,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:mosquito_larva"
+                        "items": ["alexsmobs:mosquito_larva"]
                     }
                 ]
             }

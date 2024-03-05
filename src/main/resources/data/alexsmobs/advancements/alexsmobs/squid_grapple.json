@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:squid_grapple"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.squid_grapple.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.squid_grapple.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/lost_tentacle",
+    "criteria": {
+        "capsid": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:squid_grapple"]
+                    }
+                ]
+            }
+        }
+    }
+}

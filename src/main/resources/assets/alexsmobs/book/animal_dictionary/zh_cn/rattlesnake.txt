@@ -1,10 +1,28 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Rattlesnake is a medium sized reptile found in deserts and badlands. Most of the time, the rattlesnake is heard, not
- seen, since it produces a loud rattle warning sound when a potential predator is nearby. If one gets close enough to a
- rattlesnake while it is rattling, the creature will become hostile and use its poisionous bite to defend itself. Rattlesnakes
- are the sworn enemy of Roadrunners, their most common predator.
+    响尾蛇是在沙漠和恶地发现的中型
 <NEWLINE>
-If a rattlesnake is slain, it has a chance to drop its rattle. These rattles can be brewed with Bottled Komodo Dragon Spit in
-order to create a foul, poisonous essence. Brewing this essence with a Cave Centipede Leg can result in the coveted poison resistance potion.
+爬行动物。大多数时间，响尾蛇不是看
+<NEWLINE>
+到的，而是听到的。一旦附近存在潜在
+<NEWLINE>
+的捕食者时，响尾蛇就会发出咔哒咔哒
+<NEWLINE>
+的响尾声来以示警告。如果有人在响尾
+<NEWLINE>
+蛇发出警告时离得很近，这种生物就会
+<NEWLINE>
+变为敌对，然后通过毒牙来撕咬进行自
+<NEWLINE>
+我保卫。响尾蛇最常见的天敌是走鹃。
+<NEWLINE>
+    如果响尾蛇被杀死，有机会掉落一
+<NEWLINE>
+些它们的响尾。响尾可以和科莫多巨蜥
+<NEWLINE>
+唾液瓶一起酿造，来制造出一种污秽的
+<NEWLINE>
+毒素精华。毒素精华和洞穴蜈蚣腿可以
+<NEWLINE>
+用来酿造出梦寐以求的抗毒药水。

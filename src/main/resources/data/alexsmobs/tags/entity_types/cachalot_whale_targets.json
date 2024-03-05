@@ -3,6 +3,8 @@
   "replace": false,
   "values": [
     "alexsmobs:mimic_octopus",
-    "minecraft:squid"
+    "alexsmobs:giant_squid",
+    "minecraft:squid",
+    "minecraft:glow_squid"
   ]
 }

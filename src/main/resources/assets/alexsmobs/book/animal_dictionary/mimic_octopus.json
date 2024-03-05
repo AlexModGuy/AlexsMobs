@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "mimic_octopus.txt",
-  "title": "Mimic Octopus",
+  "title": "entity.alexsmobs.mimic_octopus",
   "linked_page_buttons": [
   ],
   "images": [
@@ -15,7 +15,7 @@
   "entity_renders": [
     {
       "entity": "alexsmobs:mimic_octopus",
-      "x": 80,
+      "x": 90,
       "y": 75,
       "page" : 0,
       "scale": 1.9,

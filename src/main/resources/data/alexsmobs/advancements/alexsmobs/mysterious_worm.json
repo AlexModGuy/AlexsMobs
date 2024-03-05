@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/capsid",
     "criteria": {
-        "rat_upgrade_basic": {
+        "mysterious_worm": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:mysterious_worm"
+                        "items": ["alexsmobs:mysterious_worm"]
                     }
                 ]
             }

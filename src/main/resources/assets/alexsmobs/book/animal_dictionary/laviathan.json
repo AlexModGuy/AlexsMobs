@@ -1,0 +1,44 @@
+{
+  "parent": "root.json",
+  "text": "laviathan.txt",
+  "title": "entity.alexsmobs.laviathan",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:straddle_saddle",
+      "shapeless": false,
+      "x": 220,
+      "y": 110,
+      "page": 0,
+      "scale": 1
+    },
+    {
+      "recipe": "alexsmobs:straddle_helmet",
+      "shapeless": false,
+      "x": 20,
+      "y": 10,
+      "page": 1,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:laviathan",
+      "x": 84,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.4,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

@@ -1,25 +1,23 @@
 package com.github.alexthe666.alexsmobs.effect;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
 
-public class EffectSoulsteal extends Effect {
+public class EffectSoulsteal extends MobEffect {
 
     public EffectSoulsteal() {
-        super(EffectType.BENEFICIAL, 0X93FDFF);
-        this.setRegistryName(AlexsMobs.MODID, "soulsteal");
+        super(MobEffectCategory.BENEFICIAL, 0X93FDFF);
     }
 
-    public void performEffect(LivingEntity entity, int amplifier) {
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
     }
 
-    public boolean isReady(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration > 0;
     }
 
-    public String getName() {
+    public String getDescriptionId() {
         return "alexsmobs.potion.soulsteal";
     }
 

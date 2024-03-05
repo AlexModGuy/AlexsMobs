@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+L'enderiofago è un mostroso automa biochimico trovato raramente nelle terre medie dell'end. Questa creatura innaturale sembra essere stata creata con uno scopo in mente - eliminare gli endergradi.
+Tuttavia, a causa della loro scarsa quantità è improbabile che i loro creatori abbiano avuto successo nel loro tentativo. L'attacco degli enderiofagi è basato sull'infliggere un effetto conosciuto come influenza dell'end sulla sua preda. Nonostante duri 10 minuti, dopo che il tempo dell'effetto passa la vittima scoppierà liberando nuovi piccoli enderiofagi e morendo all'istante.
+Questo effetto può essere rimosso consumando un frutto di chorus o del latte. Puoi dare il frutto anche ad altre creature per curarle.
+<NEWLINE>
+L'enderiofago, sebbene neutrale verso la maggior parte delle entità, è inoltre ostile nei confronti degli endermen. Dopo aver inflitto alla sua preda l'influenza dell'end, l'occhio di ender dentro all'enderiofago si frantumerà, lasciandoli a cercare di trovare un enderman.
+Per riacquisire questa abilità, si attacca a un enderman e gli infligge ciecità, mentre cerca di svignarsela con il suo occhio riacquisito. Un enderiofago è incapace di attaccare senza un occhio.
+<NEWLINE>
+Se distrutto, l'enderiofago può rilasciare un blocco unico chiamato capside. Questo capside può contenere fino a un intero stack di oggetti al suo interno e quando un altro capside o un inventario è piazzato sopra di esso, gli oggetti saliranno.
+In questo modo, il capside può essere utilizzato per trasportare oggetti verso su. Il capside può inoltre essere utilizzato con pepite di ferro e pietra dell'end per costruire un razzo di enderiofago, che può essere utilizzato al posto dei razzi pirotecnici mentre voli con le elitre.
+Se un occhio di ender è piazzato all'interno di un capside sopra a una barra dell'end verticale, si trasformerà in un enderiofago! Se non è costruito in questo modo, ogni enderiofago esistente naturalmente sembra essere fatto di materiali comuni nella dimensione in cui si trovano. Forse è così che sono nati questi esseri...

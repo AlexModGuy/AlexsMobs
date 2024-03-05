@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "comb_jelly.txt",
+  "title": "entity.alexsmobs.comb_jelly",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:comb_jelly",
+      "x": 98,
+      "y": 94,
+      "page" : 0,
+      "scale": 1.9,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

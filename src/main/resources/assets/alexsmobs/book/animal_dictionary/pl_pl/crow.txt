@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Wrony to hałaśliwe ptaki występujące w lasach i na równinach. Stworzenia te są uważane za szkodniki, ponieważ często latają nad uprawami i je niszczą. Zwykła wykrawana dynia wystarczy, aby odstraszyć wrony z małego obszaru.
+Ptaki te zwykle rozpraszają się i wzbijają w powietrze, gdy tylko się do nich zbliżysz. Wrony podnoszą każdy pokarm, który zmieszczą w dziobie, a następnie go pożerają.
+<NEWLINE>
+Pomimo ich roztargnionego wyglądu, wrony można oswoić, rzucając im kilka nasion dyni. Oswojone wrony to niezwykle przydatne stworzenia o wielu różnych zastosowaniach. Można je zmusić do siedzenia, wędrówki, śledzenia lub zbierania przedmiotów.
+Każda oswojona wrona siedząca na bloku siana powoli odzyskuje zdrowie. Będą także latać wokół tego bloku siana później, gdy zostaną ustawione do zbierania przedmiotów. Kiedy wrona podnosi przedmiot, gdy jest ustawiona do zbierania przedmiotów, szuka pojemnika, takiego jak skrzynia lub piec, z ramką na przedmiot pasującą do trzymanego przedmiotu.
+<NEWLINE>
+Jeśli przedmiot w ramce jest taki sam, jak ten trzymany w dziobie wrony, odłoży go z tej strony do pojemnika. Wrony, ustawione na podążanie, będą latać wokół swojego właściciela, a po chwili usiłują usiąść mu na ramionach.
+Wrony można usunąć z ramion, skradając się. Kiedy wrony bronią swojego właściciela, dziobią atakującego, zadając wystarczająco niskie obrażenia, aby potwór nie był agresywny. Jednak wrony zadają dodatkowe obrażenia nieumarłym celom.

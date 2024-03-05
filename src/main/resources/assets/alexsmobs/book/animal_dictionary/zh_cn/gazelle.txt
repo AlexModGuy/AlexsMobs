@@ -2,9 +2,24 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Gazelle is a small mammal endemic to the savannas of the Overworld. A dainty creature, the Gazelle is quite timid, and
-can be observed foraging in large herds. When one gazelle is attacked, all members of their group will attempt to flee from
-danger, running extremely quickly from any perceived threat.
+    瞪羚是主世界中稀树草原特有的一
 <NEWLINE>
-Gazelles occasionally drop their rare horns when slain. These horns can be brewed with a Speed II potion to create the
- uncommon Speed III Potion. They can also drop mutton.
+种小型哺乳动物。作为一种体型娇小的
+<NEWLINE>
+生物，瞪羚非常胆小，玩家可以经常见
+<NEWLINE>
+到它们成群地出来觅食。当有一只瞪羚
+<NEWLINE>
+受到攻击时，整群的瞪羚则会试图逃离
+<NEWLINE>
+攻击者，以极快的速度飞奔来远离已感
+<NEWLINE>
+知到的威胁。
+<NEWLINE>
+    瞪羚在被杀死之后，会掉落羊肉以
+<NEWLINE>
+及有一定机会掉落它们那稀有的角。瞪
+<NEWLINE>
+羚角可以用来与迅捷II药水一起酿造罕
+<NEWLINE>
+见的迅捷III药水。

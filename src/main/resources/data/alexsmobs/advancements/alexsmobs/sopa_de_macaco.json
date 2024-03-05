@@ -14,12 +14,12 @@
     },
     "parent": "alexsmobs:alexsmobs/tame_capuchin",
     "criteria": {
-        "rat_upgrade_basic": {
+        "sopa_de_macaco": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:sopa_de_macaco"
+                        "items": ["alexsmobs:sopa_de_macaco"]
                     }
                 ]
             }

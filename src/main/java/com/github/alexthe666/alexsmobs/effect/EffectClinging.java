@@ -1,56 +1,55 @@
 package com.github.alexthe666.alexsmobs.effect;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class EffectClinging extends Effect {
+public class EffectClinging extends MobEffect {
 
     public EffectClinging() {
-        super(EffectType.BENEFICIAL, 0XBD4B4B);
-        this.setRegistryName(AlexsMobs.MODID, "clinging");
+        super(MobEffectCategory.BENEFICIAL, 0XBD4B4B);
     }
 
     private static BlockPos getPositionUnderneath(Entity e) {
-        return new BlockPos(e.getPosX(), e.getBoundingBox().maxY + 1.51F, e.getPosZ());
+        return AMBlockPos.fromCoords(e.getX(), e.getBoundingBox().maxY + 1.51F, e.getZ());
     }
 
-    public void performEffect(LivingEntity entity, int amplifier) {
-        entity.recalculateSize();
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
+        entity.refreshDimensions();
         entity.setNoGravity(false);
 
         if (isUpsideDown(entity)) {
             entity.fallDistance = 0;
-            if (!entity.isSneaking()) {
-                if (!entity.collidedHorizontally) {
-                    entity.setMotion(entity.getMotion().add(0, 0.3F, 0));
+            if (!entity.isShiftKeyDown()) {
+                if (!entity.horizontalCollision) {
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.3F, 0));
                 }
-                entity.setMotion(entity.getMotion().mul(0.998F, 1F, 0.998F));
+                entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.998F, 1F, 0.998F));
             }
         }
     }
 
     public static boolean isUpsideDown(LivingEntity entity){
         BlockPos pos = getPositionUnderneath(entity);
-        BlockState ground = entity.world.getBlockState(pos);
-        return (entity.collidedVertically || ground.isSolidSide(entity.world, pos, Direction.DOWN)) && !entity.isOnGround();
+        BlockState ground = entity.level().getBlockState(pos);
+        return (entity.verticalCollision || ground.isFaceSturdy(entity.level(), pos, Direction.DOWN)) && !entity.onGround();
     }
-    public void removeAttributesModifiersFromEntity(LivingEntity entityLivingBaseIn, AttributeModifierManager attributeMapIn, int amplifier) {
-        super.removeAttributesModifiersFromEntity(entityLivingBaseIn, attributeMapIn, amplifier);
-        entityLivingBaseIn.recalculateSize();
+    public void removeAttributeModifiers(LivingEntity entityLivingBaseIn, AttributeMap attributeMapIn, int amplifier) {
+        super.removeAttributeModifiers(entityLivingBaseIn, attributeMapIn, amplifier);
+        entityLivingBaseIn.refreshDimensions();
     }
 
-    public boolean isReady(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration > 0;
     }
 
-    public String getName() {
+    public String getDescriptionId() {
         return "alexsmobs.potion.clinging";
     }
 

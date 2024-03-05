@@ -1,0 +1,26 @@
+{
+  "parent": "item/handheld_rod",
+  "textures": {
+    "layer0": "alexsmobs:item/tendon_whip"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "active": 1
+      },
+      "model": "alexsmobs:item/tendon_whip_active"
+    }
+  ],
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [ 0, 90, 25 ],
+      "translation": [ 0, 6, 0.8 ],
+      "scale": [ 0.68, 0.68, 0.68 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, -90, -25 ],
+      "translation": [ 0, 6, 0.8 ],
+      "scale": [ 0.68, 0.68, 0.68 ]
+    }
+  }
+}

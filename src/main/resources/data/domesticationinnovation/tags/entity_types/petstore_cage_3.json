@@ -1,0 +1,11 @@
+{
+  "#comment": "For the savanna pet store cage",
+  "replace": false,
+  "values": [
+    "alexsmobs:seagull",
+    "alexsmobs:toucan",
+    "alexsmobs:crow",
+    "alexsmobs:potoo",
+    "alexsmobs:sugar_glider"
+  ]
+}

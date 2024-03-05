@@ -1,18 +1,27 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidPortal;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class ItemDimensionalCarver extends Item {
 
@@ -22,37 +31,39 @@ public class ItemDimensionalCarver extends Item {
         super(props);
     }
 
-    protected static BlockRayTraceResult rayTracePortal(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
-        float f = player.rotationPitch;
-        float f1 = player.rotationYaw;
-        Vector3d vector3d = player.getEyePosition(1.0F);
-        float f2 = MathHelper.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f3 = MathHelper.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f4 = -MathHelper.cos(-f * ((float) Math.PI / 180F));
-        float f5 = MathHelper.sin(-f * ((float) Math.PI / 180F));
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double d0 = 1.5F;
-        Vector3d vector3d1 = vector3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
-        return worldIn.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+    protected static BlockHitResult rayTracePortal(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
+        final float f = player.getXRot();
+        final float f1 = player.getYRot();
+        Vec3 vector3d = player.getEyePosition(1.0F);
+        final float f11 = -f1 * Mth.DEG_TO_RAD - Mth.PI;
+        final float f12 = -f * Mth.DEG_TO_RAD;
+        final float f2 = Mth.cos(f11);
+        final float f3 = Mth.sin(f11);
+        final float f4 = -Mth.cos(f12);
+        final float f5 = Mth.sin(f12);
+        final float f6 = f3 * f4;
+        final float f7 = f2 * f4;
+        final double d0 = 1.5F;
+        Vec3 vector3d1 = vector3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
+        return worldIn.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }
 
     public int getItemStackLimit(ItemStack stack) {
         return 1; // fix for incompatibility with other mods
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack itemstack = playerIn.getHeldItem(handIn);
-        if (itemstack.getDamage() >= itemstack.getMaxDamage() - 1) {
-            return ActionResult.resultFail(itemstack);
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+        ItemStack itemstack = playerIn.getItemInHand(handIn);
+        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
+            return InteractionResultHolder.fail(itemstack);
         } else {
-            playerIn.setActiveHand(handIn);
-            RayTraceResult raytraceresult = rayTracePortal(worldIn, playerIn, RayTraceContext.FluidMode.ANY);
-            Direction dir = Direction.getFacingDirections(playerIn)[0];
+            playerIn.startUsingItem(handIn);
+            HitResult raytraceresult = rayTracePortal(worldIn, playerIn, ClipContext.Fluid.ANY);
+            Direction dir = Direction.orderedByNearest(playerIn)[0];
 
-            double x = raytraceresult.getHitVec().x - dir.getDirectionVec().getX() * 0.1F;
-            double y = raytraceresult.getHitVec().y - dir.getDirectionVec().getY() * 0.1F;
-            double z = raytraceresult.getHitVec().z - dir.getDirectionVec().getZ() * 0.1F;
+            double x = raytraceresult.getLocation().x - dir.getNormal().getX() * 0.1F;
+            double y = raytraceresult.getLocation().y - dir.getNormal().getY() * 0.1F;
+            double z = raytraceresult.getLocation().z - dir.getNormal().getZ() * 0.1F;
             if (itemstack.getOrCreateTag().getBoolean("HASBLOCK")) {
                 x = itemstack.getOrCreateTag().getDouble("BLOCKX");
                 y = itemstack.getOrCreateTag().getDouble("BLOCKY");
@@ -64,8 +75,8 @@ public class ItemDimensionalCarver extends Item {
                 itemstack.getOrCreateTag().putDouble("BLOCKZ", z);
                 itemstack.setTag(itemstack.getOrCreateTag());
             }
-            worldIn.addParticle(AMParticleRegistry.INVERT_DIG, x, y, z, playerIn.getEntityId(), 0, 0);
-            return ActionResult.resultConsume(itemstack);
+            worldIn.addParticle(AMParticleRegistry.INVERT_DIG.get(), x, y, z, playerIn.getId(), 0, 0);
+            return InteractionResultHolder.consume(itemstack);
         }
 
     }
@@ -78,10 +89,12 @@ public class ItemDimensionalCarver extends Item {
         return 100F;
     }
 
-    public void onUsingTick(ItemStack itemstack, LivingEntity player, int count) {
-        player.swingArm(player.getActiveHand());
+    public void onUseTick(Level level, LivingEntity player, ItemStack itemstack, int count) {
+        player.swing(player.getUsedItemHand());
+        RandomSource random = player.getRandom();
         if (count % 5 == 0) {
-            player.playSound(SoundEvents.BLOCK_NETHERITE_BLOCK_HIT, 1, 0.5F + random.nextFloat());
+            player.gameEvent(GameEvent.ITEM_INTERACT_START);
+            player.playSound(SoundEvents.NETHERITE_BLOCK_HIT, 1, 0.5F + random.nextFloat());
         }
         boolean flag = false;
         if (itemstack.getOrCreateTag().getBoolean("HASBLOCK")) {
@@ -89,47 +102,37 @@ public class ItemDimensionalCarver extends Item {
             double y = itemstack.getOrCreateTag().getDouble("BLOCKY");
             double z = itemstack.getOrCreateTag().getDouble("BLOCKZ");
             if (random.nextFloat() < 0.2) {
-                player.world.addParticle(AMParticleRegistry.WORM_PORTAL, x + random.nextGaussian() * 0.1F, y + random.nextGaussian() * 0.1F, z + random.nextGaussian() * 0.1F, random.nextGaussian() * 0.1F, -0.1F, random.nextGaussian() * 0.1F);
+                player.level().addParticle(AMParticleRegistry.WORM_PORTAL.get(), x + random.nextGaussian() * 0.1F, y + random.nextGaussian() * 0.1F, z + random.nextGaussian() * 0.1F, random.nextGaussian() * 0.1F, -0.1F, random.nextGaussian() * 0.1F);
             }
-            if (player.getDistanceSq(x, y, z) > 9) {
+            if (player.distanceToSqr(x, y, z) > 9) {
                 flag = true;
-                if (player instanceof PlayerEntity) {
-                    ((PlayerEntity) player).getCooldownTracker().setCooldown(this, 40);
+                if (player instanceof Player) {
+                    ((Player) player).getCooldowns().addCooldown(this, 40);
                 }
             }
-            if (count == 1 && !player.world.isRemote) {
-                player.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1, 0.5F);
-                EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(player.world);
-                portal.setPosition(x, y, z);
-                Direction dir = Direction.getFacingDirections(player)[0].getOpposite();
+            if (count == 1 && !player.level().isClientSide) {
+                player.gameEvent(GameEvent.ITEM_INTERACT_START);
+                player.playSound(SoundEvents.GLASS_BREAK, 1, 0.5F);
+                EntityVoidPortal portal = new EntityVoidPortal(player.level(), this);
+                portal.setPos(x, y, z);
+                Direction dir = Direction.orderedByNearest(player)[0].getOpposite();
                 if (dir == Direction.UP) {
                     dir = Direction.DOWN;
                 }
                 portal.setAttachmentFacing(dir);
-                portal.setLifespan(1200);
-                RegistryKey<World> respawnDimension = World.OVERWORLD;
-                BlockPos respawnPosition = player.getBedPosition().isPresent() ? player.getBedPosition().get() : player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, BlockPos.ZERO);
-                if (player instanceof ServerPlayerEntity) {
-                    ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                    respawnDimension = serverPlayer.func_241141_L_();
-                    if (serverPlayer.func_241140_K_() != null) {
-                        respawnPosition = serverPlayer.func_241140_K_();
-                    }
-                }
-                player.world.addEntity(portal);
-                portal.exitDimension = respawnDimension;
-                portal.setDestination(respawnPosition.up(2));
-                itemstack.damageItem(1, player, (playerIn) -> {
-                    player.sendBreakAnimation(playerIn.getActiveHand());
+                player.level().addFreshEntity(portal);
+                onPortalOpen(player.level(), player, portal, dir);
+                itemstack.hurtAndBreak(1, player, (playerIn) -> {
+                    player.broadcastBreakEvent(playerIn.getUsedItemHand());
                 });
                 flag = true;
-                if (player instanceof PlayerEntity) {
-                    ((PlayerEntity) player).getCooldownTracker().setCooldown(this, 200);
+                if (player instanceof Player) {
+                    ((Player) player).getCooldowns().addCooldown(this, 200);
                 }
             }
         }
         if (flag) {
-            player.resetActiveHand();
+            player.stopUsingItem();
             itemstack.getOrCreateTag().putBoolean("HASBLOCK", false);
             itemstack.getOrCreateTag().putDouble("BLOCKX", 0);
             itemstack.getOrCreateTag().putDouble("BLOCKY", 0);
@@ -138,7 +141,8 @@ public class ItemDimensionalCarver extends Item {
         }
     }
 
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+
+    public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
         stack.getOrCreateTag().putBoolean("HASBLOCK", false);
         stack.getOrCreateTag().putDouble("BLOCKX", 0);
         stack.getOrCreateTag().putDouble("BLOCKY", 0);
@@ -148,6 +152,21 @@ public class ItemDimensionalCarver extends Item {
     }
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.isItemEqual(newStack);
+        return !ItemStack.isSameItem(oldStack, newStack);
+    }
+
+    public void onPortalOpen(Level worldIn, LivingEntity player, EntityVoidPortal portal, Direction dir){
+        portal.setLifespan(1200);
+        ResourceKey<Level> respawnDimension = Level.OVERWORLD;
+        BlockPos respawnPosition = player.getSleepingPos().isPresent() ? player.getSleepingPos().get() : player.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, BlockPos.ZERO);
+        if (player instanceof ServerPlayer) {
+            ServerPlayer serverPlayer = (ServerPlayer) player;
+            respawnDimension = serverPlayer.getRespawnDimension();
+            if (serverPlayer.getRespawnPosition() != null) {
+                respawnPosition = serverPlayer.getRespawnPosition();
+            }
+        }
+        portal.exitDimension = respawnDimension;
+        portal.setDestination(respawnPosition.above(2));
     }
 }

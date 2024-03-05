@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "skunk.txt",
+  "title": "entity.alexsmobs.skunk",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:stink_ray",
+      "shapeless": false,
+      "x": 20,
+      "y": 40,
+      "page": 1,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:skunk",
+      "x": 95,
+      "y": 95,
+      "page" : 0,
+      "scale": 1.9,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Flying Fish are strange fish found at the surface of lukewarm ocean biomes. These peculiar fish come in a few color variations, and are frequent prey to dolphins and seals.
+Occasionally, Flying Fish can be seen leaping out of water and gliding through the air, sometimes for an impressive distance. Flying Fish can be captured in a bucket of water.
+<NEWLINE>
+If slain, two Flying Fish can be used with two string to craft boots that enable the wearer to leap out of water, just like the fish. This ability is improved if the wearer also has an elytra.

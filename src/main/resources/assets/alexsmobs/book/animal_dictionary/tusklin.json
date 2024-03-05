@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "tusklin.txt",
+  "title": "entity.alexsmobs.tusklin",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:tusklin",
+      "x": 87,
+      "y": 96,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

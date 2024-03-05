@@ -1,0 +1,35 @@
+{
+  "parent": "root.json",
+  "text": "triops.txt",
+  "title": "entity.alexsmobs.triops",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [    {
+    "recipe": "alexsmobs:mosquito_repellent_stew",
+    "shapeless": true,
+    "x": 20,
+    "y": 60,
+    "page": 1,
+    "scale": 1
+  }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:triops",
+      "x": 103,
+      "y": 70,
+      "page" : 0,
+      "scale": 2.6,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

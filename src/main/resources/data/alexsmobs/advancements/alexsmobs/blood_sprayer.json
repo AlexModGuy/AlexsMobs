@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/crimson_mosquito",
     "criteria": {
-        "rat_upgrade_basic": {
+        "blood_sprayer": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:blood_sprayer"
+                        "items": ["alexsmobs:blood_sprayer"]
                     }
                 ]
             }

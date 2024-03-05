@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Cá trê là loài cá sống ở đầm lầy và sông. Mặc dù cá trê từ sông có thể khá to, nhưng chỉ có thể tìm thấy những con siêu to khổng lồ ở các đầm lầy.
+<NEWLINE>
+Là loài cá ăn tầng đáy, nên cá trê không hề kén ăn. Cá trê vừa và nhỏ sẽ cố gắng hút sạch bất kỳ vật phẩm nào mà chúng nhìn thấy. Thay vào đó, Cá trê lớn sẽ cố gắng ăn bất kỳ thứ gì nhỏ hơn nó.
+Cá trê nhỏ chỉ có thể chứa 3 stack vật phẩm trong bụng của chúng, trong khi cá trê cỡ vừa có thể chứa 9. Cá trê lớn chỉ có thể chứa được một con mob.
+Cá trê sẽ nôn ra bất kỳ vật phẩm hoặc con mob nào đã bị chúng ăn nếu bị đánh hoặc nếu chúng gặp phải dưa chuột biển, vì bọn này ghét mùi dưa chuột.
+<NEWLINE>
+mặc dù có tầm nhìn khá thấp, nhưng Cá trê vẫn sẽ bị thu hút bởi ánh đèn biển. Đèn biển có thể được sử dụng để dụ cá trê đến những khu vực có hoặc không có vật phẩm.
+<NEWLINE>
+Tất cả các loại cá trê đều có thể bị bắt bằng xô, kể cả cá trê lớn. Các vật phẩm trong bụng chúng sẽ được giữ nguyên nên bạn có thể dùng chúng để vận chuyển vật phẩm hoặc sinh vật bằng cách cho chúng vào xô sau khi chúng ăn xong.
+Cá trê đã ăn đồ hoặc bị bắt bằng xô sẽ không biến mất.

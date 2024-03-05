@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Buller djuret är ett gigantiskt, aggressivt monster som uteslutande finns i droppstensgrottor. Detta monster har ett skal täckt av spetsig droppsten, och tar inte snällt mot inkräktare och 
+försöker krossa dem genom att rulla mot dem i höga hastigheter.
+Även om de har relativt låg hälsa för ett monster, har de extremt tjock pansar och hög skada, vilket gör dem till ett hot mot alla grottkrypare.
+<NEWLINE>
+Om den dödas, kan buller djur tappa tuff, spetsig droppsten och ett buller skal. Detta skal kan användas för att tillverka en rustning som gör att bäraren kan rulla precis som en buller djur när man springer. Denna rullningsförmåga gör att man både kan resa snabbt och ramla in i andra för att göra en liten skada.
+Fallskador minskar också när man bär detta föremål, men om man bär det i vatten, kan man finna sig att sjunka snabbt under dess imponerande vikt.

@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Podkopywacze to rzadcy, upiorni mieszkańcy opuszczonych szybów kopalnianych. Ze względu na swoją eteryczną naturę, mogą z łatwością przechodzić przez ściany, a zranić ich można jedynie za pomocą magii, np. mikstur miotanych.
+Większość Podkopywaczy pojawia się dopiero wtedy, gdy w kopalni spędza się dużo czasu.
+Nie stanowią one jednak zagrożenia dla żywych, o ile nie zostaną zaatakowane jako pierwsze. Ich nieufność wobec przybyszów jest jednak widoczna - w razie zbliżenia się do nich, chwilowo znikają. Podkopywacze są zadowoleni z przemierzania korytarzy szybu górniczego, tak jak to robią od setek lat.
+<NEWLINE>
+Podkopywaczy można czasem zobaczyć jak wydobywają bloki swoimi Widmowymi Kilofami. Ze względu na to, że istnieją na płaszczyźnie astralnej, nie mogą zniszczyć tych bloków, ale ich działania mogą ujawnić ukryte rudy w ścianach otaczających szyb kopalniany.
+Jeśli określony blok rudy zostanie upuszczony w pobliżu podkopywacza, przestanie on być niewidzialny i zacznie szukać i wydobywać bloki przesłaniające ten konkretny blok rudy ukryty w okolicy - potencjalnie ujawniając żyły rudy.
+<NEWLINE>
+Jeśli Podkopywacz zostanie zabity za pomocą magii, może upuścić swój Widmowy Kilof. Ten kilof, choć niematerialny, jest dość potężny, ale jego prawdziwą mocą jest to, że może przechowywać w sobie do 9 stacków wydobytych bloków - tylko wtedy, gdy jego użytkownik ma pełny ekwipunek. Gdy w inwentarzu znajdzie się miejsce, przedmioty zostaną zwrócone z kilofa. Widmowy kilof można naprawić za pomocą błon fantoma.

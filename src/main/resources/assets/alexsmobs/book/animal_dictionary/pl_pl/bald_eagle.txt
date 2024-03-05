@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Bieliki Amerykańśkie to duże, neutralne ptaki drapieżne występujące w zalesionych górskich biomach. Często odwiedzają pobliskie jeziora, gdzie będą próbować nurkować i chwytać łososie z wody.
+Lubią też atakować króliki w ten sam sposób. Podczas atakowania większych stworzeń Bielik woli krążyć, ciąć szponami i powtarzać.
+<NEWLINE>
+Ze względu na zamiłowanie do ryb Bieliki Amerykańskie można zwabić i oswoić za pomocą tranu. Oswojonemu bielikowi można nakazać, aby został, podążał za nim i wędrował, jak wiele innych bestii, ale można go również wykorzystać do sokolnictwa.
+Aby zacząć od sokolnictwa, należy stworzyć rękawicę sokolniczą. Rękawica ta może być używana do chwytania orłów i trzymania ich w dłoni. Aby wystrzelić orła z ręki, wystarczy uderzyć.
+Jeśli zostanie wystrzelony podczas wpatrywania się w moba, orzeł poleci do tego moba, zaatakuje, a jeśli przeżyje, wróci do ręki. Jeśli nie zostanie wybrany żaden mob, orzeł po prostu zeskoczy z rękawicy.
+<NEWLINE>
+Aby poprawić swoje umiejętności sokolnictwa, można stworzyć kaptur sokolnika. Kaptur można założyć na orła, a orzeł z kapturem będzie podążał za bezpośrednim poleceniem właściciela wystrzelony z rękawicy.
+Oznacza to, że orzeł może być skutecznie pilotowany przez swojego właściciela. Jeśli orzeł przeleci dalej niż 150 bloków od swojego właściciela, spróbuje wrócić. Aby przestać kontrolować orła, właściciel może się również zakraść.
+Kaptur można zdjąć z orła za pomocą nożyc.
+<NEWLINE>
+Podczas polowania orły są często ranione przez zdobycz. Oswojonego orła można uleczyć dowolną rybą. Orła można rozmnożyć zgniłym mięsem.

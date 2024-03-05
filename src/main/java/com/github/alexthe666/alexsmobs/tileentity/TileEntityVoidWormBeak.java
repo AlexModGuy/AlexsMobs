@@ -1,30 +1,33 @@
 package com.github.alexthe666.alexsmobs.tileentity;
 
 import com.github.alexthe666.alexsmobs.block.BlockVoidWormBeak;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
-public class TileEntityVoidWormBeak extends TileEntity implements ITickableTileEntity {
+public class TileEntityVoidWormBeak extends BlockEntity {
 
     private float chompProgress;
     private float prevChompProgress;
     public int ticksExisted;
 
 
-    public TileEntityVoidWormBeak() {
-        super(AMTileEntityRegistry.VOID_WORM_BEAK);
+    public TileEntityVoidWormBeak(BlockPos pos, BlockState state) {
+        super(AMTileEntityRegistry.VOID_WORM_BEAK.get(), pos, state);
     }
 
-    @Override
+    public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityVoidWormBeak entity) {
+        entity.tick();
+    }
+
     public void tick() {
         prevChompProgress = chompProgress;
         boolean powered = false;
         if(getBlockState().getBlock() instanceof BlockVoidWormBeak){
-            powered = getBlockState().get(BlockVoidWormBeak.POWERED);
+            powered = getBlockState().getValue(BlockVoidWormBeak.POWERED);
         }
         if(powered && chompProgress < 5F){
             chompProgress++;
@@ -32,13 +35,13 @@ public class TileEntityVoidWormBeak extends TileEntity implements ITickableTileE
         if(!powered && chompProgress > 0F){
             chompProgress--;
         }
-        if(chompProgress >= 5F && !world.isRemote && ticksExisted % 5 == 0){
-            float i = this.getPos().getX() + 0.5F;
-            float j = this.getPos().getY() + 0.5F;
-            float k = this.getPos().getZ() + 0.5F;
+        if(chompProgress >= 5F && !level.isClientSide && ticksExisted % 5 == 0){
+            float i = this.getBlockPos().getX() + 0.5F;
+            float j = this.getBlockPos().getY() + 0.5F;
+            float k = this.getBlockPos().getZ() + 0.5F;
             float d0 = 0.5F;
-            for (LivingEntity entity : world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                entity.attackEntityFrom(DamageSource.FALLING_BLOCK, 5);
+            for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, new AABB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
+                entity.hurt(entity.damageSources().generic(), 5);
             }
         }
         ticksExisted++;

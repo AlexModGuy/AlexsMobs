@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "bald_eagle.txt",
-  "title": "Bald Eagle",
+  "title": "entity.alexsmobs.bald_eagle",
   "linked_page_buttons": [
   ],
   "images": [

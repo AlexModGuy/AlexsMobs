@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "blue_jay.txt",
+  "title": "entity.alexsmobs.blue_jay",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:blue_jay",
+      "x": 90,
+      "y": 85,
+      "page" : 0,
+      "scale": 2.8,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

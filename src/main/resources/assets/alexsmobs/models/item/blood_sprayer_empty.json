@@ -1,5 +1,4 @@
 {
-	"parent": "blood_gun_empty",
 	"ambientocclusion": false,
 	"texture_size": [32, 32],
 	"textures": {

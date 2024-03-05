@@ -5,6 +5,10 @@
     "minecraft:zombie",
     "minecraft:husk",
     "minecraft:drowned",
-    "minecraft:phantom"
+    "minecraft:phantom",
+    "minecraft:wither",
+    "minecraft:warden",
+    "alexsmobs:soul_vulture",
+    "alexsmobs:skelewag"
   ]
 }

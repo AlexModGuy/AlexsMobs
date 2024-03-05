@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "alexsmobs:block/void_worm_effigy",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "alexsmobs:block/void_worm_effigy",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "alexsmobs:block/void_worm_effigy"
+    },
+    "facing=south": {
+      "model": "alexsmobs:block/void_worm_effigy",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "alexsmobs:block/void_worm_effigy",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "alexsmobs:block/void_worm_effigy",
+      "y": 270
+    }
+  }
+}

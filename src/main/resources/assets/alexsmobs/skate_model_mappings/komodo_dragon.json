@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:komodo_dragon",
+  "body": ["body"],
+  "head": ["neck"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["right_hip", "right_shoulder"],
+  "left_leg": ["left_hip", "left_shoulder"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.5,
+  "face_forwards": true
+}

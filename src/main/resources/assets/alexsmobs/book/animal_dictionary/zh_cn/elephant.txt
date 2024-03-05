@@ -3,15 +3,68 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Elephants are giant land mammals that can be found roaming savannas in great herds. In most Elephant herds, there are three kinds of elephant: calves, tusked and non-tusked.
-Their are usually one or two tusked elephants in a herd, and they are significantly stronger than other elephants. They also have a special, devastating charge attack.
-Elephants are defensive of their herds, and most depend on these tusked individuals to be the most protective. Elephants can attack in a multitude of ways other than charging, including using their massive trunks to toss enemies, or rearing up and stomping their opponent.
-These mammals can often be seen standing up and tearing leaves off of trees, in hopes of obtaining a somewhat rare treat known as the Acacia Blossom. These blossoms drop rarely from acacia trees, and can be fed to elephants to tame them.
-Wild tusked elephants cannot be tamed, but babies and non-tusked elephants can. A tame, tusked elephant can be obtained only by taming it as a calf.
+    大象是巨大的陆地哺乳动物，可以
 <NEWLINE>
-Tamed elephants can be ridden by interacting with them. If a chest is used on an elephant, it can gain a rather large inventory stored on its back, which can be accessed by sneaking.
-Any carpet can also be used on an elephant to decorate it. Both the chest and carpet can be removed using shears.
-Tamed, tusked elephants can be made to charge by feeding them wheat while riding them. This charge attack speeds up the elephant and deals a large amount of damage to any creature in the
-elephant's path. Elephants need a resting period after charging.
+成群结队地在大草原上漫游。在大多数
 <NEWLINE>
-Elephants can be bred with Acacia Blossoms once tamed. Occasionally, Wandering Traders in warm biomes can be found on top of trader elephants. These elephants are chested and have some loot from the trader's travels that can be accessed.
+象群中，有三种大象：幼象、有牙象和
+<NEWLINE>
+无牙象。一个象群中通常有一两头有牙
+<NEWLINE>
+象，它们比其他大象强壮得多，还有一
+<NEWLINE>
+种特殊的、毁灭性的冲锋攻击。
+<NEWLINE>
+    大象会保护自己的族群，大多数大
+<NEWLINE>
+象都依赖这些长着獠牙的个体来保护自
+<NEWLINE>
+己。大象除了冲锋之外，还可以通过多
+<NEWLINE>
+种方式进行攻击，包括用它们巨大的躯
+<NEWLINE>
+干投掷敌人，或者举起来踩踏对手。
+<NEWLINE>
+    经常可以看到这些哺乳动物站起来
+<NEWLINE>
+撕掉树上的叶子，希望能获得一种罕见
+<NEWLINE>
+的美食，即金合欢花。这些花很少从金
+<NEWLINE>
+合欢树上掉落，可以喂给大象来驯服它
+<NEWLINE>
+们。
+<NEWLINE>
+    野生有牙象无法驯服，但幼象和无
+<NEWLINE>
+牙象可以。成年有牙象只有在它还是幼
+<NEWLINE>
+象时才能驯服它。
+<NEWLINE>
+    驯服的大象可以骑行。如果在大象
+<NEWLINE>
+身上装上一个箱子，可以获得一个大箱
+<NEWLINE>
+子的容量。地毯也可以用来装饰大象。
+<NEWLINE>
+箱子和地毯都可以用剪刀剪下来。
+<NEWLINE>
+    驯服的有牙象可以在骑乘时给它们
+<NEWLINE>
+喂小麦来让它们冲锋。这种冲锋可以大
+<NEWLINE>
+幅提高大象速度，并对冲锋路上的任何
+<NEWLINE>
+生物造成大量伤害。大象冲锋后需要休
+<NEWLINE>
+息一段时间。
+<NEWLINE>
+    大象一旦被驯服，就可以用金合欢
+<NEWLINE>
+花繁殖。在温暖的生物群系中，偶尔可
+<NEWLINE>
+以找到流浪商人带着驯服的大象。这些
+<NEWLINE>
+大象身上的箱子里通常会装着一些商人
+<NEWLINE>
+旅行中的战利品。

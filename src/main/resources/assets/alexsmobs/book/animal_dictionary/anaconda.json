@@ -1,0 +1,132 @@
+{
+  "parent": "root.json",
+  "text": "anaconda.txt",
+  "title": "entity.alexsmobs.anaconda",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:vine_lasso",
+      "shapeless": false,
+      "x": 215,
+      "y": 10,
+      "page": 1,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:anaconda",
+      "x": 164,
+      "y": 49,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 210,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:1}",
+      "x": 153,
+      "y": 44,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 220,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:2}",
+      "x": 134,
+      "y": 41,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:2}",
+      "x": 115,
+      "y": 45,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 140,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:2}",
+      "x": 97,
+      "y": 49,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:2}",
+      "x": 80,
+      "y": 45,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 220,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:1}",
+      "x": 61,
+      "y": 40,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:1}",
+      "x": 42,
+      "y": 44,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 140,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:anaconda_part",
+      "entity_data": "{BodyModel:3}",
+      "x": 25,
+      "y": 52,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 140,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

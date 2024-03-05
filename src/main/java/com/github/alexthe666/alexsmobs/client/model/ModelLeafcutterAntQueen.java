@@ -4,15 +4,15 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.8
 
 
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
-import com.github.alexthe666.alexsmobs.entity.EntityOrca;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class ModelLeafcutterAntQueen extends AdvancedEntityModel<EntityLeafcutterAnt> {
 	private final AdvancedModelBox root;
@@ -31,76 +31,76 @@ public class ModelLeafcutterAntQueen extends AdvancedEntityModel<EntityLeafcutte
 	private ModelAnimator animator;
 
 	public ModelLeafcutterAntQueen() {
-		textureWidth = 128;
-		textureHeight = 128;
+		texWidth = 128;
+		texHeight = 128;
 
-		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root = new AdvancedModelBox(this, "root");
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
-		body.setRotationPoint(0.0F, -10.0F, 0.0F);
+		body = new AdvancedModelBox(this, "body");
+		body.setPos(0.0F, -10.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 25).addBox(-3.5F, -5.0F, -5.0F, 7.0F, 9.0F, 11.0F, 0.0F, false);
 
-		legront_left = new AdvancedModelBox(this);
-		legront_left.setRotationPoint(3.5F, 4.0F, -4.0F);
+		legront_left = new AdvancedModelBox(this, "legront_left");
+		legront_left.setPos(3.5F, 4.0F, -4.0F);
 		body.addChild(legront_left);
 		setRotationAngle(legront_left, 0.0F, 0.3927F, 0.0F);
 		legront_left.setTextureOffset(38, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
 
-		legront_right = new AdvancedModelBox(this);
-		legront_right.setRotationPoint(-3.5F, 4.0F, -4.0F);
+		legront_right = new AdvancedModelBox(this, "legront_right");
+		legront_right.setPos(-3.5F, 4.0F, -4.0F);
 		body.addChild(legront_right);
 		setRotationAngle(legront_right, 0.0F, -0.3927F, 0.0F);
 		legront_right.setTextureOffset(38, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
 
-		legmid_left = new AdvancedModelBox(this);
-		legmid_left.setRotationPoint(3.5F, 4.0F, 0.0F);
+		legmid_left = new AdvancedModelBox(this, "legmid_left");
+		legmid_left.setPos(3.5F, 4.0F, 0.0F);
 		body.addChild(legmid_left);
 		legmid_left.setTextureOffset(19, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
 
-		legmid_right = new AdvancedModelBox(this);
-		legmid_right.setRotationPoint(-3.5F, 4.0F, 0.0F);
+		legmid_right = new AdvancedModelBox(this, "legmid_right");
+		legmid_right.setPos(-3.5F, 4.0F, 0.0F);
 		body.addChild(legmid_right);
 		legmid_right.setTextureOffset(19, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
 
-		legback_left = new AdvancedModelBox(this);
-		legback_left.setRotationPoint(3.5F, 4.0F, 4.0F);
+		legback_left = new AdvancedModelBox(this, "legback_left");
+		legback_left.setPos(3.5F, 4.0F, 4.0F);
 		body.addChild(legback_left);
 		setRotationAngle(legback_left, 0.0F, -0.3927F, 0.0F);
 		legback_left.setTextureOffset(0, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
 
-		legback_right = new AdvancedModelBox(this);
-		legback_right.setRotationPoint(-3.5F, 4.0F, 4.0F);
+		legback_right = new AdvancedModelBox(this, "legback_right");
+		legback_right.setPos(-3.5F, 4.0F, 4.0F);
 		body.addChild(legback_right);
 		setRotationAngle(legback_right, 0.0F, 0.3927F, 0.0F);
 		legback_right.setTextureOffset(0, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
 
-		abdomen = new AdvancedModelBox(this);
-		abdomen.setRotationPoint(0.0F, -1.0F, 6.0F);
+		abdomen = new AdvancedModelBox(this, "abdomen");
+		abdomen.setPos(0.0F, -1.0F, 6.0F);
 		body.addChild(abdomen);
 		abdomen.setTextureOffset(0, 0).addBox(-4.5F, -2.0F, 0.0F, 9.0F, 9.0F, 15.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
-		head.setRotationPoint(0.0F, 0.0F, -5.0F);
+		head = new AdvancedModelBox(this, "head");
+		head.setPos(0.0F, 0.0F, -5.0F);
 		body.addChild(head);
 		head.setTextureOffset(37, 25).addBox(-4.5F, -4.0F, -7.0F, 9.0F, 7.0F, 7.0F, 0.0F, false);
 
-		antenna_left = new AdvancedModelBox(this);
-		antenna_left.setRotationPoint(0.5F, -4.0F, -7.0F);
+		antenna_left = new AdvancedModelBox(this, "antenna_left");
+		antenna_left.setPos(0.5F, -4.0F, -7.0F);
 		head.addChild(antenna_left);
 		setRotationAngle(antenna_left, 0.0F, -0.5672F, 0.3054F);
 		antenna_left.setTextureOffset(34, 0).addBox(0.0F, 0.0F, -12.0F, 9.0F, 0.0F, 12.0F, 0.0F, false);
 
-		antenna_right = new AdvancedModelBox(this);
-		antenna_right.setRotationPoint(-0.5F, -4.0F, -7.0F);
+		antenna_right = new AdvancedModelBox(this, "antenna_right");
+		antenna_right.setPos(-0.5F, -4.0F, -7.0F);
 		head.addChild(antenna_right);
 		setRotationAngle(antenna_right, 0.0F, 0.5672F, -0.3054F);
 		antenna_right.setTextureOffset(34, 0).addBox(-9.0F, 0.0F, -12.0F, 9.0F, 0.0F, 12.0F, 0.0F, true);
 
-		fangs = new AdvancedModelBox(this);
-		fangs.setRotationPoint(0.0F, 2.0F, -7.0F);
+		fangs = new AdvancedModelBox(this, "fangs");
+		fangs.setPos(0.0F, 2.0F, -7.0F);
 		head.addChild(fangs);
 		fangs.setTextureOffset(37, 40).addBox(-4.5F, -1.0F, -3.0F, 9.0F, 2.0F, 3.0F, 0.0F, false);
 		this.updateDefaultPose();
@@ -108,7 +108,7 @@ public class ModelLeafcutterAntQueen extends AdvancedEntityModel<EntityLeafcutte
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -124,22 +124,22 @@ public class ModelLeafcutterAntQueen extends AdvancedEntityModel<EntityLeafcutte
 		animator.startKeyframe(5);
 		animator.move(body, 0, 0, -5);
 		animator.move(fangs, 0, 0, 1);
-		animator.rotate(head, (float)Math.toRadians(-25), 0, 0);
-		animator.rotate(abdomen, (float)Math.toRadians(5), 0, 0);
-		animator.rotate(antenna_left, (float)Math.toRadians(-25), (float)Math.toRadians(-25), 0);
-		animator.rotate(antenna_right, (float)Math.toRadians(-25), (float)Math.toRadians(25), 0);
+		animator.rotate(head, Maths.rad(-25), 0, 0);
+		animator.rotate(abdomen, Maths.rad(5), 0, 0);
+		animator.rotate(antenna_left, Maths.rad(-25), Maths.rad(-25), 0);
+		animator.rotate(antenna_right, Maths.rad(-25), Maths.rad(25), 0);
 		animator.endKeyframe();
 		animator.startKeyframe(5);
 		animator.move(fangs, 0, 0, -0);
 		animator.move(body, 0, 0, 2);
-		animator.rotate(head, (float)Math.toRadians(25), 0, 0);
+		animator.rotate(head, Maths.rad(25), 0, 0);
 		animator.endKeyframe();
 		animator.resetKeyframe(3);
 
 	}
 
 	@Override
-	public void setRotationAngles(EntityLeafcutterAnt entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+	public void setupAnim(EntityLeafcutterAnt entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		float idleSpeed = 0.25F;
 		float idleDegree = 0.25F;
@@ -168,25 +168,25 @@ public class ModelLeafcutterAntQueen extends AdvancedEntityModel<EntityLeafcutte
 
 	}
 
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		if (this.isChild) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if (this.young) {
 			float f = 1.5F;
 			head.setScale(f, f, f);
 			head.setShouldScaleChildren(true);
-			matrixStackIn.push();
+			matrixStackIn.pushPose();
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			matrixStackIn.translate(0.0D, 1.5D, 0.125D);
-			getParts().forEach((p_228292_8_) -> {
+			parts().forEach((p_228292_8_) -> {
 				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			});
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 			head.setScale(1, 1, 1);
 		} else {
-			matrixStackIn.push();
-			getParts().forEach((p_228290_8_) -> {
+			matrixStackIn.pushPose();
+			parts().forEach((p_228290_8_) -> {
 				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			});
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 		}
 
 	}

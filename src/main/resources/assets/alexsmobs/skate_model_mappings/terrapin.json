@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:terrapin",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["right_leg", "right_arm"],
+  "left_leg": ["left_leg", "left_arm"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": true
+}

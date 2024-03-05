@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+Anacondas are gigantic, aggressive snakes found in swamp biomes. These massive snakes are at home both on land and in water. They can be either green or yellow.
+<NEWLINE>
+This snake has a massive appetite, and will attempt to eat almost anything it can wrap around. The snake ambushes its prey, wraps its body around it, and slowly suffocates its prey before swallowing it whole.
+Since they are swallowed whole, animals slain by the Anaconda do not drop any extra items.
+<NEWLINE>
+After swallowing its prey, the snake will slowly digest its meal. After eating a few large meals, the snake will become discolored and begin shedding its skin.
+This skin can be used to create a unique banner pattern, or used to craft the Vine Lasso.
+<NEWLINE>
+This lasso can be thrown to capture any mob, including hostiles, similar to the lead. However, the vine lasso cannot be tied to fences like the lead. It is quite useful in transporting unfriendly creatures.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Anaconda can be pacified and bred with chicken.

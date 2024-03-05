@@ -2,40 +2,50 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormBody;
 import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormTail;
+import com.github.alexthe666.alexsmobs.client.render.layer.LayerVoidWormGlow;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.culling.ClippingHelper;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.Pose;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 
-public class RenderVoidWormBody extends LivingRenderer<EntityVoidWormPart, EntityModel<EntityVoidWormPart>> {
-    private static final ResourceLocation TEXTURE_BODY = new ResourceLocation("alexsmobs:textures/entity/void_worm_body.png");
-    private static final ResourceLocation TEXTURE_BODY_HURT = new ResourceLocation("alexsmobs:textures/entity/void_worm_body_hurt.png");
-    private static final ResourceLocation TEXTURE_BODY_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm_body_glow.png");
-    private static final ResourceLocation TEXTURE_TAIL = new ResourceLocation("alexsmobs:textures/entity/void_worm_tail.png");
-    private static final ResourceLocation TEXTURE_TAIL_HURT = new ResourceLocation("alexsmobs:textures/entity/void_worm_tail_hurt.png");
-    private static final ResourceLocation TEXTURE_TAIL_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm_tail_glow.png");
-    private ModelVoidWormBody bodyModel = new ModelVoidWormBody();
-    private ModelVoidWormTail tailModel = new ModelVoidWormTail();
+public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart, EntityModel<EntityVoidWormPart>> {
+    private static final ResourceLocation TEXTURE_BODY = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_body.png");
+    private static final ResourceLocation TEXTURE_BODY_HURT = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_body_hurt.png");
+    private static final ResourceLocation TEXTURE_BODY_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_body_glow.png");
+    private static final ResourceLocation TEXTURE_TAIL = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail.png");
+    private static final ResourceLocation TEXTURE_TAIL_HURT = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail_hurt.png");
+    private static final ResourceLocation TEXTURE_TAIL_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail_glow.png");
+    private final ModelVoidWormBody bodyModel = new ModelVoidWormBody(0.0F);
+    private final ModelVoidWormTail tailModel = new ModelVoidWormTail(0.0F);
 
-    public RenderVoidWormBody(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new ModelVoidWormBody(), 1F);
-        this.addLayer(new LayerGlow(this));
+    public RenderVoidWormBody(EntityRendererProvider.Context renderManagerIn) {
+        super(renderManagerIn, new ModelVoidWormBody(0.0F), 1F);
+        this.addLayer(new LayerVoidWormGlow(this, renderManagerIn.getResourceManager(), new ModelVoidWormBody(0.0F)){
+            public ResourceLocation getGlowTexture(LivingEntity worm){
+                return ((EntityVoidWormPart)worm).isTail() ? TEXTURE_TAIL_GLOW : TEXTURE_BODY_GLOW;
+            }
+            public boolean isGlowing(LivingEntity worm){
+                return !((EntityVoidWormPart)worm).isHurt();
+            }
+            public float getAlpha(LivingEntity livingEntity){
+                EntityVoidWormPart worm = (EntityVoidWormPart) livingEntity;
+                return (float) Mth.clamp((worm.getHealth() - worm.getHealthThreshold()) / (worm.getMaxHealth() - worm.getHealthThreshold()), 0, 1F);
+            }
+        });
     }
 
-    public boolean shouldRender(EntityVoidWormPart worm, ClippingHelper camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityVoidWormPart worm, Frustum camera, double camX, double camY, double camZ) {
         return worm.getPortalTicks() <= 0 && super.shouldRender(worm, camera, camX, camY, camZ);
     }
 
-    public ResourceLocation getEntityTexture(EntityVoidWormPart entity) {
+    public ResourceLocation getTextureLocation(EntityVoidWormPart entity) {
         if (entity.isHurt()) {
             return entity.isTail() ? TEXTURE_TAIL_HURT : TEXTURE_BODY_HURT;
         } else {
@@ -43,44 +53,28 @@ public class RenderVoidWormBody extends LivingRenderer<EntityVoidWormPart, Entit
         }
     }
 
-    protected void applyRotations(EntityVoidWormPart entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void setupRotations(EntityVoidWormPart entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
         Pose pose = entityLiving.getPose();
         if (pose != Pose.SLEEPING) {
-            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - entityLiving.getWormYaw(partialTicks)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityLiving.getWormYaw(partialTicks)));
         }
         if (entityLiving.deathTime > 0) {
             float f = ((float) entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
-            f = MathHelper.sqrt(f);
+            f = Mth.sqrt(f);
             if (f > 1.0F) {
                 f = 1.0F;
             }
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(f * this.getDeathMaxRotation(entityLiving)));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
         }
 
     }
 
-    protected void preRenderCallback(EntityVoidWormPart entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        this.entityModel = entitylivingbaseIn.isTail() ? tailModel : bodyModel;
+    protected void scale(EntityVoidWormPart entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
+        this.model = entitylivingbaseIn.isTail() ? tailModel : bodyModel;
         matrixStackIn.scale(entitylivingbaseIn.getWormScale(), entitylivingbaseIn.getWormScale(), entitylivingbaseIn.getWormScale());
     }
 
-    protected boolean canRenderName(EntityVoidWormPart entity) {
-        return super.canRenderName(entity) && (entity.getAlwaysRenderNameTagForRender() || entity.hasCustomName() && entity == this.renderManager.pointedEntity);
-    }
-
-
-    class LayerGlow extends LayerRenderer<EntityVoidWormPart, EntityModel<EntityVoidWormPart>> {
-
-        public LayerGlow(RenderVoidWormBody render) {
-            super(render);
-        }
-
-        public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityVoidWormPart worm, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            if (!worm.isHurt()) {
-                IVertexBuilder ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getEyesAlphaEnabled(worm.isTail() ? TEXTURE_TAIL_GLOW : TEXTURE_BODY_GLOW));
-                float alpha = (float) MathHelper.clamp((worm.getHealth() - worm.getHealthThreshold()) / (worm.getMaxHealth() - worm.getHealthThreshold()), 0, 1F);
-                this.getEntityModel().render(matrixStackIn, ivertexbuilder, 240, LivingRenderer.getPackedOverlay(worm, 0.0F), 1.0F, 1.0F, 1.0F, 1);
-            }
-        }
+    protected boolean shouldShowName(EntityVoidWormPart entity) {
+        return super.shouldShowName(entity) && (entity.shouldShowName() || entity.hasCustomName() && entity == this.entityRenderDispatcher.crosshairPickEntity);
     }
 }

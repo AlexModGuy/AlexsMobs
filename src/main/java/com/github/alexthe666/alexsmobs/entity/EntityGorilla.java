@@ -2,64 +2,73 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
-public class EntityGorilla extends TameableEntity implements IAnimatedEntity, ITargetsDroppedItems {
+public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITargetsDroppedItems {
     public static final Animation ANIMATION_BREAKBLOCK_R = Animation.create(20);
     public static final Animation ANIMATION_BREAKBLOCK_L = Animation.create(20);
     public static final Animation ANIMATION_POUNDCHEST = Animation.create(40);
     public static final Animation ANIMATION_ATTACK = Animation.create(20);
-    protected static final EntitySize SILVERBACK_SIZE = EntitySize.flexible(1.15F, 1.85F);
-    private static final DataParameter<Boolean> SILVERBACK = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> STANDING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> EATING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
+    protected static final EntityDimensions SILVERBACK_SIZE = EntityDimensions.scalable(1.35F, 1.95F);
+    private static final EntityDataAccessor<Boolean> SILVERBACK = SynchedEntityData.defineId(EntityGorilla.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(EntityGorilla.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityGorilla.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(EntityGorilla.class, EntityDataSerializers.BOOLEAN);
     public int maxStandTime = 75;
     public float prevStandProgress;
     public float prevSitProgress;
@@ -79,121 +88,123 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     @Nullable
     private UUID bananaThrowerID = null;
     private boolean hasSilverbackAttributes = false;
+    public int poundChestCooldown = 0;
 
-    protected EntityGorilla(EntityType type, World worldIn) {
+    protected EntityGorilla(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathPriority(PathNodeType.WATER, -1.0F);
-        this.setPathPriority(PathNodeType.LEAVES, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 7.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public static boolean isBanana(ItemStack stack) {
-        return ItemTags.getCollection().get(AMTagRegistry.BANANAS).contains(stack.getItem());
+        return stack.is(AMTagRegistry.BANANAS);
     }
 
-    public static boolean canGorillaSpawn(EntityType<EntityGorilla> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
-        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+    public static boolean canGorillaSpawn(EntityType<EntityGorilla> gorilla, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, RandomSource random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
+        return (blockstate.is(BlockTags.LEAVES) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(BlockTags.LOGS) || blockstate.is(Blocks.AIR)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.gorillaSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.gorillaSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         Item item = stack.getItem();
-        return isTamed() && isBanana(stack);
+        return isTame() && isBanana(stack);
     }
 
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 8;
     }
 
-    public boolean isMaxGroupSize(int sizeIn) {
+    public boolean isMaxGroupSizeReached(int sizeIn) {
         return false;
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            Entity entity = source.getTrueSource();
-            this.setSitting(false);
-            if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            Entity entity = source.getEntity();
+            this.setOrderedToSit(false);
+            if (entity != null && this.isTame() && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
-            return super.attackEntityFrom(source, amount);
+            return super.hurt(source, amount);
         }
     }
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new SitGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(2, new GorillaAIFollowCaravan(this, 0.8D));
-        this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.BANANAS)), false));
+        this.goalSelector.addGoal(3, new GorillaAIChargeLooker(this, 1.6D));
+        this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, Ingredient.of(AMTagRegistry.BANANAS), false));
         this.goalSelector.addGoal(4, new AnimalAIRideParent(this, 1.25D));
         this.goalSelector.addGoal(6, new AIWalkIdle(this, 0.8D));
         this.goalSelector.addGoal(5, new GorillaAIForageLeaves(this));
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.GORILLA_IDLE;
+        return AMSoundRegistry.GORILLA_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.GORILLA_HURT;
+        return AMSoundRegistry.GORILLA_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.GORILLA_HURT;
+        return AMSoundRegistry.GORILLA_HURT.get();
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean doHurtTarget(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_ATTACK);
         }
         return true;
     }
 
-    public void travel(Vector3d vec3d) {
+    public void travel(Vec3 vec3d) {
         if (this.isSitting()) {
-            if (this.getNavigator().getPath() != null) {
-                this.getNavigator().clearPath();
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
             }
-            vec3d = Vector3d.ZERO;
+            vec3d = Vec3.ZERO;
         }
         super.travel(vec3d);
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (spawnDataIn instanceof AgeableEntity.AgeableData) {
-            AgeableEntity.AgeableData lvt_6_1_ = (AgeableEntity.AgeableData) spawnDataIn;
-            if (lvt_6_1_.getIndexInGroup() == 0) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        if (spawnDataIn instanceof AgeableMob.AgeableMobGroupData) {
+            AgeableMob.AgeableMobGroupData lvt_6_1_ = (AgeableMob.AgeableMobGroupData) spawnDataIn;
+            if (lvt_6_1_.getGroupSize() == 0) {
                 this.setSilverback(true);
             }
         } else {
-            this.setSilverback(this.getRNG().nextBoolean());
+            this.setSilverback(this.getRandom().nextBoolean());
         }
 
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Nullable
-    public EntityGorilla getNearestSilverback(IWorld world, double dist) {
-        List<EntityGorilla> list = world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(dist, dist / 2, dist));
+    public EntityGorilla getNearestSilverback(LevelAccessor world, double dist) {
+        List<? extends EntityGorilla> list = world.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(dist, dist / 2, dist));
         if (list.isEmpty()) {
             return null;
         }
@@ -201,7 +212,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         double d0 = Double.MAX_VALUE;
         for (EntityGorilla gorrila2 : list) {
             if (gorrila2.isSilverback()) {
-                double d1 = this.getDistanceSq(gorrila2);
+                double d1 = this.distanceToSqr(gorrila2);
                 if (!(d1 > d0)) {
                     d0 = d1;
                     gorilla = gorrila2;
@@ -211,116 +222,114 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         return gorilla;
     }
 
-    public EntitySize getSize(Pose poseIn) {
-        return isSilverback() && !isChild() ? SILVERBACK_SIZE.scale(this.getRenderScale()) : super.getSize(poseIn);
+    public EntityDimensions getDimensions(Pose poseIn) {
+        return isSilverback() && !isBaby() ? SILVERBACK_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
     }
 
-    public void updatePassenger(Entity passenger) {
-        if (this.isPassenger(passenger)) {
-            this.setSitting(false);
-            passenger.rotationYaw = this.rotationYaw;
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
+        if (this.hasPassenger(passenger)) {
+            this.setOrderedToSit(false);
             if (passenger instanceof EntityGorilla) {
                 EntityGorilla babyGorilla = (EntityGorilla) passenger;
                 babyGorilla.setStanding(this.isStanding());
-                babyGorilla.setSitting(this.isSitting());
+                babyGorilla.setOrderedToSit(this.isSitting());
+                babyGorilla.yBodyRot = this.yBodyRot;
             }
             float sitAdd = -0.03F * this.sitProgress;
             float standAdd = -0.03F * this.standProgress;
             float radius = standAdd + sitAdd;
-            float angle = (0.01745329251F * this.renderYawOffset);
-            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-            double extraZ = radius * MathHelper.cos(angle);
-            passenger.setPosition(this.getPosX() + extraX, this.getPosY() + this.getMountedYOffset() + passenger.getYOffset(), this.getPosZ() + extraZ);
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
+            double extraZ = radius * Mth.cos(angle);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
     }
 
-    public boolean canBeSteered() {
-        return false;
-    }
-
-    public double getMountedYOffset() {
-        return (double) this.getHeight() * 0.55F * getGorillaScale() * (isSilverback() ? 0.75F : 1.0F);
+    public double getPassengersRidingOffset() {
+        return (double) this.getBbHeight() * 0.65F * getGorillaScale() * (isSilverback() ? 0.75F : 1.0F);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(SILVERBACK, Boolean.valueOf(false));
-        this.dataManager.register(STANDING, Boolean.valueOf(false));
-        this.dataManager.register(SITTING, Boolean.valueOf(false));
-        this.dataManager.register(EATING, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SILVERBACK, false);
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(EATING, false);
     }
 
     public boolean isSilverback() {
-        return this.dataManager.get(SILVERBACK).booleanValue();
+        return this.entityData.get(SILVERBACK);
     }
 
     public void setSilverback(boolean silver) {
-        this.dataManager.set(SILVERBACK, silver);
+        this.entityData.set(SILVERBACK, silver);
     }
 
     public boolean isStanding() {
-        return this.dataManager.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
-        this.dataManager.set(STANDING, Boolean.valueOf(standing));
+        this.entityData.set(STANDING, standing);
     }
 
     public boolean isSitting() {
-        return this.dataManager.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
-    public void setSitting(boolean sit) {
-        this.dataManager.set(SITTING, Boolean.valueOf(sit));
+    public void setOrderedToSit(boolean sit) {
+        this.entityData.set(SITTING, sit);
     }
 
     public boolean isEating() {
-        return this.dataManager.get(EATING).booleanValue();
+        return this.entityData.get(EATING);
     }
 
     public void setEating(boolean eating) {
-        this.dataManager.set(EATING, Boolean.valueOf(eating));
+        this.entityData.set(EATING, eating);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Silverback", this.isSilverback());
         compound.putBoolean("Standing", this.isStanding());
         compound.putBoolean("GorillaSitting", this.isSitting());
         compound.putBoolean("ForcedToSit", this.forcedSit);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setSilverback(compound.getBoolean("Silverback"));
         this.setStanding(compound.getBoolean("Standing"));
-        this.setSitting(compound.getBoolean("GorillaSitting"));
+        this.setOrderedToSit(compound.getBoolean("GorillaSitting"));
         this.forcedSit = compound.getBoolean("ForcedToSit");
     }
 
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         if (itemstack.getItem() == Items.NAME_TAG) {
-            return super.getEntityInteractionResult(player, hand);
+            return super.mobInteract(player, hand);
         }
-        if (isTamed() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()) {
+        if (isTame() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()) {
             this.heal(5);
-            this.consumeItemFromStack(player, itemstack);
-            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
-            return ActionResultType.SUCCESS;
+            this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
+            this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
+            return InteractionResult.SUCCESS;
         }
-        ActionResultType type = super.getEntityInteractionResult(player, hand);
-        if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
+        InteractionResult type = super.mobInteract(player, hand);
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
             if (this.isSitting()) {
                 this.forcedSit = false;
-                this.setSitting(false);
-                return ActionResultType.SUCCESS;
+                this.setOrderedToSit(false);
+                return InteractionResult.SUCCESS;
             } else {
                 this.forcedSit = true;
-                this.setSitting(true);
-                return ActionResultType.SUCCESS;
+                this.setOrderedToSit(true);
+                return InteractionResult.SUCCESS;
             }
         }
         return type;
@@ -346,50 +355,51 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     public void tick() {
         super.tick();
-        if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.canTargetItem(this.getHeldItem(Hand.MAIN_HAND))) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && this.canTargetItem(this.getItemInHand(InteractionHand.MAIN_HAND))) {
             this.setEating(true);
-            this.setSitting(true);
+            this.setOrderedToSit(true);
             this.setStanding(false);
         }
-        if (isEating() && !this.canTargetItem(this.getHeldItem(Hand.MAIN_HAND))) {
+        if (isEating() && !this.canTargetItem(this.getItemInHand(InteractionHand.MAIN_HAND))) {
             this.setEating(false);
             eatingTime = 0;
             if (!forcedSit) {
-                this.setSitting(true);
+                this.setOrderedToSit(true);
             }
         }
         if (isEating()) {
             eatingTime++;
-            if (!ItemTags.LEAVES.contains(this.getHeldItemMainhand().getItem())) {
+            if (!this.getMainHandItem().is(ItemTags.LEAVES)) {
                 for (int i = 0; i < 3; i++) {
-                    double d2 = this.rand.nextGaussian() * 0.02D;
-                    double d0 = this.rand.nextGaussian() * 0.02D;
-                    double d1 = this.rand.nextGaussian() * 0.02D;
-                    this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, this.getHeldItem(Hand.MAIN_HAND)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                 }
             }
             if (eatingTime % 5 == 0) {
-                this.playSound(SoundEvents.ENTITY_PANDA_EAT, this.getSoundVolume(), this.getSoundPitch());
+                this.gameEvent(GameEvent.EAT);
+                this.playSound(SoundEvents.PANDA_EAT, this.getSoundVolume(), this.getVoicePitch());
             }
             if (eatingTime > 100) {
-                ItemStack stack = this.getHeldItem(Hand.MAIN_HAND);
+                ItemStack stack = this.getItemInHand(InteractionHand.MAIN_HAND);
                 if (!stack.isEmpty()) {
                     this.heal(4);
                     if (isBanana(stack) && bananaThrowerID != null) {
-                        if (getRNG().nextFloat() < 0.3F) {
-                            this.setTamed(true);
-                            this.setOwnerId(this.bananaThrowerID);
-                            PlayerEntity player = world.getPlayerByUuid(bananaThrowerID);
-                            if (player instanceof ServerPlayerEntity) {
-                                CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayerEntity)player, this);
+                        if (getRandom().nextFloat() < 0.3F) {
+                            this.setTame(true);
+                            this.setOwnerUUID(this.bananaThrowerID);
+                            Player player = level().getPlayerByUUID(bananaThrowerID);
+                            if (player instanceof ServerPlayer) {
+                                CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer)player, this);
                             }
-                            this.world.setEntityState(this, (byte) 7);
+                            this.level().broadcastEntityEvent(this, (byte) 7);
                         } else {
-                            this.world.setEntityState(this, (byte) 6);
+                            this.level().broadcastEntityEvent(this, (byte) 6);
                         }
                     }
-                    if (stack.hasContainerItem()) {
-                        this.entityDropItem(stack.getContainerItem());
+                    if (stack.hasCraftingRemainingItem()) {
+                        this.spawnAtLocation(stack.getCraftingRemainingItem());
                     }
                     stack.shrink(1);
                 }
@@ -398,65 +408,94 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         }
         prevSitProgress = sitProgress;
         prevStandProgress = standProgress;
-        if (this.isSitting() && sitProgress < 10) {
-            sitProgress += 1;
+
+        if (this.isSitting()) {
+            if (sitProgress < 10F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!this.isSitting() && sitProgress > 0) {
-            sitProgress -= 1;
+
+        if (this.isStanding()) {
+            if (standProgress < 10F)
+                standProgress++;
+        } else {
+            if (standProgress > 0F)
+                standProgress--;
         }
-        if (this.isStanding() && standProgress < 10) {
-            standProgress += 1;
-        }
-        if (!this.isStanding() && standProgress > 0) {
-            standProgress -= 1;
-        }
-        if (this.isPassenger() && this.getRidingEntity() instanceof EntityGorilla && !this.isChild()) {
-            this.dismount();
+
+        if (this.isPassenger() && this.getVehicle() instanceof EntityGorilla) {
+            if(!this.isBaby()){
+                this.removeVehicle();
+            }else{
+                EntityGorilla mount = (EntityGorilla) this.getVehicle();
+                this.setYRot( mount.yBodyRot);
+                this.yHeadRot = mount.yBodyRot;
+                this.yBodyRot = mount.yBodyRot;
+            }
         }
         if (isStanding() && ++standingTime > maxStandTime) {
             this.setStanding(false);
             standingTime = 0;
-            maxStandTime = 75 + rand.nextInt(50);
+            maxStandTime = 75 + random.nextInt(50);
         }
-        if (isSitting() && !forcedSit && ++sittingTime > maxSitTime) {
-            this.setSitting(false);
+        if (!forcedSit && isSitting() && ++sittingTime > maxSitTime) {
+            this.setOrderedToSit(false);
             sittingTime = 0;
-            maxSitTime = 75 + rand.nextInt(50);
+            maxSitTime = 75 + random.nextInt(50);
         }
-        if (!forcedSit && this.isSitting() && (this.getAttackTarget() != null || this.isStanding()) && !this.isEating()) {
-            this.setSitting(false);
+        if (!forcedSit && this.isSitting() && (this.getTarget() != null || this.isStanding()) && !this.isEating()) {
+            this.setOrderedToSit(false);
         }
-        if (!world.isRemote && this.getAnimation() == NO_ANIMATION && !this.isStanding() && !this.isSitting() && rand.nextInt(1500) == 0) {
-            maxSitTime = 300 + rand.nextInt(250);
-            this.setSitting(true);
+        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && !this.isStanding() && !this.isSitting() && random.nextInt(1500) == 0) {
+            maxSitTime = 300 + random.nextInt(250);
+            this.setOrderedToSit(true);
         }
-        if (this.forcedSit && !this.isBeingRidden() && this.isTamed()) {
-            this.setSitting(true);
+        if (this.forcedSit && !this.isVehicle() && this.isTame()) {
+            this.setOrderedToSit(true);
         }
-        if (this.isSilverback() && rand.nextInt(600) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isAIDisabled() && this.getHeldItemMainhand().isEmpty()) {
+        if (sitProgress == 0 && poundChestCooldown <= 0 && this.isSilverback() && random.nextInt(800) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && !this.isNoAi() && this.getMainHandItem().isEmpty()) {
             this.setAnimation(ANIMATION_POUNDCHEST);
         }
-        if (!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
-            float f1 = this.rotationYaw * ((float) Math.PI / 180F);
-            this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
-            getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
-            this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+        if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
+            float f1 = this.getYRot() * Mth.DEG_TO_RAD;
+            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
+            getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
+            this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
-        if (isSilverback() && !isChild() && !hasSilverbackAttributes) {
+        if (!hasSilverbackAttributes && isSilverback() && !isBaby()) {
             hasSilverbackAttributes = true;
-            recalculateSize();
+            refreshDimensions();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10F);
             this.heal(50F);
         }
-        if (!isSilverback() && !isChild() && hasSilverbackAttributes) {
+        if (hasSilverbackAttributes && !isSilverback() && !isBaby()) {
             hasSilverbackAttributes = false;
-            recalculateSize();
+            refreshDimensions();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8F);
             this.heal(30F);
         }
+        if(poundChestCooldown > 0){
+            poundChestCooldown--;
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return null;
+    }
+
+    public PathNavigation getNavigation() {
+        return this.navigation;
+    }
+
+    @Nullable
+    public Entity getControlledVehicle() {
+        return this.getVehicle() instanceof EntityGorilla ? null : super.getControlledVehicle();
     }
 
     @Override
@@ -470,19 +509,20 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getCollection().get(AMTagRegistry.GORILLA_FOODSTUFFS).contains(stack.getItem());
+        return stack.is(AMTagRegistry.GORILLA_FOODSTUFFS);
     }
 
     @Override
     public void onGetItem(ItemEntity targetEntity) {
         ItemStack duplicate = targetEntity.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.world.isRemote) {
-            this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
+            this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
-        this.setHeldItem(Hand.MAIN_HAND, duplicate);
-        if (EntityGorilla.isBanana(targetEntity.getItem()) && !this.isTamed()) {
-            bananaThrowerID = targetEntity.getThrowerId();
+        this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
+        Entity thrower = targetEntity.getOwner();
+        if (EntityGorilla.isBanana(targetEntity.getItem()) && thrower != null && !this.isTame()) {
+            bananaThrowerID = thrower.getUUID();
         }
     }
 
@@ -493,8 +533,8 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
-        return AMEntityRegistry.GORILLA.create(p_241840_1_);
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
+        return AMEntityRegistry.GORILLA.get().create(p_241840_1_);
     }
 
     public void leaveCaravan() {
@@ -524,32 +564,32 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public float getGorillaScale() {
-        return isChild() ? 0.5F : isSilverback() ? 1.3F : 1.0F;
+        return isBaby() ? 0.5F : isSilverback() ? 1.3F : 1.0F;
     }
 
     public boolean isDonkeyKong() {
-        String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
-        return s != null && (s.toLowerCase().contains("donkey") && s.toLowerCase().contains("kong") || s.toLowerCase().equals("dk"));
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("donkey") && s.toLowerCase().contains("kong") || s.equalsIgnoreCase("dk"));
     }
 
     public boolean isFunkyKong() {
-        String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
         return s != null && (s.toLowerCase().contains("funky") && s.toLowerCase().contains("kong"));
     }
 
-    private class AIWalkIdle extends RandomWalkingGoal {
+    private class AIWalkIdle extends RandomStrollGoal {
         public AIWalkIdle(EntityGorilla entityGorilla, double v) {
             super(entityGorilla, v);
         }
 
-        public boolean shouldExecute() {
-            this.executionChance = EntityGorilla.this.isSilverback() ? 10 : 120;
-            return super.shouldExecute();
+        public boolean canUse() {
+            this.interval = EntityGorilla.this.isSilverback() ? 10 : 120;
+            return super.canUse();
         }
 
         @Nullable
-        protected Vector3d getPosition() {
-            return RandomPositionGenerator.findRandomTarget(this.creature, EntityGorilla.this.isSilverback() ? 25 : 10, 7);
+        protected Vec3 getPosition() {
+            return LandRandomPos.getPos(this.mob, EntityGorilla.this.isSilverback() ? 25 : 10, 7);
         }
 
     }

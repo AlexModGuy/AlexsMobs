@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+The Rocky Roller is a giant, aggressive monster found exclusively within the Dripstone Caves. Suited with a shell covered in pointed dripstone, this monster does not take kindly to intruders and seeks to crush them by rolling towards them at high speeds.
+Although they have relatively low health for a monster, they have extremely thick armor and high damage, making them a threat to any spelunker.
+<NEWLINE>
+If slain, the Rocky Roller can drop tuff, pointed dripstone and a Rocky Shell. This shell can be used to craft a chestplate that enables it's wearer to roll just like a Rocky Roller when sprinting. This rolling ability allows one to both travel quickly and to ram into others to deal a slight amount of damage.
+Fall damage is also decreased while wearing this item, yet if worn in water, one can find themselves sinking quickly under its impressive weight.

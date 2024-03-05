@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "cosmic_cod.txt",
+  "title": "entity.alexsmobs.cosmic_cod",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:cosmic_cod",
+      "x": 98,
+      "y": 77,
+      "page" : 0,
+      "scale": 2.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

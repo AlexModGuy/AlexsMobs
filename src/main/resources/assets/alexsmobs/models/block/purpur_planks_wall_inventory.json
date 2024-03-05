@@ -1,0 +1,7 @@
+{
+    "parent": "alexsmobs:block/wall_inventory",
+    "textures": {
+        "wall": "alexsmobs:block/purpur_planks",
+        "top" : "alexsmobs:block/purpur_planks"
+    }
+}

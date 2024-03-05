@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:shattered_dimensional_carver"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.shattered_dimensional_carver.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.shattered_dimensional_carver.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/dimensional_carver",
+    "criteria": {
+        "dimensional_carver": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:shattered_dimensional_carver"]
+                    }
+                ]
+            }
+        }
+    }
+}

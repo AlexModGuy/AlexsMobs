@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Gli ctenofori sono semplici creature gelatinose che sono al limite della definizione di vita animale.
+Possono essere trovati di notte negli oceani congelati, dove i loro luminosi colori prismatici contrastano il profondo blu.
+Essendo tutt'altro che intelligenti, gli ctenofori si lasciano trasportare dall'acqua, setacciando prede microscopiche. Possono essere catturati con un secchio d'acqua e ne esistono di diversi colori.
+<NEWLINE>
+Se uccisi, gli ctenofori possono rilasciare gelatina arcobaleno. Questa gelatina arcobaleno può essere utilizzata su quasi ogni entità per colorarla con un luminoso motivo arcobaleno, simile a quello degli ctenofori.
+Questo arcobaleno può essere rimosso utilizzando una spugna sulla creatura. Puoi inoltre mangiare la gelatina per applicare questo effetto a te stesso.
+<NEWLINE>
+La gelatina arcobaleno può essere utilizzata assieme a 8 blocchi di vetro per costruire del vetro arcobaleno, che cambia colore in base alla sua posizione nel mondo. Differentemente dal vetro oscurato, il vetro arcobaleno emette luce.

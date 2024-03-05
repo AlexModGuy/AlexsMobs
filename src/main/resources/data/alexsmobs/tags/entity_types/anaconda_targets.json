@@ -1,0 +1,20 @@
+{
+  "__comment": "all non-player targets of the tiger mob.",
+  "replace": false,
+  "values": [
+    "#alexsmobs:passive_land_animals",
+    "#alexsmobs:villagers",
+    "alexsmobs:kangaroo",
+    "alexsmobs:crocodile",
+    "alexsmobs:snow_leopard",
+    "alexsmobs:moose",
+    "alexsmobs:gelada_monkey",
+    "alexsmobs:terrapin",
+    "minecraft:dolphin",
+    "alexsmobs:catfish",
+    "alexsmobs:flying_fish",
+    "alexsmobs:devils_hole_pupfish",
+    "alexsmobs:caiman",
+    "alexsmobs:triops"
+  ]
+}

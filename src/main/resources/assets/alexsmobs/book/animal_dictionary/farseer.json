@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "farseer.txt",
+  "title": "entity.alexsmobs.farseer",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:transmutation_table",
+      "shapeless": false,
+      "x": 20,
+      "y": 100,
+      "page": 2,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:farseer",
+      "x": 100,
+      "y": 100,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

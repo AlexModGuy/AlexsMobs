@@ -1,0 +1,10 @@
+{
+  "__comment": "all non-player targets of the frost stalker mob.",
+  "replace": false,
+  "values": [
+    "#alexsmobs:villagers",
+    "#alexsmobs:passive_land_animals",
+    "minecraft:goat",
+    "alexsmobs:tusklin"
+  ]
+}

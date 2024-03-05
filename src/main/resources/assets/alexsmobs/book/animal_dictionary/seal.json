@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "seal.txt",
-  "title": "Seal",
+  "title": "entity.alexsmobs.seal",
   "linked_page_buttons": [
   ],
   "images": [
@@ -15,10 +15,10 @@
   "entity_renders": [
     {
       "entity": "alexsmobs:seal",
-      "x": 90,
-      "y": 60,
+      "x": 110,
+      "y": 63,
       "page" : 0,
-      "scale": 1.4,
+      "scale": 1.1,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,

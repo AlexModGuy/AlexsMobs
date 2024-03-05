@@ -1,16 +1,16 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 
 public class CrowAIMelee extends Goal {
-    private EntityCrow crow;
+    private final EntityCrow crow;
     float circlingTime = 0;
     float circleDistance = 1;
     float yLevel = 2;
@@ -21,63 +21,64 @@ public class CrowAIMelee extends Goal {
         this.crow = crow;
     }
 
-    public boolean shouldExecute(){
-        return crow.getAttackTarget() != null && !crow.isSitting() && crow.getCommand() != 3;
+    public boolean canUse(){
+        return crow.getTarget() != null && !crow.isSitting() && crow.getCommand() != 3;
     }
 
-    public void startExecuting() {
-        clockwise = crow.getRNG().nextBoolean();
-        yLevel = crow.getRNG().nextInt(2);
+    public void start() {
+        clockwise = crow.getRandom().nextBoolean();
+        yLevel = crow.getRandom().nextInt(2);
         circlingTime = 0;
-        maxCircleTime = 20 + crow.getRNG().nextInt(100);
-        circleDistance = 1F + crow.getRNG().nextFloat() * 3F;
+        maxCircleTime = 20 + crow.getRandom().nextInt(100);
+        circleDistance = 1F + crow.getRandom().nextFloat() * 3F;
     }
 
-    public void resetTask() {
-        clockwise = crow.getRNG().nextBoolean();
-        yLevel = crow.getRNG().nextInt(2);
+    public void stop() {
+        clockwise = crow.getRandom().nextBoolean();
+        yLevel = crow.getRandom().nextInt(2);
         circlingTime = 0;
-        maxCircleTime = 20 + crow.getRNG().nextInt(100);
-        circleDistance = 1F + crow.getRNG().nextFloat() * 3F;
-        if(crow.isOnGround()){
+        maxCircleTime = 20 + crow.getRandom().nextInt(100);
+        circleDistance = 1F + crow.getRandom().nextFloat() * 3F;
+        if(crow.onGround()){
             crow.setFlying(false);
         }
     }
 
     public void tick() {
+        LivingEntity target = crow.getTarget();
+        if(target != null){
+            if(circlingTime > maxCircleTime){
+                crow.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() / 2F, target.getZ(), 1.3F);
+                if(crow.distanceTo(target) < 2){
+                    crow.peck();
+                    if(target.getMobType() == MobType.UNDEAD){
+                        target.hurt(target.damageSources().generic(), 4);
+                    }else{
+                        target.hurt(target.damageSources().generic(), 1);
+                    }
+
+                    stop();
+                }
+            }else{
+                Vec3 circlePos = getVultureCirclePos(target.position());
+                if (circlePos == null) {
+                    circlePos = target.position();
+                }
+                crow.setFlying(true);
+                crow.getMoveControl().setWantedPosition(circlePos.x(), circlePos.y() + target.getEyeHeight() + 0.2F, circlePos.z(), 1F);
+            }
+        }
         if (this.crow.isFlying()) {
             circlingTime++;
         }
-        LivingEntity target = crow.getAttackTarget();
-        if(circlingTime > maxCircleTime){
-            crow.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY() + target.getEyeHeight() / 2F, target.getPosZ(), 1.3F);
-            if(crow.getDistance(target) < 2){
-               crow.peck();
-                if(target.getCreatureAttribute() == CreatureAttribute.UNDEAD){
-                    target.attackEntityFrom(DamageSource.MAGIC, 4);
-                }else{
-                    target.attackEntityFrom(DamageSource.GENERIC, 1);
-                }
-
-                resetTask();
-            }
-        }else{
-            Vector3d circlePos = getVultureCirclePos(target.getPositionVec());
-            if (circlePos == null) {
-                circlePos = target.getPositionVec();
-            }
-            crow.setFlying(true);
-            crow.getMoveHelper().setMoveTo(circlePos.getX(), circlePos.getY() + target.getEyeHeight() + 0.2F, circlePos.getZ(), 1F);
-
-        }
     }
 
-    public Vector3d getVultureCirclePos(Vector3d target) {
-        float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
-        double extraX = circleDistance * MathHelper.sin((angle));
-        double extraZ = circleDistance * MathHelper.cos(angle);
-        Vector3d pos = new Vector3d(target.getX() + extraX, target.getY() + yLevel, target.getZ() + extraZ);
-        if (crow.world.isAirBlock(new BlockPos(pos))) {
+    public Vec3 getVultureCirclePos(Vec3 target) {
+        float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
+        double extraX = circleDistance * Mth.sin((angle));
+        double extraZ = circleDistance * Mth.cos(angle);
+        Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
+        if (crow.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;

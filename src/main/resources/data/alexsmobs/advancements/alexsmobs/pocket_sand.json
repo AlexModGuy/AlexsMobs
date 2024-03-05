@@ -18,7 +18,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:pocket_sand"
+                        "items": ["alexsmobs:pocket_sand"]
                     }
                 ]
             }

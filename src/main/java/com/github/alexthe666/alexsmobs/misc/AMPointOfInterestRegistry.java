@@ -2,36 +2,27 @@ package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.block.BlockHummingbirdFeeder;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.village.PointOfInterestType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Set;
 
-@Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMPointOfInterestRegistry {
 
-    public static final PointOfInterestType END_PORTAL_FRAME = new PointOfInterestType("alexsmobs:end_portal_frame", PointOfInterestType.getAllStates(Blocks.END_PORTAL_FRAME), 32, 6);
-    public static final PointOfInterestType LEAFCUTTER_ANT_HILL = new PointOfInterestType("alexsmobs:leafcutter_anthill", PointOfInterestType.getAllStates(AMBlockRegistry.LEAFCUTTER_ANTHILL), 32, 6);
-    public static final PointOfInterestType BEACON = new PointOfInterestType("alexsmobs:am_beacon", PointOfInterestType.getAllStates(Blocks.BEACON), 32, 6);
-    public static final PointOfInterestType HUMMINGBIRD_FEEDER = new PointOfInterestType("alexsmobs:hummingbird_feeder", PointOfInterestType.getAllStates(AMBlockRegistry.HUMMINGBIRD_FEEDER), 32, 6);
+    public static final DeferredRegister<PoiType> DEF_REG = DeferredRegister.create(ForgeRegistries.POI_TYPES, AlexsMobs.MODID);
+    public static final RegistryObject<PoiType> END_PORTAL_FRAME = DEF_REG.register("end_portal_frame", () ->new PoiType(getBlockStates(Blocks.END_PORTAL_FRAME), 32, 6));
+    public static final RegistryObject<PoiType> LEAFCUTTER_ANT_HILL = DEF_REG.register("leafcutter_anthill", () ->new PoiType(getBlockStates(AMBlockRegistry.LEAFCUTTER_ANTHILL.get()), 32, 6));
+    public static final RegistryObject<PoiType> BEACON = DEF_REG.register("am_beacon", () -> new PoiType(getBlockStates(Blocks.BEACON), 32, 6));
+    public static final RegistryObject<PoiType> HUMMINGBIRD_FEEDER = DEF_REG.register("hummingbird_feeder", () -> new PoiType(getBlockStates(AMBlockRegistry.HUMMINGBIRD_FEEDER.get()), 32, 6));
 
-    private static Set<BlockState> getHummingbirdFeederStates() {
-        BlockState state = AMBlockRegistry.HUMMINGBIRD_FEEDER.getDefaultState().with(BlockHummingbirdFeeder.CONTENTS, 3);
-        return ImmutableSet.of(state, state.with(BlockHummingbirdFeeder.HANGING, true), state.with(BlockHummingbirdFeeder.WATERLOGGED, true), state.with(BlockHummingbirdFeeder.HANGING, true).with(BlockHummingbirdFeeder.WATERLOGGED, true));
+    private static Set<BlockState> getBlockStates(Block block) {
+        return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
     }
 
-    @SubscribeEvent
-    public static void registerEntities(final RegistryEvent.Register<PointOfInterestType> event) {
-        event.getRegistry().register(END_PORTAL_FRAME.setRegistryName("alexsmobs:end_portal_frame"));
-        event.getRegistry().register(LEAFCUTTER_ANT_HILL.setRegistryName("alexsmobs:leafcutter_anthill"));
-        event.getRegistry().register(BEACON.setRegistryName("alexsmobs:am_beacon"));
-        event.getRegistry().register(HUMMINGBIRD_FEEDER.setRegistryName("alexsmobs:hummingbird_feeder"));
-    }
 }

@@ -2,8 +2,24 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Hammerhead Sharks are large, cartelegous fish well known for their predatory habits, that live in warmer waters. Hammerheads will target any creature
- that is beneath half health, being scavangers. They also love tropical fish and squids. When seeking out food, Hammerhead
- Sharks circle their prey beforehand, to scope out an ideal attack angle. Occassionally, when attacking prey, the Hammerhead
- may loose one of its many teeth. These teeth can be used to create arrows that can travel better underwater and deal extra
- damage to aquatic creatures.
+    锤头鲨是以其捕食习性而闻名的一
+<NEWLINE>
+种大型软骨鱼，生活在温暖的水域。锤
+<NEWLINE>
+头鲨会将生命值低于其自身一半的任何
+<NEWLINE>
+生物视为目标，化身为清扫者。它们也
+<NEWLINE>
+喜欢热带鱼和鱿鱼。在寻找食物时，锤
+<NEWLINE>
+头鲨会预先将它们的猎物给包围起来，
+<NEWLINE>
+然后选择一个理想的攻击角度。偶尔，
+<NEWLINE>
+在攻击猎物的时候，锤头鲨众多颗牙齿
+<NEWLINE>
+中的一颗可能会松动。这些牙齿可以用
+<NEWLINE>
+来创造能够在水下进行更好地穿梭，且
+<NEWLINE>
+对水生生物会造成额外伤害的箭。

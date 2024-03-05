@@ -1,28 +1,28 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class OctopusColorRegistry {
 
-    public static final BlockState FALLBACK_BLOCK = Blocks.SAND.getDefaultState();
-    public static Map<String, Integer> TEXTURES_TO_COLOR = new HashMap<>();
+    public static final BlockState FALLBACK_BLOCK = Blocks.SAND.defaultBlockState();
+    public static Object2IntMap<String> TEXTURES_TO_COLOR = new Object2IntOpenHashMap<>();;
 
     public static int getBlockColor(BlockState stack) {
         String blockName = stack.toString();
-        if (TEXTURES_TO_COLOR.get(blockName) != null) {
-            return TEXTURES_TO_COLOR.get(blockName).intValue();
+        if (TEXTURES_TO_COLOR.containsKey(blockName)) {
+            return TEXTURES_TO_COLOR.getInt(blockName);
         } else {
             int colorizer = -1;
             try{
@@ -52,8 +52,8 @@ public class OctopusColorRegistry {
         float green = 0;
         float blue = 0;
         float count = 0;
-        int uMax = image.getWidth();
-        int vMax = image.getHeight();
+        int uMax = image.contents().width();
+        int vMax = image.contents().height();
         for (float i = 0; i < uMax; i++)
             for (float j = 0; j < vMax; j++) {
                 int alpha = image.getPixelRGBA(0, (int) i, (int) j) >> 24 & 0xFF;
@@ -70,6 +70,6 @@ public class OctopusColorRegistry {
     }
 
     private static TextureAtlasSprite getTextureAtlas(BlockState state) {
-        return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(state).getParticleTexture();
+        return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(state).getParticleIcon();
     }
 }

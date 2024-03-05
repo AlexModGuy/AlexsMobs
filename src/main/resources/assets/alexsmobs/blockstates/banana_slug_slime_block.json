@@ -1,0 +1,11 @@
+{
+    "multipart": [
+        {   "apply": [
+            { "model": "alexsmobs:block/banana_slug_slime_block_bubbles", "y" : 0, "uvlock": false },
+            { "model": "alexsmobs:block/banana_slug_slime_block_bubbles", "y" : 90, "uvlock": false },
+            { "model": "alexsmobs:block/banana_slug_slime_block_bubbles", "y" : 180, "uvlock": false },
+            { "model": "alexsmobs:block/banana_slug_slime_block_bubbles", "y" : 270, "uvlock": false }
+        ]},
+        {   "apply": { "model": "alexsmobs:block/banana_slug_slime_block" }}
+    ]
+}

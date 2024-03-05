@@ -1,0 +1,29 @@
+{
+  "parent": "root.json",
+  "text": "bunfungus.txt",
+  "title": "entity.alexsmobs.bunfungus",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:bunfungus",
+      "x": 100,
+      "y": 95,
+      "page" : 0,
+      "scale": 1.0,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

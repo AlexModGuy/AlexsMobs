@@ -1,16 +1,17 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
     private final AdvancedModelBox root;
@@ -34,93 +35,93 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
     private final AdvancedModelBox tailfront_rightPivot;
 
     public ModelEnderiophage() {
-        textureWidth = 128;
-        textureHeight = 128;
+        texWidth = 128;
+        texHeight = 128;
 
-        root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root = new AdvancedModelBox(this, "root");
+        root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -11.0F, 0.0F);
+        body = new AdvancedModelBox(this, "body");
+        body.setPos(0.0F, -11.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 30).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 3.0F, 8.0F, 0.0F, false);
 
-        mouth = new AdvancedModelBox(this);
-        mouth.setRotationPoint(0.0F, 1.0F, 0.0F);
+        mouth = new AdvancedModelBox(this, "mouth");
+        mouth.setPos(0.0F, 1.0F, 0.0F);
         body.addChild(mouth);
         mouth.setTextureOffset(0, 0).addBox(-1.0F, -5.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
 
-        sheath = new AdvancedModelBox(this);
-        sheath.setRotationPoint(0.0F, -2.0F, 0.0F);
+        sheath = new AdvancedModelBox(this, "sheath");
+        sheath.setPos(0.0F, -2.0F, 0.0F);
         body.addChild(sheath);
         sheath.setTextureOffset(50, 43).addBox(-2.0F, -14.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
 
-        collar = new AdvancedModelBox(this);
-        collar.setRotationPoint(0.0F, -14.0F, 0.0F);
+        collar = new AdvancedModelBox(this, "collar");
+        collar.setPos(0.0F, -14.0F, 0.0F);
         sheath.addChild(collar);
         collar.setTextureOffset(0, 55).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 1.0F, 6.0F, 0.0F, false);
 
-        capsid = new AdvancedModelBox(this);
-        capsid.setRotationPoint(0.0F, -1.0F, 0.0F);
+        capsid = new AdvancedModelBox(this, "capsid");
+        capsid.setPos(0.0F, -1.0F, 0.0F);
         collar.addChild(capsid);
         capsid.setTextureOffset(0, 0).addBox(-7.0F, -15.0F, -7.0F, 14.0F, 15.0F, 14.0F, 0.0F, false);
 
-        eye = new AdvancedModelBox(this);
-        eye.setRotationPoint(0.0F, -8.0F, 0.0F);
+        eye = new AdvancedModelBox(this, "eye");
+        eye.setPos(0.0F, -8.0F, 0.0F);
         capsid.addChild(eye);
         eye.setTextureOffset(43, 0).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F, 0.0F, false);
 
-        tailmid_leftPivot = new AdvancedModelBox(this);
-        tailmid_leftPivot.setRotationPoint(4.0F, -1.0F, 0.0F);
+        tailmid_leftPivot = new AdvancedModelBox(this, "tailmid_leftPivot");
+        tailmid_leftPivot.setPos(4.0F, -1.0F, 0.0F);
         body.addChild(tailmid_leftPivot);
 
-        tailmid_left = new AdvancedModelBox(this);
+        tailmid_left = new AdvancedModelBox(this, "tailmid_left");
         tailmid_leftPivot.addChild(tailmid_left);
         tailmid_left.setTextureOffset(25, 43).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
-        tailmid_rightPivot = new AdvancedModelBox(this);
-        tailmid_rightPivot.setRotationPoint(-4.0F, -1.0F, 0.0F);
+        tailmid_rightPivot = new AdvancedModelBox(this, "tailmid_rightPivot");
+        tailmid_rightPivot.setPos(-4.0F, -1.0F, 0.0F);
         body.addChild(tailmid_rightPivot);
 
-        tailmid_right = new AdvancedModelBox(this);
+        tailmid_right = new AdvancedModelBox(this, "tailmid_right");
         tailmid_rightPivot.addChild(tailmid_right);
         tailmid_right.setTextureOffset(25, 43).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
 
-        tailback_leftPivot = new AdvancedModelBox(this);
-        tailback_leftPivot.setRotationPoint(4.0F, -1.0F, 4.0F);
+        tailback_leftPivot = new AdvancedModelBox(this, "tailback_leftPivot");
+        tailback_leftPivot.setPos(4.0F, -1.0F, 4.0F);
         body.addChild(tailback_leftPivot);
         setRotationAngle(tailback_leftPivot, 0.0F, -0.7854F, 0.0F);
 
-        tailback_left = new AdvancedModelBox(this);
+        tailback_left = new AdvancedModelBox(this, "tailback_left");
         tailback_leftPivot.addChild(tailback_left);
         tailback_left.setTextureOffset(33, 30).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
-        tailback_rightPivot = new AdvancedModelBox(this);
-        tailback_rightPivot.setRotationPoint(-4.0F, -1.0F, 4.0F);
+        tailback_rightPivot = new AdvancedModelBox(this, "tailback_rightPivot");
+        tailback_rightPivot.setPos(-4.0F, -1.0F, 4.0F);
         body.addChild(tailback_rightPivot);
         setRotationAngle(tailback_rightPivot, 0.0F, 0.7854F, 0.0F);
 
-        tailback_right = new AdvancedModelBox(this);
+        tailback_right = new AdvancedModelBox(this, "tailback_right");
         tailback_rightPivot.addChild(tailback_right);
         tailback_right.setTextureOffset(33, 30).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
 
-        tailfront_leftPivot = new AdvancedModelBox(this);
-        tailfront_leftPivot.setRotationPoint(4.0F, -1.0F, -4.0F);
+        tailfront_leftPivot = new AdvancedModelBox(this, "tailfront_leftPivot");
+        tailfront_leftPivot.setPos(4.0F, -1.0F, -4.0F);
         body.addChild(tailfront_leftPivot);
         setRotationAngle(tailfront_leftPivot, 0.0F, 0.6981F, 0.0F);
 
-        tailfront_left = new AdvancedModelBox(this);
+        tailfront_left = new AdvancedModelBox(this, "tailfront_left");
         tailfront_leftPivot.addChild(tailfront_left);
         tailfront_left.setTextureOffset(0, 42).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
 
-        tailfront_rightPivot = new AdvancedModelBox(this);
-        tailfront_rightPivot.setRotationPoint(-4.0F, -1.0F, -4.0F);
+        tailfront_rightPivot = new AdvancedModelBox(this, "tailfront_rightPivot");
+        tailfront_rightPivot.setPos(-4.0F, -1.0F, -4.0F);
         body.addChild(tailfront_rightPivot);
         setRotationAngle(tailfront_rightPivot, 0.0F, -0.6981F, 0.0F);
 
-        tailfront_right = new AdvancedModelBox(this);
+        tailfront_right = new AdvancedModelBox(this, "tailfront_right");
         tailfront_rightPivot.addChild(tailfront_right);
         tailfront_right.setTextureOffset(0, 42).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
         this.updateDefaultPose();
@@ -132,17 +133,17 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
     }
 
     @Override
-    public void setRotationAngles(EntityEnderiophage entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityEnderiophage entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        Entity look = Minecraft.getInstance().getRenderViewEntity();
-        float partialTicks = ageInTicks - entity.ticksExisted;
+        Entity look = Minecraft.getInstance().getCameraEntity();
+        float partialTicks = ageInTicks - entity.tickCount;
         float idleSpeed = 0.25F;
         float idleDegree = 0.1F;
         float walkSpeed = 2F;
         float walkDegree = 0.6F;
         float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTicks;
-        float phagePitch = (float) Math.toRadians(MathHelper.interpolateAngle(partialTicks, entity.prevPhagePitch, entity.getPhagePitch()));
-        float totalYaw = (float) Math.toRadians(MathHelper.interpolateAngle(partialTicks, entity.prevRenderYawOffset, entity.renderYawOffset));
+        float phagePitch = Maths.rad(Mth.rotLerp(partialTicks, entity.prevPhagePitch, entity.getPhagePitch()));
+        float totalYaw = Maths.rad(Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot));
         float tentacleProgress = (5F - limbSwingAmount * 10F) * flyProgress * 0.2F;
 
         this.bob(eye, idleSpeed, idleDegree * -8, false, ageInTicks, 1);
@@ -183,10 +184,10 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.walk(tailback_right, walkSpeed, walkDegree * -1.6F, true, -5, 0.3F, limbSwing, limbSwingAmount);
             this.walk(tailback_left, walkSpeed, walkDegree * -1.6F, false, -5, -0.3F, limbSwing, limbSwingAmount);
             this.bob(body, walkSpeed * 1.5F, walkDegree * 6, false, limbSwing, limbSwingAmount);
-            progressRotationPrev(body, limbSwingAmount, (float) Math.toRadians(-15), 0, 0, 1F);
-            progressRotationPrev(sheath, limbSwingAmount, (float) Math.toRadians(-15), 0, 0, 1F);
-            progressRotationPrev(tailfront_left, limbSwingAmount, (float) Math.toRadians(15), 0, 0, 1F);
-            progressRotationPrev(tailfront_right, limbSwingAmount, (float) Math.toRadians(15), 0, 0, 1F);
+            progressRotationPrev(body, limbSwingAmount, Maths.rad(-15), 0, 0, 1F);
+            progressRotationPrev(sheath, limbSwingAmount, Maths.rad(-15), 0, 0, 1F);
+            progressRotationPrev(tailfront_left, limbSwingAmount, Maths.rad(15), 0, 0, 1F);
+            progressRotationPrev(tailfront_right, limbSwingAmount, Maths.rad(15), 0, 0, 1F);
         }
 
         if(entity.isMissingEye()){
@@ -195,8 +196,8 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.eye.showModel = true;
         }
         if(entity.isPassenger()){
-            this.body.rotateAngleX += Math.PI/2F;
-            this.body.rotateAngleY += Math.PI/2F * entity.passengerIndex;
+            this.body.rotateAngleX += Mth.HALF_PI;
+            this.body.rotateAngleY += Mth.HALF_PI * entity.passengerIndex;
             this.sheath.setScale(1F, (float) (0.85F + Math.sin(ageInTicks) * 0.15F), 1F);
             this.collar.rotationPointY -= (float) (Math.sin(ageInTicks) * 0.15F - 0.15F) * 12F;
             this.capsid.setScale((float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F), (float) (1F + Math.sin(ageInTicks) * 0.15F), (float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F));
@@ -208,30 +209,30 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.body.rotateAngleX -= phagePitch * flyProgress * 0.2F;
         }
         progressPositionPrev(body, tentacleProgress, 0, -6, 0, 5F);
-        progressRotationPrev(tailfront_left, tentacleProgress, 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(tailmid_left, tentacleProgress, 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(tailback_left, tentacleProgress, 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(tailfront_right, tentacleProgress, 0, 0, (float) Math.toRadians(45), 5F);
-        progressRotationPrev(tailmid_right, tentacleProgress, 0, 0, (float) Math.toRadians(45), 5F);
-        progressRotationPrev(tailback_right, tentacleProgress, 0, 0, (float) Math.toRadians(45), 5F);
+        progressRotationPrev(tailfront_left, tentacleProgress, 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(tailmid_left, tentacleProgress, 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(tailback_left, tentacleProgress, 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(tailfront_right, tentacleProgress, 0, 0, Maths.rad(45), 5F);
+        progressRotationPrev(tailmid_right, tentacleProgress, 0, 0, Maths.rad(45), 5F);
+        progressRotationPrev(tailback_right, tentacleProgress, 0, 0, Maths.rad(45), 5F);
 
         if (look != null) {
-            Vector3d vector3d = look.getEyePosition(partialTicks);
-            Vector3d vector3d1 = entity.getEyePosition(partialTicks);
-            Vector3d vector3d2 = vector3d.subtract(vector3d1);
-            float f = MathHelper.sqrt(vector3d2.x * vector3d2.x + vector3d2.z * vector3d2.z) - totalYaw;
-            this.eye.rotateAngleY += -(float) (MathHelper.atan2(vector3d2.x, vector3d2.z)) - totalYaw;
-            this.eye.rotateAngleX += -MathHelper.clamp(vector3d2.y * 0.5F, Math.PI * -0.5F, Math.PI * 0.5F) + phagePitch * flyProgress * 0.2F;
+            Vec3 vector3d = look.getEyePosition(partialTicks);
+            Vec3 vector3d1 = entity.getEyePosition(partialTicks);
+            Vec3 vector3d2 = vector3d.subtract(vector3d1);
+            float f = Mth.sqrt((float)(vector3d2.x * vector3d2.x + vector3d2.z * vector3d2.z)) - totalYaw;
+            this.eye.rotateAngleY += -(float) (Mth.atan2(vector3d2.x, vector3d2.z)) - totalYaw;
+            this.eye.rotateAngleX += -Mth.clamp(vector3d2.y * 0.5F, Math.PI * -0.5F, Math.PI * 0.5F) + phagePitch * flyProgress * 0.2F;
         }
     }
 
     @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         root.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 

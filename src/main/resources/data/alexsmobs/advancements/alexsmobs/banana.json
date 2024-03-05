@@ -12,7 +12,7 @@
     },
     "parent": "alexsmobs:alexsmobs/root",
     "criteria": {
-        "rat_upgrade_basic": {
+        "banana": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [

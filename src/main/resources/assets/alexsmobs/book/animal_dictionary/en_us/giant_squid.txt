@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Giant Squid are large invertebrates only found in the deepest of ocean biomes. Although fearsome, Giant Squid are neutral towards most, unless they are a guardian or a fish.
+These invertebrates possess the largest eye in the animal kingdom. If slain, a giant squid will drop little more than a few ink sacs. However, if attacked by one of its only predators, the Cachalot Whale, this squid may lose a tentacle in the ensuing battle.
+These Lost Tentacles can be gathered by a player to create the Grappling Squok.
+<NEWLINE>
+<NEWLINE>
+This grappling aperatus allows one to shoot up to four tentacles at a time, latching onto any surface and pulling them towards it. It is very convient for caving and ocean exploration.
+<NEWLINE>
+Giant Squid can become depressurized if under less than ten blocks of water, and will take on a pale coloration.
+Rarely, if a normal squid is struck by lighting, it can transform into a unique blue Giant Squid.

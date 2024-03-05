@@ -4,59 +4,65 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
-public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic, ITargetsDroppedItems {
+public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITargetsDroppedItems {
 
-    private static final DataParameter<Float> SWIM_ANGLE = EntityDataManager.createKey(EntitySeal.class, DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> BASKING = EntityDataManager.createKey(EntitySeal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DIGGING = EntityDataManager.createKey(EntitySeal.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ARCTIC = EntityDataManager.createKey(EntitySeal.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> SWIM_ANGLE = SynchedEntityData.defineId(EntitySeal.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> BASKING = SynchedEntityData.defineId(EntitySeal.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DIGGING = SynchedEntityData.defineId(EntitySeal.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ARCTIC = SynchedEntityData.defineId(EntitySeal.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySeal.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> BOB_TICKS = SynchedEntityData.defineId(EntitySeal.class, EntityDataSerializers.INT);
     public float prevSwimAngle;
     public float prevBaskProgress;
     public float baskProgress;
     public float prevDigProgress;
     public float digProgress;
+    public float prevBobbingProgress;
+    public float bobbingProgress;
     public int revengeCooldown = 0;
     public UUID feederUUID = null;
     private int baskingTimer = 0;
@@ -65,43 +71,43 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
     private boolean isLandNavigator;
     public int fishFeedings = 0;
 
-    protected EntitySeal(EntityType type, World worldIn) {
+    protected EntitySeal(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(false);
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SEAL_IDLE;
+        return AMSoundRegistry.SEAL_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SEAL_HURT;
+        return AMSoundRegistry.SEAL_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SEAL_HURT;
+        return AMSoundRegistry.SEAL_HURT.get();
     }
 
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.18F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.18F);
     }
 
-    public static boolean canSealSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        Optional<RegistryKey<Biome>> optional = worldIn.func_242406_i(pos);
-        if (!Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) && !Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
-            boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.SEAL_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
-            return spawnBlock && worldIn.getLightSubtracted(pos, 0) > 8;
+    public static boolean canSealSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        Holder<Biome> holder = worldIn.getBiome(pos);
+        if (!holder.is(Biomes.FROZEN_OCEAN) && !holder.is(Biomes.DEEP_FROZEN_OCEAN)) {
+            boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.SEAL_SPAWNS);
+            return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
         } else {
-            return worldIn.getLightSubtracted(pos, 0) > 8 && worldIn.getBlockState(pos.down()).matchesBlock(Blocks.ICE);
+            return worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getBlockState(pos.below()).is(Blocks.ICE);
         }
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SealAIBask(this));
-        this.goalSelector.addGoal(1, new BreatheAirGoal(this));
+        this.goalSelector.addGoal(1, new BreathAirGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
@@ -109,32 +115,33 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1, true));
         this.goalSelector.addGoal(6, new SealAIDiveForItems(this));
         this.goalSelector.addGoal(7, new RandomSwimmingGoal(this, 1.0D, 7));
-        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(9, new AvoidEntityGoal(this, EntityOrca.class, 20F, 1.3D, 1.0D));
-        this.goalSelector.addGoal(10, new TemptGoal(this, 1.1D, Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.SEAL_FOODSTUFFS)), false));
-        this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
+        this.goalSelector.addGoal(10, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.SEAL_FOODSTUFFS), false));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, EntityFlyingFish.class, 55, true, true, null));
+        this.targetSelector.addGoal(2, new CreatureAITargetItems(this, false));
     }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.moveController = new MovementController(this);
-            this.navigator = new GroundPathNavigatorWide(this, world);
+            this.moveControl = new MoveControl(this);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
-            this.moveController = new AquaticMoveController(this, 1.5F);
-            this.navigator = new SemiAquaticPathNavigator(this, world);
+            this.moveControl = new AquaticMoveController(this, 1.5F);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        boolean prev = super.attackEntityFrom(source, amount);
+    public boolean hurt(DamageSource source, float amount) {
+        final boolean prev = super.hurt(source, amount);
         if (prev) {
-            double range = 15;
-            int fleeTime = 100 + getRNG().nextInt(150);
+            final double range = 15;
+            final int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
-            List<EntitySeal> list = this.world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(range, range / 2, range));
+            List<? extends EntitySeal> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntitySeal gaz : list) {
                 gaz.revengeCooldown = fleeTime;
                 gaz.setBasking(false);
@@ -145,72 +152,90 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(SWIM_ANGLE, 0F);
-        this.dataManager.register(BASKING, false);
-        this.dataManager.register(DIGGING, false);
-        this.dataManager.register(ARCTIC, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SWIM_ANGLE, 0F);
+        this.entityData.define(BASKING, false);
+        this.entityData.define(DIGGING, false);
+        this.entityData.define(ARCTIC, false);
+        this.entityData.define(VARIANT, 0);
+        this.entityData.define(BOB_TICKS, 0);
+    }
+
+    public boolean isTearsEasterEgg() {
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return s != null && s.toLowerCase().contains("he was");
+    }
+
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * (isInWater() ? 4.0F : 48.0F), 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public float getSwimAngle() {
-        return this.dataManager.get(SWIM_ANGLE);
+        return this.entityData.get(SWIM_ANGLE);
     }
 
     public void setSwimAngle(float progress) {
-        this.dataManager.set(SWIM_ANGLE, progress);
+        this.entityData.set(SWIM_ANGLE, progress);
     }
 
     public void tick() {
         super.tick();
         prevBaskProgress = baskProgress;
         prevDigProgress = digProgress;
+        prevBobbingProgress = bobbingProgress;
         prevSwimAngle = this.getSwimAngle();
-        boolean dig = isDigging() && isInWaterOrBubbleColumn();
-        float f2 = (float) -((float) this.getMotion().y * (double) (180F / (float) Math.PI));
+        boolean dig = isDigging() && isInWaterOrBubble();
+        float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
         if (isInWater()) {
-            this.rotationPitch = f2 * 2.5F;
+            this.setXRot(f2 * 2.5F);
+
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
 
-        if (isInWater() && this.isLandNavigator) {
-            switchNavigator(false);
+        if (isBasking()) {
+            if (baskProgress < 5F)
+                baskProgress++;
+        } else {
+            if (baskProgress > 0F)
+                baskProgress--;
         }
-        if (!isInWater() && !this.isLandNavigator) {
-            switchNavigator(true);
+
+        if (dig) {
+            if (digProgress < 5F)
+                digProgress++;
+        } else {
+            if (digProgress > 0F)
+                digProgress--;
         }
-        if (isBasking() && baskProgress < 5F) {
-            baskProgress++;
-        }
-        if (!isBasking() && baskProgress > 0F) {
-            baskProgress--;
-        }
-        if (dig && digProgress < 5F) {
-            digProgress++;
-        }
-        if (!dig && digProgress > 0F) {
-            digProgress--;
-        }
-        if (dig && world.getBlockState(this.getPositionUnderneath()).isSolid()) {
-            BlockPos posit = this.getPositionUnderneath();
-            BlockState understate = world.getBlockState(posit);
-            for (int i = 0; i < 4 + rand.nextInt(2); i++) {
-                double particleX = posit.getX() + rand.nextFloat();
+
+        if (dig && level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).canOcclude()) {
+            BlockPos posit = this.getBlockPosBelowThatAffectsMyMovement();
+            BlockState understate = level().getBlockState(posit);
+            for (int i = 0; i < 4 + random.nextInt(2); i++) {
+                double particleX = posit.getX() + random.nextFloat();
                 double particleY = posit.getY() + 1F;
-                double particleZ = posit.getZ() + rand.nextFloat();
-                double motX = this.rand.nextGaussian() * 0.02D;
-                double motY = 0.1F + rand.nextFloat() * 0.2F;
-                double motZ = this.rand.nextGaussian() * 0.02D;
-                world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
+                double particleZ = posit.getZ() + random.nextFloat();
+                double motX = this.random.nextGaussian() * 0.02D;
+                double motY = 0.1F + random.nextFloat() * 0.2F;
+                double motZ = this.random.nextGaussian() * 0.02D;
+                level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
             }
         }
-        if (!this.world.isRemote) {
+        if (!this.level().isClientSide) {
             if (isBasking()) {
-                if (this.getRevengeTarget() != null || isInLove() || revengeCooldown > 0 || this.isInWaterOrBubbleColumn() || this.getAttackTarget() != null || baskingTimer > 1000 && this.getRNG().nextInt(100) == 0) {
+                if (this.getLastHurtByMob() != null || isInLove() || revengeCooldown > 0 || this.isInWaterOrBubble() || this.getTarget() != null || baskingTimer > 1000 && this.getRandom().nextInt(100) == 0) {
                     this.setBasking(false);
                 }
             } else {
-                if (this.getAttackTarget() == null && !isInLove() && this.getRevengeTarget() == null && revengeCooldown == 0 && !isBasking() && baskingTimer == 0 && this.getRNG().nextInt(15) == 0) {
-                    if (!isInWaterOrBubbleColumn()) {
+                if (this.getTarget() == null && !isInLove() && this.getLastHurtByMob() == null && revengeCooldown == 0 && !isBasking() && baskingTimer == 0 && this.getRandom().nextInt(15) == 0) {
+                    if (!isInWaterOrBubble()) {
                         this.setBasking(true);
                     }
                 }
@@ -218,20 +243,20 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
             if (revengeCooldown > 0) {
                 revengeCooldown--;
             }
-            if (revengeCooldown == 0 && this.getRevengeTarget() != null) {
-                this.setRevengeTarget(null);
+            if (revengeCooldown == 0 && this.getLastHurtByMob() != null) {
+                this.setLastHurtByMob(null);
             }
             float threshold = 0.05F;
-            if (isInWater() && this.prevRotationYaw - this.rotationYaw > threshold) {
+            if (isInWater() && this.yRotO - this.getYRot() > threshold) {
                 this.setSwimAngle(this.getSwimAngle() + 2);
-            } else if (isInWater() && this.prevRotationYaw - this.rotationYaw < -threshold) {
+            } else if (isInWater() && this.yRotO - this.getYRot() < -threshold) {
                 this.setSwimAngle(this.getSwimAngle() - 2);
             } else if (this.getSwimAngle() > 0) {
                 this.setSwimAngle(Math.max(this.getSwimAngle() - 10, 0));
             } else if (this.getSwimAngle() < 0) {
                 this.setSwimAngle(Math.min(this.getSwimAngle() + 10, 0));
             }
-            this.setSwimAngle(MathHelper.clamp(this.getSwimAngle(), -70, 70));
+            this.setSwimAngle(Mth.clamp(this.getSwimAngle(), -70, 70));
             if (isBasking()) {
                 baskingTimer++;
             } else {
@@ -245,96 +270,129 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
                 swimTimer--;
             }
         }
+        int bob = this.entityData.get(BOB_TICKS);
+        if(bob > 0){
+            bob--;
+            if(this.bobbingProgress < 5F){
+                this.bobbingProgress++;
+            }
+            this.entityData.set(BOB_TICKS, bob);
+        }else{
+            if(this.bobbingProgress > 0F){
+                this.bobbingProgress--;
+            }
+            if(!this.level().isClientSide && random.nextInt(300) == 0 && !this.isInWater() && this.revengeCooldown == 0){
+                bob = 20 + random.nextInt(20);
+                this.entityData.set(BOB_TICKS, bob);
+            }
+        }
+    }
+
+    public int getVariant() {
+        return this.entityData.get(VARIANT);
+    }
+
+    public void setVariant(int variant) {
+        this.entityData.set(VARIANT, Integer.valueOf(variant));
     }
 
     public boolean isBasking() {
-        return this.dataManager.get(BASKING);
+        return this.entityData.get(BASKING);
     }
 
     public void setBasking(boolean basking) {
-        this.dataManager.set(BASKING, basking);
+        this.entityData.set(BASKING, basking);
     }
 
     public boolean isDigging() {
-        return this.dataManager.get(DIGGING);
+        return this.entityData.get(DIGGING);
     }
 
     public void setDigging(boolean digging) {
-        this.dataManager.set(DIGGING, digging);
+        this.entityData.set(DIGGING, digging);
     }
 
     public boolean isArctic() {
-        return this.dataManager.get(ARCTIC);
+        return this.entityData.get(ARCTIC);
     }
 
     public void setArctic(boolean arctic) {
-        this.dataManager.set(ARCTIC, arctic);
+        this.entityData.set(ARCTIC, arctic);
     }
 
-    public int getMaxAir() {
+    public int getMaxAirSupply() {
         return 4800;
     }
 
-    protected int determineNextAir(int currentAir) {
-        return this.getMaxAir();
+    protected int increaseAirSupply(int currentAir) {
+        return this.getMaxAirSupply();
     }
 
-    public int getVerticalFaceSpeed() {
+    public int getMaxHeadXRot() {
         return 1;
     }
 
-    public int getHorizontalFaceSpeed() {
+    public int getMaxHeadYRot() {
         return 1;
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason
-            reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setArctic(this.isBiomeArctic(worldIn, this.getPosition()));
-        this.setAir(this.getMaxAir());
-        this.rotationPitch = 0.0F;
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
+            reason, @Nullable SpawnGroupData data, @Nullable CompoundTag dataTag) {
+        this.setArctic(this.isBiomeArctic(worldIn, this.blockPosition()));
+        int i;
+        if (data instanceof SealGroupData) {
+            i = ((SealGroupData)data).variant;
+        } else {
+            i = this.random.nextInt(2);
+            data = new SealGroupData(i);
+        }
+        this.setVariant(i);
+        this.setAirSupply(this.getMaxAirSupply());
+        this.setXRot(0.0F);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, data, dataTag);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Arctic", this.isArctic());
         compound.putBoolean("Basking", this.isBasking());
         compound.putInt("BaskingTimer", this.baskingTimer);
         compound.putInt("SwimTimer", this.swimTimer);
         compound.putInt("FishFeedings", this.fishFeedings);
+        compound.putInt("Variant", this.getVariant());
         if(feederUUID != null){
-            compound.putUniqueId("FeederUUID", feederUUID);
+            compound.putUUID("FeederUUID", feederUUID);
         }
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setArctic(compound.getBoolean("Arctic"));
         this.setBasking(compound.getBoolean("Basking"));
         this.baskingTimer = compound.getInt("BaskingTimer");
         this.swimTimer = compound.getInt("SwimTimer");
         this.fishFeedings = compound.getInt("FishFeedings");
-        if(compound.hasUniqueId("FeederUUID")){
-            this.feederUUID = compound.getUniqueId("FeederUUID");
+        if(compound.hasUUID("FeederUUID")){
+            this.feederUUID = compound.getUUID("FeederUUID");
         }
+        this.setVariant(compound.getInt("Variant"));
     }
 
-    private boolean isBiomeArctic(IWorld worldIn, BlockPos position) {
-        RegistryKey<Biome> biomeKey = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, worldIn.getBiome(position).getRegistryName());
-        return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.COLD);
+    private boolean isBiomeArctic(LevelAccessor worldIn, BlockPos position) {
+        return worldIn.getBiome(position).is(AMTagRegistry.SPAWNS_WHITE_SEALS);
     }
 
-    public void travel(Vector3d travelVector) {
-        if (this.isServerWorld() && this.isInWater()) {
-            this.moveRelative(this.getAIMoveSpeed(), travelVector);
-            this.move(MoverType.SELF, this.getMotion());
-            this.setMotion(this.getMotion().scale(0.9D));
-            if (this.getAttackTarget() == null) {
-                this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
+    public void travel(Vec3 travelVector) {
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(this.getSpeed(), travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+            if (this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
             }
             if (this.isDigging()) {
-                this.setMotion(this.getMotion().add(0.0D, -0.02D, 0.0D));
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.02D, 0.0D));
 
             }
         } else {
@@ -343,15 +401,15 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
 
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.LOBSTER_TAIL;
+    public boolean isFood(ItemStack stack) {
+        return stack.getItem() == AMItemRegistry.LOBSTER_TAIL.get();
     }
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        EntitySeal seal = AMEntityRegistry.SEAL.create(serverWorld);
-        seal.setArctic(this.isBiomeArctic(serverWorld, this.getPosition()));
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
+        EntitySeal seal = AMEntityRegistry.SEAL.get().create(serverWorld);
+        seal.setArctic(this.isBiomeArctic(serverWorld, this.blockPosition()));
         return seal;
     }
 
@@ -365,7 +423,7 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
         if (!this.getPassengers().isEmpty()) {
             return false;
         }
-        if (this.getAttackTarget() != null && !this.getAttackTarget().isInWater()) {
+        if (this.getTarget() != null && !this.getTarget().isInWater()) {
             return true;
         }
         return swimTimer > 600;
@@ -383,16 +441,20 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getCollection().get(AMTagRegistry.SEAL_FOODSTUFFS).contains(stack.getItem());
+        return stack.is(AMTagRegistry.SEAL_FOODSTUFFS);
     }
 
     @Override
     public void onGetItem(ItemEntity e) {
-        if (ItemTags.getCollection().get(AMTagRegistry.SEAL_FOODSTUFFS).contains(e.getItem().getItem())) {
+        if (e.getItem().is(ItemTags.FISHES)) {
             fishFeedings++;
-            this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
+            this.gameEvent(GameEvent.EAT);
+            this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
+            Entity itemThrower = e.getOwner();
             if (fishFeedings >= 3) {
-                feederUUID = e.getThrowerId();
+                if(itemThrower != null){
+                    feederUUID = itemThrower.getUUID();
+                }
                 fishFeedings = 0;
             }
         } else {
@@ -409,5 +471,16 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
     @Override
     public boolean canPanic() {
         return !isBasking();
+    }
+
+    public static class SealGroupData extends AgeableMobGroupData {
+
+        public final int variant;
+
+        SealGroupData(int variant) {
+            super(true);
+            this.variant = variant;
+        }
+
     }
 }

@@ -1,12 +1,12 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityVoidWormBeak;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {
 	private final AdvancedModelBox root;
@@ -21,92 +21,92 @@ public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {
 	private final AdvancedModelBox topjaw;
 	private final AdvancedModelBox bottomjaw;
 
-	public ModelVoidWorm() {
-		textureWidth = 256;
-		textureHeight = 256;
+	public ModelVoidWorm(float f) {
+		texWidth = 256;
+		texHeight = 256;
 
-		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root = new AdvancedModelBox(this, "root");
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		neck = new AdvancedModelBox(this);
-		neck.setRotationPoint(0.0F, -10.0F, 20.0F);
+		neck = new AdvancedModelBox(this, "neck");
+		neck.setPos(0.0F, -10.0F, 20.0F);
 		root.addChild(neck);
-		neck.setTextureOffset(0, 53).addBox(-10.0F, -10.0F, -28.0F, 20.0F, 20.0F, 28.0F, 0.0F, false);
+		neck.setTextureOffset(0, 53).addBox(-10.0F, -10.0F, -28.0F, 20.0F, 20.0F, 28.0F, f, false);
 
-		topfrills_left = new AdvancedModelBox(this);
-		topfrills_left.setRotationPoint(10.0F, -10.0F, -20.0F);
+		topfrills_left = new AdvancedModelBox(this, "topfrills_left");
+		topfrills_left.setPos(10.0F, -10.0F, -20.0F);
 		neck.addChild(topfrills_left);
 		setRotationAngle(topfrills_left, 0.0F, 0.0F, 0.7854F);
-		topfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, false);
+		topfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, false);
 
-		topfrills_right = new AdvancedModelBox(this);
-		topfrills_right.setRotationPoint(-10.0F, -10.0F, -20.0F);
+		topfrills_right = new AdvancedModelBox(this, "topfrills_right");
+		topfrills_right.setPos(-10.0F, -10.0F, -20.0F);
 		neck.addChild(topfrills_right);
 		setRotationAngle(topfrills_right, 0.0F, 0.0F, -0.7854F);
-		topfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, true);
+		topfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, true);
 
-		bottomfrills_left = new AdvancedModelBox(this);
-		bottomfrills_left.setRotationPoint(10.0F, 10.0F, -20.0F);
+		bottomfrills_left = new AdvancedModelBox(this, "bottomfrills_left");
+		bottomfrills_left.setPos(10.0F, 10.0F, -20.0F);
 		neck.addChild(bottomfrills_left);
 		setRotationAngle(bottomfrills_left, 0.0F, 0.0F, 2.3562F);
-		bottomfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, false);
+		bottomfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, false);
 
-		bottomfrills_right = new AdvancedModelBox(this);
-		bottomfrills_right.setRotationPoint(-10.0F, 10.0F, -20.0F);
+		bottomfrills_right = new AdvancedModelBox(this, "bottomfrills_right");
+		bottomfrills_right.setPos(-10.0F, 10.0F, -20.0F);
 		neck.addChild(bottomfrills_right);
 		setRotationAngle(bottomfrills_right, 0.0F, 0.0F, -2.3562F);
-		bottomfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, true);
+		bottomfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, true);
 
-		head = new AdvancedModelBox(this);
-		head.setRotationPoint(0.0F, 0.0F, -28.0F);
+		head = new AdvancedModelBox(this, "head");
+		head.setPos(0.0F, 0.0F, -28.0F);
 		neck.addChild(head);
-		head.setTextureOffset(0, 0).addBox(-17.0F, -17.0F, -18.0F, 34.0F, 34.0F, 18.0F, 0.0F, false);
-		head.setTextureOffset(25, 102).addBox(17.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
-		head.setTextureOffset(0, 102).addBox(-19.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
+		head.setTextureOffset(0, 0).addBox(-17.0F, -17.0F, -18.0F, 34.0F, 34.0F, 18.0F, f, false);
+		head.setTextureOffset(25, 102).addBox(17.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, f, false);
+		head.setTextureOffset(0, 102).addBox(-19.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, f, false);
 
-		eye_bottom_r1 = new AdvancedModelBox(this);
-		eye_bottom_r1.setRotationPoint(0.0F, 18.0F, -9.0F);
+		eye_bottom_r1 = new AdvancedModelBox(this, "eye_bottom_r1");
+		eye_bottom_r1.setPos(0.0F, 18.0F, -9.0F);
 		head.addChild(eye_bottom_r1);
 		setRotationAngle(eye_bottom_r1, 0.0F, 0.0F, 1.5708F);
-		eye_bottom_r1.setTextureOffset(0, 53).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
+		eye_bottom_r1.setTextureOffset(0, 53).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, f, false);
 
-		eye_top_r1 = new AdvancedModelBox(this);
-		eye_top_r1.setRotationPoint(0.0F, -18.0F, -9.0F);
+		eye_top_r1 = new AdvancedModelBox(this, "eye_top_r1");
+		eye_top_r1.setPos(0.0F, -18.0F, -9.0F);
 		head.addChild(eye_top_r1);
 		setRotationAngle(eye_top_r1, 0.0F, 0.0F, 1.5708F);
-		eye_top_r1.setTextureOffset(69, 54).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
+		eye_top_r1.setTextureOffset(69, 54).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, f, false);
 
-		topjaw = new AdvancedModelBox(this);
-		topjaw.setRotationPoint(0.0F, 3.0F, -18.0F);
+		topjaw = new AdvancedModelBox(this, "topjaw");
+		topjaw.setPos(0.0F, 3.0F, -18.0F);
 		head.addChild(topjaw);
-		topjaw.setTextureOffset(98, 64).addBox(-5.0F, -10.0F, -16.0F, 10.0F, 10.0F, 16.0F, 0.0F, false);
+		topjaw.setTextureOffset(98, 64).addBox(-5.0F, -10.0F, -16.0F, 10.0F, 10.0F, 16.0F, f, false);
 
-		bottomjaw = new AdvancedModelBox(this);
-		bottomjaw.setRotationPoint(0.0F, -3.0F, -17.9F);
+		bottomjaw = new AdvancedModelBox(this, "bottomjaw");
+		bottomjaw.setPos(0.0F, -3.0F, -17.9F);
 		head.addChild(bottomjaw);
-		bottomjaw.setTextureOffset(89, 37).addBox(-5.0F, 0.0F, -16.0F, 10.0F, 10.0F, 16.0F, -0.1F, false);
+		bottomjaw.setTextureOffset(89, 37).addBox(-5.0F, 0.0F, -16.0F, 10.0F, 10.0F, 16.0F, f - 0.1F, false);
 		this.updateDefaultPose();
 	}
 
 	@Override
-	public void setRotationAngles(EntityVoidWorm entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityVoidWorm entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
-		this.root.rotateAngleX += headPitch * ((float)Math.PI / 180F);
-		this.root.rotationPointY += -3 - MathHelper.clamp(headPitch * -0.125F, -10, 10) * 0.3F;
+		this.root.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
+		this.root.rotationPointY += -3 - Mth.clamp(headPitch * -0.125F, -10, 10) * 0.3F;
 		this.root.rotationPointZ += -15 + (limbSwingAmount * 10);
-		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.ticksExisted)) / 57.295776F * 0.5F;
+		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.tickCount)) / 57.295776F * 0.5F;
 		neck.rotateAngleZ += yawAmount;
-		float jawProgress = entityIn.prevJawProgress + (entityIn.jawProgress - entityIn.prevJawProgress) * (ageInTicks - entityIn.ticksExisted);
-		progressRotationPrev(bottomjaw, jawProgress, (float) Math.toRadians(60), 0, 0, 5F);
-		progressRotationPrev(topjaw, jawProgress, (float) Math.toRadians(-60), 0, 0, 5F);
+		float jawProgress = entityIn.prevJawProgress + (entityIn.jawProgress - entityIn.prevJawProgress) * (ageInTicks - entityIn.tickCount);
+		progressRotationPrev(bottomjaw, jawProgress, Maths.rad(60), 0, 0, 5F);
+		progressRotationPrev(topjaw, jawProgress, Maths.rad(-60), 0, 0, 5F);
 		progressPositionPrev(bottomjaw, jawProgress, 0, 2, -5, 5F);
 		progressPositionPrev(topjaw, jawProgress, 0, -2, -5, 5F);
 
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 

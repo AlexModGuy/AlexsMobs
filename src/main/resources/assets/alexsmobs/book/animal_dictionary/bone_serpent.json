@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "bone_serpent.txt",
-  "title": "Bone Serpent",
+  "title": "entity.alexsmobs.bone_serpent",
   "linked_page_buttons": [
   ],
   "images": [
@@ -20,7 +20,7 @@
       "page" : 0,
       "scale": 0.6,
       "rot_x": 30,
-      "rot_y": 270,
+      "rot_y": 280,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -31,7 +31,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 270,
+      "rot_y": 280,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -42,7 +42,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 270,
+      "rot_y": 280,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -53,7 +53,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 270,
+      "rot_y": 280,
       "rot_z": 0,
       "follow_cursor": false
     },

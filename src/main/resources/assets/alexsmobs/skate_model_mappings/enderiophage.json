@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:enderiophage",
+  "body": ["body"],
+  "head": ["eye"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["tailmid_right", "tailback_right", "tailfront_right"],
+  "left_leg": ["tailmid_left", "tailback_left", "tailfront_left"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": true
+}

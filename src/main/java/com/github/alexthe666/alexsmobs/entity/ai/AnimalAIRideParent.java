@@ -1,33 +1,32 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.Animal;
 
 import java.util.List;
 
 public class AnimalAIRideParent extends Goal {
-    private final AnimalEntity childAnimal;
-    private AnimalEntity parentAnimal;
+    private final Animal childAnimal;
+    private Animal parentAnimal;
     private final double moveSpeed;
     private int delayCounter;
 
-    public AnimalAIRideParent(AnimalEntity animal, double speed) {
+    public AnimalAIRideParent(Animal animal, double speed) {
         this.childAnimal = animal;
         this.moveSpeed = speed;
     }
 
-    public boolean shouldExecute() {
-        if (this.childAnimal.getGrowingAge() >= 0 || this.childAnimal.isPassenger()) {
+    public boolean canUse() {
+        if (this.childAnimal.getAge() >= 0 || this.childAnimal.isPassenger()) {
             return false;
         } else {
-            List<AnimalEntity> list = this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().grow(8.0D, 4.0D, 8.0D));
-            AnimalEntity animalentity = null;
+            List<? extends Animal> list = this.childAnimal.level().getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
+            Animal animalentity = null;
             double d0 = Double.MAX_VALUE;
 
-            for(AnimalEntity animalentity1 : list) {
-                if (animalentity1.getGrowingAge() >= 0 && animalentity1.getPassengers().isEmpty()) {
-                    double d1 = this.childAnimal.getDistanceSq(animalentity1);
+            for(Animal animalentity1 : list) {
+                if (animalentity1.getAge() >= 0 && animalentity1.getPassengers().isEmpty()) {
+                    double d1 = this.childAnimal.distanceToSqr(animalentity1);
                     if (!(d1 > d0)) {
                         d0 = d1;
                         animalentity = animalentity1;
@@ -49,28 +48,28 @@ public class AnimalAIRideParent extends Goal {
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean shouldContinueExecuting() {
-        if (this.childAnimal.getGrowingAge() >= 0) {
+    public boolean canContinueToUse() {
+        if (this.childAnimal.getAge() >= 0) {
             return false;
         } else if (parentAnimal == null || !this.parentAnimal.isAlive() || !this.parentAnimal.getPassengers().isEmpty()) {
             return false;
         } else {
-            double d0 = this.childAnimal.getDistanceSq(this.parentAnimal);
-            return !(d0 < 2.0D) && !(d0 > 256.0D) && !this.childAnimal.isRidingSameEntity(this.parentAnimal);
+            double d0 = this.childAnimal.distanceToSqr(this.parentAnimal);
+            return !(d0 < 2.0D) && !(d0 > 256.0D) && !this.childAnimal.isPassengerOfSameVehicle(this.parentAnimal);
         }
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting() {
+    public void start() {
         this.delayCounter = 0;
     }
 
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
-    public void resetTask() {
+    public void stop() {
         this.parentAnimal = null;
     }
 
@@ -80,11 +79,11 @@ public class AnimalAIRideParent extends Goal {
     public void tick() {
         if (--this.delayCounter <= 0) {
             this.delayCounter = 10;
-            this.childAnimal.getNavigator().tryMoveToEntityLiving(this.parentAnimal, this.moveSpeed);
+            this.childAnimal.getNavigation().moveTo(this.parentAnimal, this.moveSpeed);
         }
-        if(this.childAnimal.getDistance(this.parentAnimal) < 2.0D){
+        if(this.childAnimal.distanceTo(this.parentAnimal) < 2.0D){
             this.childAnimal.startRiding(this.parentAnimal, false);
-            this.resetTask();
+            this.stop();
         }
     }
 }

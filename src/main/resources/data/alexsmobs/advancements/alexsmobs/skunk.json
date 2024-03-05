@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:skunk\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.skunk.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.skunk.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:skunk_spray"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ]
+}

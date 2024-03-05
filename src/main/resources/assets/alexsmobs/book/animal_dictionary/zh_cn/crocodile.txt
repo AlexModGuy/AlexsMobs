@@ -2,13 +2,42 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Crocodile is a massive reptile that spawns in rivers and swamps rarely throughout the overworld. This beast lunges towards
- its prey, grabbing and then pulling them underwater, where it proceeds to deal a devastating death roll. It is naturally hostile
- towards man and beast alike.
+    鳄鱼是一种大型的爬行动物，罕见
 <NEWLINE>
-The Crocodile often comes ashore to bask during the day. At this time it can also lay its eggs. Crocodile eggs can be thrown like
- their distant relative the chicken, and can possibly birth a baby Crocodile. The young monster will be imprint on the closest being,
- and will defend the area of its birth from monsters. Interacting with it can also make it stay still and bask.
- <NEWLINE>
- Crocodile Scutes are dropped when the creatures becomes an adult or on death. These scutes can be used to create a protective
- chestplate that increases the wearer's swim speed. They can also be used to make a copy of this book.
+地生成在主世界的河里和沼泽中。这种
+<NEWLINE>
+野兽会向猎物猛冲并抓住再拽入水中，
+<NEWLINE>
+然后进行毁灭性的死亡碾压。盾可以阻
+<NEWLINE>
+挡这种猛冲攻击，并可以将鳄鱼给暂时
+<NEWLINE>
+击晕。鳄鱼天生就对人和其他动物都会
+<NEWLINE>
+产生敌意。
+<NEWLINE>
+    尽管有敌意，但鳄鱼还是可以被玩
+<NEWLINE>
+家喂食腐肉来进行繁殖。在交配之后，
+<NEWLINE>
+鳄鱼会到岸上来产卵。在这些蛋受到伤
+<NEWLINE>
+害之后，任何鳄鱼父母将变得很凶猛。
+<NEWLINE>
+一段时间后，小鳄鱼就会破壳而出。刚
+<NEWLINE>
+孵化出来的小鳄鱼会印刻最近的玩家。
+<NEWLINE>
+它将会保护它出生的区域免受怪物的侵
+<NEWLINE>
+袭。玩家可以令它原地待命或晒太阳。
+<NEWLINE>
+    当幼年鳄鱼长大或是成年鳄鱼死亡
+<NEWLINE>
+后，会掉落鳄鱼鳞甲。这些鳞甲可以用
+<NEWLINE>
+来合成一件防御力高以及增加穿戴者游
+<NEWLINE>
+泳速度的胸甲。鳄鱼鳞甲还可以用来复
+<NEWLINE>
+刻动物图鉴。

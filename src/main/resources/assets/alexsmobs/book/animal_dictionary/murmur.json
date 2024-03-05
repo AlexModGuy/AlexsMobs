@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "murmur.txt",
+  "title": "entity.alexsmobs.murmur",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:tendon_whip",
+      "shapeless": false,
+      "x": 20,
+      "y": 80,
+      "page": 1,
+      "scale": 1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:murmur",
+      "x": 98,
+      "y": 122,
+      "page" : 0,
+      "scale": 1.7,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

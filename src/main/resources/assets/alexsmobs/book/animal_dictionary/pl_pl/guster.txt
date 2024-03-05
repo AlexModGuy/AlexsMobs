@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Pustynne Piaskuny są mściwymi duchami pustyni, które pojawiają się tylko podczas burz na pustyniach.
+Stworzenia te są z natury wrogie i będą starały się wyrzucić swój cel wysoko w powietrze lub wystrzelić w niego strumień piasku.
+Piaskuny mogą również podnieść każdy upuszczony przedmiot i podrzucić go, co utrudnia zbieranie łupów z potworów.
+Piaskuny są uformowane z lokalnych piasków, a jeśli znajdują się na obszarze piasku dusz lub czerwonego piasku, ich wygląd przybierze kolory tych osadów.
+Choć potężne, Piaskuny nie są zbyt tęgimi stworzeniami. Jednak ich niemal eteryczna obecność sprawia, że są bardziej odporne na ataki pocisków niż większość potworów.
+Po zabiciu, Piaskuny upuszczają piasek, a czasami także jedno z ich oczu. Oczy te mogą zostać użyte do stworzenia Generatora Wirów Piaskowych, bloku, który po zasileniu redstonem uwalnia mały wir.
+Ten mały podmuch może popychać stworzenia i przedmioty wokół. Oko może być również użyte do stworzenia Woreczka Piasku, który może być użyta jako broń.

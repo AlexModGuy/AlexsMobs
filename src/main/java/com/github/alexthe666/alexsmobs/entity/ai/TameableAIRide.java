@@ -1,60 +1,85 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
 public class TameableAIRide extends Goal {
 
-    private CreatureEntity tameableEntity;
+    private final PathfinderMob tameableEntity;
     private LivingEntity player;
-    private double speed;
+    private final double speed;
+    private final boolean strafe;
 
-    public TameableAIRide(CreatureEntity dragon, double speed) {
+    public TameableAIRide(PathfinderMob dragon, double speed) {
+        this(dragon, speed, true);
+    }
+
+    public TameableAIRide(PathfinderMob dragon, double speed, boolean strafe) {
         this.tameableEntity = dragon;
         this.speed = speed;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        this.strafe = strafe;
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (tameableEntity.getControllingPassenger() instanceof PlayerEntity) {
-            player = (PlayerEntity) tameableEntity.getControllingPassenger();
+    public boolean canUse() {
+        if (tameableEntity.getControllingPassenger() instanceof Player && tameableEntity.isVehicle()) {
+            player = (Player) tameableEntity.getControllingPassenger();
             return true;
+        } else {
+            tameableEntity.setSprinting(false);
+            return false;
         }
-        return false;
     }
 
     @Override
-    public void startExecuting() {
-        tameableEntity.getNavigator().clearPath();
+    public void start() {
+        tameableEntity.getNavigation().stop();
     }
 
     @Override
     public void tick() {
-        tameableEntity.getNavigator().clearPath();
-        tameableEntity.setAttackTarget(null);
-        double x = tameableEntity.getPosX();
-        double y = tameableEntity.getPosY();
-        double z = tameableEntity.getPosZ();
-        if (player.moveForward != 0) {
-            Vector3d lookVec = player.getLookVec();
-            if (player.moveForward < 0) {
-                lookVec = lookVec.rotateYaw((float) Math.PI);
+        tameableEntity.setMaxUpStep(1F);
+        tameableEntity.getNavigation().stop();
+        tameableEntity.setTarget(null);
+        double x = tameableEntity.getX();
+        double y = tameableEntity.getY();
+        double z = tameableEntity.getZ();
+        if (strafe) {
+            tameableEntity.xxa = player.xxa * 0.15F;
+        }
+        if (shouldMoveForward() && tameableEntity.isVehicle()) {
+            tameableEntity.setSprinting(true);
+            Vec3 lookVec = player.getLookAngle();
+            if (shouldMoveBackwards()) {
+                lookVec = lookVec.yRot(Mth.PI);
             }
             x += lookVec.x * 10;
             z += lookVec.z * 10;
-            if(tameableEntity instanceof IFlyingAnimal){
-                y += lookVec.y * 10;
-            }
+            y += modifyYPosition(lookVec.y);
+            tameableEntity.getMoveControl().setWantedPosition(x, y, z, speed);
+        } else {
+            tameableEntity.setSprinting(false);
         }
-        tameableEntity.moveStrafing = player.moveStrafing * 0.35F;
-        tameableEntity.stepHeight = 1;
-        tameableEntity.getMoveHelper().setMoveTo(x, y, z, speed);
+    }
+
+    public double modifyYPosition(double lookVecY) {
+        return tameableEntity instanceof FlyingAnimal ? lookVecY * 10 : 0;
+    }
+
+    public boolean shouldMoveForward() {
+        return player.zza != 0;
+    }
+
+
+    public boolean shouldMoveBackwards() {
+        return player.zza < 0;
     }
 }

@@ -17,7 +17,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:echolocator"
+                        "items": ["alexsmobs:echolocator"]
                     }
                 ]
             }

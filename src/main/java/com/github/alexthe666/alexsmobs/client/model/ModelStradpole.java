@@ -3,9 +3,10 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityStradpole;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.Mth;
 
 public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 	private final AdvancedModelBox root;
@@ -15,39 +16,39 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 	private final AdvancedModelBox tail;
 
 	public ModelStradpole() {
-		textureWidth = 64;
-		textureHeight = 64;
+		texWidth = 64;
+		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root = new AdvancedModelBox(this, "root");
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
-		body.setRotationPoint(0.0F, -4.0F, 0.0F);
+		body = new AdvancedModelBox(this, "body");
+		body.setPos(0.0F, -4.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
-		hair_left = new AdvancedModelBox(this);
-		hair_left.setRotationPoint(4.0F, -4.0F, 0.0F);
+		hair_left = new AdvancedModelBox(this, "hair_left");
+		hair_left.setPos(4.0F, -4.0F, 0.0F);
 		body.addChild(hair_left);
 		setRotationAngle(hair_left, 0.0F, 0.0F, 1.1345F);
 		hair_left.setTextureOffset(0, 17).addBox(0.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, false);
 
-		hair_right = new AdvancedModelBox(this);
-		hair_right.setRotationPoint(-4.0F, -4.0F, 0.0F);
+		hair_right = new AdvancedModelBox(this, "hair_right");
+		hair_right.setPos(-4.0F, -4.0F, 0.0F);
 		body.addChild(hair_right);
 		setRotationAngle(hair_right, 0.0F, 0.0F, -1.1345F);
 		hair_right.setTextureOffset(0, 17).addBox(-9.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, true);
 
-		tail = new AdvancedModelBox(this);
-		tail.setRotationPoint(0.0F, 0.0F, 4.0F);
+		tail = new AdvancedModelBox(this, "tail");
+		tail.setPos(0.0F, 0.0F, 4.0F);
 		body.addChild(tail);
 		tail.setTextureOffset(24, 24).addBox(0.0F, -4.0F, 0.0F, 0.0F, 8.0F, 14.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
 	@Override
-	public void setRotationAngles(EntityStradpole entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityStradpole entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		float walkSpeed = 1F;
 		float walkDegree = 0.4F;
@@ -59,14 +60,14 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 		this.swing(body, walkSpeed, walkDegree * 0.4F, true, 2, 0F, limbSwing, limbSwingAmount);
 		this.swing(tail, walkSpeed * 1.4F, walkDegree * 2F, false, 2, 0F, limbSwing, limbSwingAmount);
 		this.faceTarget(netHeadYaw, headPitch, 1.2F, body);
-		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+		float partialTick = Minecraft.getInstance().getFrameTime();
 		float birdPitch = entity.prevSwimPitch + (entity.swimPitch - entity.prevSwimPitch) * partialTick;
-		this.body.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
+		this.body.rotateAngleX += birdPitch * Mth.DEG_TO_RAD;
 
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 

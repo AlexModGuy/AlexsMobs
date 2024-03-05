@@ -1,0 +1,143 @@
+{
+  "type": "minecraft:barter",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "functions": [
+          ],
+          "name": "alexsmobs:maggot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 45,
+          "functions": [
+          ],
+          "name": "minecraft:stick"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+          ],
+          "name": "minecraft:hanging_roots"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "functions": [
+          ],
+          "name": "minecraft:vine"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 7,
+          "functions": [
+          ],
+          "name": "minecraft:wheat_seeds"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "functions": [
+          ],
+          "name": "minecraft:fern"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "functions": [
+          ],
+          "name": "minecraft:moss_carpet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+          ],
+          "name": "minecraft:feather"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 7,
+          "functions": [
+          ],
+          "name": "minecraft:arrow"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+          ],
+          "name": "minecraft:sweet_berries"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+          ],
+          "name": "minecraft:egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "functions": [
+          ],
+          "name": "alexsmobs:bear_fur"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "functions": [
+          ],
+          "name": "minecraft:glow_berries"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "functions": [
+          ],
+          "name": "alexsmobs:cockroach_wing"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "functions": [
+          ],
+          "name": "alexsmobs:moose_antler"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "functions": [
+          ],
+          "name": "alexsmobs:cockroach_ootheca"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 9,
+          "functions": [
+          ],
+          "name": "minecraft:cobweb"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "functions": [
+          ],
+          "name": "minecraft:bamboo"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "functions": [
+          ],
+          "name": "minecraft:honeycomb"
+        }
+      ]
+    }
+  ]
+}

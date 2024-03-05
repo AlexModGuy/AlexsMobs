@@ -1,73 +1,89 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
+import com.github.alexthe666.alexsmobs.message.MessageInteractMultipart;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.entity.PartEntity;
 
 import java.util.List;
 
 public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
 
-    private final EntitySize size;
+    private final EntityDimensions size;
     public float scale = 1;
 
     public EntityCachalotPart(EntityCachalotWhale parent, float sizeX, float sizeY) {
         super(parent);
-        this.size = EntitySize.flexible(sizeX, sizeY);
-        this.recalculateSize();
+        this.size = EntityDimensions.scalable(sizeX, sizeY);
+        this.refreshDimensions();
     }
 
-    public EntityCachalotPart(EntityCachalotWhale entityCachalotWhale, float sizeX, float sizeY, EntitySize size) {
+    public EntityCachalotPart(EntityCachalotWhale entityCachalotWhale, float sizeX, float sizeY, EntityDimensions size) {
         super(entityCachalotWhale);
         this.size = size;
     }
 
     protected void collideWithNearbyEntities() {
-        List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        final List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         Entity parent = this.getParent();
         if (parent != null) {
-            entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityCachalotPart && ((EntityCachalotPart) entity).getParent() == parent) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(parent));
-
+            entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityCachalotPart && ((EntityCachalotPart) entity).getParent() == parent) && entity.isPushable()).forEach(entity -> entity.push(parent));
         }
     }
 
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-        return this.getParent() == null ? ActionResultType.PASS : this.getParent().getEntityInteractionResult(player, hand);
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        if(this.level().isClientSide && this.getParent() != null){
+            AlexsMobs.sendMSGToServer(new MessageInteractMultipart(this.getParent().getId(), hand == InteractionHand.OFF_HAND));
+        }
+        return this.getParent() == null ? InteractionResult.PASS : this.getParent().mobInteract(player, hand);
     }
+
 
     protected void collideWithEntity(Entity entityIn) {
-        entityIn.applyEntityCollision(this);
+        entityIn.push(this);
     }
 
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return true;
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
+        if(this.level().isClientSide && this.getParent() != null && !this.getParent().isInvulnerableTo(source)){
+            ResourceLocation key = this.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().getKey(source.type());
+            if(key != null){
+                AlexsMobs.sendMSGToServer(new MessageHurtMultipart(this.getId(), this.getParent().getId(), amount, key.toString()));
+            }
+        }
         return !this.isInvulnerableTo(source) && this.getParent().attackEntityPartFrom(this, source, amount);
     }
 
-    public boolean isEntityEqual(Entity entityIn) {
+    public boolean is(Entity entityIn) {
         return this == entityIn || this.getParent() == entityIn;
     }
 
-    public IPacket<?> createSpawnPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         throw new UnsupportedOperationException();
     }
 
-    public EntitySize getSize(Pose poseIn) {
-        return this.size.scale(scale);
+    public EntityDimensions getDimensions(Pose poseIn) {
+        return this.size == null ? EntityDimensions.scalable(0, 0) : this.size.scale(scale);
     }
 
     @Override
-    protected void registerData() {
+    protected void defineSynchedData() {
 
     }
 
@@ -76,12 +92,12 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
     }
 
     @Override
-    protected void readAdditional(CompoundNBT compound) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
 
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
 
     }
 }

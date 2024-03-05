@@ -1,12 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 
 public interface IFollower {
     boolean shouldFollow();
 
-   default void followEntity(TameableEntity tameable, LivingEntity owner, double followSpeed){
-       tameable.navigator.tryMoveToEntityLiving(owner, followSpeed);
+   default void followEntity(TamableAnimal tameable, LivingEntity owner, double followSpeed){
+       tameable.navigation.moveTo(owner, followSpeed);
    }
 }

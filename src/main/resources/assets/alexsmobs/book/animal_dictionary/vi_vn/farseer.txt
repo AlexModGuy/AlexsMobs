@@ -1,0 +1,23 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Tiên tri phía xa là một thực thể đến từ bên ngoài các chiều không gian, sống trong các vũ trụ trực giao với chính chúng ta. Chúng chỉ có thể qua khỏi thế giới khó hiểu của mình ở rìa của thế giới, do đó những cuộc chạm trán với những con quái vật này cực kỳ hiếm.
+<NEWLINE>
+Tuy nhiên, điều này không có nghĩa là bạn không thể tìm được chúng. Với vài sự cống hiến, bạn có thể tạo ra Cuốc xuyên không bị vỡ bằng cách đặt Cuốc xuyên không vào một Capsid. Không giống như cuốc xuyên không bình thường, Cuốc xuyên không bị vỡ sẽ mở ra cánh cổng dẫn đến một nơi cách vị trí hiện tại một triệu khối theo bất cứ hướng nào.
+Chỉ cần dùng công cụ này nhiều lần theo cùng một hướng có thể dẫn tới nơi xuất hiện của Tiên tri phía xa.
+<NEWLINE>
+Khi con mồi ở gần rìa thế giới, Tiên tri phía xa có thể sẽ mở một cánh cổng và xuất hiện ngay cạnh đó, nhanh chóng làm bất ngờ nó.
+<NEWLINE>
+Nếu Tiên tri phía xa bị bắt gặp, nó sẽ trở nên cực kỳ thù địch. Chúng sẽ cố gắng làm tan biến bất kỳ kẻ thù nào thành dạng tĩnh bằng những móng vuốt tốc độ của mình hoặc một tia tàn phá bắn ra từ mắt. Nếu không né kịp hoặc dùng mưu lừa được những đường quyền này thì Tiên tri phía xa sẽ khiến bạn bốc hơi - những đòn tấn công của nó đều xuyên thẳng qua giáp và phù phép.
+<NEWLINE>
+Khi bị đánh bại, Tiên tri phía xa có thể rơi ra tay của nó. Những cánh tay này này kết hợp cùng với vài hắc điện thạch và sao nether có thể để chế tạo được Bàn chuyển hóa.
+<NEWLINE>
+<NEWLINE>
+Dùng ma thuật tương tự như Tiên tri phía xa dùng để biến đổi vật chất thành hư không, cái bàn này cho phép bạn chuyển hóa nguyên một stack đồ thành những đồ khác.
+Khi được mở, cái bàn này có một ô chứa cho phép đặt vào bất kỳ đồ nào có thể gộp lại. Sau khi đặt vào, ba khả năng sẽ xuất hiện, chúng có thể được chọn để chuyển hóa toàn bộ stack đồ thành đồ được chọn, với cái giá là điểm kinh nghiệm.
+Khi một vật phẩm được chuyển hóa thành vật phẩm khác, có khả năng vật phẩm chuyển hóa trong tương lai sẽ là món đồ đã dùng để chuyển hóa lúc trước, tỉ lệ xuất hiện tăng hoặc giảm dựa vào việc món đồ đó có thường được dùng để chuyển hóa hay không, và có thường được chọn hay không, một cách tương ứng.
+<NEWLINE>
+Bàn chuyển hóa có thể bắt đầu chỉ với vài món đồ đơn giản, tự nhiên để chuyển hóa hình thức của món đồ, nhưng nó có thể nhanh chóng bị lấp đầy bằng những loại tài nguyên khác.
+Nếu bị phá huỷ, Bàn chuyển hóa sẽ mất hết tất cả những thông tin vật phẩm trước đó của nó, và chỉ giữ lại ngôi sao nether, kèm theo một vụ nổ dữ dội.

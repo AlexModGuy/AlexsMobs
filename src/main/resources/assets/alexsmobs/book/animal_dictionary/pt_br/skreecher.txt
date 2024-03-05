@@ -1,0 +1,17 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Chiardor é um primata estranho e horrivelmente mutante encontrado agarrado ao teto do bioma Profundezas Sombrias.
+Como seu bioma nativo é tão escuro, muitas vezes só pode ser distinguido por seus olhos gigantescos e brilhantes.
+<NEWLINE>
+Embora considerado um monstro hostil, o Chiardor não pode lutar em nenhum sentido típico. Em vez disso, ao detectar a presa, ele começará a criar um barulho extremamente alto, tanto uivando quanto batendo palmas com seus dois pés grandes.
+Dado alguns segundos, um barulho tão alto em um bioma tão sensível ao som deve despertar um Defensor logo abaixo de seu alvo.
+<NEWLINE>
+Para a sorte dos aventureiros, o Chiardor tem saúde extremamente limitada, e qualquer projétil pode desativá-lo temporariamente de chamar um guardião - além de enviá-lo para o chão.
+A parte mais difícil de enfrentar essas feras é identificá-las antes que elas identifiquem você.
+<NEWLINE>
+Se morto, um Chiardor tem a chance de soltar sua alma. A Alma de Chiardor pode ser usado para criar um Sculk Estrondoso.
+<NEWLINE>
+<NEWLINE>
+Quando ativado por um sensor skulk próximo, este bloco emitirá um estrondo alto que pode causar dano nos mobs próximos que estejam a 3 blocos horizontais do Sculk Estrondoso. Ele pode ser desativado temporariamente com um sinal de redstone, e os próprios estrondos têm um leve cooldown, tornando o Sculk Estrondoso útil para armadilhas.

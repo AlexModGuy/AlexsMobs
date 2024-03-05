@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/alligator_snapping_turtle",
     "criteria": {
-        "rat_upgrade_basic": {
+        "spiked_scute": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:spiked_scute"
+                        "items": ["alexsmobs:spiked_scute"]
                     }
                 ]
             }

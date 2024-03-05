@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:anteater",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [ "arm_right"],
+  "left_arm": ["arm_left"],
+  "right_leg": ["leg_right"],
+  "left_leg": ["leg_left"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.7,
+  "face_forwards": true
+}

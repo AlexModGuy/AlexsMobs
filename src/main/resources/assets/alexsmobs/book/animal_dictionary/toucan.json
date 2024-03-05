@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "toucan.txt",
+  "title": "entity.alexsmobs.toucan",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:toucan",
+      "x": 98,
+      "y": 77,
+      "page" : 0,
+      "scale": 2.4,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

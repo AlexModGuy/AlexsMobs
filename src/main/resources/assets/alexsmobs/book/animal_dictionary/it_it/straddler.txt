@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Gli straddler sono grandi parenti del comune strider del nether. Differentemente dallo strider, gli straddler possono essere trovati solo nei delta di basalto.
+Sono inoltre più duri dei loro cugini, capaci di vivere su terra e in acqua oltre che nella lava. Tuttavia, gli straddler sono aggressivi.
+Qualsiasi esploratore che si avvicini troppo è considerato un intruso e viene immediatamente attaccato. Lo straddler usa i suoi lunghi capelli a rete per lanciare stradpole alle vittime, che possono infliggere una decente quantità di danno.
+Se sconfitti, gli straddler rilasceranno basalto e raramente della straddlite. Questo raro minerale può essere utilizzato per costruire una straddle tavola.
+<NEWLINE>
+Le straddle tavole sono tavole colorabili che galleggiano nella lava ma sprofondano in acqua. Possono essere utilizzate per attraversare i grandi mari di lava nel nether con facilità. Tuttavia, differentemente dall'affidabile strider, la straddle tavola tende a rompersi e rovesciarsi, risultando in un metodo più rischioso ma più veloce di viaggiare.
+Se qualcuno che utilizza una straddle tavola colpisce un soffitto o un muro troppo forte, potrebbe sprofondare in una scottante morte.
