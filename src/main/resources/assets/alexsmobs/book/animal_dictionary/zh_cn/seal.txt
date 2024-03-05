@@ -1,7 +1,38 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Seals are mostly aquatic mammals that can be found on the beaches and icebergs of the Overworld. These apparently lazy creatures often bask and sleep on any sand or ice they can find.
-When not resting on land, the seal is a extremely adept swimmer, capable of swimming rings around most other aquatic species, except for their ultimate predator: the Orca. If one seal is attacked,
-the entire pod will try and flee into the water, where they are more agile. Feeding a basking seal on land three fish will initate a primitive form of "trade" between a person and the seal: in exchance for the three fish, the seal will scrounge the seabed for an item to return.
-Although this item is often worthless junk like kelp or sand, sometimes it can be much rarer items, like shark teeth, scutes or nautilus shells. Seals can be bred with Lobster Tails.
+    海豹大多是水生哺乳动物，可以在
+<NEWLINE>
+海底海滩或冰山上找到。这些看似懒惰
+<NEWLINE>
+的生物经常在附近的任何沙子或冰上晒
+<NEWLINE>
+太阳、睡觉。
+<NEWLINE>
+    海豹在水中是非常矫健的游泳运动
+<NEWLINE>
+员，能够在大多数其他水生物种周围游
+<NEWLINE>
+泳，除了它们的终极捕食者：虎鲸。
+<NEWLINE>
+    如果一只海豹受到攻击，附近所有
+<NEWLINE>
+海豹都会试图逃到水中，在那里它们更
+<NEWLINE>
+敏捷。
+<NEWLINE>
+    当海豹在陆地上晒太阳时，用3条
+<NEWLINE>
+鱼去喂他可以引发你和海豹之间的原始
+<NEWLINE>
+交易：为了换取这 3 条鱼，海豹会在
+<NEWLINE>
+海床上找寻掉落物作为回报。尽管这种
+<NEWLINE>
+回报往往是毫无价值的垃圾，比如海带
+<NEWLINE>
+或沙子，但偶尔可能会是比较罕见的物
+<NEWLINE>
+品比如鲨鱼利齿、锥形鳞甲或鹦鹉螺壳。
+<NEWLINE>
+    海豹可以用龙虾尾来繁殖。
