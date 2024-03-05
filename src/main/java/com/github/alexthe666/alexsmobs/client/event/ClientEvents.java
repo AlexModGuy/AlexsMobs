@@ -66,6 +66,7 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEvents {
@@ -138,13 +139,14 @@ public class ClientEvents {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     @OnlyIn(Dist.CLIENT)
     public void onFogDensity(ViewportEvent.RenderFog event) {
         FogType fogType = event.getCamera().getFluidInCamera();
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get()) && fogType == FogType.LAVA) {
-            RenderSystem.setShaderFogStart(-8.0F);
-            RenderSystem.setShaderFogEnd(50.0F);
+            event.setNearPlaneDistance(-8.0F);
+            event.setFarPlaneDistance(50.0F);
+            event.setCanceled(true);
         }
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.POWER_DOWN.get()) && fogType == FogType.NONE) {
             if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN.get()) != null) {
@@ -154,9 +156,10 @@ public class ClientEvents {
                 int duration = instance.getDuration();
                 float partialTicks = Minecraft.getInstance().getFrameTime();
                 float f = Math.min(20, (Math.min(powerDown.getActiveTime() + partialTicks, duration + partialTicks))) * 0.05F;
-                RenderSystem.setShaderFogStart(-8.0F);
+                event.setNearPlaneDistance(-8.0F);
                 float f1 = 8.0F + (1 - f) * Math.max(0, initEnd - 8.0F);
-                RenderSystem.setShaderFogEnd(f1);
+                event.setFarPlaneDistance(f1);
+                event.setCanceled(true);
             }
 
         }

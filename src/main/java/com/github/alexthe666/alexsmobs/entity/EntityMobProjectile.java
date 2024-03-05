@@ -76,7 +76,7 @@ public abstract class EntityMobProjectile extends Entity {
         double d1 = this.getY() + vector3d.y;
         double d2 = this.getZ() + vector3d.z;
         this.updateRotation();
-        if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && (!isInWater() || removeInWater())) {
+        if (this.isInWall() && (!isInWater() || removeInWater())) {
             this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble() && this.removeInWater()) {
             this.remove(RemovalReason.DISCARDED);
