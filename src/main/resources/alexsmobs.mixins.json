@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.github.alexthe666.alexsmobs.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "target": "@env(DEFAULT)",
+  "refmap": "alexsmobs.refmap.json",
+  "mixins": [],
+  "client": [
+    "client.CapeLayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
