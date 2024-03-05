@@ -1,11 +1,48 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Cockroaches are foul insects found underground, away from the sunlight. These giant bugs avoid light, as it makes them vulnerable to predators.
-They can often be seen scattering away from placed torches. Cockroaches are prolific breeders, and often produce Ootheca, which are egg cases filled with multiple roach nymphs.
-Although naturally skittish around people, cockroaches can be fed bread or sugar to make them more comfortable. Cockroaches are considered a nuisance as they eat any dropped food item, making it dangerous to leave food unguarded in caves.
-Covering a Cockroach in Mimicream from a Mimicube can result in a roach with a very interesting color scheme. It is also said they have a fondness for Maracas.
+    蟑螂是生成于地下的一种脏脏虫，
 <NEWLINE>
-Cockroaches are the natural prey of Cave Centipedes, which will seek them out from far away. When injured gravely, it is possible for a roach to loose its head, yet it seems they are fully capable of functioning in this beheaded form.
-On death, cockroaches have a chance to drop Cockroach Wing Fragments. Nine of these can be used to create a full Cockroach Wing, which in turn can be used to brew a rare potion of Bug Pheromones.
-These pheromones will allow one to go undetected near any hostile arthropod, but not completely invisible. Cockroaches can be bred with sugar.
+他们会躲避阳光。这种虫子避光，以免
+<NEWLINE>
+于暴露于捕食者面前。
+<NEWLINE>
+    人们经常可以看到蟑螂四散远离放
+<NEWLINE>
+置的火把。蟑螂是一种繁殖后代众多的
+<NEWLINE>
+生物，经常产下装满多个蟑螂若虫的卵
+<NEWLINE>
+壳。
+<NEWLINE>
+    尽管蟑螂天生害怕人类，但可以给
+<NEWLINE>
+它们喂面包或糖让他们放松下来。蟑螂
+<NEWLINE>
+会吃任何掉落物形式的食物，所以在阴
+<NEWLINE>
+暗潮湿的地方乱丢食物并不是什么好主
+<NEWLINE>
+意。
+<NEWLINE>
+    复刻凝胶或复刻怪可以复刻出颜色
+<NEWLINE>
+光怪陆离的蟑螂，据说他们也喜欢沙槌
+<NEWLINE>
+    蟑螂的天敌是洞穴蜈蚣，后者从很
+<NEWLINE>
+远的地方就可以发现蟑螂。当蟑螂受到
+<NEWLINE>
+致命伤时可能会断头求生，尽管失去脑
+<NEWLINE>
+袋，蟑螂似乎还是可以正常活动。
+<NEWLINE>
+    蟑螂死亡后可能掉落蟑螂残翼，9
+<NEWLINE>
+个蟑螂残翼可以合成1个蟑螂翼，可以
+<NEWLINE>
+用来酿造引虫药水。引虫药水可以减少
+<NEWLINE>
+你被敌对节肢生物发现的概率，但并非
+<NEWLINE>
+完全隐形。蟑螂可以用糖繁殖。
