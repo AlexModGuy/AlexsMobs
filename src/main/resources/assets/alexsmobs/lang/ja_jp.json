@@ -376,7 +376,7 @@
   "item.minecraft.tipped_arrow.effect.strong_soulsteal": "魂盗みの矢",
   "item.minecraft.lingering_potion.effect.knockback_resistance": "ノックバック耐性の残留ポーション",
   "item.minecraft.lingering_potion.effect.long_knockback_resistance": "ノックバック耐性の残留ポーション",
-  "item.minecraft.lingering_potion.effect.strong_knockback_resistance": ノックバック耐性の残留ポーション",
+  "item.minecraft.lingering_potion.effect.strong_knockback_resistance": "ノックバック耐性の残留ポーション",
   "item.minecraft.lingering_potion.effect.poison_resistance": "毒耐性の残留ポーション",
   "item.minecraft.lingering_potion.effect.long_poison_resistance": "毒耐性の残留ポーション",
   "item.minecraft.lingering_potion.effect.speed_iii": "俊敏の残留ポーション III",
@@ -1035,7 +1035,7 @@
 "advancements.alexsmobs.lost_tentacle.title": "少しの代償...",
 "advancements.alexsmobs.lost_tentacle.desc": "2つの大きな生き物の戦いから失われた触手を手に入れる",
 "advancements.alexsmobs.squid_grapple.title": "...救いのために",
-"advancements.alexsmobs.squid_grapple.desc": "触手、クロスボウ、銅のインゴットからグラップリングフックを作る"
+"advancements.alexsmobs.squid_grapple.desc": "触手、クロスボウ、銅のインゴットからグラップリングフックを作る",
   "advancements.alexsmobs.skelewag.title": "ただ帽子を返してほしいだけ",
   "advancements.alexsmobs.skelewag.desc": "沈没船の近くでスケルワグに遭遇する",
   "advancements.alexsmobs.skelewag_skull.title": "Smitty WerbenJagerManJensen",
