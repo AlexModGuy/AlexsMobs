@@ -16,12 +16,11 @@
 <NEWLINE>
 ラヴァイアサンは、ストラドルサドルとス
 <NEWLINE>
+<NEWLINE>
+<NEWLINE>
 トラドルヘルムの両方を作成して装備する
 <NEWLINE>
 ことで、乗って制御できます。
-<NEWLINE>
-<NEWLINE>
-<NEWLINE>
 <NEWLINE>
 鞍を使用すると最大4人が乗車でき、鋲を
 <NEWLINE>

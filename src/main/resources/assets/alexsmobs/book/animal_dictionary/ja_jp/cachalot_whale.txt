@@ -64,6 +64,9 @@
 <NEWLINE>
 としても使用できます。
 <NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
 エコロケーターを使用すると、近くの洞窟
 <NEWLINE>
 を探し出すことができます。洞窟が見つか

@@ -60,6 +60,10 @@
 <NEWLINE>
 イテムを上向きに輸送することができます。
 <NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
 キャプシドと鉄のナゲットとエンドストー
 <NEWLINE>
 ンでエンダリオファージのロケットを作成

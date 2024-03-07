@@ -22,6 +22,8 @@
 <NEWLINE>
 撃された場合、戦っている間に触手を失う
 <NEWLINE>
+<NEWLINE>
+<NEWLINE>
 可能性があります。
 <NEWLINE>
 失われた触手は、プレイヤーが集めてグラ

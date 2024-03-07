@@ -61,10 +61,16 @@
 <NEWLINE>
 に直接従います。
 <NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
 これは、ワシがその所有者によって効果的
 <NEWLINE>
 操縦できることを意味します。ワシが飼い
-に<NEWLINE>
+<NEWLINE>
 主から150ブロック以上飛んだ場合、ワ
 <NEWLINE>
 シは戻ろうとします。所有者はスニークす

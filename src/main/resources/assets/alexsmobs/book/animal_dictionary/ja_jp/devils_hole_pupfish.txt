@@ -13,12 +13,12 @@
 <NEWLINE>
 デビルズホールパプフィッシュが住処とし
 <NEWLINE>
+<NEWLINE>
 ているチャンクを見つけるには、次のよう
 <NEWLINE>
 な不思議な魚群探知機を作成する必要があ
 <NEWLINE>
 ります。
-<NEWLINE>
 <NEWLINE>
 このデバイスはそのチャンクの方向に音波
 <NEWLINE>

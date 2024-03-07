@@ -36,6 +36,9 @@
 <NEWLINE>
 に目を落とします。この目は、レッドスト
 <NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
 ーン動力を与えると小さな嵐を放出するガ
 <NEWLINE>
 ストメーカーを作るために使用できます。
