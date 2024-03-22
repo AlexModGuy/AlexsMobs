@@ -172,6 +172,7 @@ public class EntityCrimsonMosquito extends Monster {
         super.addAdditionalSaveData(compound);
         compound.putInt("FlightTicks", this.flightTicks);
         compound.putInt("SickTicks", this.sickTicks);
+        compound.putInt("BloodLevel", this.getBloodLevel());
         compound.putFloat("MosquitoScale", this.getMosquitoScale());
         compound.putBoolean("Flying", this.isFlying());
         compound.putBoolean("Shrinking", this.isShrinking());
@@ -183,6 +184,7 @@ public class EntityCrimsonMosquito extends Monster {
         super.readAdditionalSaveData(compound);
         this.flightTicks = compound.getInt("FlightTicks");
         this.sickTicks = compound.getInt("SickTicks");
+        this.setBloodLevel(compound.getInt("BloodLevel"));
         this.setMosquitoScale(compound.getFloat("MosquitoScale"));
         this.setFlying(compound.getBoolean("Flying"));
         this.setShrink(compound.getBoolean("Shrinking"));
