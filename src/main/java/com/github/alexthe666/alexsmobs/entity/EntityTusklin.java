@@ -389,7 +389,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             } else {
                 ridingTime = 0;
             }
-            if (this.isAlive() && ridingTime > 0 && this.getDeltaMovement().horizontalDistanceSqr() > 0.1D) {
+            if (this.isAlive() && ridingTime > 0) {
                 for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                     if (!(entity instanceof EntityTusklin) && !entity.isPassengerOfSameVehicle(this)) {
                         entity.hurt(this.damageSources().mobAttack(this), 4F + random.nextFloat() * 3.0F);
