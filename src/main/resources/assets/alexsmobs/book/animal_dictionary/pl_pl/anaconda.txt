@@ -8,8 +8,8 @@ Ponieważ są połykane w całości, zwierzęta zabite przez Anakondę nie upusz
 Po połknięciu zdobyczy wąż powoli trawi swój posiłek. Po zjedzeniu kilku dużych posiłków wąż odbarwi się i zacznie zrzucać skórę.
 Ta skórka może być użyta do stworzenia unikalnego wzoru sztandaru lub użyte do stworzenia Lasso Winorośli.
 <NEWLINE>
-To lasso można rzucić, aby schwytać dowolnego moba, w tym wrogów, podobnie do ołowiu. Jednak lasso winorośli nie może być przywiązane do płotów jak smycz. Przydaje się do transportu nieprzyjaznych stworzeń.
+Lasso to można rzucić, aby schwytać dowolnego moba, w tym wrogów, podobnie do smyczy. Jednak lasso winorośli nie może być przywiązane do płotów jak smycz. Przydaje się do transportu nieprzyjaznych stworzeń.
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Anakondę można spacyfikować i rozmnorzyć kurczakiem.
+Anakondę można spacyfikować i rozmnożyć kurczakiem.
