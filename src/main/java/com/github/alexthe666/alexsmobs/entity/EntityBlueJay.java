@@ -162,7 +162,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), false);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 1, false);

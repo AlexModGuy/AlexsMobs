@@ -176,7 +176,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         if (onLand) {
             this.moveControl = new MoveControl(this);
             PathNavigation prevNav = this.navigation;
-            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AquaticMoveController(this, 1F);

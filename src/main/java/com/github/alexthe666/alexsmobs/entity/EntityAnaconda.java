@@ -109,7 +109,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1.3F, 1F);

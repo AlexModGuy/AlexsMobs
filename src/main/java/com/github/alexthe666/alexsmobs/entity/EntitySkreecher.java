@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -113,7 +114,7 @@ public class EntitySkreecher extends Monster {
             this.isUpsideDownNavigator = true;
         } else {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), false);
             this.isUpsideDownNavigator = false;
         }
     }

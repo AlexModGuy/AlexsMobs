@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
-import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
-import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIRevealTreasure;
-import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIStealFromPlayers;
+import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -186,7 +183,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), false);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new MoveHelper(this);
