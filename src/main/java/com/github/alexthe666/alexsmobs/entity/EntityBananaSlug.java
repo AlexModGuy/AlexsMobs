@@ -1,11 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -67,7 +69,8 @@ public class EntityBananaSlug extends Animal {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new WallClimberNavigation(this, worldIn);
+        return new AdvancedPathNavigateNoTeleport(this, worldIn, AdvancedPathNavigate.MovementType.CLIMBING, true, false);
+        //return new WallClimberNavigation(this, worldIn);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {

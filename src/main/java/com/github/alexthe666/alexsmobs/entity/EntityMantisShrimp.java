@@ -190,7 +190,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1F, 1F);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = false;
         }
     }

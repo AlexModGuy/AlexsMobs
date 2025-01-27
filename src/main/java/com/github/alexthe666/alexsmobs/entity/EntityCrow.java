@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.message.MessageCrowDismount;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -157,7 +158,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 0.7F, false);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), AdvancedPathNavigate.MovementType.FLYING, false ,false);
             this.isLandNavigator = false;
         }
     }

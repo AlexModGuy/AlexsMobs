@@ -11,6 +11,7 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -193,7 +194,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             this.isLandNavigator = true;
         } else {
             this.moveControl = new MoveHelper(this);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), AdvancedPathNavigate.MovementType.FLYING, false, false);
             this.isLandNavigator = false;
         }
     }

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
@@ -75,7 +76,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new DirectPathNavigator(this, worldIn);
+        return new AdvancedPathNavigateNoTeleport(this, level(), false);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {

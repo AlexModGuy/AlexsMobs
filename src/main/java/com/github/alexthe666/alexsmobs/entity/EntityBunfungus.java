@@ -107,7 +107,8 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new GroundPathNavigatorWide(this, worldIn);
+        return new AdvancedPathNavigateNoTeleport(this, worldIn, true);
+        //return new GroundPathNavigatorWide(this, worldIn);
     }
 
     protected void registerGoals() {

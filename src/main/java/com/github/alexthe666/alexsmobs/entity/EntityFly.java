@@ -1,9 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import com.google.common.base.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -156,11 +158,18 @@ public class EntityFly extends Animal implements FlyingAnimal {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
+        AdvancedPathNavigateNoTeleport flyingpathnavigator = new AdvancedPathNavigateNoTeleport(this, worldIn, AdvancedPathNavigate.MovementType.FLYING, false, false) {
             public boolean isStableDestination(BlockPos pos) {
                 return !this.level.getBlockState(pos.below()).isAir();
             }
         };
+
+        //FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
+        //    public boolean isStableDestination(BlockPos pos) {
+                //return !this.level.getBlockState(pos.below()).isAir();
+           // }
+        //};
+
         flyingpathnavigator.setCanOpenDoors(false);
         flyingpathnavigator.setCanFloat(false);
         flyingpathnavigator.setCanPassDoors(true);

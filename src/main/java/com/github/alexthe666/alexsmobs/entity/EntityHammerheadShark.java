@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
@@ -51,7 +52,7 @@ public class EntityHammerheadShark extends WaterAnimal {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new SemiAquaticPathNavigator(this, worldIn);
+        return new AdvancedPathNavigateNoTeleport(this, worldIn, true);
     }
 
     protected SoundEvent getDeathSound() {

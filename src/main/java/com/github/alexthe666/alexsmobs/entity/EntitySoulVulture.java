@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -138,7 +139,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             this.isLandNavigator = true;
         } else {
             this.moveControl = new MoveHelper(this);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), AdvancedPathNavigate.MovementType.FLYING, false ,false);
             this.isLandNavigator = false;
         }
     }

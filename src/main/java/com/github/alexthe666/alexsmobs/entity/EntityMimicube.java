@@ -1,11 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.MimiCubeAIRangedAttack;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -67,7 +69,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     protected EntityMimicube(EntityType type, Level world) {
         super(type, world);
         this.moveControl = new MimicubeMoveHelper(this);
-        this.navigation = new DirectPathNavigator(this, world);
+        this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), false);
         this.setCombatTask();
     }
 

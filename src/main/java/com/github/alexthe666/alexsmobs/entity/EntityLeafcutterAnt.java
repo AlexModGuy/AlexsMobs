@@ -124,7 +124,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             this.isUpsideDownNavigator = false;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), false);
             this.isUpsideDownNavigator = true;
         }
     }
@@ -175,7 +175,8 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new WallClimberNavigation(this, worldIn);
+        return new AdvancedPathNavigateNoTeleport(this,worldIn, AdvancedPathNavigate.MovementType.CLIMBING, true, false);
+       // return new WallClimberNavigation(this, worldIn);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {

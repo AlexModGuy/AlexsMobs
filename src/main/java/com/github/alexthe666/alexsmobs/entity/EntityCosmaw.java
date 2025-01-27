@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import com.google.common.base.Predicates;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -386,7 +387,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        return new DirectPathNavigator(this, level, 0.5F);
+        return new AdvancedPathNavigateNoTeleport(this, level(), AdvancedPathNavigate.MovementType.FLYING, false ,false);
     }
 
     public boolean isAlliedTo(Entity entityIn) {

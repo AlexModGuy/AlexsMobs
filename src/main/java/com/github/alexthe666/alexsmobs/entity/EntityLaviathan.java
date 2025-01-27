@@ -381,7 +381,8 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     protected PathNavigation createNavigation(Level level) {
-        return new GroundPathNavigatorWide(this, level);
+        return new AdvancedPathNavigateNoTeleport(this, level, true);
+       // return new GroundPathNavigatorWide(this, level);
     }
 
     protected void registerGoals() {

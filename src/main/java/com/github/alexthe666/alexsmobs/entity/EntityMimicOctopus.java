@@ -465,7 +465,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1.3F, 1);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = false;
         }
     }

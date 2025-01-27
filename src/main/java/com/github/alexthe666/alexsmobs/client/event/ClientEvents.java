@@ -35,6 +35,7 @@ import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.client.CameraType;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -46,6 +47,8 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -64,10 +67,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {
@@ -79,6 +86,25 @@ public class ClientEvents {
     private LiquidBlockRenderer previousFluidRenderer;
     public long lastStaticTick = -1;
     public static int renderStaticScreenFor = 0;
+    public static boolean critEnabled = false;
+
+    @SubscribeEvent
+    public static void onPlayerAttack(AttackEntityEvent event) {
+        doPacketJump();
+    }
+
+    private static void doPacketJump() {
+        sendFakeY(0.0625, true);
+        sendFakeY(0, false);
+        sendFakeY(1.1e-5, false);
+        sendFakeY(0, false);
+    }
+
+    private static void sendFakeY(double offset, boolean onGround) {
+        Minecraft instance = Minecraft.getInstance();
+        Player player = instance.player;
+        AlexsMobs.NETWORK_WRAPPER.sendToServer(new ServerboundMovePlayerPacket.Pos(player.getX(), player.getY() + offset, player.getZ(), onGround));
+    }
 
     @SubscribeEvent
     public void onOutlineEntityColor(EventGetOutlineColor event) {

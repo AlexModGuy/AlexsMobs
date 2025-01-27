@@ -2,12 +2,14 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.block.BlockHummingbirdFeeder;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.HummingbirdAIPollinate;
 import com.github.alexthe666.alexsmobs.entity.ai.HummingbirdAIWander;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import com.google.common.base.Predicates;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -129,7 +131,7 @@ public class EntityHummingbird extends Animal {
     protected void playStepSound(BlockPos pos, BlockState blockIn) {}
 
     protected PathNavigation createNavigation(Level worldIn) {
-        FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
+        AdvancedPathNavigateNoTeleport flyingpathnavigator = new AdvancedPathNavigateNoTeleport(this, worldIn, AdvancedPathNavigate.MovementType.FLYING, false, false) {
             public boolean isStableDestination(BlockPos pos) {
                 return !this.level.getBlockState(pos.below(2)).isAir();
             }

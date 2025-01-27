@@ -256,7 +256,9 @@ public class EntityCachalotWhale extends Animal {
 
     public void customServerAiStep() {
         super.customServerAiStep();
-        breakBlock();
+        if (AMConfig.whaleBreakBlocks) {
+            breakBlock();
+        }
     }
 
     public void breakBlock() {

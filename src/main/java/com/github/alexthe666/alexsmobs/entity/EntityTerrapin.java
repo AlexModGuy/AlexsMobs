@@ -249,7 +249,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 2.5F, 1.15F);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = false;
         }
     }

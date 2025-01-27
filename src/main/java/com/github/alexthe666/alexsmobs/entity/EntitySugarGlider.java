@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -159,7 +160,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             this.isGlidingNavigator = false;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), AdvancedPathNavigate.MovementType.FLYING, false, false);
             this.isGlidingNavigator = true;
         }
     }
@@ -536,11 +537,16 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new WallClimberNavigation(this, worldIn) {
+        return new AdvancedPathNavigateNoTeleport(this, worldIn, AdvancedPathNavigate.MovementType.CLIMBING, true, false) {
             protected boolean canUpdatePath() {
                 return super.canUpdatePath() || ((EntitySugarGlider) mob).isBesideClimbableBlock() || mob.jumping;
             }
         };
+       // return new WallClimberNavigation(this, worldIn) {
+       //     protected boolean canUpdatePath() {
+       //         return super.canUpdatePath() || ((EntitySugarGlider) mob).isBesideClimbableBlock() || mob.jumping;
+       //     }
+       // };
     }
 
     @Nullable

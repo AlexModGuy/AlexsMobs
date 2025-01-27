@@ -418,7 +418,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1.2F, 1.6F);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = false;
         }
     }

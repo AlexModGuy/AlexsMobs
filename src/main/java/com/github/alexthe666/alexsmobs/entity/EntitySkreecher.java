@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.AdvancedPathNavigate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -343,7 +344,7 @@ public class EntitySkreecher extends Monster {
     }
 
     protected PathNavigation createScreecherNavigation(Level level) {
-        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
+        AdvancedPathNavigateNoTeleport flyingpathnavigation = new AdvancedPathNavigateNoTeleport(this, level(), AdvancedPathNavigate.MovementType.FLYING, false, false) {
             public boolean isStableDestination(BlockPos pos) {
                 int airAbove = 0;
                 while(level().getBlockState(pos).isAir() && airAbove < MAX_DIST_TO_CEILING + 2){

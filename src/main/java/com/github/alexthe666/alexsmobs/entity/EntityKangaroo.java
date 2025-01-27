@@ -392,7 +392,8 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     @Override
     protected PathNavigation createNavigation(Level worldIn) {
-        return new GroundPathNavigatorWide(this, worldIn, 2F);
+        return new AdvancedPathNavigateNoTeleport(this, worldIn, true);
+       // return new GroundPathNavigatorWide(this, worldIn, 2F);
     }
 
     protected void registerGoals() {

@@ -158,7 +158,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AquaticMoveController(this, 1.1F);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = false;
         }
     }

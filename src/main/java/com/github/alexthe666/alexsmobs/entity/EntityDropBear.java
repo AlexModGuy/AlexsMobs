@@ -144,7 +144,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
             this.isUpsideDownNavigator = false;
         } else {
             this.moveControl = new FlightMoveController(this, 1.1F, false);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), false);
             this.isUpsideDownNavigator = true;
         }
     }

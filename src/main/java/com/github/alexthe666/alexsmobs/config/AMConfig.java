@@ -269,6 +269,12 @@ public class AMConfig {
     public static double underminerDisappearDistance = 8;
     public static int pathfindingThreads = 5;
 
+    public static boolean bisonBreakBlocks = false;
+    public static boolean whaleBreakBlocks = false;
+    public static boolean orcaBreakBlocks = false;
+
+    public static boolean bisonChargeAI = false;
+
     public static void bake(ModConfig config) {
         try {
             lavaOpacity = ConfigHolder.COMMON.lavaOpacity.get();
@@ -520,6 +526,9 @@ public class AMConfig {
             transmutingWeightRemoveStep = ConfigHolder.COMMON.transmutingWeightRemoveStep.get();
             underminerDisappearDistance = ConfigHolder.COMMON.underminerDisappearDistance.get();
             pathfindingThreads = ConfigHolder.COMMON.pathfindingThreads.get();
+            bisonBreakBlocks = ConfigHolder.COMMON.bisonBreakBlocks.get();
+            whaleBreakBlocks = ConfigHolder.COMMON.whaleBreakBlocks.get();
+            orcaBreakBlocks = ConfigHolder.COMMON.orcaBreakBlocks.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

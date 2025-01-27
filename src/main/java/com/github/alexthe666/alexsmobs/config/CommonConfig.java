@@ -257,6 +257,11 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue skreechersSummonWarden;
     public ForgeConfigSpec.IntValue pathfindingThreads;
 
+    public ForgeConfigSpec.BooleanValue bisonBreakBlocks;
+    public ForgeConfigSpec.BooleanValue whaleBreakBlocks;
+    public ForgeConfigSpec.BooleanValue orcaBreakBlocks;
+    public ForgeConfigSpec.BooleanValue bisonChargeAI;
+
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
         giveBookOnStartup = buildBoolean(builder, "giveBookOnStartup", "all", true, "Whether all players should get an Animal Dictionary when joining the world for the first time.");
@@ -515,6 +520,14 @@ public class CommonConfig {
         superSecretSettings = buildBoolean(builder, "superSecretSettings", "dangerZone", false, "Its been so long...");
         pathfindingThreads = buildInt(builder, "pathfindingThreads", "dangerZone", AMConfig.pathfindingThreads, 1, 100,"How many cpu cores some mobs(elephants, leafcutter ants, bison etc) should utilize when pathing. Bigger number = less impact on TPS");
         builder.pop();
+
+        // Athulsib
+        builder.push("performance");
+        bisonBreakBlocks = buildBoolean(builder, "bisonBreakBlocks", "performance", false, "Bison will break blocks in their path. This may cause lag on servers with many bison.");
+        whaleBreakBlocks = buildBoolean(builder, "whaleBreakBlocks", "performance", false, "Whale will break blocks in their path. This may cause lag on servers with many whales.");
+        orcaBreakBlocks = buildBoolean(builder, "orcaBreakBlocks", "performance", false, "Orca will break blocks in their path. This may cause lag on servers with many whales.");
+
+        bisonChargeAI = buildBoolean(builder, "bisonChargeAI", "performance", false, "Bison will charge furthest charging partner. This may cause lag on servers with many bison.");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment) {

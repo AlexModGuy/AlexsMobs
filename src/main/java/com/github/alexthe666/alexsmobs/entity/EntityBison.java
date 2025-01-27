@@ -128,8 +128,11 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(AMTagRegistry.BISON_BREEDABLES), false));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(6, new AIChargeFurthest());
-        this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 70, 1.0D, 18, 7));
+
+        if (AMConfig.bisonChargeAI) {
+            this.goalSelector.addGoal(6,  new AIChargeFurthest());
+        }
+        this.goalSelector.addGoal(6, new AnimalAIWanderRanged(this, 70, 1.0D, 18, 7));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new AIAttackNearPlayers()));
@@ -341,7 +344,11 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
 
     public void customServerAiStep() {
         super.customServerAiStep();
-        breakBlock();
+
+        // Athulsib
+        if (AMConfig.bisonBreakBlocks) {
+            breakBlock();
+        }
     }
 
     public void breakBlock() {

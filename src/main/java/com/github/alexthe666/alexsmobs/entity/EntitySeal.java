@@ -129,7 +129,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AquaticMoveController(this, 1.5F);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new AdvancedPathNavigateNoTeleport(this, level(), true);
             this.isLandNavigator = false;
         }
     }
