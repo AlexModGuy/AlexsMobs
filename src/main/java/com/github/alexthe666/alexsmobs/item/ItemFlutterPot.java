@@ -32,7 +32,7 @@ public class ItemFlutterPot extends Item implements DispensibleContainerItem {
         Level world = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         if(!world.isClientSide){
-            if(this.placeFish((ServerLevel)world, context.getItemInHand(), blockpos) && (context.getPlayer() == null || !context.getPlayer().isCreative())){
+            if(this.placePot((ServerLevel)world, context.getItemInHand(), blockpos,context.getPlayer()) && (context.getPlayer() == null || !context.getPlayer().isCreative())){
                 context.getItemInHand().shrink(1);
             }
             return InteractionResult.sidedSuccess(world.isClientSide);
@@ -46,12 +46,14 @@ public class ItemFlutterPot extends Item implements DispensibleContainerItem {
         worldIn.playSound(player, pos, SoundEvents.BUCKET_EMPTY_FISH, SoundSource.NEUTRAL, 1.0F, 1.0F);
     }
 
-    private boolean placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
-        Entity entity = AMEntityRegistry.FLUTTER.get().spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
-        if (entity != null && entity instanceof EntityFlutter) {
+    private boolean placePot(ServerLevel worldIn, ItemStack stack, BlockPos pos, Player player) {
+        EntityFlutter entity = AMEntityRegistry.FLUTTER.get().spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
+        if (entity instanceof EntityFlutter) {
             CompoundTag compoundnbt = stack.getOrCreateTag();
             if(compoundnbt.contains("FlutterData")){
-                ((EntityFlutter)entity).readAdditionalSaveData(compoundnbt.getCompound("FlutterData"));
+                entity.readAdditionalSaveData(compoundnbt.getCompound("FlutterData"));
+            } else {
+                entity.setPotted(true);
             }
             return true;
         }
