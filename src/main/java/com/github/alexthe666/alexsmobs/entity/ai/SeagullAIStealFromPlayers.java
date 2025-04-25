@@ -8,10 +8,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -31,6 +35,18 @@ public class SeagullAIStealFromPlayers extends Goal {
 
     @Override
     public boolean canUse() {
+        // 👇 Block stealing if seeds are nearby
+        List<ItemEntity> nearbySeeds = this.seagull.level().getEntitiesOfClass(
+            ItemEntity.class,
+            this.seagull.getBoundingBox().inflate(10.0),
+            item -> item.isAlive() && isSeed(item.getItem())
+        );
+
+        if (!nearbySeeds.isEmpty()) {
+            return false; // Seeds are nearby, don't steal
+        }
+
+        // Existing logic below
         long worldTime = this.seagull.level().getGameTime() % 10;
         if (this.seagull.getNoActionTime() >= 100 && worldTime != 0 || seagull.isSitting() || !AMConfig.seagullStealing) {
             return false;
@@ -38,15 +54,25 @@ public class SeagullAIStealFromPlayers extends Goal {
         if (this.seagull.getRandom().nextInt(12) != 0 && worldTime != 0 || seagull.stealCooldown > 0) {
             return false;
         }
-        if(this.seagull.getMainHandItem().isEmpty()){
+        if (this.seagull.getMainHandItem().isEmpty()) {
             Player valid = getClosestValidPlayer();
-            if(valid != null){
+            if (valid != null) {
                 target = valid;
                 return true;
             }
         }
         return false;
     }
+
+    private boolean isSeed(ItemStack stack) {
+        return stack.is(Items.WHEAT_SEEDS) ||
+               stack.is(Items.BEETROOT_SEEDS) ||
+               stack.is(Items.MELON_SEEDS) ||
+               stack.is(Items.PUMPKIN_SEEDS) ||
+               stack.is(Items.TORCHFLOWER_SEEDS) ||
+               stack.is(Items.PITCHER_POD);
+    }
+    
 
     public void start(){
         this.seagull.aiItemFlag = true;
