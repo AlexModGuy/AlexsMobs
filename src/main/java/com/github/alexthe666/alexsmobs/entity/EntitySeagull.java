@@ -79,6 +79,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     public float prevAttackProgress;
     public float sitProgress;
     public float prevSitProgress;
+    public int postSeedCooldown = 0;
     public int stealCooldown = random.nextInt(2500);
     private boolean isLandNavigator;
     private int timeFlying;
@@ -91,6 +92,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     private int heldItemTime = 0;
     public int treasureSitTime;
     public UUID feederUUID = null;
+    public boolean hasEatenSeed = false; // Add this line
 
     protected EntitySeagull(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -281,6 +283,10 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         } else {
             if (flyProgress > 0F)
                 flyProgress--;
+        }
+
+        if (postSeedCooldown > 0) {
+            postSeedCooldown--;
         }
 
         if (sitting) {

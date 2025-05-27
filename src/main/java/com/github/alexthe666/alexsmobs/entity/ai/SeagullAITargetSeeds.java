@@ -52,8 +52,28 @@ public class SeagullAITargetSeeds extends Goal {
         if (targetSeed != null) {
             seagull.getNavigation().moveTo(targetSeed, 1.0);
 
-            if (seagull.distanceToSqr(targetSeed) < 2.0) {
-                targetSeed.discard(); // "Eat" the seed
+            if (seagull.distanceToSqr(targetSeed) < 0.5) {
+                if (targetSeed.isAlive()) {
+                    System.out.println("[DEBUG] Seagull " + seagull.getId() + " ate a seed at " + targetSeed.blockPosition());
+                    targetSeed.discard();
+                    seagull.hasEatenSeed = true;
+
+                    // Spawn heart particles for all players (server-side)
+                    if (seagull.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                        serverLevel.sendParticles(
+                            net.minecraft.core.particles.ParticleTypes.HEART,
+                            seagull.getX(),
+                            seagull.getY() + seagull.getBbHeight(),
+                            seagull.getZ(),
+                            12, // count
+                            0.3, 0.3, 0.3, // spread X, Y, Z
+                            0.0 // speed
+                        );
+                    }
+
+                   
+                    seagull.playSound(net.minecraft.sounds.SoundEvents.PLAYER_LEVELUP, 1.0F, 1.2F);
+                }
                 targetSeed = null;
             }
         }

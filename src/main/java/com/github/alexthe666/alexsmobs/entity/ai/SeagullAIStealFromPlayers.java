@@ -35,32 +35,28 @@ public class SeagullAIStealFromPlayers extends Goal {
 
     @Override
     public boolean canUse() {
-        // 👇 Block stealing if seeds are nearby
-        List<ItemEntity> nearbySeeds = this.seagull.level().getEntitiesOfClass(
-            ItemEntity.class,
-            this.seagull.getBoundingBox().inflate(10.0),
-            item -> item.isAlive() && isSeed(item.getItem())
-        );
-
-        if (!nearbySeeds.isEmpty()) {
-            return false; // Seeds are nearby, don't steal
-        }
-
-        // Existing logic below
-        long worldTime = this.seagull.level().getGameTime() % 10;
-        if (this.seagull.getNoActionTime() >= 100 && worldTime != 0 || seagull.isSitting() || !AMConfig.seagullStealing) {
+        if (seagull.hasEatenSeed) {
+            System.out.println("[DEBUG] Seagull " + seagull.getId() + " will not steal: has eaten a seed.");
             return false;
         }
-        if (this.seagull.getRandom().nextInt(12) != 0 && worldTime != 0 || seagull.stealCooldown > 0) {
+        if (this.seagull.getNoActionTime() >= 100 || seagull.isSitting() || !AMConfig.seagullStealing) {
+            // Only print if you are actively debugging
+            // System.out.println("[DEBUG] Seagull cannot steal due to action time, sitting, or config.");
+            return false;
+        }
+        if (this.seagull.getRandom().nextInt(12) != 0 || seagull.stealCooldown > 0) {
+            // System.out.println("[DEBUG] Seagull cannot steal due to random chance or cooldown.");
             return false;
         }
         if (this.seagull.getMainHandItem().isEmpty()) {
             Player valid = getClosestValidPlayer();
             if (valid != null) {
+                System.out.println("[DEBUG] Seagull " + seagull.getId() + " will try to steal from player: " + valid.getName().getString());
                 target = valid;
                 return true;
             }
         }
+        // System.out.println("[DEBUG] Seagull did not find a valid player to steal from.");
         return false;
     }
 
