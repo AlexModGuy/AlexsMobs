@@ -243,7 +243,7 @@
   "item.alexsmobs.novelty_hat": "Nymodig hatt",
   "item.alexsmobs.novelty_hat.desc": "Han var number ett!",
   "item.alexsmobs.mudskipper_bucket": "Hink med slamkrypare",
-  "item.alexsmobs.farseer_arm": "fjärrsear arm",
+  "item.alexsmobs.farseer_arm": "Fjärrsear arm",
   "item.alexsmobs.skreecher_soul": "Bävar själ",
   "item.alexsmobs.ghostly_pickaxe": "Spöklik hacka",
   "item.alexsmobs.elastic_tendon": "Elastisk sena",
@@ -1047,7 +1047,7 @@
   "advancements.alexsmobs.strange_fish_finder.title": "Strävan efter det bästa",
   "advancements.alexsmobs.strange_fish_finder.desc": "Tillverka en konstig fiskfyndare från slemboll, fiskben and an ekolokalisator.",
   "advancements.alexsmobs.devils_hole_pupfish_bucket.title": "En datablock fisk",
-  "advancements.alexsmobs.devils_hole_pupfish_bucket.desc": "Fånga den mest sällsynta fisken i en hink."
+  "advancements.alexsmobs.devils_hole_pupfish_bucket.desc": "Fånga den mest sällsynta fisken i en hink.",
   "advancements.alexsmobs.shattered_dimensional_carver.title": "Biljett till världens ände",
   "advancements.alexsmobs.shattered_dimensional_carver.desc": "Slit en dimensionell gravör genom att placera den i en kapsid. Istället för att öppna en portal hem, kommer det nu att öppna en portal en miljon block åt vilket håll som helst.",
   "advancements.alexsmobs.farseer.title": "Fjärrlands säkerhet",
@@ -1065,7 +1065,7 @@
   "advancements.alexsmobs.sculk_boomer.title": "Ok boomer",
   "advancements.alexsmobs.sculk_boomer.desc": "Tillverka en sculk boomer med själar av ett fåtal bävar.",
   "advancements.alexsmobs.murmur.title": "Flexibelt schema",
-  "advancements.alexsmobs.murmur.desc": "Möt på en mumla, vilket inte är som det verkar."
+  "advancements.alexsmobs.murmur.desc": "Möt på en mumla, vilket inte är som det verkar.",
   "advancements.alexsmobs.skunk.title": "Hippie lukt",
   "advancements.alexsmobs.skunk.desc": "Bli sprejad av en skunk.",
   "advancements.alexsmobs.stink_bottle.title": "Gamer skunk bad vatten",
