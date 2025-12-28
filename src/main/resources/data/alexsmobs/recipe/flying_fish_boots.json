@@ -1,6 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["S S", "F F"],
+  "pattern": [
+    "S S",
+    "F F"
+  ],
   "key": {
     "F": {
       "item": "alexsmobs:flying_fish"

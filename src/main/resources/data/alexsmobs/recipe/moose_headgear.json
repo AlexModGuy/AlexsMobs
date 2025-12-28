@@ -1,6 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["AIA", "S S"],
+  "pattern": [
+    "AIA",
+    "S S"
+  ],
   "key": {
     "S": {
       "tag": "c:strings"
