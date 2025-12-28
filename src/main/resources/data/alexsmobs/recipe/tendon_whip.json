@@ -1,10 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " CC",
-    "TTC",
-    "ST "
-  ],
+  "pattern": [" CC", "TTC", "ST "],
   "key": {
     "C": {
       "item": "alexsmobs:dropbear_claw"

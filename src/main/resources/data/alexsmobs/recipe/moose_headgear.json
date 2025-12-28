@@ -1,12 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "AIA",
-    "S S"
-  ],
+  "pattern": ["AIA", "S S"],
   "key": {
     "S": {
-      "tag": "c:string"
+      "tag": "c:strings"
     },
     "A": {
       "item": "alexsmobs:moose_antler"

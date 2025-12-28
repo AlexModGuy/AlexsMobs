@@ -1,10 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " P ",
-    "PRP",
-    " S "
-  ],
+  "pattern": [" P ", "PRP", " S "],
   "key": {
     "R": {
       "item": "alexsmobs:rattlesnake_rattle"
