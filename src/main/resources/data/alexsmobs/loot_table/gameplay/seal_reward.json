@@ -15,8 +15,12 @@
           "weight": 10,
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{Potion:\"minecraft:water\"}"
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:potion_contents": {
+                  "potion": "minecraft:water"
+                }
+              }
             }
           ],
           "name": "minecraft:potion"
@@ -24,29 +28,25 @@
         {
           "type": "minecraft:item",
           "weight": 2,
-          "functions": [
-          ],
-          "name": "minecraft:scute"
+          "functions": [],
+          "name": "minecraft:turtle_scute"
         },
         {
           "type": "minecraft:item",
           "weight": 19,
-          "functions": [
-          ],
+          "functions": [],
           "name": "minecraft:ink_sac"
         },
         {
           "type": "minecraft:item",
           "weight": 21,
-          "functions": [
-          ],
+          "functions": [],
           "name": "alexsmobs:shark_tooth"
         },
         {
           "type": "minecraft:item",
           "weight": 8,
-          "functions": [
-          ],
+          "functions": [],
           "name": "alexsmobs:serrated_shark_tooth"
         },
         {
@@ -224,7 +224,6 @@
           ],
           "name": "minecraft:gravel"
         }
-
       ]
     }
   ]

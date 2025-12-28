@@ -4,7 +4,7 @@
     "#minecraft:base_stone_overworld",
     "#minecraft:dirt",
     "#minecraft:sand",
-    "#minecraft:gravel",
+    "minecraft:gravel",
     "#minecraft:terracotta",
     "minecraft:mud"
   ]

@@ -8,7 +8,7 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:copy_nbt",
+              "function": "minecraft:copy_custom_data",
               "source": "block_entity",
               "ops": [
                 {
