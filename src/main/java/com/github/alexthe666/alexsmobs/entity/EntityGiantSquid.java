@@ -501,33 +501,38 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public Vec3 collide(Vec3 movement) {
-        if (touchingUnloadedChunk() || !this.isInWaterOrBubble()) {
-            return movement; // collide() is private in 1.21
+        if (touchingUnloadedChunk()) {
+            return movement;
+        } else if (!this.isInWaterOrBubble()) {
+            return performCollision(movement, this.getBoundingBox());
         } else {
-            AABB aabb = this.mantleCollisionPart.getBoundingBox();
-            List<VoxelShape> list = this.level().getEntityCollisions(this, aabb.expandTowards(movement));
-            Vec3 vec3 = movement.lengthSqr() == 0.0D ? movement : collideBoundingBox(this, movement, aabb, this.level(), list);
-            boolean flag = movement.x != vec3.x;
-            boolean flag1 = movement.y != vec3.y;
-            boolean flag2 = movement.z != vec3.z;
-            boolean flag3 = this.onGround() || flag1 && movement.y < 0.0D;
-            if ((float)this.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.STEP_HEIGHT) > 0.0F && flag3 && (flag || flag2)) {
-                Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, (float)this.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.STEP_HEIGHT), movement.z), aabb, this.level(), list);
-                Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, (float)this.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.STEP_HEIGHT), 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level(), list);
-                if (vec32.y < (double) (float)this.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.STEP_HEIGHT)) {
-                    Vec3 vec33 = collideBoundingBox(this, new Vec3(movement.x, 0.0D, movement.z), aabb.move(vec32), this.level(), list).add(vec32);
-                    if (vec33.horizontalDistanceSqr() > vec31.horizontalDistanceSqr()) {
-                        vec31 = vec33;
-                    }
-                }
+            return performCollision(movement, this.mantleCollisionPart.getBoundingBox());
+        }
+    }
 
-                if (vec31.horizontalDistanceSqr() > vec3.horizontalDistanceSqr()) {
-                    return vec31.add(collideBoundingBox(this, new Vec3(0.0D, -vec31.y + movement.y, 0.0D), aabb.move(vec31), this.level(), list));
+    private Vec3 performCollision(Vec3 movement, AABB aabb) {
+        List<VoxelShape> list = this.level().getEntityCollisions(this, aabb.expandTowards(movement));
+        Vec3 vec3 = movement.lengthSqr() == 0.0D ? movement : collideBoundingBox(this, movement, aabb, this.level(), list);
+        boolean flag = movement.x != vec3.x;
+        boolean flag1 = movement.y != vec3.y;
+        boolean flag2 = movement.z != vec3.z;
+        boolean flag3 = this.onGround() || flag1 && movement.y < 0.0D;
+        if ((float)this.getAttributeValue(Attributes.STEP_HEIGHT) > 0.0F && flag3 && (flag || flag2)) {
+            Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, (float)this.getAttributeValue(Attributes.STEP_HEIGHT), movement.z), aabb, this.level(), list);
+            Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, (float)this.getAttributeValue(Attributes.STEP_HEIGHT), 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level(), list);
+            if (vec32.y < (double) (float)this.getAttributeValue(Attributes.STEP_HEIGHT)) {
+                Vec3 vec33 = collideBoundingBox(this, new Vec3(movement.x, 0.0D, movement.z), aabb.move(vec32), this.level(), list).add(vec32);
+                if (vec33.horizontalDistanceSqr() > vec31.horizontalDistanceSqr()) {
+                    vec31 = vec33;
                 }
             }
 
-            return vec3;
+            if (vec31.horizontalDistanceSqr() > vec3.horizontalDistanceSqr()) {
+                return vec31.add(collideBoundingBox(this, new Vec3(0.0D, -vec31.y + movement.y, 0.0D), aabb.move(vec31), this.level(), list));
+            }
         }
+
+        return vec3;
     }
 
     public float getXRot() {
