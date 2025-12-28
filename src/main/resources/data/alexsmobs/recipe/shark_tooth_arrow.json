@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["T", "S", "K"],
+  "pattern": ["TSK"],
   "key": {
     "T": {
       "item": "alexsmobs:shark_tooth"
