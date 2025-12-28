@@ -238,7 +238,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
                 WaterAnimal fish = (WaterAnimal) this.getTarget();
                 CompoundTag fishNbt = new CompoundTag();
                 fish.addAdditionalSaveData(fishNbt);
-                fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
+                fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.location().toString());
                 fish.readAdditionalSaveData(fishNbt);
             }
         } else {

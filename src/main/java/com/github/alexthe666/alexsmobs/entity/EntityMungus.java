@@ -407,6 +407,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
+        builder.define(TARGETED_BLOCK_POS, Optional.empty());
         builder.define(MUSHROOM_STATE, Optional.empty());
         // entityData.define moved to defineSynchedData in 1.21
         builder.define(ALT_ORDER_MUSHROOMS, false);
