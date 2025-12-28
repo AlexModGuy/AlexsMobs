@@ -581,7 +581,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isFlying() ? FLIGHT_SIZE : super.getDimensions(poseIn);
+        return isFlying() ? FLIGHT_SIZE : super.getDefaultDimensions(poseIn);
     }
 
     public void travel(Vec3 vec3d) {

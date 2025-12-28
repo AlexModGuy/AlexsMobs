@@ -82,7 +82,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return this.isTail() ? TAIL_SIZE.scale(getScale()) : super.getDimensions(poseIn);
+        return this.isTail() ? TAIL_SIZE.scale(getScale()) : super.getDefaultDimensions(poseIn);
     }
 
     public float getWormScale() {

@@ -160,7 +160,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isQueen() && !isBaby() ? QUEEN_SIZE : super.getDimensions(poseIn);
+        return isQueen() && !isBaby() ? QUEEN_SIZE : super.getDefaultDimensions(poseIn);
     }
 
     public boolean canTrample(BlockState state, BlockPos pos, float fallDistance) {

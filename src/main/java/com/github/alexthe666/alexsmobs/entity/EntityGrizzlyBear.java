@@ -108,7 +108,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isStanding() ? STANDING_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
+        return isStanding() ? STANDING_SIZE.scale(this.getScale()) : super.getDefaultDimensions(poseIn);
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {

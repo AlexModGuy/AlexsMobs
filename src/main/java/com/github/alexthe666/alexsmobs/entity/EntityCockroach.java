@@ -185,7 +185,7 @@ public class EntityCockroach extends Animal implements Shearable, net.neoforged.
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isDancing() ? STAND_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
+        return isDancing() ? STAND_SIZE.scale(this.getScale()) : super.getDefaultDimensions(poseIn);
     }
 
     @Override

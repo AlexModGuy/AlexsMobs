@@ -293,7 +293,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isFlying() && !isBaby() ? FLIGHT_SIZE : super.getDimensions(poseIn);
+        return isFlying() && !isBaby() ? FLIGHT_SIZE : super.getDefaultDimensions(poseIn);
     }
 
     public void tick() {

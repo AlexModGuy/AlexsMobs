@@ -114,7 +114,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return super.getDimensions(poseIn).scale(this.getBlobfishScale());
+        return super.getDefaultDimensions(poseIn).scale(this.getBlobfishScale());
     }
 
     @Override

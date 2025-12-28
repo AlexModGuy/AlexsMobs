@@ -586,7 +586,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isTusked() && !isBaby() ? TUSKED_SIZE : super.getDimensions(poseIn);
+        return isTusked() && !isBaby() ? TUSKED_SIZE : super.getDefaultDimensions(poseIn);
     }
 
     @Override

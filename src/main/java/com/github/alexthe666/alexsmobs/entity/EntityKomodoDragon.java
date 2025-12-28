@@ -275,7 +275,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isJostling() && !isBaby() ? JOSTLING_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
+        return isJostling() && !isBaby() ? JOSTLING_SIZE.scale(this.getScale()) : super.getDefaultDimensions(poseIn);
     }
 
     public boolean isAlliedTo(Entity entityIn) {

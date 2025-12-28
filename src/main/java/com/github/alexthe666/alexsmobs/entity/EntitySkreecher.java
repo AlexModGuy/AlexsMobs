@@ -307,7 +307,7 @@ public class EntitySkreecher extends Monster {
 
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isClinging() ? super.getDimensions(poseIn) : GROUND_SIZE.scale(this.getScale());
+        return isClinging() ? super.getDefaultDimensions(poseIn) : GROUND_SIZE.scale(this.getScale());
     }
 
     public boolean isClinging() {

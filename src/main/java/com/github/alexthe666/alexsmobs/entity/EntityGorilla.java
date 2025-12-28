@@ -229,7 +229,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     }
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return isSilverback() && !isBaby() ? SILVERBACK_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
+        return isSilverback() && !isBaby() ? SILVERBACK_SIZE.scale(this.getScale()) : super.getDefaultDimensions(poseIn);
     }
 
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {

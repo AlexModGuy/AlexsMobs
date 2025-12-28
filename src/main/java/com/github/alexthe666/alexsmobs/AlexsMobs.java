@@ -132,8 +132,9 @@ public class AlexsMobs {
         // Client to Server messages
         registrar.playToServer(MessageSwingArm.TYPE, MessageSwingArm.CODEC, MessageSwingArm::handle);
         registrar.playToServer(MessageUpdateEagleControls.TYPE, MessageUpdateEagleControls.CODEC, MessageUpdateEagleControls::handle);
-        registrar.playToServer(MessageHurtMultipart.TYPE, MessageHurtMultipart.CODEC, MessageHurtMultipart::handle);
-        registrar.playToServer(MessageInteractMultipart.TYPE, MessageInteractMultipart.CODEC, MessageInteractMultipart::handle);
+        // Bidirectional - sent from client (when player attacks multipart) and from server (sendMSGToAll for sync)
+        registrar.playBidirectional(MessageHurtMultipart.TYPE, MessageHurtMultipart.CODEC, MessageHurtMultipart::handle);
+        registrar.playBidirectional(MessageInteractMultipart.TYPE, MessageInteractMultipart.CODEC, MessageInteractMultipart::handle);
         registrar.playToServer(MessageTransmuteFromMenu.TYPE, MessageTransmuteFromMenu.CODEC, MessageTransmuteFromMenu::handle);
         
         // Server to Client messages

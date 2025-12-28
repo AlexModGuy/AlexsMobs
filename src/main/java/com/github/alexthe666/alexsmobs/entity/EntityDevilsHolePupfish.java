@@ -210,7 +210,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
 
 
     public EntityDimensions getDefaultDimensions(Pose poseIn) {
-        return super.getDimensions(poseIn).scale(this.getPupfishScale());
+        return super.getDefaultDimensions(poseIn).scale(this.getPupfishScale());
     }
 
     public boolean fromBucket() {
