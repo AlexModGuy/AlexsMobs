@@ -2,6 +2,6 @@
   "__comment": "Will follow with these items in your hand and gives fleet-footed effect when given",
   "replace": false,
   "values": [
-    "#forge:seeds"
+    "#c:seeds"
   ]
 }

@@ -4,9 +4,14 @@
       "name": "skelewag_sword",
       "conditions": [
         {
-          "condition": "random_chance_with_looting",
-          "chance": 0.1,
-          "looting_multiplier": 0.05
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.1,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.15000000000000002,
+            "per_level_above_first": 0.05
+          }
         }
       ],
       "rolls": 1,
@@ -22,9 +27,14 @@
       "name": "skelewag_hat",
       "conditions": [
         {
-          "condition": "random_chance_with_looting",
-          "chance": 0.01,
-          "looting_multiplier": 0.015
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.01,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.025,
+            "per_level_above_first": 0.015
+          }
         }
       ],
       "rolls": 1,
@@ -40,9 +50,14 @@
       "name": "skelewag_bones",
       "conditions": [
         {
-          "condition": "random_chance_with_looting",
-          "chance": 0.3,
-          "looting_multiplier": 0.2
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.3,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.5,
+            "per_level_above_first": 0.2
+          }
         }
       ],
       "rolls": 1,
@@ -71,11 +86,12 @@
               }
             },
             {
-              "function": "looting_enchant",
+              "function": "minecraft:enchanted_count_increase",
               "count": {
                 "min": 0,
                 "max": 1
-              }
+              },
+              "enchantment": "minecraft:looting"
             }
           ]
         }

@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#forge:is_sandy"
+    "#c:is_sandy"
   ]
 }

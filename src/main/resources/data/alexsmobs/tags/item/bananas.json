@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:crops/banana",
-    "#forge:fruits/banana"
+    "#c:crops/banana",
+    "#c:fruits/banana"
   ]
 }

@@ -4,9 +4,14 @@
       "name": "guster_eye",
       "conditions": [
         {
-          "condition": "random_chance_with_looting",
-          "chance": 0.2,
-          "looting_multiplier": 0.1
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.2,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.30000000000000004,
+            "per_level_above_first": 0.1
+          }
         }
       ],
       "rolls": 1,
@@ -35,11 +40,12 @@
               }
             },
             {
-              "function": "looting_enchant",
+              "function": "minecraft:enchanted_count_increase",
               "count": {
                 "min": 0,
                 "max": 1
-              }
+              },
+              "enchantment": "minecraft:looting"
             },
             {
               "function": "minecraft:furnace_smelt",

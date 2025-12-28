@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:eggs",
+    "#c:eggs",
     "minecraft:sugar"
   ]
 }

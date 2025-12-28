@@ -2,6 +2,6 @@
   "replace": false,
   "values": [
     "minecraft:carrot",
-    "#forge:crops/carrot"
+    "#c:crops/carrot"
   ]
 }

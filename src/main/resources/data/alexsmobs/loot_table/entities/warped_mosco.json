@@ -4,9 +4,14 @@
       "name": "warped_mosco_1",
       "conditions": [
         {
-          "condition": "random_chance_with_looting",
-          "chance": 0.7,
-          "looting_multiplier": 0.1
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.7,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.7999999999999999,
+            "per_level_above_first": 0.1
+          }
         }
       ],
       "rolls": 1,
@@ -35,11 +40,12 @@
               }
             },
             {
-              "function": "looting_enchant",
+              "function": "minecraft:enchanted_count_increase",
               "count": {
                 "min": 0,
                 "max": 1
-              }
+              },
+              "enchantment": "minecraft:looting"
             }
           ]
         }
