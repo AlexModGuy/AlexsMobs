@@ -41,6 +41,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.function.Supplier;
 
 @Mod(AlexsMobs.MODID)
 public class AlexsMobs {
@@ -48,7 +49,11 @@ public class AlexsMobs {
     public static final String MODID = "alexsmobs";
     public static final String VERSION = "1.22.9";
     
-    public static final CommonProxy PROXY = FMLEnvironment.dist.isClient() ? new ClientProxy() : new CommonProxy();
+    // Use supplier pattern to avoid loading ClientProxy class on dedicated server
+    public static final CommonProxy PROXY = unsafeRunForDist(
+        () -> ClientProxy::new,
+        () -> CommonProxy::new
+    );
     private static boolean isAprilFools = false;
     private static boolean isHalloween = false;
     
@@ -175,5 +180,13 @@ public class AlexsMobs {
     
     public static ResourceLocation prefix(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
+
+    // Safe dist proxy helper - uses Supplier to avoid loading client classes on dedicated server
+    private static <T> T unsafeRunForDist(Supplier<Supplier<T>> clientTarget, Supplier<Supplier<T>> serverTarget) {
+        return switch (FMLEnvironment.dist) {
+            case CLIENT -> clientTarget.get().get();
+            case DEDICATED_SERVER -> serverTarget.get().get();
+        };
     }
 }
