@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " H ",
+    "III",
+    "I I"
+  ],
+  "key": {
+    "H": "alexsmobs:froststalker_horn",
+    "I": "minecraft:packed_ice"
+  },
+  "result": {
+    "id": "alexsmobs:froststalker_helmet",
+    "count": 1
+  }
+}

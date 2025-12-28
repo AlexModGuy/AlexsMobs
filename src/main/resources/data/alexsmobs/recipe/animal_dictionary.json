@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:book",
+    "#alexsmobs:animal_dictionary_ingredient",
+    "#c:dyes/green"
+  ],
+  "result": {
+    "id": "alexsmobs:animal_dictionary",
+    "count": 1
+  }
+}

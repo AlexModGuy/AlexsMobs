@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -47,8 +48,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -154,16 +153,16 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLUTTER_PITCH, 0F);
-        this.entityData.define(FLYING, false);
-        this.entityData.define(POTTED, false);
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(TENTACLING, false);
-        this.entityData.define(SHOOTING, false);
-        this.entityData.define(SHAKING_HEAD_TICKS, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLUTTER_PITCH, 0F);
+        builder.define(FLYING, false);
+        builder.define(POTTED, false);
+        builder.define(COMMAND, 0);
+        builder.define(SITTING, false);
+        builder.define(TENTACLING, false);
+        builder.define(SHOOTING, false);
+        builder.define(SHAKING_HEAD_TICKS, 0);
     }
 
     public int getCommand() {
@@ -286,7 +285,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 this.entityData.set(TENTACLING, true);
                 if (squishCooldown == 0 && this.isFlying()) {
                     squishCooldown = 10;
-                    this.gameEvent(GameEvent.ENTITY_ROAR);
+                    this.gameEvent(GameEvent.ENTITY_ACTION);
                     this.playSound(AMSoundRegistry.FLUTTER_FLAP.get(), 3F, 1.5F * this.getVoicePitch());
                 }
                 this.randomMotionSpeed = 0.8F;
@@ -393,7 +392,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && canEatFlower(itemstack)) {
             this.usePlayerItem(player, hand, itemstack);
-            this.flowersEaten.add(ForgeRegistries.ITEMS.getKey(itemstack.getItem()).toString());
+            this.flowersEaten.add(BuiltInRegistries.ITEM.getKey(itemstack.getItem()).toString());
             this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(AMSoundRegistry.FLUTTER_YES.get(), this.getSoundVolume(), this.getVoicePitch());
             if (this.flowersEaten.size() > 3 && getRandom().nextInt(3) == 0 || this.flowersEaten.size() > 6) {
@@ -420,7 +419,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             if (item == Items.FLOWER_POT && !this.isPotted()) {
                 this.setPotted(true);
                 return InteractionResult.SUCCESS;
-            } else if (itemstack.is(Tags.Items.SHEARS) && this.isPotted()) {
+            } else if (itemstack.is(net.minecraft.world.item.Items.SHEARS) && this.isPotted()) {
                 this.setPotted(false);
                 this.spawnAtLocation(Items.FLOWER_POT);
                 return InteractionResult.SUCCESS;
@@ -600,9 +599,10 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         ItemStack stack = new ItemStack(AMItemRegistry.POTTED_FLUTTER.get());
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        stack.getOrCreateTag().put("FlutterData", platTag);
+        // TODO: NeoForge 1.21 - DataComponents needed
+        // stack.getOrCreateTag().put("FlutterData", platTag);
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -616,7 +616,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public boolean hasEatenFlower(ItemStack stack) {
-        return flowersEaten != null && flowersEaten.contains(ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
+        return flowersEaten != null && flowersEaten.contains(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
     }
 
     public boolean canEatFlower(ItemStack stack) {

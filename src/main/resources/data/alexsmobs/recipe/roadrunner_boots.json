@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F F",
+    "F F",
+    "SBS"
+  ],
+  "key": {
+    "S": "minecraft:chiseled_sandstone",
+    "F": "alexsmobs:roadrunner_feather",
+    "B": "minecraft:leather_boots"
+  },
+  "result": {
+    "id": "alexsmobs:roadrunner_boots",
+    "count": 1
+  }
+}

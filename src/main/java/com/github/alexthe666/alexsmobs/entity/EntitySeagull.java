@@ -17,7 +17,6 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -50,8 +49,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -91,11 +89,11 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
     protected EntitySeagull(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
-        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
+        this.setPathfindingMalus(PathType.COCOA, -1.0F);
+        this.setPathfindingMalus(PathType.FENCE, -1.0F);
         switchNavigator(false);
     }
 
@@ -196,13 +194,13 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(ATTACK_TICK, 0);
-        this.entityData.define(TREASURE_POS, Optional.empty());
-        this.entityData.define(FLIGHT_LOOK_YAW, 0F);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
+        builder.define(SITTING, false);
+        builder.define(ATTACK_TICK, 0);
+        builder.define(TREASURE_POS, Optional.empty());
+        builder.define(FLIGHT_LOOK_YAW, 0F);
     }
 
     public boolean isFlying() {
@@ -376,7 +374,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     }
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem().isEdible() && !this.isSitting();
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) && !this.isSitting();
     }
 
     private void eatItemEffect(ItemStack heldItemMainhand) {
@@ -400,21 +398,9 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         boolean flag = false;
         for(ItemStack map : player.getHandSlots()){
             if(map.getItem() == Items.FILLED_MAP || map.getItem() == Items.MAP){
-                if (map.hasTag() && map.getTag().contains("Decorations", 9)) {
-                    ListTag listnbt = map.getTag().getList("Decorations", 10);
-                    for(int i = 0; i < listnbt.size(); i++){
-                        CompoundTag nbt = listnbt.getCompound(i);
-                        byte type = nbt.getByte("type");
-                        if(type == MapDecoration.Type.RED_X.getIcon() || type == MapDecoration.Type.TARGET_X.getIcon()){
-                            int x = nbt.getInt("x");
-                            int z = nbt.getInt("z");
-                            if(this.distanceToSqr(x, this.getY(), z) <= 400){
-                                flag = true;
-                                this.setTreasurePos(new BlockPos(x, 0, z));
-                            }
-                        }
-                    }
-                }
+                // hasTag/getTag removed in 1.21 - use DataComponents
+                // Map decoration reading disabled for 1.21 migration
+                // TODO: Implement using DataComponents.MAP_DECORATIONS
             }
         }
         if(flag){

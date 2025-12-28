@@ -7,7 +7,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class EffectClinging extends MobEffect {
@@ -20,7 +19,8 @@ public class EffectClinging extends MobEffect {
         return AMBlockPos.fromCoords(e.getX(), e.getBoundingBox().maxY + 1.51F, e.getZ());
     }
 
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    @Override
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         entity.refreshDimensions();
         entity.setNoGravity(false);
 
@@ -33,6 +33,7 @@ public class EffectClinging extends MobEffect {
                 entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.998F, 1F, 0.998F));
             }
         }
+        return true;
     }
 
     public static boolean isUpsideDown(LivingEntity entity){
@@ -40,9 +41,11 @@ public class EffectClinging extends MobEffect {
         BlockState ground = entity.level().getBlockState(pos);
         return (entity.verticalCollision || ground.isFaceSturdy(entity.level(), pos, Direction.DOWN)) && !entity.onGround();
     }
-    public void removeAttributeModifiers(LivingEntity entityLivingBaseIn, AttributeMap attributeMapIn, int amplifier) {
-        super.removeAttributeModifiers(entityLivingBaseIn, attributeMapIn, amplifier);
-        entityLivingBaseIn.refreshDimensions();
+
+    @Override
+    public void onMobRemoved(LivingEntity entity, int amplifier, Entity.RemovalReason reason) {
+        super.onMobRemoved(entity, amplifier, reason);
+        entity.refreshDimensions();
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

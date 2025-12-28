@@ -61,10 +61,11 @@ public class EntitySkunk extends Animal {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SPRAY_YAW, 0F);
-        this.entityData.define(SPRAY_TIME, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SPRAY_YAW, 0F);
+        builder.define(SPRAY_TIME, 0);
     }
 
     protected void registerGoals() {
@@ -292,7 +293,7 @@ public class EntitySkunk extends Animal {
                             if (!(entity instanceof EntitySkunk)) {
                                 entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300));
                                 if(entity instanceof ServerPlayer serverPlayer){
-                                    AMAdvancementTriggerRegistry.SKUNK_SPRAY.trigger(serverPlayer);
+                                    AMAdvancementTriggerRegistry.SKUNK_SPRAY.get().trigger(serverPlayer);
                                 }
                                 for(MobEffectInstance mobeffectinstance : collection) {
                                     entity.addEffect(new MobEffectInstance(mobeffectinstance));

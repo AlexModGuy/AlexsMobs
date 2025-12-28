@@ -12,9 +12,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderCrocodile extends MobRenderer<EntityCrocodile, ModelCrocodile> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/crocodile_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/crocodile_1.png");
-    private static final ResourceLocation TEXTURE_CROWN = new ResourceLocation("alexsmobs:textures/entity/crocodile_crown.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/crocodile_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/crocodile_1.png");
+    private static final ResourceLocation TEXTURE_CROWN = ResourceLocation.parse("alexsmobs:textures/entity/crocodile_crown.png");
 
     public RenderCrocodile(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCrocodile(), 0.8F);
@@ -40,7 +40,7 @@ public class RenderCrocodile extends MobRenderer<EntityCrocodile, ModelCrocodile
             if (entitylivingbaseIn.isCrowned()) {
                 VertexConsumer shoeBuffer = bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_CROWN));
                 matrixStackIn.pushPose();
-                this.getParentModel().renderToBuffer(matrixStackIn, shoeBuffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, shoeBuffer, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
                 matrixStackIn.popPose();
             }
         }

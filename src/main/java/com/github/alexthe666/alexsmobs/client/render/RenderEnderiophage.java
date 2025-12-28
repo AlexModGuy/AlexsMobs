@@ -15,12 +15,12 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 
 public class RenderEnderiophage extends MobRenderer<EntityEnderiophage, ModelEnderiophage> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/enderiophage.png");
-    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/enderiophage_glow.png");
-    private static final ResourceLocation TEXTURE_OVERWORLD = new ResourceLocation("alexsmobs:textures/entity/enderiophage_overworld.png");
-    private static final ResourceLocation TEXTURE_OVERWORLD_GLOW = new ResourceLocation("alexsmobs:textures/entity/enderiophage_overworld_glow.png");
-    private static final ResourceLocation TEXTURE_NETHER = new ResourceLocation("alexsmobs:textures/entity/enderiophage_nether.png");
-    private static final ResourceLocation TEXTURE_NETHER_GLOW = new ResourceLocation("alexsmobs:textures/entity/enderiophage_nether_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/enderiophage.png");
+    private static final ResourceLocation TEXTURE_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/enderiophage_glow.png");
+    private static final ResourceLocation TEXTURE_OVERWORLD = ResourceLocation.parse("alexsmobs:textures/entity/enderiophage_overworld.png");
+    private static final ResourceLocation TEXTURE_OVERWORLD_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/enderiophage_overworld_glow.png");
+    private static final ResourceLocation TEXTURE_NETHER = ResourceLocation.parse("alexsmobs:textures/entity/enderiophage_nether.png");
+    private static final ResourceLocation TEXTURE_NETHER_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/enderiophage_nether_glow.png");
 
     public RenderEnderiophage(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelEnderiophage(), 0.5F);
@@ -59,7 +59,7 @@ public class RenderEnderiophage extends MobRenderer<EntityEnderiophage, ModelEnd
 
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityEnderiophage entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(this.getRenderType(entitylivingbaseIn));
-            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, -1);
         }
 
         @Override

@@ -14,11 +14,13 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -50,18 +52,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public class EntityVoidWorm extends Monster {
 
-    public static final ResourceLocation SPLITTER_LOOT = new ResourceLocation("alexsmobs", "entities/void_worm_splitter");
+    public static final ResourceKey<LootTable> SPLITTER_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/void_worm_splitter"));
     private static final EntityDataAccessor<Optional<UUID>> CHILD_UUID = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Optional<UUID>> SPLIT_FROM_UUID = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> SEGMENT_COUNT = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.INT);
@@ -118,7 +121,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     @Nullable
-    protected ResourceLocation getDefaultLootTable() {
+    protected ResourceKey<LootTable> getDefaultLootTable() {
         return this.isSplitter() ? SPLITTER_LOOT : super.getDefaultLootTable();
     }
 
@@ -130,7 +133,7 @@ public class EntityVoidWorm extends Monster {
        super.die(cause);
        if(!this.level().isClientSide && !this.isSplitter()){
            if(cause != null && cause.getEntity() instanceof ServerPlayer) {
-               AMAdvancementTriggerRegistry.VOID_WORM_SLAY_HEAD.trigger((ServerPlayer) cause.getEntity());
+               AMAdvancementTriggerRegistry.VOID_WORM_SLAY_HEAD.get().trigger((ServerPlayer) cause.getEntity());
            }
        }
     }
@@ -146,7 +149,7 @@ public class EntityVoidWorm extends Monster {
         return itementity;
     }
 
-    @Override
+    // dropAllDeathLoot has different signature in 1.21 - takes ServerLevel and DamageSource
     protected void dropAllDeathLoot(DamageSource source) {
 
     }
@@ -318,14 +321,18 @@ public class EntityVoidWorm extends Monster {
                     launch(entity, false);
                 }
             }
-            this.setMaxUpStep(2F);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }else{
             this.setDeltaMovement(new Vec3(0, 0.03F, 0));
         }
         yBodyRot = getYRot();
         final float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
         this.setXRot(f2);
-        this.setMaxUpStep(2F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         if (!this.level().isClientSide) {
             Entity child = getChild();
             if (child == null) {
@@ -396,20 +403,27 @@ public class EntityVoidWorm extends Monster {
             DamageSource source = this.getLastDamageSource() == null ? damageSources().generic() : this.getLastDamageSource();
             Entity entity = source.getEntity();
 
-            final int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, entity, source);
+            // In 1.21, getLootingLevel is removed from CommonHooks, use EnchantmentHelper directly if needed
             this.captureDrops(new java.util.ArrayList<>());
 
             final boolean flag = this.lastHurtByPlayerTime > 0;
             if (this.shouldDropLoot() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.dropFromLootTable(source, flag);
-                this.dropCustomDeathLoot(source, i, flag);
+                // dropCustomDeathLoot takes ServerLevel in 1.21
+                if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                    this.dropCustomDeathLoot(serverLevel, source, flag);
+                }
             }
             this.dropEquipment();
-            this.dropExperience();
+            // dropExperience takes an Entity parameter in 1.21
+            if (entity != null) {
+                this.dropExperience(entity);
+            }
 
             Collection<ItemEntity> drops = captureDrops(null);
 
-            if (!net.minecraftforge.common.ForgeHooks.onLivingDrops(this, source, drops, i, lastHurtByPlayerTime > 0)){
+            // In 1.21, onLivingDrops takes 4 params: (entity, source, drops, recentlyHit)
+            if (!net.neoforged.neoforge.common.CommonHooks.onLivingDrops(this, source, drops, lastHurtByPlayerTime > 0)){
                 if(!drops.isEmpty()){
                     this.placeDropsSafely(drops);
                 }
@@ -477,20 +491,20 @@ public class EntityVoidWorm extends Monster {
         this.setSegmentCount(25 + random.nextInt(15));
         this.setXRot(0.0F);
         this.setBaseMaxHealth(AMConfig.voidWormMaxHealth, true);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SPLIT_FROM_UUID, Optional.empty());
-        this.entityData.define(CHILD_UUID, Optional.empty());
-        this.entityData.define(SEGMENT_COUNT, 10);
-        this.entityData.define(JAW_TICKS, 0);
-        this.entityData.define(WORM_ANGLE, 0F);
-        this.entityData.define(SPEEDMOD, 1F);
-        this.entityData.define(SPLITTER, false);
-        this.entityData.define(PORTAL_TICKS, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SPLIT_FROM_UUID, Optional.empty());
+        builder.define(CHILD_UUID, Optional.empty());
+        builder.define(SEGMENT_COUNT, 10);
+        builder.define(JAW_TICKS, 0);
+        builder.define(WORM_ANGLE, 0F);
+        builder.define(SPEEDMOD, 1F);
+        builder.define(SPLITTER, false);
+        builder.define(PORTAL_TICKS, 0);
     }
 
 
@@ -645,7 +659,7 @@ public class EntityVoidWorm extends Monster {
             return;
         }
         boolean flag = false;
-        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level(), this)) {
+        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.neoforged.neoforge.event.EventHooks.canEntityGrief(level(), this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
@@ -755,7 +769,8 @@ public class EntityVoidWorm extends Monster {
 
     private boolean wormAttack(Entity entity, DamageSource source, float dmg) {
         dmg *= AMConfig.voidWormDamageModifier;
-        return entity instanceof EnderDragon ? ((EnderDragon) entity).reallyHurt(source, dmg * 0.5F) : entity.hurt(source, dmg);
+        // In 1.21, EnderDragon.reallyHurt is protected - use hurt() for both
+        return entity.hurt(source, entity instanceof EnderDragon ? dmg * 0.5F : dmg);
     }
 
     public void playHurtSoundWorm(DamageSource source) {

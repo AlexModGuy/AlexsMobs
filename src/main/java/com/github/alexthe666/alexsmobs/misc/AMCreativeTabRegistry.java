@@ -9,20 +9,20 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMCreativeTabRegistry {
 
 
     public static final DeferredRegister<CreativeModeTab> DEF_REG = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, AlexsMobs.MODID);
 
-    public static final RegistryObject<CreativeModeTab> TAB = DEF_REG.register(AlexsMobs.MODID, () -> CreativeModeTab.builder()
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = DEF_REG.register(AlexsMobs.MODID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + AlexsMobs.MODID))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(AMItemRegistry.TAB_ICON.get()))
             .displayItems((enabledFeatures, output) -> {
-                for(RegistryObject<Item> item : AMItemRegistry.DEF_REG.getEntries()){
+                for(DeferredHolder<Item, ? extends Item> item : AMItemRegistry.DEF_REG.getEntries()){
                     if(item.get() instanceof CustomTabBehavior customTabBehavior){
                         customTabBehavior.fillItemCategory(output);
                     }else{

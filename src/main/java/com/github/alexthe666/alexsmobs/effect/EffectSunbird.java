@@ -14,7 +14,8 @@ public class EffectSunbird extends MobEffect {
         this.curse = curse;
     }
 
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    @Override
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (curse) {
             if (entity.isFallFlying()) {
                 if (entity instanceof Player) {
@@ -46,6 +47,7 @@ public class EffectSunbird extends MobEffect {
             }
 
         }
+        return true;
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

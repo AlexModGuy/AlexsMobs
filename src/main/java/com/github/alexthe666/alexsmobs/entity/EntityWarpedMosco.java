@@ -25,7 +25,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -78,10 +81,6 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 100D).add(Attributes.FOLLOW_RANGE, 128.0D).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.ARMOR, 10D).add(Attributes.KNOCKBACK_RESISTANCE, 1D).add(Attributes.ARMOR_TOUGHNESS, 2D).add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
     private static Animation getRandomAttack(RandomSource rand) {
         return switch (rand.nextInt(4)) {
             case 0 -> ANIMATION_PUNCH_L;
@@ -129,10 +128,10 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
-        this.entityData.define(HAND_SIDE, true);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
+        builder.define(HAND_SIDE, true);
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
@@ -203,7 +202,8 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             timeFlying = 0;
             this.setNoGravity(false);
         }
-        if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+        // getMobGriefingEvent renamed in 1.21 - use canEntityGrief
+        if (this.horizontalCollision && net.neoforged.neoforge.event.EventHooks.canEntityGrief(this.level(), this)) {
             boolean flag = false;
             AABB axisalignedbb = this.getBoundingBox().inflate(0.2D);
             for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(axisalignedbb.minX), Mth.floor(axisalignedbb.minY), Mth.floor(axisalignedbb.minZ), Mth.floor(axisalignedbb.maxX), Mth.floor(axisalignedbb.maxY), Mth.floor(axisalignedbb.maxZ))) {

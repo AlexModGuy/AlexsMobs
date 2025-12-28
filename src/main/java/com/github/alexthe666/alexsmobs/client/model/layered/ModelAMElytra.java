@@ -32,7 +32,7 @@ public class ModelAMElytra extends HumanoidModel {
 
     public ModelAMElytra withAnimations(LivingEntity entity){
         if(entity != null) {
-            final float partialTick = Minecraft.getInstance().getFrameTime();
+            final float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
             final float limbSwingAmount = entity.walkAnimation.speed(partialTick);
             final float limbSwing = entity.walkAnimation.position() + partialTick;
             setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);

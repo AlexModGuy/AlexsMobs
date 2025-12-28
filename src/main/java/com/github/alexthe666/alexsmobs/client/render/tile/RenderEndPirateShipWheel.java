@@ -14,15 +14,18 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> implements BlockEntityRenderer<T> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel.png");
-    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/end_pirate/ship_wheel.png");
+    private static final ResourceLocation TEXTURE_GLOW = ResourceLocation
+            .parse("alexsmobs:textures/entity/end_pirate/ship_wheel_glow.png");
     private static final ModelEndPirateShipWheel WHEEL_MODEL = new ModelEndPirateShipWheel();
 
     public RenderEndPirateShipWheel(Context rendererDispatcherIn) {
     }
 
     @Override
-    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+            int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         Direction dir = tileEntityIn.getBlockState().getValue(BlockEndPirateShipWheel.FACING);
         switch (dir) {
@@ -36,8 +39,10 @@ public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> im
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
         matrixStackIn.pushPose();
         WHEEL_MODEL.renderWheel(tileEntityIn, partialTicks);
-        WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
-        WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_GLOW)), 240, combinedOverlayIn, 1, 1F, 1, 1);
+        WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)),
+                combinedLightIn, combinedOverlayIn, -1);
+        WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_GLOW)),
+                240, combinedOverlayIn, -1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

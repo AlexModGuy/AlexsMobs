@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCaiman;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
+import net.neoforged.neoforge.common.NeoForgeMod;
 
 import java.util.EnumSet;
 
@@ -36,7 +36,7 @@ public class CaimanAIBellow extends Goal {
 
     public void tick(){
         if(caiman.isInWaterOrBubble()){
-            final double d1 = caiman.getFluidTypeHeight(ForgeMod.WATER_TYPE.get());
+            final double d1 = caiman.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
             caiman.getNavigation().stop();
             if(d1 > 0.3F){
                 final double d2 = Math.pow(d1 - 0.3F, 2);

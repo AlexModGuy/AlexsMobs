@@ -19,7 +19,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -47,9 +46,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
@@ -79,7 +77,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     protected EntityCapuchinMonkey(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
+        this.setPathfindingMalus(PathType.LEAVES, 0.0F);
     }
 
     public static boolean isTameableFood(ItemStack stack) {
@@ -218,7 +216,9 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             maxSitTime = 300 + random.nextInt(250);
             this.setOrderedToSit(true);
         }
-        this.setMaxUpStep(2);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         if (!forcedSit && this.isSitting() && (this.getDartTarget() != null || this.getCommand() == 1)) {
             this.setOrderedToSit(false);
         }
@@ -376,13 +376,13 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(DART_TARGET, -1);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(DART, false);
-        this.entityData.define(VARIANT, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(COMMAND, 0);
+        builder.define(DART_TARGET, -1);
+        builder.define(SITTING, false);
+        builder.define(DART, false);
+        builder.define(VARIANT, 0);
     }
 
     public boolean hasDart() {
@@ -464,10 +464,9 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                 this.usePlayerItem(player, hand, itemstack);
                 return InteractionResult.CONSUME;
             }
-            if (this.hasDart() && itemstack.is(Tags.Items.SHEARS)) {
+            if (this.hasDart() && itemstack.is(net.minecraft.world.item.Items.SHEARS)) {
                 this.setDart(false);
-                itemstack.hurtAndBreak(1, this, (p_233654_0_) -> {
-                });
+                itemstack.hurtAndBreak(1, this, EquipmentSlot.MAINHAND);
                 return InteractionResult.SUCCESS;
             }
             if (player.isShiftKeyDown() && player.getPassengers().isEmpty()) {
@@ -528,7 +527,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         Entity itemThrower = e.getOwner();
         if (e.getItem().is(AMTagRegistry.CAPUCHIN_MONKEY_TAMEABLES) && itemThrower != null && !this.isTame()) {
             if (getRandom().nextInt(5) == 0) {
-                this.setTame(true);
+                this.setTame(true, true);
                 this.setOwnerUUID(itemThrower.getUUID());
                 this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
@@ -538,7 +537,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance diff, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance diff, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
         int i;
         if (data instanceof CapuchinGroupData) {
             i = ((CapuchinGroupData)data).variant;
@@ -548,7 +547,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         }
 
         this.setVariant(i);
-        return super.finalizeSpawn(world, diff, spawnType, data, tag);
+        return super.finalizeSpawn(world, diff, spawnType, data);
     }
 
     public static class CapuchinGroupData extends AgeableMobGroupData {

@@ -14,6 +14,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -51,11 +52,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -84,10 +84,10 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     protected EntityToucan(EntityType type, Level worldIn) {
         super(type, worldIn);
         initFeedingData();
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.COCOA, -1.0F);
+        this.setPathfindingMalus(PathType.LEAVES, 0.0F);
         switchNavigator(true);
     }
 
@@ -102,7 +102,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 String[] split = str.split("\\|");
                 if (split.length >= 2) {
                     FEEDING_DATA.put(split[0], split[1]);
-                    FEEDING_STACKS.add(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0]))));
+                    FEEDING_STACKS.add(new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(split[0]))));
                 }
             }
         }
@@ -142,10 +142,10 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     @Nullable
     private BlockState getSaplingFor(ItemStack stack) {
-        ResourceLocation name = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        ResourceLocation name = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (!stack.isEmpty() && name != null && FEEDING_DATA.containsKey(name.toString())) {
             String str = FEEDING_DATA.get(name.toString());
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(str));
+            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(str));
             if (block != null) {
                 return block.defaultBlockState();
             }
@@ -199,15 +199,15 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SAPLING_STATE, Optional.empty());
-        this.entityData.define(FLYING, false);
-        this.entityData.define(PECK_TICK, 0);
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(GOLDEN_TIME, 0);
-        this.entityData.define(SAPLING_TIME, 0);
-        this.entityData.define(ENCHANTED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SAPLING_STATE, Optional.empty());
+        builder.define(FLYING, false);
+        builder.define(PECK_TICK, 0);
+        builder.define(VARIANT, 0);
+        builder.define(GOLDEN_TIME, 0);
+        builder.define(SAPLING_TIME, 0);
+        builder.define(ENCHANTED, false);
     }
 
     @Override
@@ -289,7 +289,8 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         } else {
             heldItemTime = 0;
         }
-        if (this.isFlying() && this.getFeetBlockState().is(Blocks.VINE)) {
+        // getFeetBlockState removed in 1.21, use getBlockStateOn()
+        if (this.isFlying() && this.getBlockStateOn().is(Blocks.VINE)) {
             float f = this.getYRot() * Mth.DEG_TO_RAD;
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0.4F, Mth.cos(f) * 0.2F));
         }
@@ -471,9 +472,9 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setVariant(this.getRandom().nextInt(4));
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     @Nullable

@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemSquidGrapple extends Item {
@@ -66,9 +66,7 @@ public class ItemSquidGrapple extends Item {
             if (!worldIn.isClientSide) {
                 worldIn.addFreshEntity(hook);
             }
-            stack.hurtAndBreak(1, livingEntityIn, (playerIn) -> {
-                livingEntityIn.broadcastBreakEvent(playerIn.getUsedItemHand());
-            });
+            stack.hurtAndBreak(1, livingEntityIn, EquipmentSlot.MAINHAND);
             SquidGrappleUtil.onFireHook(livingEntityIn, hook.getUUID());
         }
     }
@@ -88,7 +86,7 @@ public class ItemSquidGrapple extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("item.alexsmobs.squid_grapple.desc").withStyle(ChatFormatting.GRAY));
 
     }

@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderFroststalker extends MobRenderer<EntityFroststalker, ModelFroststalker> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/froststalker.png");
-    private static final ResourceLocation TEXTURE_NOSPIKES = new ResourceLocation("alexsmobs:textures/entity/froststalker_nospikes.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/froststalker.png");
+    private static final ResourceLocation TEXTURE_NOSPIKES = ResourceLocation.parse("alexsmobs:textures/entity/froststalker_nospikes.png");
 
     public RenderFroststalker(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelFroststalker(), 0.4F);

@@ -112,7 +112,7 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
         animator = ModelAnimator.create();
     }
 
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         if (this.young) {
             float f = 1.6F;
             float f1 = 2.2F;
@@ -131,7 +131,7 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
             matrixStackIn.scale(0.45F, 0.45F, 0.45F);
             matrixStackIn.translate(0.0D, 1.6D, 0.125D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
             head.setScale(1, 1, 1);
@@ -147,7 +147,7 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
             tusk_right.showModel = true;
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
         }

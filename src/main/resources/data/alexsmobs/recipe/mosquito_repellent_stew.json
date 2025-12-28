@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:bowl",
+    "alexsmobs:triops_eggs",
+    "alexsmobs:stink_bottle",
+    "alexsmobs:triops_eggs"
+  ],
+  "result": {
+    "id": "alexsmobs:mosquito_repellent_stew",
+    "count": 1
+  }
+}

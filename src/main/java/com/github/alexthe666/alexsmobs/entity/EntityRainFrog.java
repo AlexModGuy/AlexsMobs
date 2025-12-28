@@ -13,7 +13,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
@@ -159,14 +158,14 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(STANCE_TIME, 0);
-        this.entityData.define(ATTACK_TIME, 0);
-        this.entityData.define(DANCE_TIME, 0);
-        this.entityData.define(BURROWED, false);
-        this.entityData.define(DISTURBED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VARIANT, 0);
+        builder.define(STANCE_TIME, 0);
+        builder.define(ATTACK_TIME, 0);
+        builder.define(DANCE_TIME, 0);
+        builder.define(BURROWED, false);
+        builder.define(DISTURBED, false);
     }
 
     public void tick() {
@@ -273,9 +272,9 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     @javax.annotation.Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn, @javax.annotation.Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn) {
         this.setVariant(random.nextInt(3));
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -299,7 +298,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         if (item instanceof ShovelItem && (this.isBurrowed() || !this.isDisturbed()) && !this.level().isClientSide) {
             this.ambientSoundTime = 1000;
             if (!player.isCreative()) {
-                itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer) player : null);
+                if (itemstack.isDamageableItem()) itemstack.setDamageValue(itemstack.getDamageValue() + 1);
             }
             this.setStanceTime(20 + random.nextInt(30));
             this.setBurrowed(false);

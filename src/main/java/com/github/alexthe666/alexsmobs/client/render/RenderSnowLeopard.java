@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderSnowLeopard extends MobRenderer<EntitySnowLeopard, ModelSnowLeopard> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/snow_leopard.png");
-    private static final ResourceLocation TEXTURE_SLEEPING = new ResourceLocation("alexsmobs:textures/entity/snow_leopard_sleeping.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/snow_leopard.png");
+    private static final ResourceLocation TEXTURE_SLEEPING = ResourceLocation.parse("alexsmobs:textures/entity/snow_leopard_sleeping.png");
 
     public RenderSnowLeopard(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSnowLeopard(), 0.4F);

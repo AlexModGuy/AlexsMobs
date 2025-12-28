@@ -16,12 +16,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 
 public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart, EntityModel<EntityVoidWormPart>> {
-    private static final ResourceLocation TEXTURE_BODY = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_body.png");
-    private static final ResourceLocation TEXTURE_BODY_HURT = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_body_hurt.png");
-    private static final ResourceLocation TEXTURE_BODY_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_body_glow.png");
-    private static final ResourceLocation TEXTURE_TAIL = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail.png");
-    private static final ResourceLocation TEXTURE_TAIL_HURT = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail_hurt.png");
-    private static final ResourceLocation TEXTURE_TAIL_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_tail_glow.png");
+    private static final ResourceLocation TEXTURE_BODY = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_body.png");
+    private static final ResourceLocation TEXTURE_BODY_HURT = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_body_hurt.png");
+    private static final ResourceLocation TEXTURE_BODY_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_body_glow.png");
+    private static final ResourceLocation TEXTURE_TAIL = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_tail.png");
+    private static final ResourceLocation TEXTURE_TAIL_HURT = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_tail_hurt.png");
+    private static final ResourceLocation TEXTURE_TAIL_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_tail_glow.png");
     private final ModelVoidWormBody bodyModel = new ModelVoidWormBody(0.0F);
     private final ModelVoidWormTail tailModel = new ModelVoidWormTail(0.0F);
 
@@ -53,7 +53,7 @@ public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart,
         }
     }
 
-    protected void setupRotations(EntityVoidWormPart entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void setupRotations(EntityVoidWormPart entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks, float tickDelta) {
         Pose pose = entityLiving.getPose();
         if (pose != Pose.SLEEPING) {
             matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityLiving.getWormYaw(partialTicks)));

@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class TileEntityEndPirateAnchorWinch extends BlockEntity {
 
@@ -135,7 +135,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
 
     @OnlyIn(Dist.CLIENT)
     public AABB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
+        return AABB.INFINITE;
     }
 
     public boolean checkAndBreakAnchor(BlockPos down) {
@@ -241,8 +241,8 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
 
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
+    protected void loadAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
         this.pullingUp = compound.getBoolean("PullingUp");
         this.draggingAnchor = compound.getBoolean("DraggingAnchor");
         this.anchorEW = compound.getBoolean("EWAnchor");
@@ -251,8 +251,8 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    protected void saveAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
         compound.putBoolean("PullingUp", pullingUp);
         compound.putBoolean("DraggingAnchor", draggingAnchor);
         compound.putBoolean("EWAnchor", anchorEW);

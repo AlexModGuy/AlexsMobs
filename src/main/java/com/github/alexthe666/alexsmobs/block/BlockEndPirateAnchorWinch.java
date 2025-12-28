@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateAnchorWinch;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +28,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 public class BlockEndPirateAnchorWinch extends BaseEntityBlock implements AMSpecialRenderBlock{
+    public static final MapCodec<BlockEndPirateAnchorWinch> CODEC = simpleCodec(p -> new BlockEndPirateAnchorWinch());
 
     public static final BooleanProperty EASTORWEST = BooleanProperty.create("eastorwest");
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -36,6 +38,11 @@ public class BlockEndPirateAnchorWinch extends BaseEntityBlock implements AMSpec
     protected BlockEndPirateAnchorWinch() {
         super(Properties.of().mapColor(MapColor.COLOR_BLACK).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(POWERED, Boolean.valueOf(false)));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     public RenderShape getRenderShape(BlockState state) {

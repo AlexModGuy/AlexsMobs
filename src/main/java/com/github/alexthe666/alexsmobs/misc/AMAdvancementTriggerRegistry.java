@@ -1,39 +1,32 @@
 package com.github.alexthe666.alexsmobs.misc;
 
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.resources.ResourceLocation;
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.core.registries.Registries;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMAdvancementTriggerRegistry {
 
-    public static final AMAdvancementTrigger MOSQUITO_SICK = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:mosquito_sick"));
-    public static final AMAdvancementTrigger EMU_DODGE = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:emu_dodge"));
-    public static final AMAdvancementTrigger STOMP_LEAFCUTTER_ANTHILL = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:stomp_leafcutter_anthill"));
-    public static final AMAdvancementTrigger BALD_EAGLE_CHALLENGE = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:bald_eagle_challenge"));
-    public static final AMAdvancementTrigger VOID_WORM_SUMMON = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:void_worm_summon"));
-    public static final AMAdvancementTrigger VOID_WORM_SPLIT = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:void_worm_split"));
-    public static final AMAdvancementTrigger VOID_WORM_SLAY_HEAD = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:void_worm_kill"));
-    public static final AMAdvancementTrigger SEAGULL_STEAL = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:seagull_steal"));
-    public static final AMAdvancementTrigger LAVIATHAN_FOUR_PASSENGERS = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:laviathan_four_passengers"));
-    public static final AMAdvancementTrigger TRANSMUTE_1000_ITEMS = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:transmute_1000_items"));
-    public static final AMAdvancementTrigger UNDERMINE_UNDERMINER = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:undermine_underminer"));
+    public static final DeferredRegister<CriterionTrigger<?>> DEF_REG = DeferredRegister.create(Registries.TRIGGER_TYPE, AlexsMobs.MODID);
 
-    public static final AMAdvancementTrigger ELEPHANT_SWAG = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:elephant_swag"));
-    public static final AMAdvancementTrigger SKUNK_SPRAY = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:skunk_spray"));
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> MOSQUITO_SICK = DEF_REG.register("mosquito_sick", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> EMU_DODGE = DEF_REG.register("emu_dodge", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> STOMP_LEAFCUTTER_ANTHILL = DEF_REG.register("stomp_leafcutter_anthill", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> BALD_EAGLE_CHALLENGE = DEF_REG.register("bald_eagle_challenge", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> VOID_WORM_SUMMON = DEF_REG.register("void_worm_summon", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> VOID_WORM_SPLIT = DEF_REG.register("void_worm_split", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> VOID_WORM_SLAY_HEAD = DEF_REG.register("void_worm_kill", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> SEAGULL_STEAL = DEF_REG.register("seagull_steal", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> LAVIATHAN_FOUR_PASSENGERS = DEF_REG.register("laviathan_four_passengers", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> TRANSMUTE_1000_ITEMS = DEF_REG.register("transmute_1000_items", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> UNDERMINE_UNDERMINER = DEF_REG.register("undermine_underminer", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> ELEPHANT_SWAG = DEF_REG.register("elephant_swag", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> SKUNK_SPRAY = DEF_REG.register("skunk_spray", AMAdvancementTrigger::new);
 
+    // init() is no longer needed as triggers are registered via DeferredRegister
     public static void init(){
-        CriteriaTriggers.register(MOSQUITO_SICK);
-        CriteriaTriggers.register(EMU_DODGE);
-        CriteriaTriggers.register(STOMP_LEAFCUTTER_ANTHILL);
-        CriteriaTriggers.register(BALD_EAGLE_CHALLENGE);
-        CriteriaTriggers.register(VOID_WORM_SUMMON);
-        CriteriaTriggers.register(VOID_WORM_SPLIT);
-        CriteriaTriggers.register(VOID_WORM_SLAY_HEAD);
-        CriteriaTriggers.register(SEAGULL_STEAL);
-        CriteriaTriggers.register(LAVIATHAN_FOUR_PASSENGERS);
-        CriteriaTriggers.register(TRANSMUTE_1000_ITEMS);
-        CriteriaTriggers.register(UNDERMINE_UNDERMINER);
-        CriteriaTriggers.register(ELEPHANT_SWAG);
-        CriteriaTriggers.register(SKUNK_SPRAY);
+        // Registry triggers are now handled by DeferredRegister in AlexsMobs constructor
     }
 
 }

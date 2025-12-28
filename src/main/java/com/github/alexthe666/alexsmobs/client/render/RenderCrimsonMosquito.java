@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderCrimsonMosquito extends MobRenderer<EntityCrimsonMosquito, ModelCrimsonMosquito> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito.png");
-    private static final ResourceLocation TEXTURE_SICK = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_blue.png");
-    private static final ResourceLocation TEXTURE_FLY = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_fly.png");
-    private static final ResourceLocation TEXTURE_SICK_FLY = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_fly_blue.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/crimson_mosquito.png");
+    private static final ResourceLocation TEXTURE_SICK = ResourceLocation.parse("alexsmobs:textures/entity/crimson_mosquito_blue.png");
+    private static final ResourceLocation TEXTURE_FLY = ResourceLocation.parse("alexsmobs:textures/entity/crimson_mosquito_fly.png");
+    private static final ResourceLocation TEXTURE_SICK_FLY = ResourceLocation.parse("alexsmobs:textures/entity/crimson_mosquito_fly_blue.png");
 
     public RenderCrimsonMosquito(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCrimsonMosquito(), 0.6F);
@@ -28,13 +28,13 @@ public class RenderCrimsonMosquito extends MobRenderer<EntityCrimsonMosquito, Mo
         return fly.isSick() || fly.getFleeingEntityId() != -1;
     }
 
-    protected void setupRotations(EntityCrimsonMosquito entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void setupRotations(EntityCrimsonMosquito entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks, float tickDelta) {
         if (this.isShaking(entityLiving)) {
             rotationYaw += (float) (Math.cos((double) entityLiving.tickCount * 7F) * Math.PI * (double) 0.9F);
             float vibrate = 0.05F * entityLiving.getMosquitoScale();
             matrixStackIn.translate((entityLiving.getRandom().nextFloat() - 0.5F) * vibrate, (entityLiving.getRandom().nextFloat() - 0.5F) * vibrate, (entityLiving.getRandom().nextFloat() - 0.5F) * vibrate);
         }
-        super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
+        super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks, tickDelta);
     }
 
     public ResourceLocation getTextureLocation(EntityCrimsonMosquito entity) {

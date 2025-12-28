@@ -14,10 +14,13 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -49,13 +52,13 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -63,9 +66,9 @@ import java.util.function.Predicate;
 
 public class EntityCrimsonMosquito extends Monster {
 
-    public static final ResourceLocation FULL_LOOT = new ResourceLocation("alexsmobs", "entities/crimson_mosquito_full");
-    public static final ResourceLocation FROM_FLY_LOOT = new ResourceLocation("alexsmobs", "entities/crimson_mosquito_fly");
-    public static final ResourceLocation FROM_FLY_FULL_LOOT = new ResourceLocation("alexsmobs", "entities/crimson_mosquito_fly_full");
+    public static final ResourceKey<LootTable> FULL_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/crimson_mosquito_full"));
+    public static final ResourceKey<LootTable> FROM_FLY_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/crimson_mosquito_fly"));
+    public static final ResourceKey<LootTable> FROM_FLY_FULL_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/crimson_mosquito_fly_full"));
     protected static final EntityDimensions FLIGHT_SIZE = EntityDimensions.fixed(1.2F, 1.8F);
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHOOTING = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.BOOLEAN);
@@ -77,10 +80,10 @@ public class EntityCrimsonMosquito extends Monster {
     private static final EntityDataAccessor<Integer> LURING_LAVIATHAN = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> FLEEING_ENTITY = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.INT);
     private static final Predicate<LivingEntity> REPELLENT = (mob) -> {
-        return mob.hasEffect(AMEffectRegistry.MOSQUITO_REPELLENT.get()) || mob instanceof EntityTriops;
+        return mob.hasEffect(AMEffectRegistry.MOSQUITO_REPELLENT) || mob instanceof EntityTriops;
     };
     private static final Predicate<LivingEntity> NO_REPELLENT = (mob) -> {
-        return !mob.hasEffect(AMEffectRegistry.MOSQUITO_REPELLENT.get());
+        return !mob.hasEffect(AMEffectRegistry.MOSQUITO_REPELLENT);
     };
     public float prevFlyProgress;
     public float flyProgress;
@@ -100,10 +103,10 @@ public class EntityCrimsonMosquito extends Monster {
     protected EntityCrimsonMosquito(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new EntityCrimsonMosquito.MoveHelperController(this);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.LAVA, 0.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(PathType.DAMAGE_FIRE, 0.0F);
     }
 
     public boolean hasLuringLaviathan() {
@@ -116,7 +119,7 @@ public class EntityCrimsonMosquito extends Monster {
         this.setMosquitoScale(0.2F);
         this.setFromFly(true);
         for (int j = 0; j < 4; ++j) {
-            this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + this.random.nextDouble() / 2.0D, this.getY(0.5D), this.getZ() + this.random.nextDouble() / 2.0D, this.random.nextDouble() * 0.5F + 0.5F, 0, 0.0D);
+            this.level().addParticle(net.minecraft.core.particles.ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, 1.0F, 0.0F, 0.0F), this.getX() + this.random.nextDouble() / 2.0D, this.getY(0.5D), this.getZ() + this.random.nextDouble() / 2.0D, 0, 0, 0);
         }
     }
 
@@ -137,7 +140,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     @Nullable
-    protected ResourceLocation getDefaultLootTable() {
+    protected ResourceKey<LootTable> getDefaultLootTable() {
         if (this.getBloodLevel() > 0) {
             return this.isFromFly() ? FROM_FLY_FULL_LOOT : FULL_LOOT;
         }
@@ -258,7 +261,7 @@ public class EntityCrimsonMosquito extends Monster {
                                 if (sick || mungus) {
                                     if (!this.isSick()) {
                                         for (ServerPlayer serverplayerentity : this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(40.0D, 25.0D, 40.0D))) {
-                                            AMAdvancementTriggerRegistry.MOSQUITO_SICK.trigger(serverplayerentity);
+                                            AMAdvancementTriggerRegistry.MOSQUITO_SICK.get().trigger(serverplayerentity);
                                         }
                                     }
                                     this.setSick(true);
@@ -293,17 +296,17 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
-        this.entityData.define(SHOOTING, false);
-        this.entityData.define(SICK, false);
-        this.entityData.define(BLOOD_LEVEL, 0);
-        this.entityData.define(SHRINKING, false);
-        this.entityData.define(FROM_FLY, false);
-        this.entityData.define(MOSQUITO_SCALE, 1F);
-        this.entityData.define(LURING_LAVIATHAN, -1);
-        this.entityData.define(FLEEING_ENTITY, -1);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
+        builder.define(SHOOTING, false);
+        builder.define(SICK, false);
+        builder.define(BLOOD_LEVEL, 0);
+        builder.define(SHRINKING, false);
+        builder.define(FROM_FLY, false);
+        builder.define(MOSQUITO_SCALE, 1F);
+        builder.define(LURING_LAVIATHAN, -1);
+        builder.define(FLEEING_ENTITY, -1);
     }
 
     public boolean isFlying() {
@@ -509,7 +512,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
         if (isFlying()) {
             if (loopSoundTick == 0) {
-                this.gameEvent(GameEvent.ENTITY_ROAR);
+                this.gameEvent(GameEvent.ENTITY_ACTION);
                 this.playSound(AMSoundRegistry.MOSQUITO_LOOP.get(), this.getSoundVolume(), this.getVoicePitch());
             }
             loopSoundTick++;
@@ -541,7 +544,7 @@ public class EntityCrimsonMosquito extends Monster {
                     EntityWarpedMosco mosco = AMEntityRegistry.WARPED_MOSCO.get().create(level());
                     mosco.copyPosition(this);
                     if (!this.level().isClientSide) {
-                        mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                        mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null);
                     }
 
                     if (!this.level().isClientSide) {
@@ -574,14 +577,10 @@ public class EntityCrimsonMosquito extends Monster {
         return false;
     }
 
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
         return isFlying() ? FLIGHT_SIZE : super.getDimensions(poseIn);
     }
 
@@ -867,7 +866,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isNonMungusWarpedTrigger(Entity entity) {
-        final ResourceLocation mobtype = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        final ResourceLocation mobtype = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
         return mobtype != null && !AMConfig.warpedMoscoMobTriggers.isEmpty() && AMConfig.warpedMoscoMobTriggers.contains(mobtype.toString());
     }
 

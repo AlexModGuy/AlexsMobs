@@ -96,7 +96,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
         prevStrangleProgess = strangleProgess;
         prevSwell = this.getSwell();
-        isInsidePortal = false;
+        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
             final Entity parent = getParent();
@@ -216,9 +216,9 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         }
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     public boolean isPushedByFluid() {
         return false;
@@ -248,17 +248,17 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CHILD_UUID, Optional.empty());
-        this.entityData.define(PARENT_UUID, Optional.empty());
-        this.entityData.define(BODYINDEX, 0);
-        this.entityData.define(BODY_TYPE, AnacondaPartIndex.NECK.ordinal());
-        this.entityData.define(TARGET_YAW, 0F);
-        this.entityData.define(SWELL, 0F);
-        this.entityData.define(YELLOW, false);
-        this.entityData.define(SHEDDING, false);
-        this.entityData.define(BABY, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CHILD_UUID, Optional.empty());
+        builder.define(PARENT_UUID, Optional.empty());
+        builder.define(BODYINDEX, 0);
+        builder.define(BODY_TYPE, AnacondaPartIndex.NECK.ordinal());
+        builder.define(TARGET_YAW, 0F);
+        builder.define(SWELL, 0F);
+        builder.define(YELLOW, false);
+        builder.define(SHEDDING, false);
+        builder.define(BABY, false);
     }
 
 

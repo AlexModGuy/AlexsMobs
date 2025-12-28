@@ -51,7 +51,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -91,9 +91,11 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
 
     protected EntityGorilla(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.LEAVES, 0.0F);
-        this.setMaxUpStep(1.1F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.LEAVES, 0.0F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
@@ -193,7 +195,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if (spawnDataIn instanceof AgeableMob.AgeableMobGroupData) {
             AgeableMob.AgeableMobGroupData lvt_6_1_ = (AgeableMob.AgeableMobGroupData) spawnDataIn;
             if (lvt_6_1_.getGroupSize() == 0) {
@@ -203,7 +205,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             this.setSilverback(this.getRandom().nextBoolean());
         }
 
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     @Nullable
@@ -226,7 +228,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         return gorilla;
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
         return isSilverback() && !isBaby() ? SILVERBACK_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
     }
 
@@ -245,7 +247,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
         }
     }
 
@@ -254,12 +256,12 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SILVERBACK, false);
-        this.entityData.define(STANDING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(EATING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SILVERBACK, false);
+        builder.define(STANDING, false);
+        builder.define(SITTING, false);
+        builder.define(EATING, false);
     }
 
     public boolean isSilverback() {
@@ -391,7 +393,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
                     this.heal(4);
                     if (isTameableFood(stack) && bananaThrowerID != null) {
                         if (getRandom().nextFloat() < 0.3F) {
-                            this.setTame(true);
+                            this.setTame(true, true);
                             this.setOwnerUUID(this.bananaThrowerID);
                             Player player = level().getPlayerByUUID(bananaThrowerID);
                             if (player instanceof ServerPlayer) {

@@ -45,12 +45,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -92,11 +92,11 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     protected EntityBlueJay(EntityType<? extends Animal> animal, Level level) {
         super(animal, level);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
-        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
+        this.setPathfindingMalus(PathType.COCOA, -1.0F);
+        this.setPathfindingMalus(PathType.FENCE, -1.0F);
         switchNavigator(false);
     }
 
@@ -147,16 +147,16 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
-        this.entityData.define(ATTACK_TICK, 0);
-        this.entityData.define(FEED_TIME, 0);
-        this.entityData.define(SING_TIME, 0);
-        this.entityData.define(CREST_TARGET, 0F);
-        this.entityData.define(BLUE_VISUAL_FLAG, false);
-        this.entityData.define(RACCOON_UUID, Optional.empty());
-        this.entityData.define(LAST_FEEDER_UUID, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
+        builder.define(ATTACK_TICK, 0);
+        builder.define(FEED_TIME, 0);
+        builder.define(SING_TIME, 0);
+        builder.define(CREST_TARGET, 0F);
+        builder.define(BLUE_VISUAL_FLAG, false);
+        builder.define(RACCOON_UUID, Optional.empty());
+        builder.define(LAST_FEEDER_UUID, Optional.empty());
     }
 
     private void switchNavigator(boolean onLand) {
@@ -558,7 +558,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem().isEdible() || stack.is(AMTagRegistry.BLUE_JAY_FOODSTUFFS);
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) || stack.is(AMTagRegistry.BLUE_JAY_FOODSTUFFS);
     }
 
     public double getMaxDistToItem() {

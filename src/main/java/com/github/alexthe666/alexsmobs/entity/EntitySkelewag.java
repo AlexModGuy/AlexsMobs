@@ -36,9 +36,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 
@@ -56,16 +56,12 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         super(monster, level);
         this.xpReward = 10;
         this.moveControl = new AquaticMoveController(this, 1.0F, 15F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
         return new SemiAquaticPathNavigator(this, worldIn);
-    }
-
-    public MobType getMobType() {
-        return MobType.UNDEAD;
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -106,9 +102,10 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
 
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, Integer.valueOf(0));
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VARIANT, Integer.valueOf(0));
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -212,7 +209,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         if (this.hasPassenger(passenger)) {
             passenger.setYBodyRot(this.yBodyRot);
             Vec3 vec = new Vec3(0, this.getBbHeight() * 0.4F, this.getBbWidth() * -0.2F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
-            passenger.setPos(this.getX() + vec.x, this.getY() + vec.y + passenger.getMyRidingOffset(), this.getZ() + vec.z);
+            passenger.setPos(this.getX() + vec.x, this.getY() + vec.y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + vec.z);
         }
     }
 
@@ -222,11 +219,11 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setVariant(this.getRandom().nextFloat() < 0.3F ? 1 : 0);
         if (this.random.nextFloat() < 0.2F) {
             Drowned drowned = EntityType.DROWNED.create(level());
-            drowned.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+            drowned.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
             drowned.copyPosition(this);
             drowned.startRiding(this);
             worldIn.addFreshEntityWithPassengers(drowned);
@@ -234,12 +231,12 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         if(reason == MobSpawnType.STRUCTURE){
             this.restrictTo(this.blockPosition(), 15);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     @Override
     public int getAnimationTick() {

@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderGeladaMonkey extends MobRenderer<EntityGeladaMonkey, ModelGeladaMonkey> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/gelada_monkey.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/gelada_monkey_angry.png");
-    private static final ResourceLocation TEXTURE_LEADER = new ResourceLocation("alexsmobs:textures/entity/gelada_monkey_leader.png");
-    private static final ResourceLocation TEXTURE_LEADER_ANGRY = new ResourceLocation("alexsmobs:textures/entity/gelada_monkey_leader_angry.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/gelada_monkey.png");
+    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/gelada_monkey_angry.png");
+    private static final ResourceLocation TEXTURE_LEADER = ResourceLocation.parse("alexsmobs:textures/entity/gelada_monkey_leader.png");
+    private static final ResourceLocation TEXTURE_LEADER_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/gelada_monkey_leader_angry.png");
 
     public RenderGeladaMonkey(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGeladaMonkey(), 0.45F);

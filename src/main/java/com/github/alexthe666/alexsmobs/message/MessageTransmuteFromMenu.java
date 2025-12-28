@@ -3,13 +3,15 @@ package com.github.alexthe666.alexsmobs.message;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.inventory.MenuTransmutationTable;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
-
-public class MessageTransmuteFromMenu {
+public class MessageTransmuteFromMenu implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<MessageTransmuteFromMenu> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "transmute_from_menu"));
+    public static final StreamCodec<FriendlyByteBuf, MessageTransmuteFromMenu> CODEC = StreamCodec.ofMember(MessageTransmuteFromMenu::write, MessageTransmuteFromMenu::read);
 
     private int playerId;
     private int choice;
@@ -19,8 +21,7 @@ public class MessageTransmuteFromMenu {
         this.choice = choice;
     }
 
-    public MessageTransmuteFromMenu() {
-    }
+    public MessageTransmuteFromMenu() {}
 
     public static MessageTransmuteFromMenu read(FriendlyByteBuf buf) {
         return new MessageTransmuteFromMenu(buf.readInt(), buf.readInt());
@@ -31,23 +32,16 @@ public class MessageTransmuteFromMenu {
         buf.writeInt(message.choice);
     }
 
-    public static class Handler {
-        public Handler() {
-        }
+    @Override
+    public Type<? extends CustomPacketPayload> type() { return TYPE; }
 
-        public static void handle(MessageTransmuteFromMenu message, Supplier<NetworkEvent.Context> context) {
-            context.get().setPacketHandled(true);
-            context.get().enqueueWork(() -> {
-                Player player = context.get().getSender();
-                if (context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
-                    player = AlexsMobs.PROXY.getClientSidePlayer();
-                }
-                if (player.getId() == message.playerId && player.containerMenu instanceof MenuTransmutationTable) {
-                    MenuTransmutationTable table = (MenuTransmutationTable) player.containerMenu;
-                    table.transmute(player, message.choice);
-                }
-            });
-        }
+    public static void handle(MessageTransmuteFromMenu message, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            Player player = context.player();
+            if (player != null && player.getId() == message.playerId && player.containerMenu instanceof MenuTransmutationTable) {
+                MenuTransmutationTable table = (MenuTransmutationTable) player.containerMenu;
+                table.transmute(player, message.choice);
+            }
+        });
     }
-
 }

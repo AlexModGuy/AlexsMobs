@@ -7,8 +7,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class TileEntityEndPirateAnchor extends BlockEntity {
 
     @OnlyIn(Dist.CLIENT)
     public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-1, 0, -1), worldPosition.offset(1, 3, 1));
+        return new AABB(Vec3.atLowerCornerOf(worldPosition.offset(-1, 0, -1)), Vec3.atLowerCornerOf(worldPosition.offset(1, 3, 1)));
     }
 
     public static List<BlockPos> getValidBBPositions(boolean eastOrWest){

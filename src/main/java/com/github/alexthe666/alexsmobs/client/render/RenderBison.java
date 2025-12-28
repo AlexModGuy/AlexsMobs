@@ -15,11 +15,11 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderBison extends MobRenderer<EntityBison, AdvancedEntityModel<EntityBison>> {
-    private static final ResourceLocation TEXTURE_BABY = new ResourceLocation("alexsmobs:textures/entity/bison_baby.png");
-    private static final ResourceLocation TEXTURE_BABY_SNOWY = new ResourceLocation("alexsmobs:textures/entity/bison_baby_snowy.png");
-    private static final ResourceLocation TEXTURE_SNOWY = new ResourceLocation("alexsmobs:textures/entity/bison_snowy.png");
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/bison.png");
-    private static final ResourceLocation TEXTURE_SHEARED = new ResourceLocation("alexsmobs:textures/entity/bison_sheared.png");
+    private static final ResourceLocation TEXTURE_BABY = ResourceLocation.parse("alexsmobs:textures/entity/bison_baby.png");
+    private static final ResourceLocation TEXTURE_BABY_SNOWY = ResourceLocation.parse("alexsmobs:textures/entity/bison_baby_snowy.png");
+    private static final ResourceLocation TEXTURE_SNOWY = ResourceLocation.parse("alexsmobs:textures/entity/bison_snowy.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/bison.png");
+    private static final ResourceLocation TEXTURE_SHEARED = ResourceLocation.parse("alexsmobs:textures/entity/bison_sheared.png");
     private final ModelBison modelBison = new ModelBison();
     private final ModelBisonBaby modelBaby = new ModelBisonBaby();
 
@@ -49,7 +49,7 @@ public class RenderBison extends MobRenderer<EntityBison, AdvancedEntityModel<En
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityBison entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             if (entitylivingbaseIn.isSnowy()) {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(entitylivingbaseIn.isBaby() ? TEXTURE_BABY_SNOWY : TEXTURE_SNOWY));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), -1);
             }
         }
     }

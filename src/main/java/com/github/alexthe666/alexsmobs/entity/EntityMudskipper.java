@@ -41,7 +41,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,8 +77,8 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
 
     public EntityMudskipper(EntityType type, Level level) {
         super(type, level);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(true);
     }
 
@@ -114,9 +114,9 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         return !worldIn.getBlockState(pos).isSuffocating(worldIn, pos);
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     protected void registerGoals() {
         super.registerGoals();
@@ -156,15 +156,15 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DISPLAYING, false);
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(DISPLAY_ANGLE, 0F);
-        this.entityData.define(DISPLAYER_UUID, Optional.empty());
-        this.entityData.define(MOUTH_TICKS, 0);
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(SITTING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DISPLAYING, false);
+        builder.define(FROM_BUCKET, false);
+        builder.define(DISPLAY_ANGLE, 0F);
+        builder.define(DISPLAYER_UUID, Optional.empty());
+        builder.define(MOUTH_TICKS, 0);
+        builder.define(COMMAND, 0);
+        builder.define(SITTING, false);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -399,7 +399,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.MUDSKIPPER_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -407,12 +407,14 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.put("MudskipperData", platTag);
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
+        // CompoundTag compound = bucket.getOrCreateTag();
+        // TODO: Use DataComponents for MudskipperData in 1.21
+        // compound.put("MudskipperData", platTag);
     }
 
     @Override

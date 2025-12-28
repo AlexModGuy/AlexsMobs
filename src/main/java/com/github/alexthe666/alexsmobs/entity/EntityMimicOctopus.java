@@ -56,12 +56,12 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -105,8 +105,8 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
 
     protected EntityMimicOctopus(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(false);
     }
 
@@ -157,11 +157,11 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.entityData.set(PREV_MIMIC_ORDINAL, 0);
         this.setMimickedBlock(null);
         this.setMimicState(MimicState.OVERLAY);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -213,7 +213,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.MIMIC_OCTOPUS_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -221,12 +221,14 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.put("MimicOctopusData", platTag);
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
+        // CompoundTag compound = bucket.getOrCreateTag();
+        // TODO: Use DataComponents for MimicOctopusData in 1.21
+        // compound.put("MimicOctopusData", platTag);
     }
 
     @Override
@@ -454,9 +456,9 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         this.walkAnimation.update(f2, 0.4F);
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {
@@ -751,20 +753,21 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         return !this.isTame() && !this.fromBucket();
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(MIMIC_ORDINAL, 0);
-        this.entityData.define(PREV_MIMIC_ORDINAL, -1);
-        this.entityData.define(MOISTNESS, 60000);
-        this.entityData.define(MIMICKED_BLOCK, Optional.empty());
-        this.entityData.define(PREV_MIMICKED_BLOCK, Optional.empty());
-        this.entityData.define(SITTING, false);
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(LAST_SCARED_MOB_ID, -1);
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(UPGRADED, false);
-        this.entityData.define(STOP_CHANGE, false);
-        this.entityData.define(UPGRADED_LASER_ENTITY_ID, -1);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MIMIC_ORDINAL, 0);
+        builder.define(PREV_MIMIC_ORDINAL, -1);
+        builder.define(MOISTNESS, 60000);
+        builder.define(MIMICKED_BLOCK, Optional.empty());
+        builder.define(PREV_MIMICKED_BLOCK, Optional.empty());
+        builder.define(SITTING, false);
+        builder.define(COMMAND, 0);
+        builder.define(LAST_SCARED_MOB_ID, -1);
+        builder.define(FROM_BUCKET, false);
+        builder.define(UPGRADED, false);
+        builder.define(STOP_CHANGE, false);
+        builder.define(UPGRADED_LASER_ENTITY_ID, -1);
     }
 
     public MimicState getMimicState() {
@@ -871,9 +874,8 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     private void creeperExplode() {
-        Explosion explosion = new Explosion(level(), this,  this.damageSources().mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.KEEP);
-        explosion.explode();
-        explosion.finalizeExplosion(true);
+        // Simplified explosion handling for 1.21 - level().explode handles everything
+        level().explode(this, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Level.ExplosionInteraction.NONE);
     }
 
     public enum MimicState {

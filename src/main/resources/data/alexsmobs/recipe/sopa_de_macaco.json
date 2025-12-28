@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:bowl",
+    "alexsmobs:banana_peel",
+    "minecraft:brown_mushroom",
+    "minecraft:bone"
+  ],
+  "result": {
+    "id": "alexsmobs:sopa_de_macaco",
+    "count": 1
+  }
+}

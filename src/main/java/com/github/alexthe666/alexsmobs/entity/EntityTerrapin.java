@@ -46,7 +46,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -87,8 +87,8 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
 
     protected EntityTerrapin(EntityType animal, Level level) {
         super(animal, level);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(true);
     }
 
@@ -201,7 +201,8 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
                 swimTimer = Math.min(0, swimTimer - 1);
                 List<Player> list = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(0, 0.15F, 0));
                 for (Player player : list) {
-                    if ((player.jumping || !player.onGround()) && player.getY() > this.getEyeY()) {
+                    // player.jumping is protected in 1.21, check upward velocity instead
+                    if ((player.getDeltaMovement().y > 0 || !player.onGround()) && player.getY() > this.getEyeY()) {
                         if (!hasRetreated()) {
                             this.hideInShellTimer += 40 + random.nextInt(40);
                         } else if (!isSpinning()) {
@@ -216,9 +217,13 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             }
 
             if (swimProgress > 0) {
-                this.setMaxUpStep(1);
+                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             } else {
-                this.setMaxUpStep(0.6F);
+                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }
             if (hideInShellTimer > 0) {
                 hideInShellTimer--;
@@ -255,18 +260,18 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(TURTLE_TYPE, 0);
-        this.entityData.define(SHELL_TYPE, 0);
-        this.entityData.define(SKIN_TYPE, 0);
-        this.entityData.define(SHELL_COLOR, 0);
-        this.entityData.define(SKIN_COLOR, 0);
-        this.entityData.define(TURTLE_COLOR, 0);
-        this.entityData.define(RETREATED, false);
-        this.entityData.define(SPINNING, false);
-        this.entityData.define(HAS_EGG, false);
-        this.entityData.define(FROM_BUCKET, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TURTLE_TYPE, 0);
+        builder.define(SHELL_TYPE, 0);
+        builder.define(SKIN_TYPE, 0);
+        builder.define(SHELL_COLOR, 0);
+        builder.define(SKIN_COLOR, 0);
+        builder.define(TURTLE_COLOR, 0);
+        builder.define(RETREATED, false);
+        builder.define(SPINNING, false);
+        builder.define(HAS_EGG, false);
+        builder.define(FROM_BUCKET, false);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -465,7 +470,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
 
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setAirSupply(this.getMaxAirSupply());
         this.setTurtleType(TerrapinTypes.getRandomType(random));
         this.setShellType(random.nextInt(7));
@@ -473,7 +478,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
         this.setTurtleColor(TerrapinTypes.generateRandomColor(random));
         this.setShellColor(TerrapinTypes.generateRandomColor(random));
         this.setSkinColor(TerrapinTypes.generateRandomColor(random));
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     @Override
@@ -533,7 +538,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.TERRAPIN_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -541,12 +546,14 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.put("TerrapinData", platTag);
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents - need to store data differently
+        // For now, store via custom data component or bucket NBT helper
+        // Storing the data in a separate tag that can be attached via DataComponents
+        bucket.set(net.minecraft.core.component.DataComponents.BUCKET_ENTITY_DATA, net.minecraft.world.item.component.CustomData.of(platTag));
     }
 
     @Override
@@ -576,10 +583,6 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     public boolean isKoopa() {
         String s = ChatFormatting.stripFormatting(this.getName().getString());
         return s != null && s.toLowerCase().contains("koopa");
-    }
-
-    public MobType getMobType() {
-        return MobType.WATER;
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {

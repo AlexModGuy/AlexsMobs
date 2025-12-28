@@ -1,48 +1,50 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class RecipeBisonUpgrade extends CustomRecipe {
 
-    public RecipeBisonUpgrade(ResourceLocation idIn, CraftingBookCategory category) {
-        super(idIn, category);
+    public RecipeBisonUpgrade(CraftingBookCategory category) {
+        super(category);
     }
 
 
-    private ItemStack createBoots(Container container){
+    private ItemStack createBoots(CraftingInput container){
         ItemStack boots = ItemStack.EMPTY;
         int fur = 0;
-        for (int j = 0; j < container.getContainerSize(); ++j) {
+        for (int j = 0; j < container.size(); ++j) {
             ItemStack itemstack1 = container.getItem(j);
             if (itemstack1.is(AMBlockRegistry.BISON_FUR_BLOCK.get().asItem())) {
                 fur++;
             }
         }
         if(fur == 1){
-            for (int j = 0; j < container.getContainerSize(); ++j) {
+            for (int j = 0; j < container.size(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
-                boolean notFurred = !itemstack1.hasTag() || itemstack1.getTag() != null && !itemstack1.getTag().getBoolean("BisonFur");
-                if (!itemstack1.isEmpty() && notFurred && LivingEntity.getEquipmentSlotForItem(itemstack1) == EquipmentSlot.FEET) {
+                CustomData customData = itemstack1.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+                CompoundTag tag = customData.copyTag();
+                boolean notFurred = !tag.getBoolean("BisonFur");
+                if (!itemstack1.isEmpty() && notFurred && itemstack1.getEquipmentSlot() == EquipmentSlot.FEET) {
                     boots = itemstack1;
                 }
             }
             if(!boots.isEmpty()){
                 ItemStack stack = boots.copy();
-                CompoundTag tag = stack.getOrCreateTag();
+                CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+                CompoundTag tag = customData.copyTag();
                 tag.putBoolean("BisonFur", true);
-                stack.setTag(tag);
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                 return stack;
             }
         }
@@ -50,12 +52,12 @@ public class RecipeBisonUpgrade extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level worldIn) {
+    public boolean matches(CraftingInput inv, Level worldIn) {
         return !createBoots(inv).isEmpty();
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+    public ItemStack assemble(CraftingInput container, HolderLookup.Provider registries) {
         return createBoots(container);
     }
 

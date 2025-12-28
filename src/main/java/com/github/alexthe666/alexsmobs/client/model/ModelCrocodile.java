@@ -199,7 +199,7 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         float walkDegree = 0.7F;
         float swimSpeed = 1.0F;
         float swimDegree = 0.2F;
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float swimProgress = entityIn.prevSwimProgress + (entityIn.swimProgress - entityIn.prevSwimProgress) * partialTick;
         float baskProgress = entityIn.prevBaskingProgress + (entityIn.baskingProgress - entityIn.prevBaskingProgress) * partialTick;
         float grabProgress = entityIn.prevGrabProgress + (entityIn.grabProgress - entityIn.prevGrabProgress) * partialTick;
@@ -292,7 +292,7 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         return ImmutableList.of(root, body, neck, head, jaw, left_arm, right_arm, left_leg, right_leg, tail1, tail2, tail3, crown, left_foot, right_foot, left_hand, right_hand, left_upperteeth, right_upperteeth, left_lowerteeth, right_lowerteeth);
     }
 
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         if (this.young) {
             float f = 1.5F;
             head.setScale(f, f, f);
@@ -301,14 +301,14 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
             matrixStackIn.scale(0.15F, 0.15F, 0.15F);
             matrixStackIn.translate(0.0D, 8.5D, 0.125D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
             head.setScale(1, 1, 1);
         } else {
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
         }

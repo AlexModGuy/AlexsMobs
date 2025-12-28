@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderCosmaw extends MobRenderer<EntityCosmaw, ModelCosmaw> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/cosmaw.png");
-    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/cosmaw_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/cosmaw.png");
+    private static final ResourceLocation TEXTURE_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/cosmaw_glow.png");
 
     public RenderCosmaw(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCosmaw(), 0.9F);

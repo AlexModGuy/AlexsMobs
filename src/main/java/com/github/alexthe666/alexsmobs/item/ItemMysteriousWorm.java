@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.Random;
 import java.util.UUID;
@@ -42,7 +42,7 @@ public class ItemMysteriousWorm extends Item {
                     if(thrower != null){
                         UUID uuid = thrower.getUUID();
                         if(entity.level().getPlayerByUUID(uuid) instanceof ServerPlayer){
-                            AMAdvancementTriggerRegistry.VOID_WORM_SUMMON.trigger((ServerPlayer)entity.level().getPlayerByUUID(uuid));
+                            AMAdvancementTriggerRegistry.VOID_WORM_SUMMON.get().trigger((ServerPlayer)entity.level().getPlayerByUUID(uuid));
                         }
                     }
                     entity.level().addFreshEntity(worm);

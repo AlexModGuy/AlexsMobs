@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderShoebill extends MobRenderer<EntityShoebill, ModelShoebill> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/shoebill.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/shoebill.png");
 
     public RenderShoebill(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelShoebill(), 0.3F);

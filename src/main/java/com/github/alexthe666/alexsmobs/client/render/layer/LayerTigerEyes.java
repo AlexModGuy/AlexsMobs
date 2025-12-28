@@ -14,9 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LightLayer;
 
 public class LayerTigerEyes  extends RenderLayer<EntityTiger, ModelTiger> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_eyes.png");
-    private static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_white_eyes.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_angry_eyes.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/tiger/tiger_eyes.png");
+    private static final ResourceLocation TEXTURE_WHITE = ResourceLocation.parse("alexsmobs:textures/entity/tiger/tiger_white_eyes.png");
+    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/tiger/tiger_angry_eyes.png");
 
     public LayerTigerEyes(RenderTiger render) {
         super(render);
@@ -37,7 +37,7 @@ public class LayerTigerEyes  extends RenderLayer<EntityTiger, ModelTiger> {
             }
             if (brightness < 7 || tiger.getRemainingPersistentAngerTime() > 0) {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(tiger.getRemainingPersistentAngerTime() > 0 ? TEXTURE_ANGRY : tiger.isWhite() ? TEXTURE_WHITE : TEXTURE));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(tiger, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(tiger, 0.0F), -1);
             }
         }
     }

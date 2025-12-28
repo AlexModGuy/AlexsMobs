@@ -14,13 +14,14 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderMudBall extends EntityRenderer<EntityMudBall> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mud_ball.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/mud_ball.png");
 
     public RenderMudBall(EntityRendererProvider.Context p_173962_) {
         super(p_173962_);
     }
 
-    public void render(EntityMudBall entityMudBall, float f, float f2, PoseStack p_114083_, MultiBufferSource p_114084_, int p_114085_) {
+    public void render(EntityMudBall entityMudBall, float f, float f2, PoseStack p_114083_, MultiBufferSource p_114084_,
+            int p_114085_) {
         p_114083_.pushPose();
         p_114083_.scale(0.7F, 0.7F, 0.7F);
         p_114083_.mulPose(this.entityRenderDispatcher.cameraOrientation());
@@ -37,11 +38,18 @@ public class RenderMudBall extends EntityRenderer<EntityMudBall> {
         super.render(entityMudBall, f, f2, p_114083_, p_114084_, p_114085_);
     }
 
-    private static void vertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, int p_114095_, int p_114096_, int p_114097_) {
-        p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float)p_114096_, (float)p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114093_).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
+    private static void vertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_,
+            float p_114094_, int p_114095_, int p_114096_, int p_114097_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f(0.0F, 1.0F, 0.0F);
+        normal.mul(p_114092_);
+        org.joml.Vector4f pos = new org.joml.Vector4f(p_114094_ - 0.5F, (float) p_114095_ - 0.25F, 0.0F, 1.0F);
+        pos.mul(p_114091_);
+        p_114090_.addVertex(pos.x, pos.y, pos.z).setColor(255, 255, 255, 255)
+                .setUv((float) p_114096_, (float) p_114097_).setOverlay(OverlayTexture.NO_OVERLAY).setLight(p_114093_)
+                .setNormal(normal.x, normal.y, normal.z);
     }
 
     public ResourceLocation getTextureLocation(EntityMudBall mudball) {
         return TEXTURE;
-  }
+    }
 }

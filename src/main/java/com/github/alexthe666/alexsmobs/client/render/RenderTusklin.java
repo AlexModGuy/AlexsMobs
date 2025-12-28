@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RenderTusklin extends MobRenderer<EntityTusklin, ModelTusklin> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tusklin.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/tusklin.png");
 
     public RenderTusklin(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTusklin(), 1.0F);

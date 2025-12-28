@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LightLayer;
 
 public class LayerRaccoonEyes extends RenderLayer<EntityRaccoon, ModelRaccoon> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/raccoon_eyes.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/raccoon_eyes.png");
 
     public LayerRaccoonEyes(RenderRaccoon render) {
         super(render);
@@ -34,7 +34,7 @@ public class LayerRaccoonEyes extends RenderLayer<EntityRaccoon, ModelRaccoon> {
         }
         if (brightness < 7 && !raccoon.isRigby()) {
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(TEXTURE));
-            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(raccoon, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(raccoon, 0.0F), -1);
         }
 
     }

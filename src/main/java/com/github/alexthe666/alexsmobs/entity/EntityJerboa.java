@@ -41,8 +41,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -77,12 +77,12 @@ public class EntityJerboa extends Animal {
 
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(JUMP_ACTIVE, false);
-        this.entityData.define(BEGGING, false);
-        this.entityData.define(SLEEPING, false);
-        this.entityData.define(BEFRIENDED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(JUMP_ACTIVE, false);
+        builder.define(BEGGING, false);
+        builder.define(SLEEPING, false);
+        builder.define(BEFRIENDED, false);
     }
 
     protected void registerGoals() {
@@ -240,7 +240,7 @@ public class EntityJerboa extends Animal {
                 this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemstack), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
             if (random.nextFloat() <= 0.3F) {
-                player.addEffect(new MobEffectInstance(AMEffectRegistry.FLEET_FOOTED.get(), 12000));
+                player.addEffect(new MobEffectInstance(AMEffectRegistry.FLEET_FOOTED, 12000));
             }
             return InteractionResult.SUCCESS;
         }
@@ -254,8 +254,8 @@ public class EntityJerboa extends Animal {
             if (source.getEntity() != null) {
                 if (source.getEntity() instanceof LivingEntity) {
                     LivingEntity hurter = (LivingEntity) source.getEntity();
-                    if (hurter.hasEffect(AMEffectRegistry.FLEET_FOOTED.get())) {
-                        hurter.removeEffect(AMEffectRegistry.FLEET_FOOTED.get());
+                    if (hurter.hasEffect(AMEffectRegistry.FLEET_FOOTED)) {
+                        hurter.removeEffect(AMEffectRegistry.FLEET_FOOTED);
                     }
                 }
             }
@@ -306,7 +306,7 @@ public class EntityJerboa extends Animal {
         return reason == MobSpawnType.SPAWNER || iServerWorld.canSeeSky(pos.above()) && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
     }
 
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         super.jumpFromGround();
         double d0 = this.moveControl.getSpeedModifier();
         if (d0 > 0.0D) {

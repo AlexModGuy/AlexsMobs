@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MEM",
+    " X ",
+    " X "
+  ],
+  "key": {
+    "E": "alexsmobs:void_worm_eye",
+    "M": "alexsmobs:void_worm_mandible",
+    "X": "#c:ingots/netherite"
+  },
+  "result": {
+    "id": "alexsmobs:dimensional_carver",
+    "count": 1
+  }
+}

@@ -22,14 +22,22 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMimicOctopus> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus.png");
-    private static final ResourceLocation TEXTURE_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_overlay.png");
-    private static final ResourceLocation TEXTURE_CREEPER = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_creeper.png");
-    private static final ResourceLocation TEXTURE_GUARDIAN = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_guardian.png");
-    private static final ResourceLocation TEXTURE_PUFFERFISH = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_pufferfish.png");
-    private static final ResourceLocation TEXTURE_MIMICUBE = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_mimicube.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_eyes.png");
-    private static final ResourceLocation GUARDIAN_BEAM_TEXTURE = new ResourceLocation("textures/entity/guardian_beam.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/mimic_octopus.png");
+    private static final ResourceLocation TEXTURE_OVERLAY = ResourceLocation
+            .parse("alexsmobs:textures/entity/mimic_octopus_overlay.png");
+    private static final ResourceLocation TEXTURE_CREEPER = ResourceLocation
+            .parse("alexsmobs:textures/entity/mimic_octopus_creeper.png");
+    private static final ResourceLocation TEXTURE_GUARDIAN = ResourceLocation
+            .parse("alexsmobs:textures/entity/mimic_octopus_guardian.png");
+    private static final ResourceLocation TEXTURE_PUFFERFISH = ResourceLocation
+            .parse("alexsmobs:textures/entity/mimic_octopus_pufferfish.png");
+    private static final ResourceLocation TEXTURE_MIMICUBE = ResourceLocation
+            .parse("alexsmobs:textures/entity/mimic_octopus_mimicube.png");
+    private static final ResourceLocation TEXTURE_EYES = ResourceLocation
+            .parse("alexsmobs:textures/entity/mimic_octopus_eyes.png");
+    private static final ResourceLocation GUARDIAN_BEAM_TEXTURE = ResourceLocation
+            .withDefaultNamespace("textures/entity/guardian_beam.png");
     private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(GUARDIAN_BEAM_TEXTURE);
 
     public RenderMimicOctopus(EntityRendererProvider.Context renderManagerIn) {
@@ -37,11 +45,20 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
         this.addLayer(new OverlayLayer(this));
     }
 
-    private static void vertex(VertexConsumer p_229108_0_, Matrix4f p_229108_1_, Matrix3f p_229108_2_, float p_229108_3_, float p_229108_4_, float p_229108_5_, int p_229108_6_, int p_229108_7_, int p_229108_8_, float p_229108_9_, float p_229108_10_) {
-        p_229108_0_.vertex(p_229108_1_, p_229108_3_, p_229108_4_, p_229108_5_).color(p_229108_6_, p_229108_7_, p_229108_8_, 255).uv(p_229108_9_, p_229108_10_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(p_229108_2_, 0.0F, 1.0F, 0.0F).endVertex();
+    private static void vertex(VertexConsumer p_229108_0_, Matrix4f p_229108_1_, Matrix3f p_229108_2_,
+            float p_229108_3_, float p_229108_4_, float p_229108_5_, int p_229108_6_, int p_229108_7_, int p_229108_8_,
+            float p_229108_9_, float p_229108_10_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f(0.0F, 1.0F, 0.0F);
+        normal.mul(p_229108_2_);
+        org.joml.Vector4f pos = new org.joml.Vector4f(p_229108_3_, p_229108_4_, p_229108_5_, 1.0F);
+        pos.mul(p_229108_1_);
+        p_229108_0_.addVertex(pos.x, pos.y, pos.z)
+                .setColor(p_229108_6_, p_229108_7_, p_229108_8_, 255).setUv(p_229108_9_, p_229108_10_)
+                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(normal.x, normal.y, normal.z);
     }
 
-    public void render(EntityMimicOctopus entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntityMimicOctopus entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         LivingEntity livingentity = entityIn.getGuardianLaser();
         if (livingentity != null) {
             float f = entityIn.getLaserAttackAnimationScale(partialTicks);
@@ -119,7 +136,8 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
         matrixStackIn.scale(0.9F * octo.getScale(), 0.9F * octo.getScale(), 0.9F * octo.getScale());
     }
 
-    public boolean shouldRender(EntityMimicOctopus livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityMimicOctopus livingEntityIn, Frustum camera, double camX, double camY,
+            double camZ) {
         if (super.shouldRender(livingEntityIn, camera, camX, camY, camZ)) {
             return true;
         } else {
@@ -128,7 +146,8 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
                 if (livingentity != null) {
                     Vec3 vector3d = this.getPosition(livingentity, (double) livingentity.getBbHeight() * 0.5D, 1.0F);
                     Vec3 vector3d1 = this.getPosition(livingEntityIn, livingEntityIn.getEyeHeight(), 1.0F);
-                    return camera.isVisible(new AABB(vector3d1.x, vector3d1.y, vector3d1.z, vector3d.x, vector3d.y, vector3d.z));
+                    return camera.isVisible(
+                            new AABB(vector3d1.x, vector3d1.y, vector3d1.z, vector3d.x, vector3d.y, vector3d.z));
                 }
             }
 
@@ -143,21 +162,25 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
         return new Vec3(d0, d1, d2);
     }
 
-
     public ResourceLocation getTextureLocation(EntityMimicOctopus entity) {
         return TEXTURE;
     }
 
     static class OverlayLayer extends RenderLayer<EntityMimicOctopus, ModelMimicOctopus> {
 
-
         public OverlayLayer(RenderMimicOctopus render) {
             super(render);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn, EntityMimicOctopus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            float transProgress = entitylivingbaseIn.prevTransProgress + (entitylivingbaseIn.transProgress - entitylivingbaseIn.prevTransProgress) * partialTicks;
-            float colorProgress = (entitylivingbaseIn.prevColorShiftProgress + (entitylivingbaseIn.colorShiftProgress - entitylivingbaseIn.prevColorShiftProgress) * partialTicks) * 0.2F;
+        public void render(PoseStack matrixStackIn, MultiBufferSource buffer, int packedLightIn,
+                EntityMimicOctopus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
+            float transProgress = entitylivingbaseIn.prevTransProgress
+                    + (entitylivingbaseIn.transProgress - entitylivingbaseIn.prevTransProgress) * partialTicks;
+            float colorProgress = (entitylivingbaseIn.prevColorShiftProgress
+                    + (entitylivingbaseIn.colorShiftProgress - entitylivingbaseIn.prevColorShiftProgress)
+                            * partialTicks)
+                    * 0.2F;
             float r = 1F;
             float g = 1F;
             float b = 1F;
@@ -199,17 +222,22 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
             }
             if (entitylivingbaseIn.getPrevMimicState() != null) {
                 float alphaPrev = 1 - transProgress * 0.2F;
-                VertexConsumer prev = buffer.getBuffer(AMRenderTypes.entityTranslucent(getFor(entitylivingbaseIn.getPrevMimicState())));
-                if(entitylivingbaseIn.getPrevMimicState() == entitylivingbaseIn.getMimicState()){
+                VertexConsumer prev = buffer
+                        .getBuffer(AMRenderTypes.entityTranslucent(getFor(entitylivingbaseIn.getPrevMimicState())));
+                if (entitylivingbaseIn.getPrevMimicState() == entitylivingbaseIn.getMimicState()) {
                     alphaPrev *= a;
                 }
-                this.getParentModel().renderToBuffer(matrixStackIn, prev, packedLightIn, getOverlayCoords(entitylivingbaseIn, 0), r, g, b, alphaPrev);
+                this.getParentModel().renderToBuffer(matrixStackIn, prev, packedLightIn,
+                        getOverlayCoords(entitylivingbaseIn, 0), AMColorUtil.packColor(r, g, b, alphaPrev));
             }
             float alphaCurrent = transProgress * 0.2F;
-            VertexConsumer current = buffer.getBuffer(AMRenderTypes.entityTranslucent(getFor(entitylivingbaseIn.getMimicState())));
-            this.getParentModel().renderToBuffer(matrixStackIn, current, packedLightIn, getOverlayCoords(entitylivingbaseIn, 0), r, g, b, a * alphaCurrent);
+            VertexConsumer current = buffer
+                    .getBuffer(AMRenderTypes.entityTranslucent(getFor(entitylivingbaseIn.getMimicState())));
+            this.getParentModel().renderToBuffer(matrixStackIn, current, packedLightIn,
+                    getOverlayCoords(entitylivingbaseIn, 0), AMColorUtil.packColor(r, g, b, a * alphaCurrent));
             VertexConsumer eyes = buffer.getBuffer(AMRenderTypes.entityTranslucent(TEXTURE_EYES));
-            this.getParentModel().renderToBuffer(matrixStackIn, eyes, packedLightIn, getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+            this.getParentModel().renderToBuffer(matrixStackIn, eyes, packedLightIn,
+                    getOverlayCoords(entitylivingbaseIn, 0), -1);
         }
 
         public ResourceLocation getFor(EntityMimicOctopus.MimicState state) {

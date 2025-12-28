@@ -24,7 +24,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
 
     private final ItemStack stack;
     private final ModelSombrero sombrero;
-    private static final ResourceLocation SOMBRERO_TEX = new ResourceLocation("alexsmobs:textures/armor/sombrero.png");
+    private static final ResourceLocation SOMBRERO_TEX = ResourceLocation.parse("alexsmobs:textures/armor/sombrero.png");
 
     public LayerCockroachMaracas(RenderCockroach render, EntityRendererProvider.Context renderManagerIn) {
         super(render);
@@ -81,7 +81,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
                 matrixStackIn.scale(0.8F, 0.8F, 0.8F);
                 matrixStackIn.mulPose(Axis.XP.rotationDegrees(60F * entitylivingbaseIn.danceProgress * 0.2F));
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(SOMBRERO_TEX));
-                sombrero.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+                sombrero.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), -1);
                 matrixStackIn.popPose();
             }
             matrixStackIn.popPose();

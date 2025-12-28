@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateAnchor;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class BlockEndPirateAnchor extends BaseEntityBlock implements AMSpecialRenderBlock {
+    public static final MapCodec<BlockEndPirateAnchor> CODEC = simpleCodec(p -> new BlockEndPirateAnchor());
 
     public static final BooleanProperty EASTORWEST = BooleanProperty.create("eastorwest");
     public static final EnumProperty<BlockEndPirateAnchor.PieceType> PIECE = EnumProperty.create("piece", BlockEndPirateAnchor.PieceType.class);
@@ -43,6 +45,11 @@ public class BlockEndPirateAnchor extends BaseEntityBlock implements AMSpecialRe
     protected BlockEndPirateAnchor() {
         super(Properties.of().mapColor(MapColor.COLOR_BLACK).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(PIECE, PieceType.ANCHOR));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     public static boolean isClearForPlacement(LevelReader reader, BlockPos center, boolean eastOrWest) {

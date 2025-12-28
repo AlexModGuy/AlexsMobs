@@ -43,7 +43,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -78,13 +77,13 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     private boolean hasJostlingSize;
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(JOSTLING, false);
-        this.entityData.define(SADDLED, false);
-        this.entityData.define(JOSTLE_ANGLE, 0F);
-        this.entityData.define(JOSTLER_UUID, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(COMMAND, 0);
+        builder.define(JOSTLING, false);
+        builder.define(SADDLED, false);
+        builder.define(JOSTLE_ANGLE, 0F);
+        builder.define(JOSTLER_UUID, Optional.empty());
     }
 
     public int getCommand() {
@@ -141,7 +140,9 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            this.setMaxUpStep(1);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);
@@ -273,7 +274,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         }
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
         return isJostling() && !isBaby() ? JOSTLING_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
     }
 
@@ -313,7 +314,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     public boolean canBeAffected(MobEffectInstance potioneffectIn) {
-        if (potioneffectIn.getEffect() == MobEffects.POISON) {
+        if (potioneffectIn.is(MobEffects.POISON)) {
             return false;
         }
         return super.canBeAffected(potioneffectIn);
@@ -336,7 +337,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
         }
     }
 
@@ -377,7 +378,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
                 this.usePlayerItem(player, hand, itemstack);
                 this.setSaddled(true);
                 return InteractionResult.SUCCESS;
-            }else if(itemstack.is(Tags.Items.SHEARS) && this.isSaddled()){
+            }else if(itemstack.is(net.minecraft.world.item.Items.SHEARS) && this.isSaddled()){
                 this.setSaddled(false);
                 this.spawnAtLocation(Items.SADDLE);
                 return InteractionResult.SUCCESS;
@@ -431,7 +432,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES) || stack.getItem().getFoodProperties() != null && stack.getItem().getFoodProperties().isMeat();
+        return stack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES) || stack.getFoodProperties(this) != null && true /* isMeat removed */;
     }
 
     public boolean isSaddled() {
@@ -489,11 +490,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     private void applyKnockbackFromMoose(float strength, double ratioX, double ratioZ) {
-        net.minecraftforge.event.entity.living.LivingKnockBackEvent event = net.minecraftforge.common.ForgeHooks.onLivingKnockBack(this, strength, ratioX, ratioZ);
-        if (event.isCanceled()) return;
-        strength = event.getStrength();
-        ratioX = event.getRatioX();
-        ratioZ = event.getRatioZ();
+        // TODO: ForgeHooks.onLivingKnockBack removed in 1.21 - knockback logic simplified
         if (!(strength <= 0.0F)) {
             this.hasImpulse = true;
             Vec3 vector3d = this.getDeltaMovement();

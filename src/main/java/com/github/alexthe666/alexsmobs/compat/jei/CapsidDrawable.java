@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CapsidDrawable implements IDrawable {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs", "textures/gui/capsid_jei_representation.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("alexsmobs", "textures/gui/capsid_jei_representation.png");
     @Override
     public int getWidth() {
         return 125;

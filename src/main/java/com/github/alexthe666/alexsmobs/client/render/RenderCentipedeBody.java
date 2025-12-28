@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
 
 public class RenderCentipedeBody extends MobRenderer<EntityCentipedeBody, AdvancedEntityModel<EntityCentipedeBody>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/cave_centipede.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/cave_centipede.png");
 
     public RenderCentipedeBody(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCaveCentipede<>(1), 0.5F);
@@ -24,7 +24,7 @@ public class RenderCentipedeBody extends MobRenderer<EntityCentipedeBody, Advanc
     }
 
     @Override
-    protected void setupRotations(EntityCentipedeBody entity, PoseStack stack, float pitchIn, float yawIn, float partialTickTime) {
+    protected void setupRotations(EntityCentipedeBody entity, PoseStack stack, float pitchIn, float yawIn, float partialTickTime, float tickDelta) {
         float newYaw = entity.yHeadRot;
         if (this.isShaking(entity)) {
             newYaw += (float) (Math.cos((double) entity.tickCount * 3.25D) * Math.PI * (double) 0.4F);

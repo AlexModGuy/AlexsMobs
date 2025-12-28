@@ -16,18 +16,18 @@ import net.minecraft.world.entity.Pose;
 public class RenderTerrapin extends MobRenderer<EntityTerrapin, ModelTerrapin> {
 
     private static final ResourceLocation[] SHELL_TEXTURES = {
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_0.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_1.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_2.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_3.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_4.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_5.png")
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_0.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_1.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_2.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_3.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_4.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_shell_pattern_5.png")
     };
     private static final ResourceLocation[] SKIN_PATTERN_TEXTURES = {
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_0.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_1.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_2.png"),
-            new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_3.png")
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_0.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_1.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_2.png"),
+            ResourceLocation.parse("alexsmobs:textures/entity/terrapin/overlay/terrapin_skin_pattern_3.png")
     };
 
     public RenderTerrapin(EntityRendererProvider.Context renderManagerIn) {
@@ -48,7 +48,7 @@ public class RenderTerrapin extends MobRenderer<EntityTerrapin, ModelTerrapin> {
         return entity.getTurtleType().getTexture();
     }
 
-    protected void setupRotations(EntityTerrapin entity, PoseStack stack, float pitchIn, float yawIn, float partialTickTime) {
+    protected void setupRotations(EntityTerrapin entity, PoseStack stack, float pitchIn, float yawIn, float partialTickTime, float tickDelta) {
         if (this.isShaking(entity)) {
             yawIn += (float)(Math.cos((double)entity.tickCount * 3.25D) * Math.PI * (double)0.4F);
         }
@@ -88,10 +88,7 @@ public class RenderTerrapin extends MobRenderer<EntityTerrapin, ModelTerrapin> {
             if(turtle.getTurtleType() == TerrapinTypes.OVERLAY && !turtle.isKoopa()){
                 ResourceLocation tex = layer == 0 ? this.getTextureLocation(turtle) : layer == 1 ? SHELL_TEXTURES[turtle.getShellType() % SHELL_TEXTURES.length] : SKIN_PATTERN_TEXTURES[turtle.getSkinType() % SKIN_PATTERN_TEXTURES.length];
                 int color = layer == 0 ? turtle.getTurtleColor() : layer == 1 ? turtle.getShellColor() : turtle.getSkinColor();
-                float r = (float) (color >> 16 & 255) / 255.0F;
-                float g = (float) (color >> 8 & 255) / 255.0F;
-                float b = (float) (color & 255) / 255.0F;
-                renderColoredCutoutModel(getParentModel(), tex, matrixStackIn, buffer, packedLightIn, turtle, r, g, b);
+                renderColoredCutoutModel(getParentModel(), tex, matrixStackIn, buffer, packedLightIn, turtle, color | 0xFF000000);
             }
         }
     }

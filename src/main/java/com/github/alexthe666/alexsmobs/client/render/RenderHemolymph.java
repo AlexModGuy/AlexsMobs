@@ -15,15 +15,17 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderHemolymph extends EntityRenderer<EntityHemolymph> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/hemolymph.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/hemolymph.png");
 
     public RenderHemolymph(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 
-    public void render(EntityHemolymph p_225623_1_, float p_225623_2_, float p_225623_3_, PoseStack p_225623_4_, MultiBufferSource p_225623_5_, int p_225623_6_) {
+    public void render(EntityHemolymph p_225623_1_, float p_225623_2_, float p_225623_3_, PoseStack p_225623_4_,
+            MultiBufferSource p_225623_5_, int p_225623_6_) {
         p_225623_4_.pushPose();
-        p_225623_4_.mulPose(Axis.YP.rotationDegrees(Mth.lerp(p_225623_3_, p_225623_1_.yRotO, p_225623_1_.getYRot()) - 90.0F));
+        p_225623_4_.mulPose(
+                Axis.YP.rotationDegrees(Mth.lerp(p_225623_3_, p_225623_1_.yRotO, p_225623_1_.getYRot()) - 90.0F));
         p_225623_4_.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(p_225623_3_, p_225623_1_.xRotO, p_225623_1_.getXRot())));
         float lvt_17_1_ = 0;
         if (lvt_17_1_ > 0.0F) {
@@ -47,7 +49,7 @@ public class RenderHemolymph extends EntityRenderer<EntityHemolymph> {
         this.drawVertex(lvt_20_1_, lvt_21_1_, lvt_18_2_, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, 240);
         this.drawVertex(lvt_20_1_, lvt_21_1_, lvt_18_2_, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, 240);
 
-        for(int lvt_22_1_ = 0; lvt_22_1_ < 4; ++lvt_22_1_) {
+        for (int lvt_22_1_ = 0; lvt_22_1_ < 4; ++lvt_22_1_) {
             p_225623_4_.mulPose(Axis.XP.rotationDegrees(90.0F));
             this.drawVertex(lvt_20_1_, lvt_21_1_, lvt_18_2_, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, 240);
             this.drawVertex(lvt_20_1_, lvt_21_1_, lvt_18_2_, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, 240);
@@ -59,8 +61,18 @@ public class RenderHemolymph extends EntityRenderer<EntityHemolymph> {
         super.render(p_225623_1_, p_225623_2_, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_);
     }
 
-    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_, int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_, int p_229039_11_, int p_229039_12_) {
-        p_229039_3_.vertex(p_229039_1_, (float)p_229039_4_, (float)p_229039_5_, (float)p_229039_6_).color(255, 255, 255, 255).uv(p_229039_7_, p_229039_8_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_229039_12_).normal(p_229039_2_, (float)p_229039_9_, (float)p_229039_11_, (float)p_229039_10_).endVertex();
+    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_,
+            int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_,
+            int p_229039_11_, int p_229039_12_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f((float) p_229039_9_, (float) p_229039_11_,
+                (float) p_229039_10_);
+        normal.mul(p_229039_2_);
+        org.joml.Vector4f pos = new org.joml.Vector4f((float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_,
+                1.0F);
+        pos.mul(p_229039_1_);
+        p_229039_3_.addVertex(pos.x, pos.y, pos.z).setColor(255, 255, 255, 255).setUv(p_229039_7_, p_229039_8_)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(p_229039_12_).setNormal(normal.x, normal.y, normal.z);
     }
 
     @Override

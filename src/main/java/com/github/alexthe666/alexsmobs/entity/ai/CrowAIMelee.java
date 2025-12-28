@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
@@ -51,7 +50,7 @@ public class CrowAIMelee extends Goal {
                 crow.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() / 2F, target.getZ(), 1.3F);
                 if(crow.distanceTo(target) < 2){
                     crow.peck();
-                    if(target.getMobType() == MobType.UNDEAD){
+                    if(target.getType().is(net.minecraft.tags.EntityTypeTags.UNDEAD)){
                         target.hurt(target.damageSources().generic(), 4);
                     }else{
                         target.hurt(target.damageSources().generic(), 1);

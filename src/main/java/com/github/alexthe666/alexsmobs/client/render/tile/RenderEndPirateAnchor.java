@@ -13,27 +13,34 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RenderEndPirateAnchor<T extends TileEntityEndPirateAnchor> implements BlockEntityRenderer<T> {
 
-    protected static final ResourceLocation TEXTURE_ANCHOR = new ResourceLocation("alexsmobs:textures/entity/end_pirate/anchor.png");
-    protected static final ResourceLocation TEXTURE_ANCHOR_GLOW = new ResourceLocation("alexsmobs:textures/entity/end_pirate/anchor_glow.png");
+    protected static final ResourceLocation TEXTURE_ANCHOR = ResourceLocation
+            .parse("alexsmobs:textures/entity/end_pirate/anchor.png");
+    protected static final ResourceLocation TEXTURE_ANCHOR_GLOW = ResourceLocation
+            .parse("alexsmobs:textures/entity/end_pirate/anchor_glow.png");
     protected static final ModelEndPirateAnchor ANCHOR_MODEL = new ModelEndPirateAnchor();
 
     public RenderEndPirateAnchor(Context rendererDispatcherIn) {
     }
 
     @Override
-    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+            int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         boolean east = tileEntityIn.getBlockState().getValue(BlockEndPirateAnchor.EASTORWEST);
-        //boolean isChain = tileEntityIn.getBlockState().getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.CHAIN;
+        // boolean isChain =
+        // tileEntityIn.getBlockState().getValue(BlockEndPirateAnchor.PIECE) ==
+        // BlockEndPirateAnchor.PieceType.CHAIN;
         matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(180.0F));
-        if(east){
+        if (east) {
             matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F));
         }
         ANCHOR_MODEL.renderAnchor(tileEntityIn, partialTicks, east);
-        ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutout(TEXTURE_ANCHOR)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
-        ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(TEXTURE_ANCHOR_GLOW)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
+        ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutout(TEXTURE_ANCHOR)),
+                combinedLightIn, combinedOverlayIn, -1);
+        ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(TEXTURE_ANCHOR_GLOW)),
+                combinedLightIn, combinedOverlayIn, -1);
 
         matrixStackIn.popPose();
         matrixStackIn.popPose();

@@ -4,17 +4,19 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
-
-public class MessageTarantulaHawkSting {
+public class MessageTarantulaHawkSting implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<MessageTarantulaHawkSting> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "tarantula_hawk_sting"));
+    public static final StreamCodec<FriendlyByteBuf, MessageTarantulaHawkSting> CODEC = StreamCodec.ofMember(MessageTarantulaHawkSting::write, MessageTarantulaHawkSting::read);
 
     public int hawk;
     public int spider;
@@ -24,8 +26,7 @@ public class MessageTarantulaHawkSting {
         this.spider = mount;
     }
 
-    public MessageTarantulaHawkSting() {
-    }
+    public MessageTarantulaHawkSting() {}
 
     public static MessageTarantulaHawkSting read(FriendlyByteBuf buf) {
         return new MessageTarantulaHawkSting(buf.readInt(), buf.readInt());
@@ -36,28 +37,19 @@ public class MessageTarantulaHawkSting {
         buf.writeInt(message.spider);
     }
 
-    public static class Handler {
-        public Handler() {
-        }
+    @Override
+    public Type<? extends CustomPacketPayload> type() { return TYPE; }
 
-        public static void handle(MessageTarantulaHawkSting message, Supplier<NetworkEvent.Context> context) {
-            context.get().setPacketHandled(true);
-            context.get().enqueueWork(() -> {
-                Player player = context.get().getSender();
-                if (context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
-                    player = AlexsMobs.PROXY.getClientSidePlayer();
+    public static void handle(MessageTarantulaHawkSting message, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            Player player = context.player();
+            if (player != null && player.level() != null) {
+                Entity entity = player.level().getEntity(message.hawk);
+                Entity spider = player.level().getEntity(message.spider);
+                if (entity instanceof EntityTarantulaHawk && spider instanceof LivingEntity livingSpider && livingSpider.getType().is(EntityTypeTags.ARTHROPOD)) {
+                    livingSpider.addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING, EntityTarantulaHawk.STING_DURATION));
                 }
-
-                if (player != null) {
-                    if (player.level() != null) {
-                        Entity entity = player.level().getEntity(message.hawk);
-                        Entity spider = player.level().getEntity(message.spider);
-                        if (entity instanceof EntityTarantulaHawk && spider instanceof LivingEntity && ((LivingEntity) spider).getMobType() == MobType.ARTHROPOD) {
-                            ((LivingEntity) spider).addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING.get(), EntityTarantulaHawk.STING_DURATION));
-                        }
-                    }
-                }
-            });
-        }
+            }
+        });
     }
 }

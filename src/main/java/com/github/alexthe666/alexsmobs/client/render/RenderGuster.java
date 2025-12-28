@@ -15,12 +15,12 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 
 public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/guster.png");
-    private static final ResourceLocation TEXTURE_GOOGLY = new ResourceLocation("alexsmobs:textures/entity/guster_silly.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/guster_eye.png");
-    private static final ResourceLocation TEXTURE_RED = new ResourceLocation("alexsmobs:textures/entity/guster_red.png");
-    private static final ResourceLocation TEXTURE_SOUL = new ResourceLocation("alexsmobs:textures/entity/guster_soul.png");
-    private static final ResourceLocation TEXTURE_SOUL_EYES = new ResourceLocation("alexsmobs:textures/entity/guster_eye_soul.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/guster.png");
+    private static final ResourceLocation TEXTURE_GOOGLY = ResourceLocation.parse("alexsmobs:textures/entity/guster_silly.png");
+    private static final ResourceLocation TEXTURE_EYES = ResourceLocation.parse("alexsmobs:textures/entity/guster_eye.png");
+    private static final ResourceLocation TEXTURE_RED = ResourceLocation.parse("alexsmobs:textures/entity/guster_red.png");
+    private static final ResourceLocation TEXTURE_SOUL = ResourceLocation.parse("alexsmobs:textures/entity/guster_soul.png");
+    private static final ResourceLocation TEXTURE_SOUL_EYES = ResourceLocation.parse("alexsmobs:textures/entity/guster_eye_soul.png");
 
     public RenderGuster(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGuster(), 0.25F);
@@ -53,7 +53,7 @@ public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityGuster entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             if(!entitylivingbaseIn.isGooglyEyes()){
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(entitylivingbaseIn.getVariant() == 2 ? AMRenderTypes.getEyesNoCull(TEXTURE_SOUL_EYES) : AMRenderTypes.getEyesNoCull(TEXTURE_EYES));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, -1);
             }
         }
 

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FKF",
+    "K K",
+    "F F"
+  ],
+  "key": {
+    "F": "alexsmobs:emu_feather",
+    "K": "alexsmobs:kangaroo_hide"
+  },
+  "result": {
+    "id": "alexsmobs:emu_leggings",
+    "count": 1
+  }
+}

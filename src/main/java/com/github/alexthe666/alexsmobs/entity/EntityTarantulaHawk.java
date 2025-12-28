@@ -52,7 +52,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
@@ -114,11 +113,11 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if(this.isBiomeNether(worldIn, this.blockPosition())){
             this.setNether(true);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     private static boolean isBiomeNether(LevelAccessor worldIn, BlockPos position) {
@@ -173,29 +172,26 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLY_ANGLE, 0F);
-        this.entityData.define(NETHER, false);
-        this.entityData.define(FLYING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(DRAGGING, false);
-        this.entityData.define(DIGGING, false);
-        this.entityData.define(SCARED, false);
-        this.entityData.define(ANGRY, false);
-        this.entityData.define(ATTACK_TICK, 0);
-        this.entityData.define(COMMAND, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLY_ANGLE, 0F);
+        builder.define(NETHER, false);
+        builder.define(FLYING, false);
+        builder.define(SITTING, false);
+        builder.define(DRAGGING, false);
+        builder.define(DIGGING, false);
+        builder.define(SCARED, false);
+        builder.define(ANGRY, false);
+        builder.define(ATTACK_TICK, 0);
+        builder.define(COMMAND, 0);
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        if (source.getEntity() instanceof LivingEntity && ((LivingEntity) source.getEntity()).getMobType() == MobType.ARTHROPOD && ((LivingEntity) source.getEntity()).hasEffect(AMEffectRegistry.DEBILITATING_STING.get())) {
+        // getMobType() removed in 1.21 - use EntityType tags instead
+        if (source.getEntity() instanceof LivingEntity living && living.getType().is(net.minecraft.tags.EntityTypeTags.ARTHROPOD) && living.hasEffect(AMEffectRegistry.DEBILITATING_STING)) {
             return false;
         }
         return super.hurt(source, amount);
-    }
-
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -296,7 +292,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         this.entityData.set(DIGGING, Boolean.valueOf(sit));
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
         return isFlying() && !isBaby() ? FLIGHT_SIZE : super.getDimensions(poseIn);
     }
 
@@ -738,8 +734,8 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         @Override
         public void tick() {
             LivingEntity target = hawk.getTarget();
-            boolean paralized = target != null && target.getMobType() == MobType.ARTHROPOD && !target.noPhysics && target.hasEffect(AMEffectRegistry.DEBILITATING_STING.get());
-            boolean paralizedWithChild = paralized && target.getEffect(AMEffectRegistry.DEBILITATING_STING.get()).getAmplifier() > 0;
+            boolean paralized = target != null && target.getType().is(net.minecraft.tags.EntityTypeTags.ARTHROPOD) && !target.noPhysics && target.hasEffect(AMEffectRegistry.DEBILITATING_STING);
+            boolean paralizedWithChild = paralized && target.getEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0;
             if (sandPos == null || !level().getBlockState(sandPos).is(BlockTags.SAND)) {
                 sandPos = hawk.genSandPos(target.blockPosition());
             }
@@ -792,11 +788,11 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                                     target.heal(5);
                                 }
                             }
-                            target.addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING.get(), target.getMobType() == MobType.ARTHROPOD ? EntityTarantulaHawk.STING_DURATION : 600, hawk.bredBuryFlag ? 1 : 0));
-                            if (!hawk.level().isClientSide && target.getMobType() == MobType.ARTHROPOD) {
+                            target.addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING, target.getType().is(net.minecraft.tags.EntityTypeTags.ARTHROPOD) ? EntityTarantulaHawk.STING_DURATION : 600, hawk.bredBuryFlag ? 1 : 0));
+                            if (!hawk.level().isClientSide && target.getType().is(net.minecraft.tags.EntityTypeTags.ARTHROPOD)) {
                                 AlexsMobs.sendMSGToAll(new MessageTarantulaHawkSting(hawk.getId(), target.getId()));
                             }
-                            orbitCooldown = target.getMobType() == MobType.ARTHROPOD ? 200 + random.nextInt(200) : 10 + random.nextInt(20);
+                            orbitCooldown = target.getType().is(net.minecraft.tags.EntityTypeTags.ARTHROPOD) ? 200 + random.nextInt(200) : 10 + random.nextInt(20);
                         }
                     }
                 }

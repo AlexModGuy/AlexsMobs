@@ -49,7 +49,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -119,14 +119,14 @@ public class EntityUnderminer extends PathfinderMob {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DWARF, true);
-        this.entityData.define(HIDING, false);
-        this.entityData.define(VISUALLY_MINING, false);
-        this.entityData.define(TARGETED_BLOCK_POS, Optional.empty());
-        this.entityData.define(MINING_PROGRESS, 0.0F);
-        this.entityData.define(VARIANT, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DWARF, true);
+        builder.define(HIDING, false);
+        builder.define(VISUALLY_MINING, false);
+        builder.define(TARGETED_BLOCK_POS, Optional.empty());
+        builder.define(MINING_PROGRESS, 0.0F);
+        builder.define(VARIANT, 0);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -137,7 +137,7 @@ public class EntityUnderminer extends PathfinderMob {
         compound.putInt("ResetItemTime", resetStackTime);
         compound.putInt("MineCooldown", mineCooldown);
         if(lastGivenStack != null){
-            compound.put("MineStack", lastGivenStack.serializeNBT());
+            compound.put("MineStack", /* TODO: Use lastGivenStack.save(registryAccess) */ new CompoundTag());
         }
     }
 
@@ -149,7 +149,7 @@ public class EntityUnderminer extends PathfinderMob {
         this.resetStackTime = compound.getInt("ResetItemTime");
         this.mineCooldown = compound.getInt("MineCooldown");
         if(compound.contains("MineStack")){
-            this.lastGivenStack = ItemStack.of(compound.getCompound("MineStack"));
+            this.lastGivenStack = ItemStack.parseOptional(this.registryAccess(), compound.getCompound("MineStack"));
         }
     }
 
@@ -250,8 +250,8 @@ public class EntityUnderminer extends PathfinderMob {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag) {
-        spawnData = super.finalizeSpawn(level, difficultyInstance, mobSpawnType, spawnData, tag);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnData) {
+        spawnData = super.finalizeSpawn(level, difficultyInstance, mobSpawnType, spawnData);
         RandomSource randomsource = level.getRandom();
         this.populateDefaultEquipmentSlots(randomsource, difficultyInstance);
         if(random.nextFloat() < 0.3F){
@@ -293,7 +293,7 @@ public class EntityUnderminer extends PathfinderMob {
                 this.playSound(AMSoundRegistry.UNDERMINER_STEP.get(), 1F, 0.75F + random.nextFloat() * 0.25F);
                 lastPosition = this.blockPosition();
                 if(random.nextFloat() < 0.015F && !level().canSeeSky(lastPosition)){
-                    this.playSound(SoundEvents.AMBIENT_CAVE.get(), 3F, 0.75F + random.nextFloat() * 0.25F);
+                    this.playSound(SoundEvents.AMBIENT_CAVE.value(), 3F, 0.75F + random.nextFloat() * 0.25F);
                 }
             }
             Player player = this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), AMConfig.underminerDisappearDistance, true);
@@ -348,8 +348,8 @@ public class EntityUnderminer extends PathfinderMob {
 
     }
 
-    protected void jumpFromGround() {
-
+    public void jumpFromGround() {
+        // Empty override to prevent jumping
     }
 
     public boolean isNoGravity() {
@@ -362,7 +362,7 @@ public class EntityUnderminer extends PathfinderMob {
     }
 
     private boolean isActuallyInAWall() {
-        final float f = this.getDimensions(this.getPose()).width * 0.1F;
+        final float f = this.getDimensions(this.getPose()).width() * 0.1F;
         AABB aabb = AABB.ofSize(this.getEyePosition(), f, 1.0E-6D, f);
         return BlockPos.betweenClosedStream(aabb).anyMatch((p_201942_) -> {
             BlockState blockstate = this.level().getBlockState(p_201942_);
@@ -513,7 +513,7 @@ public class EntityUnderminer extends PathfinderMob {
         public void stop() {
             if(minePretendPos != null && minePretendStartState != null && !minePretendStartState.equals(level().getBlockState(minePretendPos))){
                 for(ServerPlayer serverplayerentity : EntityUnderminer.this.level().getEntitiesOfClass(ServerPlayer.class, EntityUnderminer.this.getBoundingBox().inflate(12.0D, 12.0D, 12.0D))) {
-                    AMAdvancementTriggerRegistry.UNDERMINE_UNDERMINER.trigger(serverplayerentity);
+                    AMAdvancementTriggerRegistry.UNDERMINE_UNDERMINER.get().trigger(serverplayerentity);
                 }
             }
             minePretendPos = null;

@@ -102,7 +102,7 @@ public class ModelLobster extends AdvancedEntityModel<EntityLobster> {
 		float idleDegree = 0.3f;
 		float walkSpeed = 3f;
 		float walkDegree = 0.6F;
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float attackProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTick;
 		progressRotationPrev(arm_left, attackProgress, 0, Maths.rad(45), 0, 5F);
 		progressRotationPrev(arm_right, attackProgress, 0, Maths.rad(-45), 0, 5F);

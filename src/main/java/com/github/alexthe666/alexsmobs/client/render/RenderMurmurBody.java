@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class RenderMurmurBody extends MobRenderer<EntityMurmur, ModelMurmurBody> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/murmur.png");
-    public static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/murmur_angry.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/murmur.png");
+    public static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/murmur_angry.png");
     public static boolean renderWithHead = false;
     private static final ModelMurmurNeck NECK_MODEL = new ModelMurmurNeck();
     private static final ModelMurmurHead HEAD_MODEL = new ModelMurmurHead();
@@ -35,18 +35,18 @@ public class RenderMurmurBody extends MobRenderer<EntityMurmur, ModelMurmurBody>
             ResourceLocation loc = this.getTextureLocation(body);
             int overlayCoords = getOverlayCoords(body, this.getWhiteOverlayProgress(body, partialTicks));
             matrixStackIn.pushPose();
-            this.setupRotations(body, matrixStackIn, f7, f, partialTicks);
+            this.setupRotations(body, matrixStackIn, f7, f, partialTicks, 1.0F);
             matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, -2.9F, 0);
             scale(body, matrixStackIn, partialTicks);
             HEAD_MODEL.resetToDefaultPose();
             HEAD_MODEL.animateHair(f7);
-            HEAD_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(loc)), packedLightIn, overlayCoords, 1, 1F, 1, 1);
+            HEAD_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(loc)), packedLightIn, overlayCoords, -1);
             matrixStackIn.translate(0, 0.5F, 0);
             NECK_MODEL.resetToDefaultPose();
             NECK_MODEL.setAttributes(0.5F, 0, 0, 0);
-            NECK_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(loc)), packedLightIn, overlayCoords, 1, 1F, 1, 1);
+            NECK_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(loc)), packedLightIn, overlayCoords, -1);
             matrixStackIn.popPose();
             matrixStackIn.popPose();
         }

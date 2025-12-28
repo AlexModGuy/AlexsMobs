@@ -47,7 +47,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
@@ -71,8 +71,8 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
     protected EntityPlatypus(EntityType type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(false);
     }
 
@@ -110,7 +110,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.PLATYPUS_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -118,12 +118,14 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.put("PlatypusData", platTag);
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
+        // CompoundTag compound = bucket.getOrCreateTag();
+        // TODO: Use DataComponents for PlatypusData in 1.21
+        // compound.put("PlatypusData", platTag);
     }
 
     @Override
@@ -246,7 +248,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setAirSupply(this.getMaxAirSupply());
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public boolean isPushedByFluid() {
@@ -263,14 +265,15 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         }
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DIGGING, false);
-        this.entityData.define(SENSING, false);
-        this.entityData.define(SENSING_VISUAL, false);
-        this.entityData.define(FEDORA, false);
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(HAS_EGG, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DIGGING, false);
+        builder.define(SENSING, false);
+        builder.define(SENSING_VISUAL, false);
+        builder.define(FEDORA, false);
+        builder.define(FROM_BUCKET, false);
+        builder.define(HAS_EGG, false);
     }
 
     protected void dropEquipment() {
@@ -377,9 +380,13 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             spawnGroundEffects();
         }
         if (inWaterProgress > 0) {
-            this.setMaxUpStep(1);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         } else {
-            this.setMaxUpStep(0.6F);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }
         if (!this.level().isClientSide) {
             if (isInWater()) {

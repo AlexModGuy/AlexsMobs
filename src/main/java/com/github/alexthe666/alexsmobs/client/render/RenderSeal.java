@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
-    private static final ResourceLocation TEXTURE_BROWN_0 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_brown_0.png");
-    private static final ResourceLocation TEXTURE_BROWN_1 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_brown_1.png");
-    private static final ResourceLocation TEXTURE_ARCTIC_0 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_arctic_0.png");
-    private static final ResourceLocation TEXTURE_ARCTIC_1 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_arctic_1.png");
-    private static final ResourceLocation TEXTURE_ARCTIC_BABY = new ResourceLocation("alexsmobs:textures/entity/seal/seal_arctic_baby.png");
-    private static final ResourceLocation TEXTURE_TEARS = new ResourceLocation("alexsmobs:textures/entity/seal/seal_crying.png");
-    private static final ResourceLocation TEXTURE_TONGUE = new ResourceLocation("alexsmobs:textures/entity/seal/seal_tongue.png");
+    private static final ResourceLocation TEXTURE_BROWN_0 = ResourceLocation.parse("alexsmobs:textures/entity/seal/seal_brown_0.png");
+    private static final ResourceLocation TEXTURE_BROWN_1 = ResourceLocation.parse("alexsmobs:textures/entity/seal/seal_brown_1.png");
+    private static final ResourceLocation TEXTURE_ARCTIC_0 = ResourceLocation.parse("alexsmobs:textures/entity/seal/seal_arctic_0.png");
+    private static final ResourceLocation TEXTURE_ARCTIC_1 = ResourceLocation.parse("alexsmobs:textures/entity/seal/seal_arctic_1.png");
+    private static final ResourceLocation TEXTURE_ARCTIC_BABY = ResourceLocation.parse("alexsmobs:textures/entity/seal/seal_arctic_baby.png");
+    private static final ResourceLocation TEXTURE_TEARS = ResourceLocation.parse("alexsmobs:textures/entity/seal/seal_crying.png");
+    private static final ResourceLocation TEXTURE_TONGUE = ResourceLocation.parse("alexsmobs:textures/entity/seal/seal_tongue.png");
 
     public RenderSeal(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSeal(), 0.45F);
@@ -45,10 +45,10 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
     }
 
     @Override
-    protected void renderNameTag(EntitySeal seal, Component text, PoseStack poseStack, MultiBufferSource bufferSrc, int numberIn) {
+    protected void renderNameTag(EntitySeal seal, Component text, PoseStack poseStack, MultiBufferSource bufferSrc, int numberIn, float partialTicks) {
         if(seal.isTearsEasterEgg()){
             double d0 = this.entityRenderDispatcher.distanceToSqr(seal);
-            if (net.minecraftforge.client.ForgeHooksClient.isNameplateInRenderDistance(seal, d0)) {
+            if (d0 < 4096) {
                 boolean flag = !seal.isDiscrete();
                 float f = seal.getBbHeight() + 0.5F;
                 String[] split = text.getString(512).split(" ");
@@ -91,7 +91,7 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
                 poseStack.popPose();
             }
         }else{
-            super.renderNameTag(seal, text, poseStack, bufferSrc, numberIn);
+            super.renderNameTag(seal, text, poseStack, bufferSrc, numberIn, partialTicks);
         }
     }
 
@@ -104,7 +104,7 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntitySeal entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             if(entitylivingbaseIn.isTearsEasterEgg()){
                 VertexConsumer lead = bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_TEARS));
-                this.getParentModel().renderToBuffer(matrixStackIn, lead, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, lead, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), -1);
             }
         }
     }

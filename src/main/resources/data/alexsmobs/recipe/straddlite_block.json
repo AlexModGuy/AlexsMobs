@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": "alexsmobs:straddlite"
+  },
+  "result": {
+    "id": "alexsmobs:straddlite_block",
+    "count": 1
+  }
+}

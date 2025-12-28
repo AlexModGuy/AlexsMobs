@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderRockyRoller extends MobRenderer<EntityRockyRoller, ModelRockyRoller> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/rocky_roller.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/rocky_roller_angry.png");
-    private static final ResourceLocation TEXTURE_ROLLING = new ResourceLocation("alexsmobs:textures/entity/rocky_roller_rolling.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/rocky_roller.png");
+    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/rocky_roller_angry.png");
+    private static final ResourceLocation TEXTURE_ROLLING = ResourceLocation.parse("alexsmobs:textures/entity/rocky_roller_rolling.png");
 
     public RenderRockyRoller(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelRockyRoller(), 0.7F);

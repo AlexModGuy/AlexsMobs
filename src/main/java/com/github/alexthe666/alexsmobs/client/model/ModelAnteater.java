@@ -221,7 +221,7 @@ public class ModelAnteater extends AdvancedEntityModel<EntityAnteater> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, int color){
         if (this.young) {
             float f = 1.35F;
             head.setScale(f, f, f);
@@ -230,7 +230,7 @@ public class ModelAnteater extends AdvancedEntityModel<EntityAnteater> {
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
             });
             matrixStackIn.popPose();
             this.head.setScale(1F, 1F, 1F);
@@ -238,7 +238,7 @@ public class ModelAnteater extends AdvancedEntityModel<EntityAnteater> {
             this.head.setScale(1F, 1F, 1F);
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
             });
             matrixStackIn.popPose();
         }

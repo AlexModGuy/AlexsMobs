@@ -76,7 +76,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 		float walkDegree = 0.6F;
 		float idleSpeed = 0.1F;
 		float idleDegree = 0.1F;
-		float swell = Math.min(entity.prevSwellProgress + (entity.swellProgress - entity.prevSwellProgress) * Minecraft.getInstance().getFrameTime(), 10F);
+		float swell = Math.min(entity.prevSwellProgress + (entity.swellProgress - entity.prevSwellProgress) * Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false), 10F);
 		float glowyBob = (swell * 0.22F) + 0.95F + (Mth.cos(ageInTicks * (0.1F + swell * 0.2F)) + 1F) * (0.05F + swell * 0.02F);
 		BlockPos targetPos = entity.getBeamTarget();
 		if(targetPos == null) {
@@ -139,7 +139,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 		return ImmutableList.of(root, body, hair, eye, leg_left, leg_right, sack, nose);
 	}
 
-	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
 		if (this.young) {
 			this.eye.setScale(1.5F, 1.5F, 1.5F);
 			this.nose.setScale(1.5F, 1.5F, 1.5F);
@@ -147,7 +147,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			matrixStackIn.translate(0.0D, 1.5D, 0.125D);
 			parts().forEach((p_228292_8_) -> {
-				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 		} else {
@@ -155,7 +155,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 			this.nose.setScale(1F, 1F, 1F);
 			matrixStackIn.pushPose();
 			parts().forEach((p_228290_8_) -> {
-				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 		}

@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderGazelle extends MobRenderer<EntityGazelle, ModelGazelle> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/gazelle.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/gazelle.png");
 
     public RenderGazelle(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGazelle(), 0.4F);

@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderBlobfish extends MobRenderer<EntityBlobfish, EntityModel<EntityBlobfish>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/blobfish.png");
-    private static final ResourceLocation TEXTURE_DEPRESSURIZED = new ResourceLocation("alexsmobs:textures/entity/blobfish_depressurized.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/blobfish.png");
+    private static final ResourceLocation TEXTURE_DEPRESSURIZED = ResourceLocation.parse("alexsmobs:textures/entity/blobfish_depressurized.png");
     private final ModelBlobfish modelFish = new ModelBlobfish();
     private final ModelBlobfishDepressurized modelDepressurized = new ModelBlobfishDepressurized();
 

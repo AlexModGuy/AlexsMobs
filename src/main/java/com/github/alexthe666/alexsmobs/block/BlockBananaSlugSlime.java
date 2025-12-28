@@ -10,7 +10,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -98,7 +97,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
             if (!state.getFluidState().isEmpty()) {
                 fullBlocks++;
                 if (state.getBlock() instanceof BucketPickup) {
-                    ((BucketPickup) state.getBlock()).pickupBlock(level, blockpos, state);
+                    ((BucketPickup) state.getBlock()).pickupBlock(null, level, blockpos, state);
                     if(level.getBlockState(blockpos).isAir()){
                         level.setBlockAndUpdate(blockpos, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState());
                     }
@@ -129,7 +128,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
                     }
                     ++i;
                     fullBlocks++;
-                    ((BucketPickup) blockstate.getBlock()).pickupBlock(level, blockpos1, blockstate);
+                    ((BucketPickup) blockstate.getBlock()).pickupBlock(null, level, blockpos1, blockstate);
                     if(level.getBlockState(blockpos).isAir()){
                         level.setBlockAndUpdate(blockpos, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState());
                     }

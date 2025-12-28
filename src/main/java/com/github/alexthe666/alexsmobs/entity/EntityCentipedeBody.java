@@ -57,10 +57,6 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         return  source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
     public boolean isNoGravity() {
         return false;
     }
@@ -68,7 +64,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     @Override
     public void tick() {
         super.tick();
-        isInsidePortal = false;
+        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
             final Entity parent = getParent();
@@ -121,12 +117,12 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         this.radius = compound.getFloat("PartRadius");
     }
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(PARENT_UUID, Optional.empty());
-        this.entityData.define(CHILD_UUID, Optional.empty());
-        this.entityData.define(BODYINDEX, 0);
-        this.entityData.define(BODY_XROT, 0F);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(PARENT_UUID, Optional.empty());
+        builder.define(CHILD_UUID, Optional.empty());
+        builder.define(BODYINDEX, 0);
+        builder.define(BODY_XROT, 0F);
     }
 
     public Entity getParent() {
@@ -294,9 +290,9 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         }
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     public float getBackOffset() {
         return 0.5F;

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GRG",
+    "GGG"
+  ],
+  "key": {
+    "R": "alexsmobs:rainbow_jelly",
+    "G": "#c:glass"
+  },
+  "result": {
+    "id": "alexsmobs:rainbow_glass",
+    "count": 1
+  }
+}

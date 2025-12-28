@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PAP",
+    " P "
+  ],
+  "key": {
+    "A": "alexsmobs:echolocator",
+    "P": "minecraft:ender_pearl"
+  },
+  "result": {
+    "id": "alexsmobs:endolocator",
+    "count": 1
+  }
+}

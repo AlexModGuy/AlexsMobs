@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " VL",
+    "VSV",
+    "SV "
+  ],
+  "key": {
+    "L": "minecraft:lead",
+    "S": "alexsmobs:shed_snake_skin",
+    "V": "minecraft:vine"
+  },
+  "result": {
+    "id": "alexsmobs:vine_lasso",
+    "count": 1
+  }
+}

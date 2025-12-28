@@ -65,7 +65,7 @@ public class ModelMysteriousWorm extends AdvancedEntityModel<Entity> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color){
         root.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
@@ -77,7 +77,7 @@ public class ModelMysteriousWorm extends AdvancedEntityModel<Entity> {
 
     public void animateStack(ItemStack itemStackIn) {
         this.resetToDefaultPose();
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float tick = Minecraft.getInstance().player == null ? 0 : partialTick + Minecraft.getInstance().player.tickCount;
         if(Minecraft.getInstance().isPaused()){
             tick = AMItemstackRenderer.ticksExisted;

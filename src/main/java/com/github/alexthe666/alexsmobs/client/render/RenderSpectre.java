@@ -15,10 +15,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderSpectre extends MobRenderer<EntitySpectre, ModelSpectre> {
-    private static final ResourceLocation TEXTURE_BONE = new ResourceLocation("alexsmobs:textures/entity/spectre_bone.png");
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/spectre.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/spectre_glow.png");
-    private static final ResourceLocation TEXTURE_LEAD = new ResourceLocation("alexsmobs:textures/entity/spectre_lead.png");
+    private static final ResourceLocation TEXTURE_BONE = ResourceLocation
+            .parse("alexsmobs:textures/entity/spectre_bone.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/spectre.png");
+    private static final ResourceLocation TEXTURE_EYES = ResourceLocation
+            .parse("alexsmobs:textures/entity/spectre_glow.png");
+    private static final ResourceLocation TEXTURE_LEAD = ResourceLocation
+            .parse("alexsmobs:textures/entity/spectre_lead.png");
 
     public RenderSpectre(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSpectre(), 0.5F);
@@ -59,12 +62,17 @@ public class RenderSpectre extends MobRenderer<EntitySpectre, ModelSpectre> {
             super(p_i50928_1_);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntitySpectre entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntitySpectre entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
             VertexConsumer lvt_11_1_ = bufferIn.getBuffer(this.getRenderType());
-            this.getParentModel().renderToBuffer(matrixStackIn, lvt_11_1_, 15728640, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, getAlphaForRender(entitylivingbaseIn, partialTicks));
+            this.getParentModel().renderToBuffer(matrixStackIn, lvt_11_1_, 15728640,
+                    LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0),
+                    AMColorUtil.packColor(1.0F, 1.0F, 1.0F, getAlphaForRender(entitylivingbaseIn, partialTicks)));
             if (entitylivingbaseIn.isLeashed()) {
                 VertexConsumer lead = bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_LEAD));
-                this.getParentModel().renderToBuffer(matrixStackIn, lead, 15728640, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, lead, 15728640,
+                        LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), -1);
             }
         }
 

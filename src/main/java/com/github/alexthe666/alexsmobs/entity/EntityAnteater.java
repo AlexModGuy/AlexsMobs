@@ -74,7 +74,9 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
 
     protected EntityAnteater(EntityType type, Level world) {
         super(type, world);
-        this.setMaxUpStep(1);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -134,12 +136,12 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.FALSE);
-        this.entityData.define(ANT_ON_TONGUE, Boolean.FALSE);
-        this.entityData.define(LEANING_DOWN, Boolean.FALSE);
-        this.entityData.define(ANGER_TIME, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(STANDING, Boolean.FALSE);
+        builder.define(ANT_ON_TONGUE, Boolean.FALSE);
+        builder.define(LEANING_DOWN, Boolean.FALSE);
+        builder.define(ANGER_TIME, 0);
     }
 
     public int getRemainingPersistentAngerTime() {
@@ -424,11 +426,11 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
         return lowercaseName.contains("peter") || lowercaseName.contains("petr") || lowercaseName.contains("zot");
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if (spawnDataIn == null)
             spawnDataIn = new AgeableMob.AgeableMobGroupData(0.5F);
 
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     private class AITargetAnts extends NearestAttackableTargetGoal {

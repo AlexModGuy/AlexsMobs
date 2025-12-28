@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class TileEntityEndPirateDoor extends BlockEntity {
 
@@ -32,7 +32,8 @@ public class TileEntityEndPirateDoor extends BlockEntity {
 
     @OnlyIn(Dist.CLIENT)
     public net.minecraft.world.phys.AABB getRenderBoundingBox() {
-        return new net.minecraft.world.phys.AABB(worldPosition, worldPosition.offset(1, 3, 1));
+        return new net.minecraft.world.phys.AABB(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 
+            worldPosition.getX() + 1, worldPosition.getY() + 3, worldPosition.getZ() + 1);
     }
 
     public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityEndPirateDoor entity) {

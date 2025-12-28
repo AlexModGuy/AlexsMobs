@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FL ",
+    "L L"
+  ],
+  "key": {
+    "F": "alexsmobs:roadrunner_feather",
+    "L": "minecraft:leather"
+  },
+  "result": {
+    "id": "alexsmobs:falconry_hood",
+    "count": 1
+  }
+}

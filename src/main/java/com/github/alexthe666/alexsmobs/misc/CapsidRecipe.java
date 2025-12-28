@@ -2,12 +2,12 @@ package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.citadel.client.model.container.JsonUtils;
 import com.google.gson.*;
+import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import java.lang.reflect.Type;
 
@@ -26,7 +26,8 @@ public class CapsidRecipe {
         NonNullList<Ingredient> nonnulllist = NonNullList.create();
 
         for (int i = 0; i < ingredientArray.size(); ++i) {
-            Ingredient ingredient = Ingredient.fromJson(ingredientArray.get(i));
+            // In 1.21, Ingredient.fromJson is replaced with codec-based parsing
+            Ingredient ingredient = Ingredient.CODEC.parse(JsonOps.INSTANCE, ingredientArray.get(i)).result().orElse(Ingredient.EMPTY);
             if (!ingredient.isEmpty()) {
                 nonnulllist.add(ingredient);
             }
@@ -69,7 +70,9 @@ public class CapsidRecipe {
             int time = JsonUtils.getInt(jsonobject, "time");
             ItemStack result = ItemStack.EMPTY;
             if (jsonobject.has("result")) {
-                result = ShapedRecipe.itemStackFromJson(JsonUtils.getJsonObject(jsonobject, "result"));
+                // In 1.21, use ItemStack.CODEC for parsing
+                JsonObject resultObj = JsonUtils.getJsonObject(jsonobject, "result");
+                result = ItemStack.CODEC.parse(JsonOps.INSTANCE, resultObj).result().orElse(ItemStack.EMPTY);
             }
             NonNullList<Ingredient> nonnulllist = readIngredients(JsonUtils.getJsonArray(jsonobject, "ingredients"));
             return new CapsidRecipe(nonnulllist, result, time);

@@ -98,7 +98,7 @@ public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, int color){
         if (this.young) {
             float f = 1.24F;
             head.setScale(f, f, f);
@@ -107,7 +107,7 @@ public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
             });
             matrixStackIn.popPose();
             this.head.setScale(0.9F, 0.9F, 0.9F);
@@ -115,7 +115,7 @@ public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
             this.head.setScale(0.9F, 0.9F, 0.9F);
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
             });
             matrixStackIn.popPose();
         }
@@ -131,7 +131,7 @@ public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
         float walkDegree = 0.78F;
         float idleSpeed = 0.1F;
         float idleDegree = 0.1F;
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
         float runProgress = Math.max(0, (limbSwingAmount * 5F) - flyProgress);
         float biteProgress = entity.prevPeckProgress + (entity.peckProgress - entity.prevPeckProgress) * partialTick;

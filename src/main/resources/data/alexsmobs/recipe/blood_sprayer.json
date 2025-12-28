@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS ",
+    "BBP",
+    "B  "
+  ],
+  "key": {
+    "S": "alexsmobs:blood_sac",
+    "P": "alexsmobs:mosquito_proboscis",
+    "B": "minecraft:nether_brick"
+  },
+  "result": {
+    "id": "alexsmobs:blood_sprayer",
+    "count": 1
+  }
+}

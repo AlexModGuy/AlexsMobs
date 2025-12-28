@@ -54,8 +54,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -107,7 +107,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 55.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.6F).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
         return isStanding() ? STANDING_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
     }
 
@@ -148,7 +148,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
         }
     }
 
@@ -290,7 +290,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         if(item instanceof ShovelItem && this.isSnowy() && !this.level().isClientSide){
             this.permSnow = false;
             if(!player.isCreative()){
-                itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer)player : null);
+                if (itemstack.isDamageableItem()) itemstack.setDamageValue(itemstack.getDamageValue() + 1);
             }
             this.setSnowy(false);
             this.gameEvent(GameEvent.ENTITY_INTERACT);
@@ -338,7 +338,9 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            this.setMaxUpStep(1);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);
@@ -427,7 +429,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                     }
                     if(stack.is(AMTagRegistry.GRIZZLY_TAMEABLES) && !this.isTame() && this.salmonThrowerID != null){
                        if(getRandom().nextFloat() < 0.3F){
-                           this.setTame(true);
+                           this.setTame(true, true);
                            this.setOwnerUUID(this.salmonThrowerID);
                            Player player = level().getPlayerByUUID(salmonThrowerID);
                            if (player instanceof ServerPlayer) {
@@ -590,15 +592,15 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(STANDING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(HONEYED, false);
-        this.entityData.define(SNOWY, false);
-        this.entityData.define(EATING, false);
-        this.entityData.define(APRIL_FOOLS_MODE, 0);
-        this.entityData.define(COMMAND, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(STANDING, false);
+        builder.define(SITTING, false);
+        builder.define(HONEYED, false);
+        builder.define(SNOWY, false);
+        builder.define(EATING, false);
+        builder.define(APRIL_FOOLS_MODE, 0);
+        builder.define(COMMAND, 0);
     }
 
     public boolean isEating() {
@@ -701,12 +703,12 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         return !isSitting();
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if (spawnDataIn == null) {
             spawnDataIn = new AgeableMob.AgeableMobGroupData(1.0F);
         }
 
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public boolean canTargetItem(ItemStack stack) {

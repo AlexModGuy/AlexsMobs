@@ -92,7 +92,7 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 		float walkDegree = 0.78F;
 		float idleSpeed = 0.1F;
 		float idleDegree = 0.1F;
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
 		float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
 		float runProgress = Math.max(0, (limbSwingAmount * 5F) - flyProgress);
@@ -139,7 +139,7 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, int color){
 		if (this.young) {
 			float f = 1.45F;
 			head.setScale(f, f, f);
@@ -148,7 +148,7 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			matrixStackIn.translate(0.0D, 1.5D, 0D);
 			parts().forEach((p_228292_8_) -> {
-				p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+				p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
 			});
 			matrixStackIn.popPose();
 			this.head.setScale(0.9F, 0.9F, 0.9F);
@@ -156,7 +156,7 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 			this.head.setScale(0.9F, 0.9F, 0.9F);
 			matrixStackIn.pushPose();
 			parts().forEach((p_228290_8_) -> {
-				p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+				p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
 			});
 			matrixStackIn.popPose();
 		}

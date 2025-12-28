@@ -233,22 +233,22 @@ public class AMTagRegistry {
     public static final TagKey<Structure> SPAWNS_UNDERMINERS = registerStructureTag("spawns_underminers");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
-        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Item> registerItemTag(String name) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Block> registerBlockTag(String name) {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Biome> registerBiomeTag(String name) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Structure> registerStructureTag(String name) {
-        return TagKey.create(Registries.STRUCTURE, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
     }
 }

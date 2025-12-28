@@ -140,7 +140,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
     private void breakBlock() {
         if (shouldMoveTo(mantisShrimp.level(), destinationBlock)) {
             BlockState state = mantisShrimp.level().getBlockState(destinationBlock);
-            if(!mantisShrimp.level().isEmptyBlock(destinationBlock) && net.minecraftforge.common.ForgeHooks.canEntityDestroy(mantisShrimp.level(), destinationBlock, mantisShrimp) && state.getDestroySpeed(mantisShrimp.level(), destinationBlock) >= 0){
+            if(!mantisShrimp.level().isEmptyBlock(destinationBlock) && net.neoforged.neoforge.common.CommonHooks.canEntityDestroy(mantisShrimp.level(), destinationBlock, mantisShrimp) && state.getDestroySpeed(mantisShrimp.level(), destinationBlock) >= 0){
                 mantisShrimp.level().destroyBlock(destinationBlock, true);
             }
         }

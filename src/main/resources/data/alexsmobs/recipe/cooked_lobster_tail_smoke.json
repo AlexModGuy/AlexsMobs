@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": "alexsmobs:lobster_tail",
+  "result": {
+    "id": "alexsmobs:cooked_lobster_tail"
+  },
+  "experience": 0.15,
+  "cookingtime": 100
+}

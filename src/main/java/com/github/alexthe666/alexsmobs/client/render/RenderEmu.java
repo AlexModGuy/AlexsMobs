@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderEmu extends MobRenderer<EntityEmu, ModelEmu> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/emu.png");
-    private static final ResourceLocation TEXTURE_BABY = new ResourceLocation("alexsmobs:textures/entity/emu_baby.png");
-    private static final ResourceLocation TEXTURE_BLONDE = new ResourceLocation("alexsmobs:textures/entity/emu_blonde.png");
-    private static final ResourceLocation TEXTURE_BLONDE_BABY = new ResourceLocation("alexsmobs:textures/entity/emu_baby_blonde.png");
-    private static final ResourceLocation TEXTURE_BLUE = new ResourceLocation("alexsmobs:textures/entity/emu_blue.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/emu.png");
+    private static final ResourceLocation TEXTURE_BABY = ResourceLocation.parse("alexsmobs:textures/entity/emu_baby.png");
+    private static final ResourceLocation TEXTURE_BLONDE = ResourceLocation.parse("alexsmobs:textures/entity/emu_blonde.png");
+    private static final ResourceLocation TEXTURE_BLONDE_BABY = ResourceLocation.parse("alexsmobs:textures/entity/emu_baby_blonde.png");
+    private static final ResourceLocation TEXTURE_BLUE = ResourceLocation.parse("alexsmobs:textures/entity/emu_blue.png");
 
     public RenderEmu(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelEmu(), 0.45F);

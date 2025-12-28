@@ -9,10 +9,12 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -40,7 +42,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -54,13 +57,15 @@ public class EntityGuster extends Monster {
     private int liftingTime = 0;
     private int maxLiftTime = 40;
     private int shootingTicks;
-    public static final ResourceLocation RED_LOOT = new ResourceLocation("alexsmobs", "entities/guster_red");
-    public static final ResourceLocation SOUL_LOOT = new ResourceLocation("alexsmobs", "entities/guster_soul");
+    public static final ResourceKey<LootTable> RED_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/guster_red"));
+    public static final ResourceKey<LootTable> SOUL_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/guster_soul"));
 
     protected EntityGuster(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setMaxUpStep(1);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
     }
 
     public int getAmbientSoundInterval() {
@@ -84,7 +89,7 @@ public class EntityGuster extends Monster {
     }
 
     @Nullable
-    protected ResourceLocation getDefaultLootTable() {
+    protected ResourceKey<LootTable> getDefaultLootTable() {
         return this.getVariant() == 2 ? SOUL_LOOT : this.getVariant() == 1 ? RED_LOOT : super.getDefaultLootTable();
     }
 
@@ -137,10 +142,11 @@ public class EntityGuster extends Monster {
         return this.entityData.get(LIFT_ENTITY) != 0;
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(LIFT_ENTITY, 0);
-        this.entityData.define(VARIANT, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(LIFT_ENTITY, 0);
+        builder.define(VARIANT, 0);
     }
 
 
@@ -187,7 +193,7 @@ public class EntityGuster extends Monster {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
-            reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+            reason, @Nullable SpawnGroupData spawnDataIn) {
         if(this.isBiomeNether(worldIn, this.blockPosition())){
             this.setVariant(2);
         }else if(this.isBiomeRed(worldIn, this.blockPosition())){
@@ -197,7 +203,7 @@ public class EntityGuster extends Monster {
         }
         this.setAirSupply(this.getMaxAirSupply());
         this.setXRot(0.0F);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     private void setLiftedEntity(int p_175463_1_) {

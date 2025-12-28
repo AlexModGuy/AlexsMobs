@@ -60,7 +60,7 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 		this.swing(body, walkSpeed, walkDegree * 0.4F, true, 2, 0F, limbSwing, limbSwingAmount);
 		this.swing(tail, walkSpeed * 1.4F, walkDegree * 2F, false, 2, 0F, limbSwing, limbSwingAmount);
 		this.faceTarget(netHeadYaw, headPitch, 1.2F, body);
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float birdPitch = entity.prevSwimPitch + (entity.swimPitch - entity.prevSwimPitch) * partialTick;
 		this.body.rotateAngleX += birdPitch * Mth.DEG_TO_RAD;
 

@@ -340,7 +340,7 @@ public class ModelTiger extends AdvancedEntityModel<EntityTiger> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         if (this.young) {
             float f = 1.5F;
             head.setScale(f, f, f);
@@ -349,14 +349,14 @@ public class ModelTiger extends AdvancedEntityModel<EntityTiger> {
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
             });
             matrixStackIn.popPose();
             head.setScale(1, 1, 1);
         } else {
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
             });
             matrixStackIn.popPose();
         }

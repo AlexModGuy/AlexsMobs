@@ -13,8 +13,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class RenderWarpedMosco extends MobRenderer<EntityWarpedMosco, ModelWarpedMosco> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/warped_mosco.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/warped_mosco_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/warped_mosco.png");
+    private static final ResourceLocation TEXTURE_EYES = ResourceLocation
+            .parse("alexsmobs:textures/entity/warped_mosco_glow.png");
 
     public RenderWarpedMosco(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelWarpedMosco(), 1F);
@@ -31,10 +33,14 @@ public class RenderWarpedMosco extends MobRenderer<EntityWarpedMosco, ModelWarpe
             super(p_i50928_1_);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityWarpedMosco entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntityWarpedMosco entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getEyesFlickering(TEXTURE_EYES, 0));
             float alpha = 0.5F + (Mth.cos(ageInTicks * 0.2F) + 1F) * 0.2F;
-            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 0.5F, 1.0F, 1.0F, alpha);
+            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 240,
+                    LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F),
+                    AMColorUtil.packColor(0.5F, 1.0F, 1.0F, alpha));
 
         }
     }

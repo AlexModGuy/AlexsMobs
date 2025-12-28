@@ -39,7 +39,7 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -72,8 +72,8 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
 
     protected EntitySeal(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(false);
     }
 
@@ -151,14 +151,14 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SWIM_ANGLE, 0F);
-        this.entityData.define(BASKING, false);
-        this.entityData.define(DIGGING, false);
-        this.entityData.define(ARCTIC, false);
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(BOB_TICKS, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SWIM_ANGLE, 0F);
+        builder.define(BASKING, false);
+        builder.define(DIGGING, false);
+        builder.define(ARCTIC, false);
+        builder.define(VARIANT, 0);
+        builder.define(BOB_TICKS, 0);
     }
 
     public boolean isTearsEasterEgg() {
@@ -349,7 +349,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         this.setVariant(i);
         this.setAirSupply(this.getMaxAirSupply());
         this.setXRot(0.0F);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, data, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, data);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {

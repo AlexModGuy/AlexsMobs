@@ -95,9 +95,9 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(RUNNING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(RUNNING, false);
     }
 
     public boolean isRunning() {

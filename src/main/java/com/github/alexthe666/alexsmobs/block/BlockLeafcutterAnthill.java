@@ -6,7 +6,9 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -16,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -36,6 +37,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockLeafcutterAnthill extends BaseEntityBlock {
+    public static final MapCodec<BlockLeafcutterAnthill> CODEC = simpleCodec(p -> new BlockLeafcutterAnthill());
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
 
     public BlockLeafcutterAnthill() {
         super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.75F));
@@ -61,7 +68,7 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
         if (!worldIn.isClientSide && player.isCreative() && worldIn.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof TileEntityLeafcutterAnthill) {
@@ -69,22 +76,24 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
                 ItemStack itemstack = new ItemStack(this);
                 boolean flag = !anthivetileentity.hasNoAnts();
                 if (!flag) {
-                    return;
+                    return super.playerWillDestroy(worldIn, pos, state, player);
                 }
                 if (flag) {
                     CompoundTag compoundnbt = new CompoundTag();
                     compoundnbt.put("Ants", anthivetileentity.getAnts());
-                    itemstack.addTagElement("BlockEntityTag", compoundnbt);
+                    // TODO: NeoForge 1.21 - use DataComponents
+                    // itemstack.addTagElement("BlockEntityTag", compoundnbt);
                 }
                 CompoundTag compoundnbt1 = new CompoundTag();
-                itemstack.addTagElement("BlockStateTag", compoundnbt1);
+                // TODO: NeoForge 1.21 - use DataComponents
+                // itemstack.addTagElement("BlockStateTag", compoundnbt1);
                 ItemEntity itementity = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
                 itementity.setDefaultPickUpDelay();
                 worldIn.addFreshEntity(itementity);
             }
         }
 
-        super.playerWillDestroy(worldIn, pos, state, player);
+        return super.playerWillDestroy(worldIn, pos, state, player);
     }
 
     public void fallOn(Level worldIn, BlockState state, BlockPos pos, Entity entityIn, float fallDistance) {
@@ -94,7 +103,7 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
                 TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill) worldIn.getBlockEntity(pos);
                 beehivetileentity.angerAnts((LivingEntity) entityIn, worldIn.getBlockState(pos), BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
                 if(entityIn instanceof ServerPlayer){
-                    AMAdvancementTriggerRegistry.STOMP_LEAFCUTTER_ANTHILL.trigger((ServerPlayer)entityIn);
+                    AMAdvancementTriggerRegistry.STOMP_LEAFCUTTER_ANTHILL.get().trigger((ServerPlayer)entityIn);
                 }
             }
         }
@@ -105,7 +114,7 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
         super.playerDestroy(worldIn, player, pos, state, te, stack);
         if (!worldIn.isClientSide && te instanceof TileEntityLeafcutterAnthill) {
             TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill) te;
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
+            if (stack.getEnchantmentLevel(worldIn.holderLookup(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH)) == 0) {
                 beehivetileentity.angerAnts(player, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
                 worldIn.updateNeighbourForOutputSignal(pos, this);
                 this.angerNearbyAnts(worldIn, pos);

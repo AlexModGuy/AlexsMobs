@@ -89,10 +89,10 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(BITE_TICK, 0);
-        this.entityData.define(SADDLED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BITE_TICK, 0);
+        builder.define(SADDLED, false);
     }
 
     protected void registerGoals() {
@@ -155,12 +155,12 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             this.setSaddled(true);
             return InteractionResult.SUCCESS;
         }
-        if (itemstack.is(AMTagRegistry.ENDERGRADE_BREEDABLES) && this.hasEffect(AMEffectRegistry.ENDER_FLU.get())) {
+        if (itemstack.is(AMTagRegistry.ENDERGRADE_BREEDABLES) && this.hasEffect(AMEffectRegistry.ENDER_FLU)) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
             this.heal(8);
-            this.removeEffect(AMEffectRegistry.ENDER_FLU.get());
+            this.removeEffect(AMEffectRegistry.ENDER_FLU);
             return InteractionResult.SUCCESS;
         }
         InteractionResult type = super.mobInteract(player, hand);
@@ -183,7 +183,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
         }
     }
 
@@ -228,10 +228,6 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
         return false;
-    }
-
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
     }
 
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
@@ -304,7 +300,9 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            this.setMaxUpStep(1);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);

@@ -41,9 +41,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.ItemAbilities;
 
 public class EntityMimicube extends Monster implements RangedAttackMob {
 
@@ -81,9 +81,9 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ATTACK_TICK, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ATTACK_TICK, 0);
 
     }
 
@@ -141,7 +141,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         ItemStack itemstack = this.getProjectile(this.getMainHandItem());
         AbstractArrow abstractarrowentity = this.fireArrow(itemstack, distanceFactor);
         if (this.getMainHandItem().getItem() instanceof net.minecraft.world.item.BowItem)
-            abstractarrowentity = ((net.minecraft.world.item.BowItem) this.getMainHandItem().getItem()).customArrow(abstractarrowentity);
+            abstractarrowentity = abstractarrowentity /* customArrow signature changed in 1.21 */;
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - abstractarrowentity.getY();
         double d2 = target.getZ() - this.getZ();
@@ -153,7 +153,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     protected AbstractArrow fireArrow(ItemStack arrowStack, float distanceFactor) {
-        return ProjectileUtil.getMobArrow(this, arrowStack, distanceFactor);
+        return ProjectileUtil.getMobArrow(this, arrowStack, distanceFactor, null);
     }
 
     public boolean canFireProjectileWeapon(ProjectileWeaponItem p_230280_1_) {
@@ -199,7 +199,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     public boolean isBlocking() {
-        return this.getMainHandItem().canPerformAction(ToolActions.SHIELD_BLOCK) || this.getOffhandItem().canPerformAction(ToolActions.SHIELD_BLOCK);
+        return this.getMainHandItem().canPerformAction(ItemAbilities.SHIELD_BLOCK) || this.getOffhandItem().canPerformAction(ItemAbilities.SHIELD_BLOCK);
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -261,7 +261,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         if(this.isInWater()){
             this.setDeltaMovement(this.getDeltaMovement().add(0, 0.05D, 0));
         }
-        if (this.getOffhandItem().getItem().isEdible() && this.getHealth() < this.getMaxHealth()) {
+        if (this.getOffhandItem().has(net.minecraft.core.component.DataComponents.FOOD) && this.getHealth() < this.getMaxHealth()) {
             if (eatingTicks < 100) {
                 for (int i = 0; i < 3; i++) {
                     double d2 = this.random.nextGaussian() * 0.02D;
@@ -282,7 +282,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
                 this.heal(5);
                 eatingTicks = 0;
             }
-        } else if (this.getMainHandItem().getItem().isEdible() && this.getHealth() < this.getMaxHealth()) {
+        } else if (this.getMainHandItem().has(net.minecraft.core.component.DataComponents.FOOD) && this.getHealth() < this.getMaxHealth()) {
             if (eatingTicks < 100) {
                 for (int i = 0; i < 3; i++) {
                     double d2 = this.random.nextGaussian() * 0.02D;
@@ -342,7 +342,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         return AMSoundRegistry.MIMICUBE_JUMP.get();
     }
 
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         Vec3 vector3d = this.getDeltaMovement();
         this.setDeltaMovement(vector3d.x, this.getJumpPower(), vector3d.z);
         this.hasImpulse = true;

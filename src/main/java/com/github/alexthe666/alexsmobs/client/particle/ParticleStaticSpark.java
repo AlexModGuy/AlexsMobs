@@ -17,28 +17,30 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class ParticleStaticSpark extends Particle {
-    private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
-            new ResourceLocation("textures/particle/generic_0.png"),
-            new ResourceLocation("textures/particle/generic_1.png"),
-            new ResourceLocation("textures/particle/generic_2.png"),
-            new ResourceLocation("textures/particle/generic_3.png"),
-            new ResourceLocation("textures/particle/generic_4.png"),
-            new ResourceLocation("textures/particle/generic_5.png"),
-            new ResourceLocation("textures/particle/generic_6.png"),
-            new ResourceLocation("textures/particle/generic_7.png")
+    private static final ResourceLocation[] TEXTURES = new ResourceLocation[] {
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_0.png"),
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_1.png"),
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_2.png"),
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_3.png"),
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_4.png"),
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_5.png"),
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_6.png"),
+            ResourceLocation.withDefaultNamespace("textures/particle/generic_7.png")
     };
     private int decrement = 1;
     private int textureIndex = 0;
     private float size;
 
-    private ParticleStaticSpark(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ) {
+    private ParticleStaticSpark(ClientLevel world, double x, double y, double z, double motionX, double motionY,
+            double motionZ) {
         super(world, x, y, z);
         this.setSize(1, 1);
         this.gravity = 0.0F;
@@ -51,25 +53,26 @@ public class ParticleStaticSpark extends Particle {
         this.size = this.random.nextFloat() * 0.2F + 0.2F;
     }
 
-    public void tick(){
+    public void tick() {
         super.tick();
         this.xd *= 0.97D;
         this.yd *= 0.97D;
         this.zd *= 0.97D;
-        if(this.textureIndex > 0){
-            if(age % decrement == 0){
+        if (this.textureIndex > 0) {
+            if (age % decrement == 0) {
                 textureIndex--;
             }
         }
-        if(this.size > 0.2F){
+        if (this.size > 0.2F) {
             this.size -= 0.015F;
         }
     }
+
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTick) {
         Vec3 vec3 = camera.getPosition();
-        float f = (float)(Mth.lerp((double)partialTick, this.xo, this.x) - vec3.x());
-        float f1 = (float)(Mth.lerp((double)partialTick, this.yo, this.y) - vec3.y());
-        float f2 = (float)(Mth.lerp((double)partialTick, this.zo, this.z) - vec3.z());
+        float f = (float) (Mth.lerp((double) partialTick, this.xo, this.x) - vec3.x());
+        float f1 = (float) (Mth.lerp((double) partialTick, this.yo, this.y) - vec3.y());
+        float f2 = (float) (Mth.lerp((double) partialTick, this.zo, this.z) - vec3.z());
         Quaternionf quaternion;
         if (this.roll == 0.0F) {
             quaternion = camera.rotation();
@@ -78,19 +81,23 @@ public class ParticleStaticSpark extends Particle {
             float f3 = Mth.lerp(partialTick, this.oRoll, this.roll);
             quaternion.mul(Axis.ZP.rotation(f3));
         }
-        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer portalStatic = AMRenderTypes.createMergedVertexConsumer(multibuffersource$buffersource.getBuffer(AMRenderTypes.STATIC_PARTICLE), multibuffersource$buffersource.getBuffer(RenderType.entityTranslucent(TEXTURES[textureIndex])));
+        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers()
+                .bufferSource();
+        // In 1.21, merged vertex consumers with different formats can cause issues
+        // Use entityTranslucent directly without the static particle overlay
+        VertexConsumer portalStatic = multibuffersource$buffersource.getBuffer(RenderType.entityTranslucent(TEXTURES[textureIndex]));
         PoseStack posestack = new PoseStack();
         PoseStack.Pose posestack$pose = posestack.last();
-        //Matrix4f matrix4f = posestack$pose.pose();
+        // Matrix4f matrix4f = posestack$pose.pose();
         Matrix3f matrix3f = posestack$pose.normal();
 
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
         vector3f1.rotate(quaternion);
-        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+        Vector3f[] avector3f = new Vector3f[] { new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F) };
         float f4 = size;
 
-        for(int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
             Vector3f vector3f = avector3f[i];
             vector3f.rotate(quaternion);
             vector3f.mul(f4);
@@ -101,13 +108,29 @@ public class ParticleStaticSpark extends Particle {
         float f5 = 0;
         float f6 = 1;
         int j = 240;
-        portalStatic.vertex((double)avector3f[0].x(), (double)avector3f[0].y(), (double)avector3f[0].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(f8, f6).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-        portalStatic.vertex((double)avector3f[1].x(), (double)avector3f[1].y(), (double)avector3f[1].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(f8, f5).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-        portalStatic.vertex((double)avector3f[2].x(), (double)avector3f[2].y(), (double)avector3f[2].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(f7, f5).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-        portalStatic.vertex((double)avector3f[3].x(), (double)avector3f[3].y(), (double)avector3f[3].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv(f7, f6).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+        // In 1.21, vertex() uses addVertex with Matrix4f from the pose stack, setNormal
+        // takes Pose
+        Matrix4f matrix4f = posestack.last().pose();
+        portalStatic.addVertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z())
+                .setColor(this.rCol, this.gCol, this.bCol, this.alpha).setUv(f8, f6)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
+        portalStatic.addVertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z())
+                .setColor(this.rCol, this.gCol, this.bCol, this.alpha).setUv(f8, f5)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
+        portalStatic.addVertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z())
+                .setColor(this.rCol, this.gCol, this.bCol, this.alpha).setUv(f7, f5)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
+        portalStatic.addVertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z())
+                .setColor(this.rCol, this.gCol, this.bCol, this.alpha).setUv(f7, f6)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
 
         multibuffersource$buffersource.endBatch();
     }
+
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.CUSTOM;
@@ -115,7 +138,8 @@ public class ParticleStaticSpark extends Particle {
 
     @OnlyIn(Dist.CLIENT)
     public static class Factory implements ParticleProvider<SimpleParticleType> {
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z,
+                double xSpeed, double ySpeed, double zSpeed) {
             return new ParticleStaticSpark(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }

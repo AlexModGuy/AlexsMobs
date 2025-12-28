@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class GUITransmutationTable extends AbstractContainerScreen<MenuTransmutationTable> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/gui/transmutation_table.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/gui/transmutation_table.png");
     private int tickCount = 0;
     private ButtonTransmute transmuteBtn1;
     private ButtonTransmute transmuteBtn2;
@@ -40,7 +40,7 @@ public class GUITransmutationTable extends AbstractContainerScreen<MenuTransmuta
     }
 
     public void render(GuiGraphics guiGraphics, int x, int y, float partialTick) {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, x, y, partialTick);
         this.renderBg(guiGraphics, partialTick, x, y);
         super.render(guiGraphics, x, y, partialTick);
         this.renderItemsTransmute(guiGraphics, x, y);

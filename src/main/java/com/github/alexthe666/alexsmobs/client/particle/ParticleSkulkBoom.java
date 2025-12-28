@@ -16,22 +16,23 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class ParticleSkulkBoom extends Particle {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/particle/skulk_boom.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/particle/skulk_boom.png");
     private float size;
     private float prevSize;
     private float prevAlpha;
     private final float alphaDecrease;
 
-
-    private ParticleSkulkBoom(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ) {
+    private ParticleSkulkBoom(ClientLevel world, double x, double y, double z, double motionX, double motionY,
+            double motionZ) {
         super(world, x, y, z);
         this.setSize(1, 0.1F);
         this.alpha = 1F;
@@ -40,11 +41,11 @@ public class ParticleSkulkBoom extends Particle {
         this.yd = motionY;
         this.zd = motionZ;
         this.lifetime = 20 + this.random.nextInt(20);
-        this.alphaDecrease = 1F / (float)Math.max(this.lifetime, 1F);
+        this.alphaDecrease = 1F / (float) Math.max(this.lifetime, 1F);
         this.size = 0.3F;
     }
 
-    public void tick(){
+    public void tick() {
         super.tick();
         this.prevSize = size;
         this.prevAlpha = alpha;
@@ -52,18 +53,20 @@ public class ParticleSkulkBoom extends Particle {
         this.xd *= 0.1D;
         this.yd *= 0.8D;
         this.zd *= 0.1D;
-        if(this.alpha > 0.0F){
+        if (this.alpha > 0.0F) {
             this.alpha = Math.max(this.alpha - alphaDecrease, 0.0F);
         }
         this.setSize(1 + size, 0.1F);
     }
+
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTick) {
         Vec3 vec3 = camera.getPosition();
-        float f = (float)(Mth.lerp((double)partialTick, this.xo, this.x) - vec3.x());
-        float f1 = (float)(Mth.lerp((double)partialTick, this.yo, this.y) - vec3.y());
-        float f2 = (float)(Mth.lerp((double)partialTick, this.zo, this.z) - vec3.z());
+        float f = (float) (Mth.lerp((double) partialTick, this.xo, this.x) - vec3.x());
+        float f1 = (float) (Mth.lerp((double) partialTick, this.yo, this.y) - vec3.y());
+        float f2 = (float) (Mth.lerp((double) partialTick, this.zo, this.z) - vec3.z());
         Quaternionf quaternion = Axis.XP.rotationDegrees(90F);
-        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
+        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers()
+                .bufferSource();
         VertexConsumer portalStatic = multibuffersource$buffersource.getBuffer(AMRenderTypes.getSkulkBoom());
         PoseStack posestack = new PoseStack();
         PoseStack.Pose posestack$pose = posestack.last();
@@ -73,9 +76,10 @@ public class ParticleSkulkBoom extends Particle {
         float alphaLerp = prevAlpha + partialTick * (alpha - prevAlpha);
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
         vector3f1.rotate(quaternion);
-        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+        Vector3f[] avector3f = new Vector3f[] { new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F),
+                new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F) };
 
-        for(int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
             Vector3f vector3f = avector3f[i];
             vector3f.rotate(quaternion);
             vector3f.mul(f4);
@@ -86,13 +90,28 @@ public class ParticleSkulkBoom extends Particle {
         float f5 = 0;
         float f6 = 1;
         int j = 240;
-        portalStatic.vertex((double)avector3f[0].x(), (double)avector3f[0].y(), (double)avector3f[0].z()).color(this.rCol, this.gCol, this.bCol, alphaLerp).uv(f8, f6).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-        portalStatic.vertex((double)avector3f[1].x(), (double)avector3f[1].y(), (double)avector3f[1].z()).color(this.rCol, this.gCol, this.bCol, alphaLerp).uv(f8, f5).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-        portalStatic.vertex((double)avector3f[2].x(), (double)avector3f[2].y(), (double)avector3f[2].z()).color(this.rCol, this.gCol, this.bCol, alphaLerp).uv(f7, f5).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-        portalStatic.vertex((double)avector3f[3].x(), (double)avector3f[3].y(), (double)avector3f[3].z()).color(this.rCol, this.gCol, this.bCol, alphaLerp).uv(f7, f6).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(j).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+        // In 1.21, vertex() uses addVertex with Matrix4f from the pose stack, setNormal
+        // takes Pose
+        portalStatic.addVertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z())
+                .setColor(this.rCol, this.gCol, this.bCol, alphaLerp).setUv(f8, f6)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
+        portalStatic.addVertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z())
+                .setColor(this.rCol, this.gCol, this.bCol, alphaLerp).setUv(f8, f5)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
+        portalStatic.addVertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z())
+                .setColor(this.rCol, this.gCol, this.bCol, alphaLerp).setUv(f7, f5)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
+        portalStatic.addVertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z())
+                .setColor(this.rCol, this.gCol, this.bCol, alphaLerp).setUv(f7, f6)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(j).setNormal(0.0F, -1.0F, 0.0F);
 
         multibuffersource$buffersource.endBatch();
     }
+
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.CUSTOM;
@@ -100,7 +119,8 @@ public class ParticleSkulkBoom extends Particle {
 
     @OnlyIn(Dist.CLIENT)
     public static class Factory implements ParticleProvider<SimpleParticleType> {
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z,
+                double xSpeed, double ySpeed, double zSpeed) {
             return new ParticleSkulkBoom(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }

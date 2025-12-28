@@ -12,10 +12,12 @@ import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,14 +54,15 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -80,7 +83,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     private static final Predicate<EntityCrimsonMosquito> HEALTHY_MOSQUITOES = (mob) -> {
         return mob.isAlive() && mob.getHealth() > 0 && !mob.isSick();
     };
-    public static final ResourceLocation OBSIDIAN_LOOT = new ResourceLocation("alexsmobs", "entities/laviathan_obsidian");
+    public static final ResourceKey<LootTable> OBSIDIAN_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/laviathan_obsidian"));
     public final EntityLaviathanPart headPart;
     public final EntityLaviathanPart neckPart1;
     public final EntityLaviathanPart neckPart2;
@@ -112,12 +115,14 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     protected EntityLaviathan(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
-        this.setMaxUpStep(1.3F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.LAVA, 0.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(PathType.DAMAGE_FIRE, 0.0F);
         this.headPart = new EntityLaviathanPart(this, 1.2F, 0.9F);
         this.neckPart1 = new EntityLaviathanPart(this, 0.9F, 0.9F);
         this.neckPart2 = new EntityLaviathanPart(this, 0.9F, 0.9F);
@@ -159,7 +164,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     @Nullable
-    protected ResourceLocation getDefaultLootTable() {
+    protected ResourceKey<LootTable> getDefaultLootTable() {
         return this.isObsidian() ? OBSIDIAN_LOOT : super.getDefaultLootTable();
     }
 
@@ -340,7 +345,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                 passenger.stopRiding();
             } else {
                 EntityLaviathanPart seat = seatParts[posit];
-                passenger.setPos(seat.getX(), this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), seat.getZ());
+                passenger.setPos(seat.getX(), this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, seat.getZ());
             }
         }
     }
@@ -410,7 +415,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     protected float getBlockSpeedFactor() {
-        return shouldSwim() || this.onSoulSpeedBlock() ? 1.0F : super.getBlockSpeedFactor();
+        return shouldSwim() || false /* onSoulSpeedBlock removed */ ? 1.0F : super.getBlockSpeedFactor();
     }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
@@ -461,7 +466,9 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         super.tickRidden(player, vec3);
         this.setRot(player.getYRot(), player.getXRot() * 0.5F);
         this.setYHeadRot(player.getYHeadRot());
-        this.setMaxUpStep(1.3F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.setTarget(null);
     }
 
@@ -471,7 +478,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     @Override
     public double getFluidMotionScale(FluidType type) {
-        return type == ForgeMod.WATER_TYPE.get() || type == ForgeMod.LAVA_TYPE.get() ? 1.0F : super.getFluidMotionScale(type);
+        return type == NeoForgeMod.WATER_TYPE.value() || type == NeoForgeMod.LAVA_TYPE.value() ? 1.0F : super.getFluidMotionScale(type);
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -485,15 +492,15 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(OBSIDIAN, false);
-        this.entityData.define(HAS_BODY_GEAR, false);
-        this.entityData.define(HAS_HEAD_GEAR, false);
-        this.entityData.define(HEAD_HEIGHT, 0F);
-        this.entityData.define(HEAD_YROT, 0F);
-        this.entityData.define(CHILL_TIME, 0);
-        this.entityData.define(ATTACK_TICK, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(OBSIDIAN, false);
+        builder.define(HAS_BODY_GEAR, false);
+        builder.define(HAS_HEAD_GEAR, false);
+        builder.define(HEAD_HEIGHT, 0F);
+        builder.define(HEAD_YROT, 0F);
+        builder.define(CHILL_TIME, 0);
+        builder.define(ATTACK_TICK, 0);
     }
 
     public void travel(Vec3 travelVector) {
@@ -530,16 +537,12 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         return 4;
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     public boolean isPushedByFluid() {
         return false;
-    }
-
-    public MobType getMobType() {
-        return MobType.WATER;
     }
 
     public void tick() {
@@ -718,7 +721,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         if (this.isVehicle() && !this.level().isClientSide && tickCount % 40 == 0 && this.getPassengers().size() > 3) {
             for (Entity entity : this.getPassengers()) {
                 if (entity instanceof ServerPlayer) {
-                    AMAdvancementTriggerRegistry.LAVIATHAN_FOUR_PASSENGERS.trigger((ServerPlayer) entity);
+                    AMAdvancementTriggerRegistry.LAVIATHAN_FOUR_PASSENGERS.get().trigger((ServerPlayer) entity);
                 }
             }
         }
@@ -738,7 +741,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             return;
         }
         boolean flag = false;
-        if (!this.level().isClientSide && this.isVehicle() && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level(), this)) {
+        if (!this.level().isClientSide && this.isVehicle() && this.blockBreakCounter == 0 && net.neoforged.neoforge.event.EventHooks.canEntityGrief(level(), this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
@@ -977,7 +980,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     @Override
-    public net.minecraftforge.entity.PartEntity<?>[] getParts() {
+    public net.neoforged.neoforge.entity.PartEntity<?>[] getParts() {
         return this.allParts;
     }
 

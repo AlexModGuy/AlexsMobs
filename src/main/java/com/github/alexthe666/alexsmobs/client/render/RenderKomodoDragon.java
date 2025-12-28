@@ -12,9 +12,9 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderKomodoDragon extends MobRenderer<EntityKomodoDragon, ModelKomodoDragon> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon.png");
-    private static final ResourceLocation TEXTURE_SADDLE = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon_saddle.png");
-    private static final ResourceLocation TEXTURE_MAID = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon_maid.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/komodo_dragon.png");
+    private static final ResourceLocation TEXTURE_SADDLE = ResourceLocation.parse("alexsmobs:textures/entity/komodo_dragon_saddle.png");
+    private static final ResourceLocation TEXTURE_MAID = ResourceLocation.parse("alexsmobs:textures/entity/komodo_dragon_maid.png");
 
     public RenderKomodoDragon(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelKomodoDragon(0.0F), 0.6F);
@@ -43,14 +43,14 @@ public class RenderKomodoDragon extends MobRenderer<EntityKomodoDragon, ModelKom
                 this.getParentModel().copyPropertiesTo(MAID_MODEL);
                 MAID_MODEL.prepareMobModel(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
                 MAID_MODEL.setupAnim(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                MAID_MODEL.renderToBuffer(matrixStackIn, maid, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+                MAID_MODEL.renderToBuffer(matrixStackIn, maid, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), -1);
             }
             if(entitylivingbaseIn.isSaddled()){
                 VertexConsumer saddle = bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_SADDLE));
                 this.getParentModel().copyPropertiesTo(SADDLE_MODEL);
                 SADDLE_MODEL.prepareMobModel(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
                 SADDLE_MODEL.setupAnim(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                SADDLE_MODEL.renderToBuffer(matrixStackIn, saddle, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+                SADDLE_MODEL.renderToBuffer(matrixStackIn, saddle, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), -1);
             }
         }
     }

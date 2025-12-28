@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderCaiman extends MobRenderer<EntityCaiman, ModelCaiman> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/caiman.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/caiman.png");
 
     public RenderCaiman(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCaiman(), 0.4F);

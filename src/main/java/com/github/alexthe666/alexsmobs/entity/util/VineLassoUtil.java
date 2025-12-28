@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity.util;
 
-import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.github.alexthe666.citadel.server.message.PropertiesMessage;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -36,7 +36,7 @@ public class VineLassoUtil {
         lassoedTag.putBoolean(LASSO_PACKET, true);
         CitadelEntityData.setCitadelTag(lassoed, lassoedTag);
         if(!lassoed.level().isClientSide){
-            Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, lassoed.getId()));
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(lassoed, new PropertiesMessage("CitadelPatreonConfig", lassoedTag, lassoed.getId()));
         }
     }
 
@@ -84,7 +84,7 @@ public class VineLassoUtil {
             if (tag.contains(LASSO_PACKET) || tag.getBoolean(LASSO_REMOVED)) {
                 tag.putBoolean(LASSO_PACKET, false);
                 CitadelEntityData.setCitadelTag(lassoed, tag);
-                Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", tag, lassoed.getId()));
+                PacketDistributor.sendToPlayersTrackingEntityAndSelf(lassoed, new PropertiesMessage("CitadelPatreonConfig", tag, lassoed.getId()));
             }
         }
         Entity lassoedOwner = VineLassoUtil.getLassoedTo(lassoed);

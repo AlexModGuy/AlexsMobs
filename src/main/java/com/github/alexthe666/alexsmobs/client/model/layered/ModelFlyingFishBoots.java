@@ -53,7 +53,7 @@ public class ModelFlyingFishBoots extends HumanoidModel {
 
     public ModelFlyingFishBoots withAnimations(LivingEntity entity){
         if(entity != null) {
-            float partialTick = Minecraft.getInstance().getFrameTime();
+            float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
             float ageInTicks = entity.tickCount + partialTick;
             float fly = Mth.cos(ageInTicks * 0.2F) * 0.1F;
             float fly2 = fly * 0.35F;

@@ -52,13 +52,12 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -96,7 +95,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
     protected EntityRaccoon(EntityType type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
     }
 
     protected float getWaterSlowDown() {
@@ -226,13 +225,13 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                     this.spawnAtLocation(this.getCarpetItemBeingWorn());
                 }
                 this.gameEvent(GameEvent.ENTITY_INTERACT);
-                this.playSound(SoundEvents.LLAMA_SWAG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+                this.playSound(SoundEvents.LLAMA_SWAG.value(), 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
                 itemstack.shrink(1);
                 this.setColor(color);
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;
-        } else if (owner && this.getColor() != null && itemstack.is(Tags.Items.SHEARS)) {
+        } else if (owner && this.getColor() != null && itemstack.is(net.minecraft.world.item.Items.SHEARS)) {
             this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
             if (this.getColor() != null) {
@@ -321,7 +320,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public static boolean isRaccoonFood(ItemStack stack) {
-        return stack.isEdible() || stack.is(AMTagRegistry.RACCOON_FOODSTUFFS);
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) || stack.is(AMTagRegistry.RACCOON_FOODSTUFFS);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -447,7 +446,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     public void postWashItem(ItemStack stack) {
         if (stack.is(AMTagRegistry.RACCOON_TAMEABLES) && eggThrowerUUID != null && !this.isTame()) {
             if (getRandom().nextFloat() < 0.3F) {
-                this.setTame(true);
+                this.setTame(true, true);
                 this.setOwnerUUID(eggThrowerUUID);
                 Player player = level().getPlayerByUUID(eggThrowerUUID);
                 if (player instanceof ServerPlayer) {
@@ -510,15 +509,15 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(STANDING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(BEGGING, false);
-        this.entityData.define(WASHING, false);
-        this.entityData.define(CARPET_COLOR, -1);
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(WASH_POS, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(STANDING, false);
+        builder.define(SITTING, false);
+        builder.define(BEGGING, false);
+        builder.define(WASHING, false);
+        builder.define(CARPET_COLOR, -1);
+        builder.define(COMMAND, 0);
+        builder.define(WASH_POS, Optional.empty());
     }
 
 

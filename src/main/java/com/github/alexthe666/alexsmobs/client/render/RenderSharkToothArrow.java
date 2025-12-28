@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderSharkToothArrow extends ArrowRenderer<EntitySharkToothArrow> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/shark_tooth_arrow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/shark_tooth_arrow.png");
 
     public RenderSharkToothArrow(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);

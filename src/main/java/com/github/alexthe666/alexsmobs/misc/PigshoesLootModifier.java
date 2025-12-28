@@ -3,23 +3,21 @@ package com.github.alexthe666.alexsmobs.misc;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class PigshoesLootModifier implements IGlobalLootModifier {
 
-    public static final Supplier<Codec<PigshoesLootModifier>> CODEC = () ->
-            RecordCodecBuilder.create(inst ->
+    public static final MapCodec<PigshoesLootModifier> CODEC =
+            RecordCodecBuilder.mapCodec(inst ->
                     inst.group(
                                     LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(lm -> lm.conditions)
                             )
@@ -31,7 +29,12 @@ public class PigshoesLootModifier implements IGlobalLootModifier {
 
     public PigshoesLootModifier(LootItemCondition[] conditionsIn) {
         this.conditions = conditionsIn;
-        this.orConditions = LootItemConditions.orConditions(conditionsIn);
+        this.orConditions = (context) -> {
+            for (LootItemCondition condition : conditionsIn) {
+                if (condition.test(context)) return true;
+            }
+            return false;
+        };
     }
 
 
@@ -51,7 +54,7 @@ public class PigshoesLootModifier implements IGlobalLootModifier {
     }
 
     @Override
-    public Codec<? extends IGlobalLootModifier> codec() {
-        return CODEC.get();
+    public MapCodec<? extends IGlobalLootModifier> codec() {
+        return CODEC;
     }
 }

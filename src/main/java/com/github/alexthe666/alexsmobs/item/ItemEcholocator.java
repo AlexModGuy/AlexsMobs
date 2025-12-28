@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.google.common.base.Predicates;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -15,11 +16,13 @@ import net.minecraft.tags.StructureTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -98,11 +101,12 @@ public class ItemEcholocator extends Item {
                     }
                 }
             }else{
-                CompoundTag nbt = stack.getOrCreateTag();
+                CompoundTag nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
                 if(nbt.contains("CavePos") && nbt.getBoolean("ValidCavePos")){
                     pos = BlockPos.of(nbt.getLong("CavePos"));
                     if(isCaveAir(worldIn, pos) || 1000000 < pos.distSqr(playerPos)){
                         nbt.putBoolean("ValidCavePos", false);
+                        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
                     }
                 }else{
                     for (BlockPos portalPos : portals) {
@@ -113,7 +117,7 @@ public class ItemEcholocator extends Item {
                     if(pos != null){
                         nbt.putLong("CavePos", pos.asLong());
                         nbt.putBoolean("ValidCavePos", true);
-                        stack.setTag(nbt);
+                        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
                     }
                 }
 
@@ -127,9 +131,7 @@ public class ItemEcholocator extends Item {
                 worldIn.addFreshEntity(whaleEcho);
                 livingEntityIn.gameEvent(GameEvent.ITEM_INTERACT_START);
                 worldIn.playSound((Player)null, whaleEcho.getX(), whaleEcho.getY(), whaleEcho.getZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-                stack.hurtAndBreak(1, livingEntityIn, (player) -> {
-                    player.broadcastBreakEvent(livingEntityIn.getUsedItemHand());
-                });
+                stack.hurtAndBreak(1, livingEntityIn, EquipmentSlot.MAINHAND);
             }
         }
         livingEntityIn.getCooldowns().addCooldown(this, 5);

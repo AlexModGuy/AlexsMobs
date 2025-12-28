@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:glass_bottle",
+    "alexsmobs:komodo_spit",
+    "alexsmobs:komodo_spit",
+    "alexsmobs:komodo_spit",
+    "alexsmobs:komodo_spit"
+  ],
+  "result": {
+    "id": "alexsmobs:komodo_spit_bottle",
+    "count": 1
+  }
+}

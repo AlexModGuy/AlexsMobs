@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "F F"
+  ],
+  "key": {
+    "F": "alexsmobs:flying_fish",
+    "S": "#c:string"
+  },
+  "result": {
+    "id": "alexsmobs:flying_fish_boots",
+    "count": 1
+  }
+}

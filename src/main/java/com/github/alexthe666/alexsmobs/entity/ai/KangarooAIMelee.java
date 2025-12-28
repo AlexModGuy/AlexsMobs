@@ -8,7 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 public class KangarooAIMelee extends MeleeAttackGoal {
@@ -40,8 +40,8 @@ public class KangarooAIMelee extends MeleeAttackGoal {
                     waterCheckTick++;
                     waterPos = generateWaterPos();
                 } else {
-                    kangaroo.setPathfindingMalus(BlockPathTypes.WATER, 0);
-                    kangaroo.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0);
+                    kangaroo.setPathfindingMalus(PathType.WATER, 0);
+                    kangaroo.setPathfindingMalus(PathType.WATER_BORDER, 0);
                     double localSpeed = Mth.clamp(kangaroo.distanceToSqr(waterPos.getX(), waterPos.getY(), waterPos.getZ()) * 0.5F, 1D, 2.3D);
                     kangaroo.getMoveControl().setWantedPosition(waterPos.getX(), waterPos.getY(), waterPos.getZ(), localSpeed);
                     if (kangaroo.isInWater()){
@@ -83,8 +83,8 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         waterTimeout = 0;
         waterPos = null;
         kangaroo.setVisualFlag(0);
-        kangaroo.setPathfindingMalus(BlockPathTypes.WATER, 8);
-        kangaroo.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 8);
+        kangaroo.setPathfindingMalus(PathType.WATER, 8);
+        kangaroo.setPathfindingMalus(PathType.WATER_BORDER, 8);
     }
 
     public BlockPos generateWaterPos() {
@@ -104,7 +104,7 @@ public class KangarooAIMelee extends MeleeAttackGoal {
     }
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-        double d0 = this.getAttackReachSqr(enemy) + 5D;
+        double d0 = getAttackReachSqr(enemy) + 5D;
         if (distToEnemySqr <= d0) {
             if(kangaroo.isInWater()){
                 float f1 = kangaroo.getYRot() * Mth.DEG_TO_RAD;
@@ -125,6 +125,10 @@ public class KangarooAIMelee extends MeleeAttackGoal {
                 }
             }
         }
+    }
+
+    protected double getAttackReachSqr(LivingEntity target) {
+        return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + target.getBbWidth());
     }
 
 }

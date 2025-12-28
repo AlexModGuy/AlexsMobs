@@ -15,10 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 
 public class RenderCombJelly extends MobRenderer<EntityCombJelly, ModelCombJelly> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/comb_jelly_blue.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/comb_jelly_green.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/comb_jelly_red.png");
-    private static final ResourceLocation TEXTURE_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/comb_jelly_overlay.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/comb_jelly_blue.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/comb_jelly_green.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation.parse("alexsmobs:textures/entity/comb_jelly_red.png");
+    private static final ResourceLocation TEXTURE_OVERLAY = ResourceLocation.parse("alexsmobs:textures/entity/comb_jelly_overlay.png");
     private static final ModelCombJelly STRIPES_MODEL = new ModelCombJelly(0.05F);
     public RenderCombJelly(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCombJelly(0.0F), 0.3F);
@@ -57,9 +57,11 @@ public class RenderCombJelly extends MobRenderer<EntityCombJelly, ModelCombJelly
         }
 
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityCombJelly entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            VertexConsumer rainbow = AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.COMBJELLY_RAINBOW_GLINT), bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_OVERLAY)));
+            // In 1.21, merged vertex consumers with different formats can cause issues
+            // Instead of merging, just render the overlay texture directly
+            VertexConsumer overlayConsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_OVERLAY));
             STRIPES_MODEL.setupAnim(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            STRIPES_MODEL.renderToBuffer(matrixStackIn, rainbow, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1.0F);
+            STRIPES_MODEL.renderToBuffer(matrixStackIn, overlayConsumer, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
         }
     }
 }

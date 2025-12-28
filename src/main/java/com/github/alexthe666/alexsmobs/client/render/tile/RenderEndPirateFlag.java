@@ -14,15 +14,16 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RenderEndPirateFlag<T extends TileEntityEndPirateFlag> implements BlockEntityRenderer<T> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/flag.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/end_pirate/flag.png");
     private static final ModelEndPirateFlag FLAG_MODEL = new ModelEndPirateFlag();
-
 
     public RenderEndPirateFlag(Context rendererDispatcherIn) {
     }
 
     @Override
-    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+            int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         Direction dir = tileEntityIn.getBlockState().getValue(BlockEndPirateFlag.FACING);
         switch (dir) {
@@ -36,7 +37,8 @@ public class RenderEndPirateFlag<T extends TileEntityEndPirateFlag> implements B
         matrixStackIn.mulPose(Axis.YN.rotationDegrees(dir.getAxis() == Direction.Axis.Y ? -90.0F : 90.0F));
         matrixStackIn.pushPose();
         FLAG_MODEL.renderFlag(tileEntityIn, partialTicks);
-        FLAG_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
+        FLAG_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)),
+                combinedLightIn, combinedOverlayIn, -1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

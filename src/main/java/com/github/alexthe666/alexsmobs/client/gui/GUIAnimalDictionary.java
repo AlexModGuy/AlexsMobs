@@ -8,14 +8,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 
 @OnlyIn(Dist.CLIENT)
 public class GUIAnimalDictionary extends GuiBasicBook {
 
-    private static final ResourceLocation ROOT = new ResourceLocation("alexsmobs:book/animal_dictionary/root.json");
+    private static final ResourceLocation ROOT = ResourceLocation.parse("alexsmobs:book/animal_dictionary/root.json");
 
     public GUIAnimalDictionary(ItemStack bookStack) {
         super(bookStack, Component.translatable("animal_dictionary.title"));
@@ -23,7 +23,7 @@ public class GUIAnimalDictionary extends GuiBasicBook {
 
     public GUIAnimalDictionary(ItemStack bookStack, String page) {
         super(bookStack, Component.translatable("animal_dictionary.title"));
-        this.currentPageJSON = new ResourceLocation(this.getTextFileDirectory() + page + ".json");
+        this.currentPageJSON = ResourceLocation.parse(this.getTextFileDirectory() + page + ".json");
     }
 
     public void render(GuiGraphics guiGraphics, int x, int y, float partialTicks) {

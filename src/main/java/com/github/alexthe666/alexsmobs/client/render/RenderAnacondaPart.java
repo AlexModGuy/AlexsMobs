@@ -22,7 +22,7 @@ public class RenderAnacondaPart extends LivingEntityRenderer<EntityAnacondaPart,
         super(renderManagerIn, new ModelAnaconda<>(AnacondaPartIndex.NECK), 0.3F);
     }
 
-    protected void setupRotations(EntityAnacondaPart entity, PoseStack stack, float pitchIn, float yawIn, float partialTickTime) {
+    protected void setupRotations(EntityAnacondaPart entity, PoseStack stack, float pitchIn, float yawIn, float partialTickTime, float tickDelta) {
         float newYaw = entity.yHeadRot;
         if (this.isShaking(entity)) {
             newYaw += (float)(Math.cos((double)entity.tickCount * 3.25D) * Math.PI * (double)0.4F);

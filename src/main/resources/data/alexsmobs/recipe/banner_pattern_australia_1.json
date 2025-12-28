@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:paper",
+    "alexsmobs:emu_feather"
+  ],
+  "result": {
+    "id": "alexsmobs:banner_pattern_australia_1",
+    "count": 1
+  }
+}

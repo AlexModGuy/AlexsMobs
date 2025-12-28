@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class AMDamageTypes {
 
-    public static final ResourceKey<DamageType> FARSEER = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("alexsmobs:farseer"));
-    public static final ResourceKey<DamageType> FREDDY = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("alexsmobs:freddy"));
+    public static final ResourceKey<DamageType> FARSEER = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.parse("alexsmobs:farseer"));
+    public static final ResourceKey<DamageType> FREDDY = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.parse("alexsmobs:freddy"));
 
     public static DamageSource causeFarseerDamage(LivingEntity attacker){
         return new DamageSourceRandomMessages(attacker.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(FARSEER), attacker);

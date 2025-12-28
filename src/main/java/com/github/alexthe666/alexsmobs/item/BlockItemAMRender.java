@@ -2,12 +2,12 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockItemAMRender extends AMBlockItem {
 
-    public BlockItemAMRender(RegistryObject<Block> blockSupplier, Properties props) {
+    public BlockItemAMRender(DeferredHolder<Block, Block> blockSupplier, Properties props) {
         super(blockSupplier, props);
     }
 

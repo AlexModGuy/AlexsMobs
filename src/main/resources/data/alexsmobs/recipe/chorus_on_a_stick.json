@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:fishing_rod",
+    "minecraft:chorus_fruit"
+  ],
+  "result": {
+    "id": "alexsmobs:chorus_on_a_stick",
+    "count": 1
+  }
+}

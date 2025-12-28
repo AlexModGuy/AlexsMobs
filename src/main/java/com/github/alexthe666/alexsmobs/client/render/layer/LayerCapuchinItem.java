@@ -19,7 +19,7 @@ import net.minecraft.world.item.Items;
 
 public class LayerCapuchinItem extends RenderLayer<EntityCapuchinMonkey, ModelCapuchinMonkey> {
 
-    public static final ResourceLocation DART_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/ancient_dart.png");
+    public static final ResourceLocation DART_TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/ancient_dart.png");
     public static final ModelAncientDart DART_MODEL = new ModelAncientDart();
 
     public LayerCapuchinItem(RenderCapuchinMonkey render) {
@@ -52,7 +52,7 @@ public class LayerCapuchinItem extends RenderLayer<EntityCapuchinMonkey, ModelCa
             matrixStackIn.pushPose();
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(f));
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(DART_MODEL.renderType(DART_TEXTURE));
-            DART_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            DART_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
             matrixStackIn.popPose();
             matrixStackIn.popPose();
 

@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -62,7 +63,7 @@ import java.util.function.Predicate;
 
 public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal, Bucketable {
 
-    public static final ResourceLocation PUPFISH_REWARD = new ResourceLocation("alexsmobs", "gameplay/pupfish_reward");
+    public static final ResourceKey<LootTable> PUPFISH_REWARD = ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "gameplay/pupfish_reward"));
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityDevilsHolePupfish.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> PUPFISH_SCALE = SynchedEntityData.defineId(EntityDevilsHolePupfish.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> FEEDING_TIME = SynchedEntityData.defineId(EntityDevilsHolePupfish.class, EntityDataSerializers.INT);
@@ -142,13 +143,14 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         return false;
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(PUPFISH_SCALE, 1.0F);
-        this.entityData.define(FEEDING_TIME, 0);
-        this.entityData.define(BABY_AGE, 0);
-        this.entityData.define(FEEDING_POS, Optional.empty());
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FROM_BUCKET, false);
+        builder.define(PUPFISH_SCALE, 1.0F);
+        builder.define(FEEDING_TIME, 0);
+        builder.define(BABY_AGE, 0);
+        builder.define(FEEDING_POS, Optional.empty());
     }
 
     public void tick() {
@@ -207,7 +209,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
 
-    public EntityDimensions getDimensions(Pose poseIn) {
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
         return super.getDimensions(poseIn).scale(this.getPupfishScale());
     }
 
@@ -222,12 +224,10 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.putFloat("BucketScale", this.getPupfishScale());
-        compound.putFloat("BabyAge", this.getBabyAge());
+        // TODO: NeoForge 1.21 - Custom bucket data (BucketScale, BabyAge) needs DataComponents
     }
 
     @Override
@@ -246,7 +246,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.DEVILS_HOLE_PUPFISH_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -301,9 +301,9 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setPupfishScale(0.65F + random.nextFloat() * 0.35F);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     protected void handleAirSupply(int i) {
@@ -363,7 +363,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
     private static List<ItemStack> getFoodLoot(EntityDevilsHolePupfish pupfish) {
-        LootTable loottable = pupfish.level().getServer().getLootData().getLootTable(PUPFISH_REWARD);
+        LootTable loottable = pupfish.level().getServer().reloadableRegistries().getLootTable(PUPFISH_REWARD);
         return loottable.getRandomItems((new LootParams.Builder((ServerLevel) pupfish.level())).withParameter(LootContextParams.THIS_ENTITY, pupfish).create(LootContextParamSets.PIGLIN_BARTER));
     }
 

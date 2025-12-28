@@ -42,7 +42,7 @@ public class ModelCombJelly extends AdvancedEntityModel<EntityCombJelly> {
     @Override
     public void setupAnim(EntityCombJelly entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float birdPitch = entity.prevjellyPitch + (entity.getJellyPitch() - entity.prevjellyPitch) * partialTick;
         float landProgress = entity.prevOnLandProgress + (entity.onLandProgress - entity.prevOnLandProgress) * partialTick;
         float girateSpeed = 0.1F * ageInTicks * (1F - landProgress * 0.2F);

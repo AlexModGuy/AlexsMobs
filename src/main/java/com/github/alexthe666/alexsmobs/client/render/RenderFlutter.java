@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderFlutter extends MobRenderer<EntityFlutter, EntityModel<EntityFlutter>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/flutter.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/flutter_eyes.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/flutter.png");
+    private static final ResourceLocation TEXTURE_EYES = ResourceLocation.parse("alexsmobs:textures/entity/flutter_eyes.png");
     private final ModelFlutter modelFlutter = new ModelFlutter();
     private final ModelFlutterPotted modelPotted = new ModelFlutterPotted();
 

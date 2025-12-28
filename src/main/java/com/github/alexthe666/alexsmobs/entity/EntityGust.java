@@ -3,8 +3,6 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,10 +15,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -39,10 +35,6 @@ public class EntityGust extends Entity {
         this(AMEntityRegistry.GUST.get(), worldIn);
     }
 
-    public EntityGust(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.GUST.get(), world);
-    }
-
     public void push(Entity entityIn) {
 
     }
@@ -59,10 +51,13 @@ public class EntityGust extends Entity {
         return Mth.lerp(0.2F, p_234614_0_, p_234614_1_);
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     public void tick() {
         super.tick();
@@ -153,11 +148,12 @@ public class EntityGust extends Entity {
 
     }
 
-    protected void defineSynchedData() {
-        this.entityData.define(VERTICAL, false);
-        this.entityData.define(X_DIR, 0f);
-        this.entityData.define(Y_DIR, 0F);
-        this.entityData.define(Z_DIR, 0F);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(VERTICAL, false);
+        builder.define(X_DIR, 0f);
+        builder.define(Y_DIR, 0F);
+        builder.define(Z_DIR, 0F);
     }
 
     protected void addAdditionalSaveData(CompoundTag compound) {

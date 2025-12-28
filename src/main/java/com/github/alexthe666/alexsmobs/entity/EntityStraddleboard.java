@@ -6,8 +6,6 @@ import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,10 +23,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -68,10 +64,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         this.blocksBuilding = true;
     }
 
-    public EntityStraddleboard(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.STRADDLEBOARD.get(), world);
-    }
-
     public EntityStraddleboard(Level worldIn, double x, double y, double z) {
         this(AMEntityRegistry.STRADDLEBOARD.get(), worldIn);
         this.setPos(x, y, z);
@@ -86,16 +78,17 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     protected float getEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
-        return sizeIn.height;
+        return sizeIn.height();
     }
 
-    protected void defineSynchedData() {
-        this.entityData.define(TIME_SINCE_HIT, 0);
-        this.entityData.define(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD.get()));
-        this.entityData.define(DEFAULT_COLOR, true);
-        this.entityData.define(COLOR, 0);
-        this.entityData.define(BOARD_ROT, 0F);
-        this.entityData.define(REMOVE_SOON, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(TIME_SINCE_HIT, 0);
+        builder.define(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD.get()));
+        builder.define(DEFAULT_COLOR, true);
+        builder.define(COLOR, 0);
+        builder.define(BOARD_ROT, 0F);
+        builder.define(REMOVE_SOON, false);
     }
 
     public boolean shouldRiderSit() {
@@ -106,7 +99,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return canVehicleCollide(this, entity);
     }
 
-    protected Vec3 getRelativePortalPosition(Direction.Axis axis, BlockUtil.FoundRectangle result) {
+    public Vec3 getRelativePortalPosition(Direction.Axis axis, BlockUtil.FoundRectangle result) {
         return LivingEntity.resetForwardDirectionOfRelativePortalPosition(super.getRelativePortalPosition(axis, result));
     }
 
@@ -209,7 +202,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             if (this.removeIn <= 0 && !this.level().isClientSide) {
                 this.removeIn = 0;
                 boolean drop;
-                if(this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN.get()) > 0){
+                if(this.getEnchantLevel(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) > 0){
                     drop = returnToPlayer != null && !returnToPlayer.addItem(this.getItemBoard());
                 }else{
                     drop = true;
@@ -248,7 +241,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                 returnToPlayer = player;
                 rideForTicks++;
                 if (this.tickCount % 50 == 0) {
-                    if (getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX.get()) > 0) {
+                    if (getEnchantLevel(AMEnchantmentRegistry.STRADDLE_LAVAWAX) > 0) {
                         player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
                     }
                 }
@@ -325,8 +318,9 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return this.level().getFluidState(underPos).is(FluidTags.LAVA) && !this.level().getFluidState(ourPos).is(FluidTags.LAVA);
     }
 
+    // lerpTo signature changed in 1.21 - removed boolean parameter
     @Override
-    public void lerpTo(double x, double y, double z, float yr, float xr, int steps, boolean b) {
+    public void lerpTo(double x, double y, double z, float yr, float xr, int steps) {
         this.lx = x;
         this.ly = y;
         this.lz = z;
@@ -417,10 +411,13 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return Mth.lerp(partialTicks, this.prevRockingAngle, this.rockingAngle);
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
 
     @Override
@@ -432,7 +429,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.setDefaultColor(compound.getBoolean("IsDefColor"));
         if (compound.contains("BoardStack")) {
-            this.setItemStack(ItemStack.of(compound.getCompound("BoardStack")));
+            this.setItemStack(ItemStack.parseOptional(this.registryAccess(), compound.getCompound("BoardStack")));
         }
         this.setColor(compound.getInt("Color"));
     }
@@ -442,9 +439,8 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         compound.putBoolean("IsDefColor", this.isDefaultColor());
         compound.putInt("Color", this.getColor());
         if (!this.getItemStack().isEmpty()) {
-            CompoundTag stackTag = new CompoundTag();
-            this.getItemStack().save(stackTag);
-            compound.put("BoardStack", stackTag);
+            // ItemStack.save needs RegistryAccess in 1.21
+            compound.put("BoardStack", this.getItemStack().save(this.registryAccess()));
         }
 
     }
@@ -463,17 +459,21 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     public void handleStartJump(int i) {
         this.hasImpulse = true;
         if(canJump()){
-            float f = 0.075F + getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP.get()) * 0.05F;
+            float f = 0.075F + getEnchantLevel(AMEnchantmentRegistry.STRADDLE_JUMP) * 0.05F;
             jumpFor = 5 + (int)(i * f);
         }
     }
 
-    private int getEnchant(Enchantment enchantment) {
-        return EnchantmentHelper.getItemEnchantmentLevel(enchantment, this.getItemBoard());
+    private int getEnchantLevel(net.minecraft.resources.ResourceKey<Enchantment> enchantmentKey) {
+        if (this.level().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).get(enchantmentKey).isPresent()) {
+            net.minecraft.core.Holder<Enchantment> holder = this.level().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).get(enchantmentKey).get();
+            return EnchantmentHelper.getItemEnchantmentLevel(holder, this.getItemBoard());
+        }
+        return 0;
     }
 
     public boolean shouldSerpentFriend() {
-        return getEnchant(AMEnchantmentRegistry.STRADDLE_SERPENTFRIEND.get()) > 0;
+        return getEnchantLevel(AMEnchantmentRegistry.STRADDLE_SERPENTFRIEND) > 0;
     }
 
     public Vec3 getDismountLocationForPassenger(LivingEntity entity) {

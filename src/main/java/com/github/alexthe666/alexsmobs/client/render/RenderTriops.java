@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderTriops extends MobRenderer<EntityTriops, ModelTriops> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/triops.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/triops.png");
 
     public RenderTriops(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTriops(), 0.2F);

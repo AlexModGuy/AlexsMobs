@@ -15,27 +15,37 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_2.png");
-    private static final ResourceLocation TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_3.png");
-    private static final ResourceLocation GREEN_TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_0_green.png");
-    private static final ResourceLocation GREEN_TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_1_green.png");
-    private static final ResourceLocation GREEN_TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_2_green.png");
-    private static final ResourceLocation GREEN_TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_3_green.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_1.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_2.png");
+    private static final ResourceLocation TEXTURE_3 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_3.png");
+    private static final ResourceLocation GREEN_TEXTURE_0 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_0_green.png");
+    private static final ResourceLocation GREEN_TEXTURE_1 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_1_green.png");
+    private static final ResourceLocation GREEN_TEXTURE_2 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_2_green.png");
+    private static final ResourceLocation GREEN_TEXTURE_3 = ResourceLocation
+            .parse("alexsmobs:textures/entity/cachalot/whale_echo_3_green.png");
 
     public RenderCachalotEcho(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 
-    public void render(EntityCachalotEcho entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntityCachalotEcho entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.0D, 0.25F, 0.0D);
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
+        matrixStackIn
+                .mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         int arcs = Mth.clamp(Mth.floor(entityIn.tickCount / 5F), 1, 4);
         matrixStackIn.translate(0.0D, 0.0F, 0.4D);
-        for(int i = 0; i < arcs; i++){
+        for (int i = 0; i < arcs; i++) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, 0, -0.5F * i);
             renderArc(matrixStackIn, bufferIn, (i + 1) * 5, entityIn.isFasterAnimation(), entityIn.isGreen());
@@ -48,9 +58,9 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
     private void renderArc(PoseStack matrixStackIn, MultiBufferSource bufferIn, int age, boolean fast, boolean green) {
         matrixStackIn.pushPose();
         ResourceLocation res;
-        if(fast){
+        if (fast) {
             res = getEntityTextureFaster(age, green);
-        }else{
+        } else {
             res = getEntityTexture(age);
         }
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(res));
@@ -69,9 +79,18 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
         return TEXTURE_0;
     }
 
-
-    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_, int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_, int p_229039_11_, int p_229039_12_) {
-        p_229039_3_.vertex(p_229039_1_, (float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_).color(255, 255, 255, 255).uv(p_229039_7_, p_229039_8_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_229039_12_).normal(p_229039_2_, (float) p_229039_9_, (float) p_229039_11_, (float) p_229039_10_).endVertex();
+    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_,
+            int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_,
+            int p_229039_11_, int p_229039_12_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f((float) p_229039_9_, (float) p_229039_11_,
+                (float) p_229039_10_);
+        normal.mul(p_229039_2_);
+        org.joml.Vector4f pos = new org.joml.Vector4f((float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_,
+                1.0F);
+        pos.mul(p_229039_1_);
+        p_229039_3_.addVertex(pos.x, pos.y, pos.z).setColor(255, 255, 255, 255).setUv(p_229039_7_, p_229039_8_)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(p_229039_12_).setNormal(normal.x, normal.y, normal.z);
     }
 
     /**

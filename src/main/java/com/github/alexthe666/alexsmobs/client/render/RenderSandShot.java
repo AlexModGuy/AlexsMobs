@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.projectile.LlamaSpit;
 
 public class RenderSandShot extends EntityRenderer<EntitySandShot> {
-    private static final ResourceLocation SAND_SHOT = new ResourceLocation("alexsmobs:textures/entity/sand_shot.png");
+    private static final ResourceLocation SAND_SHOT = ResourceLocation.parse("alexsmobs:textures/entity/sand_shot.png");
     private final LlamaSpitModel<LlamaSpit> model;
 
     public RenderSandShot(EntityRendererProvider.Context renderManagerIn) {
@@ -24,10 +24,12 @@ public class RenderSandShot extends EntityRenderer<EntitySandShot> {
         model = new LlamaSpitModel<>(renderManagerIn.bakeLayer(ModelLayers.LLAMA_SPIT));
     }
 
-    public void render(EntitySandShot entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntitySandShot entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
-        matrixStackIn.translate(0.0D, (double)0.15F, 0.0D);
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
+        matrixStackIn.translate(0.0D, (double) 0.15F, 0.0D);
+        matrixStackIn
+                .mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.scale(1.2F, 1.2F, 1.2F);
         int i = EntityGuster.getColorForVariant(entityIn.getVariant());
@@ -35,7 +37,8 @@ public class RenderSandShot extends EntityRenderer<EntitySandShot> {
         float g = (float) (i >> 8 & 255) / 255.0F;
         float b = (float) (i & 255) / 255.0F;
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(this.model.renderType(SAND_SHOT));
-        this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
+        this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY,
+                AMColorUtil.packColor(r, g, b, 1.0F));
         matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }

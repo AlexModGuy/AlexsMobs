@@ -92,7 +92,7 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
         float idleDegree = 0.2F;
         float swimSpeed = 1.3F;
         float swimDegree = 1.3F;
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float digProgress = entity.prevDigProgress + (entity.digProgress - entity.prevDigProgress) * partialTick;
         float swimProgress = entity.prevInWaterProgress + (entity.inWaterProgress - entity.prevInWaterProgress) * partialTick;
         progressPositionPrev(body, swimProgress, 0, -3.5F, 0, 5f);
@@ -152,7 +152,7 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         if (this.young) {
             float f = 1.65F;
             head.setScale(f, f, f);
@@ -161,14 +161,14 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
             head.setScale(1, 1, 1);
         } else {
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
         }

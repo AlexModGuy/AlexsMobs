@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:glass_bottle",
+    "alexsmobs:blobfish",
+    "alexsmobs:blobfish",
+    "alexsmobs:blobfish",
+    "alexsmobs:blobfish"
+  ],
+  "result": {
+    "id": "alexsmobs:fish_oil",
+    "count": 1
+  }
+}

@@ -4,8 +4,9 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,31 +16,39 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.OptionalInt;
 
 public class EntityEnderiophageRocket extends FireworkRocketEntity {
 
+    private static final EntityDataAccessor<ItemStack> DATA_FIREWORKS_ITEM = SynchedEntityData.defineId(EntityEnderiophageRocket.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<OptionalInt> DATA_ATTACHED_TARGET = SynchedEntityData.defineId(EntityEnderiophageRocket.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
     private int phageAge = 0;
+    private int rocketLifetime = 0;
 
     public EntityEnderiophageRocket(EntityType p_i50164_1_, Level p_i50164_2_) {
         super(p_i50164_1_, p_i50164_2_);
     }
 
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_FIREWORKS_ITEM, ItemStack.EMPTY);
+        builder.define(DATA_ATTACHED_TARGET, OptionalInt.empty());
+    }
+
     public EntityEnderiophageRocket(Level worldIn, double x, double y, double z, ItemStack givenItem) {
         super(AMEntityRegistry.ENDERIOPHAGE_ROCKET.get(), worldIn);
         this.setPos(x, y, z);
-        if (!givenItem.isEmpty() && givenItem.hasTag()) {
-            this.entityData.set(DATA_ID_FIREWORKS_ITEM, givenItem.copy());
+        if (!givenItem.isEmpty()) {
+            this.entityData.set(DATA_FIREWORKS_ITEM, givenItem.copy());
         }
 
         this.setDeltaMovement(this.random.nextGaussian() * 0.001D, 0.05D, this.random.nextGaussian() * 0.001D);
-        this.lifetime = 18 + this.random.nextInt(14);
+        this.rocketLifetime = 18 + this.random.nextInt(14);
     }
 
     public EntityEnderiophageRocket(Level p_i231581_1_, @Nullable Entity p_i231581_2_, double p_i231581_3_, double p_i231581_5_, double p_i231581_7_, ItemStack p_i231581_9_) {
@@ -49,17 +58,16 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
 
     public EntityEnderiophageRocket(Level p_i47367_1_, ItemStack p_i47367_2_, LivingEntity p_i47367_3_) {
         this(p_i47367_1_, p_i47367_3_, p_i47367_3_.getX(), p_i47367_3_.getY(), p_i47367_3_.getZ(), p_i47367_2_);
-        this.entityData.set(DATA_ATTACHED_TO_TARGET, OptionalInt.of(p_i47367_3_.getId()));
+        this.entityData.set(DATA_ATTACHED_TARGET, OptionalInt.of(p_i47367_3_.getId()));
     }
 
-    public EntityEnderiophageRocket(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.ENDERIOPHAGE_ROCKET.get(), world);
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     public void tick() {
         super.tick();

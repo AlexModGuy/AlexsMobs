@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderSeaBear extends MobRenderer<EntitySeaBear, ModelSeaBear> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/sea_bear.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/sea_bear.png");
 
     public RenderSeaBear(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSeaBear(), 1.2F);

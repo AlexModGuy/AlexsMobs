@@ -15,14 +15,16 @@ import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 
 public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements BlockEntityRenderer<T> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/door.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/end_pirate/door.png");
     private static final ModelEndPirateDoor DOOR_MODEL = new ModelEndPirateDoor();
 
     public RenderEndPirateDoor(Context rendererDispatcherIn) {
     }
 
     @Override
-    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+            int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         Direction dir = tileEntityIn.getBlockState().getValue(BlockEndPirateDoor.HORIZONTAL_FACING);
         switch (dir) {
@@ -36,12 +38,13 @@ public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements B
         matrixStackIn.translate(0, 1, -1);
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
         matrixStackIn.scale(0.999F, 0.999F, 0.999F);
-        DOOR_MODEL.renderDoor(tileEntityIn, partialTicks, tileEntityIn.getBlockState().getValue(BlockEndPirateDoor.HINGE) == DoorHingeSide.LEFT);
-        DOOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
+        DOOR_MODEL.renderDoor(tileEntityIn, partialTicks,
+                tileEntityIn.getBlockState().getValue(BlockEndPirateDoor.HINGE) == DoorHingeSide.LEFT);
+        DOOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE)),
+                combinedLightIn, combinedOverlayIn, -1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }
-
 
     public int getViewDistance() {
         return 128;

@@ -26,7 +26,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
 
-    private static final ResourceLocation CLAW_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tendon_whip_claw.png");
+    private static final ResourceLocation CLAW_TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/tendon_whip_claw.png");
     private static final ModelTendonClaw CLAW_MODEL = new ModelTendonClaw();
 
     public RenderTendonSegment(EntityRendererProvider.Context renderManagerIn) {
@@ -55,12 +55,9 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             Vec3 from = distVec;
             int segmentCount = 0;
             Vec3 currentNeckButt = from;
-            VertexConsumer neckConsumer;
-            if(entity.hasGlint()){
-                neckConsumer = AMRenderTypes.createMergedVertexConsumer(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE)));
-            }else{
-                neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE));
-            }
+            // In 1.21, merged vertex consumers with different formats can cause issues
+            // Skip the glint effect and use the base texture only
+            VertexConsumer neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE));
             ModelMurmurNeck.THIN = true;
             double remainingDistance = to.distanceTo(from);
             while (segmentCount < RenderMurmurHead.MAX_NECK_SEGMENTS && remainingDistance > 0) {
@@ -75,19 +72,16 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
                 segmentCount++;
             }
             ModelMurmurNeck.THIN = false;
-            VertexConsumer clawConsumer;
-            if(entity.hasGlint()){
-                clawConsumer = AMRenderTypes.createMergedVertexConsumer(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE)));
-            }else{
-                clawConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE));
-            }
+            // In 1.21, merged vertex consumers with different formats can cause issues
+            // Skip the glint effect and use the base texture only
+            VertexConsumer clawConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE));
             if(entity.hasClaw() || entity.isRetracting()){
                 poseStack.pushPose();
                 poseStack.translate(to.x, to.y, to.z);
                 float rotY = (float) (Mth.atan2(to.x, to.z) * (double) Mth.RAD_TO_DEG);
                 float rotX = (float) (-(Mth.atan2(to.y, to.horizontalDistance()) * (double) Mth.RAD_TO_DEG));
                 CLAW_MODEL.setAttributes(rotX, rotY, 1 - progress);
-                CLAW_MODEL.renderToBuffer(poseStack, clawConsumer, getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1F, 1, 1F);
+                CLAW_MODEL.renderToBuffer(poseStack, clawConsumer, getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, -1);
                 poseStack.popPose();
             }
         }

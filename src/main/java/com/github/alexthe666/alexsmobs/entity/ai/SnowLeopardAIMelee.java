@@ -13,7 +13,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 
@@ -215,7 +215,7 @@ public class SnowLeopardAIMelee extends Goal {
                     }
 
                     if (p_226339_5_ || !creature.level().getFluidState(lvt_25_2_).is(FluidTags.WATER)) {
-                        BlockPathTypes lvt_26_1_ = WalkNodeEvaluator.getBlockPathTypeStatic(creature.level(), lvt_25_2_.mutable());
+                        PathType lvt_26_1_ = WalkNodeEvaluator.getPathTypeStatic(leopard, lvt_25_2_);
                         if (leopard.getPathfindingMalus(lvt_26_1_) == 0.0F) {
                             double lvt_27_1_ = p_226339_8_.applyAsDouble(lvt_25_2_);
                             if (lvt_27_1_ > lvt_17_1_) {

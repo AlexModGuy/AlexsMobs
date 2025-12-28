@@ -14,29 +14,39 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_2.png");
-    private static final ResourceLocation TEXTURE_SHATTERED_0 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_0.png");
-    private static final ResourceLocation TEXTURE_SHATTERED_1 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_1.png");
-    private static final ResourceLocation TEXTURE_SHATTERED_2 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_2.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation
+            .parse("alexsmobs:textures/entity/void_worm/portal/portal_idle_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation
+            .parse("alexsmobs:textures/entity/void_worm/portal/portal_idle_1.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation
+            .parse("alexsmobs:textures/entity/void_worm/portal/portal_idle_2.png");
+    private static final ResourceLocation TEXTURE_SHATTERED_0 = ResourceLocation
+            .parse("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_0.png");
+    private static final ResourceLocation TEXTURE_SHATTERED_1 = ResourceLocation
+            .parse("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_1.png");
+    private static final ResourceLocation TEXTURE_SHATTERED_2 = ResourceLocation
+            .parse("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_2.png");
     private static final ResourceLocation[] TEXTURE_PROGRESS = new ResourceLocation[10];
     private static final ResourceLocation[] TEXTURE_SHATTERED_PROGRESS = new ResourceLocation[10];
+
     public RenderVoidPortal(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
-        for(int i = 0; i < 10; i++){
-            TEXTURE_PROGRESS[i] = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_grow_" + i + ".png");
-            TEXTURE_SHATTERED_PROGRESS[i] = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_grow_" + i + ".png");
+        for (int i = 0; i < 10; i++) {
+            TEXTURE_PROGRESS[i] = ResourceLocation
+                    .parse("alexsmobs:textures/entity/void_worm/portal/portal_grow_" + i + ".png");
+            TEXTURE_SHATTERED_PROGRESS[i] = ResourceLocation
+                    .parse("alexsmobs:textures/entity/void_worm/portal/shattered/portal_grow_" + i + ".png");
         }
     }
 
-    public void render(EntityVoidPortal entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntityVoidPortal entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(entityIn.getAttachmentFacing().getOpposite().getRotation());
         matrixStackIn.translate(0.5D, 0, 0.5D);
         matrixStackIn.scale(2F, 2F, 2F);
         renderPortal(entityIn, matrixStackIn, bufferIn, false);
-        if(entityIn.isShattered()){
+        if (entityIn.isShattered()) {
             float off = 0.01F;
             matrixStackIn.pushPose();
             matrixStackIn.translate(0F, off, 0F);
@@ -51,18 +61,24 @@ public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    private void renderPortal(EntityVoidPortal entityIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, boolean shattered){
+    private void renderPortal(EntityVoidPortal entityIn, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+            boolean shattered) {
         ResourceLocation tex;
-        if(entityIn.getLifespan() < 20){
+        if (entityIn.getLifespan() < 20) {
             tex = getGrowingTexture((int) ((entityIn.getLifespan() * 0.5F) % 10), shattered);
-        }else if(entityIn.tickCount < 20){
+        } else if (entityIn.tickCount < 20) {
             tex = getGrowingTexture((int) ((entityIn.tickCount * 0.5F) % 10), shattered);
-        }else{
+        } else {
             tex = getIdleTexture(entityIn.tickCount % 9, shattered);
         }
-        VertexConsumer ivertexbuilder = shattered ? AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityCutoutNoCull(tex))) : bufferIn.getBuffer(AMRenderTypes.getFullBright(tex));
+        // In 1.21, merged vertex consumers with different formats can cause issues
+        // Use entityCutoutNoCull for shattered, getFullBright for normal
+        VertexConsumer ivertexbuilder = shattered
+                ? bufferIn.getBuffer(RenderType.entityCutoutNoCull(tex))
+                : bufferIn.getBuffer(AMRenderTypes.getFullBright(tex));
         renderArc(matrixStackIn, ivertexbuilder);
     }
+
     private void renderArc(PoseStack matrixStackIn, VertexConsumer ivertexbuilder) {
         matrixStackIn.pushPose();
         PoseStack.Pose lvt_19_1_ = matrixStackIn.last();
@@ -80,11 +96,19 @@ public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
         return TEXTURE_0;
     }
 
-
-    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_, int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_, int p_229039_11_, int p_229039_12_) {
-        p_229039_3_.vertex(p_229039_1_, (float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_).color(255, 255, 255, 255).uv(p_229039_7_, p_229039_8_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_229039_12_).normal(p_229039_2_, (float) p_229039_9_, (float) p_229039_11_, (float) p_229039_10_).endVertex();
+    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_,
+            int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_,
+            int p_229039_11_, int p_229039_12_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f((float) p_229039_9_, (float) p_229039_11_,
+                (float) p_229039_10_);
+        normal.mul(p_229039_2_);
+        org.joml.Vector4f pos = new org.joml.Vector4f((float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_,
+                1.0F);
+        pos.mul(p_229039_1_);
+        p_229039_3_.addVertex(pos.x, pos.y, pos.z).setColor(255, 255, 255, 255).setUv(p_229039_7_, p_229039_8_)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(p_229039_12_).setNormal(normal.x, normal.y, normal.z);
     }
-
 
     public ResourceLocation getIdleTexture(int age, boolean shattered) {
         if (age < 3) {

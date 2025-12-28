@@ -1,15 +1,15 @@
 package com.github.alexthe666.alexsmobs.item;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTendonSegment;
 import com.github.alexthe666.alexsmobs.entity.util.TendonWhipUtil;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -17,24 +17,26 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 
 public class ItemTendonWhip extends SwordItem implements ILeftClick {
 
-    private final ImmutableMultimap<Attribute, AttributeModifier> tendonModifiers;
-
     public ItemTendonWhip(Item.Properties props) {
-        super(Tiers.IRON, 3, 0, props);
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)4F, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)-3.0F, AttributeModifier.Operation.ADDITION));
-        this.tendonModifiers = builder.build();
+        super(Tiers.IRON, props.attributes(createTendonAttributes()));
+    }
+
+    private static ItemAttributeModifiers createTendonAttributes() {
+        return ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "tendon_attack_damage"), 4.0, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "tendon_attack_speed"), -3.0, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .build();
     }
 
     public static boolean isActive(ItemStack stack, LivingEntity holder) {
@@ -42,11 +44,6 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
             return !TendonWhipUtil.canLaunchTendons(holder.level(), holder);
         }
         return false;
-    }
-
-
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-        return slot == EquipmentSlot.MAINHAND ? this.tendonModifiers : super.getDefaultAttributeModifiers(slot);
     }
 
     public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity player) {
@@ -79,9 +76,7 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
                 }
             }
             if(closestValid != null){
-                stack.hurtAndBreak(1, playerIn, (player) -> {
-                    player.broadcastBreakEvent(playerIn.getUsedItemHand());
-                });
+                stack.hurtAndBreak(1, playerIn, EquipmentSlot.MAINHAND);
             }
             return launchTendonsAt(stack, playerIn, closestValid);
         }
@@ -111,8 +106,8 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
         return false;
     }
 
-    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-        return toolAction != ToolActions.SWORD_SWEEP && super.canPerformAction(stack, toolAction);
+    public boolean canPerformAction(ItemStack stack, ItemAbility ItemAbility) {
+        return ItemAbility != ItemAbilities.SWORD_SWEEP && super.canPerformAction(stack, ItemAbility);
     }
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
@@ -128,3 +123,4 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
     }
 
 }
+

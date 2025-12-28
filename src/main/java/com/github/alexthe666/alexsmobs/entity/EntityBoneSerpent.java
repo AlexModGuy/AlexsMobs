@@ -34,7 +34,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -60,8 +60,8 @@ public class EntityBoneSerpent extends Monster {
 
     protected EntityBoneSerpent(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.LAVA, 0.0F);
         switchNavigator(false);
     }
 
@@ -99,14 +99,10 @@ public class EntityBoneSerpent extends Monster {
     }
 
     public boolean canBeAffected(MobEffectInstance potioneffectIn) {
-        if (potioneffectIn.getEffect() == MobEffects.WITHER) {
+        if (potioneffectIn.is(MobEffects.WITHER)) {
             return false;
         }
         return super.canBeAffected(potioneffectIn);
-    }
-
-    public MobType getMobType() {
-        return MobType.UNDEAD;
     }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
@@ -209,9 +205,9 @@ public class EntityBoneSerpent extends Monster {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CHILD_UUID, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CHILD_UUID, Optional.empty());
     }
 
     @Nullable
@@ -233,7 +229,7 @@ public class EntityBoneSerpent extends Monster {
 
     public void tick() {
         super.tick();
-        isInsidePortal = false;
+        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         final boolean ground = !this.isInLava() && !this.isInWater() && this.onGround();
         if (jumpCooldown > 0) {
             jumpCooldown--;
@@ -305,9 +301,9 @@ public class EntityBoneSerpent extends Monster {
         }
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     static class BoneSerpentMoveController extends MoveControl {
         private final EntityBoneSerpent dolphin;

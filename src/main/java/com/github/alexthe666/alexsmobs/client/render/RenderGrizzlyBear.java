@@ -16,10 +16,14 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderGrizzlyBear extends MobRenderer<EntityGrizzlyBear, ModelGrizzlyBear> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/grizzly_bear.png");
-    private static final ResourceLocation TEXTURE_SNOWY = new ResourceLocation("alexsmobs:textures/entity/grizzly_bear_snowy.png");
-    public static final ResourceLocation TEXTURE_FREDDY = new ResourceLocation("alexsmobs:textures/entity/grizzly_bear_freddy.png");
-    private static final ResourceLocation TEXTURE_FREDDY_EYES = new ResourceLocation("alexsmobs:textures/entity/grizzly_bear_freddy_eyes.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/grizzly_bear.png");
+    private static final ResourceLocation TEXTURE_SNOWY = ResourceLocation
+            .parse("alexsmobs:textures/entity/grizzly_bear_snowy.png");
+    public static final ResourceLocation TEXTURE_FREDDY = ResourceLocation
+            .parse("alexsmobs:textures/entity/grizzly_bear_freddy.png");
+    private static final ResourceLocation TEXTURE_FREDDY_EYES = ResourceLocation
+            .parse("alexsmobs:textures/entity/grizzly_bear_freddy_eyes.png");
 
     public RenderGrizzlyBear(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGrizzlyBear(), 0.8F);
@@ -29,7 +33,8 @@ public class RenderGrizzlyBear extends MobRenderer<EntityGrizzlyBear, ModelGrizz
         this.addLayer(new LayerGrizzlyItem(this));
     }
 
-    public boolean shouldRender(EntityGrizzlyBear livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(EntityGrizzlyBear livingEntityIn, Frustum camera, double camX, double camY,
+            double camZ) {
         if (livingEntityIn.getAprilFoolsFlag() == 5) {
             return false;
         }
@@ -46,10 +51,13 @@ public class RenderGrizzlyBear extends MobRenderer<EntityGrizzlyBear, ModelGrizz
             super(RenderGrizzlyBear.this);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityGrizzlyBear entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntityGrizzlyBear entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
             if (entitylivingbaseIn.isSnowy()) {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_SNOWY));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn,
+                        LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), -1);
             }
         }
     }
@@ -60,10 +68,14 @@ public class RenderGrizzlyBear extends MobRenderer<EntityGrizzlyBear, ModelGrizz
             super(RenderGrizzlyBear.this);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityGrizzlyBear entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntityGrizzlyBear entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
             if (entitylivingbaseIn.getAprilFoolsFlag() == 4 && entitylivingbaseIn.tickCount % 6 <= 2) {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getEyesNoFog(TEXTURE_FREDDY_EYES));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 0.1F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn,
+                        LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F),
+                        AMColorUtil.packColor(1.0F, 1.0F, 1.0F, 0.1F));
             }
         }
     }
