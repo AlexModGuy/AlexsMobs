@@ -333,8 +333,14 @@ public class EntityGiantSquid extends WaterAnimal {
                     this.incrementSquidPitch(dist);
                 }
             }
-            if (!this.onGround() && this.getFluidHeight(FluidTags.WATER) < this.getBbHeight()) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.1F, 0));
+            if (!this.onGround() && !this.isInWater() && this.getFluidHeight(FluidTags.WATER) < this.getBbHeight()) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.05F, 0));
+            }
+            // Flop on land like other fish
+            if (!this.isInWaterOrBubble() && this.onGround() && this.random.nextFloat() < 0.02F) {
+                this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.15F, 0.3D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F));
+                this.setYRot(this.random.nextFloat() * 360.0F);
+                this.playSound(SoundEvents.GUARDIAN_FLOP, this.getSoundVolume(), this.getVoicePitch());
             }
             float pressure = getDepressureLevel();
             if (this.getDepressurization() < pressure) {
