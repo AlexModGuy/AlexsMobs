@@ -6,7 +6,9 @@
     "SSS"
   ],
   "key": {
-    "S": "alexsmobs:crocodile_scute"
+    "S": {
+      "item": "alexsmobs:crocodile_scute"
+    }
   },
   "result": {
     "id": "alexsmobs:crocodile_chestplate",

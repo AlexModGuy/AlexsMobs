@@ -6,9 +6,15 @@
     "T  "
   ],
   "key": {
-    "C": "minecraft:leather_helmet",
-    "T": "alexsmobs:raccoon_tail",
-    "H": "alexsmobs:bear_fur"
+    "C": {
+      "item": "minecraft:leather_helmet"
+    },
+    "T": {
+      "item": "alexsmobs:raccoon_tail"
+    },
+    "H": {
+      "item": "alexsmobs:bear_fur"
+    }
   },
   "result": {
     "id": "alexsmobs:frontier_cap",

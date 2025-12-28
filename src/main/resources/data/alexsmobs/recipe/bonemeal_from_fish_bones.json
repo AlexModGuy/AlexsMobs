@@ -1,7 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "alexsmobs:fish_bones"
+    {
+      "item": "alexsmobs:fish_bones"
+    }
   ],
   "result": {
     "id": "minecraft:bone_meal",

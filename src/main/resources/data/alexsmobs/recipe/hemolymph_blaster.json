@@ -6,11 +6,21 @@
     "M  "
   ],
   "key": {
-    "C": "alexsmobs:mimicream",
-    "S": "alexsmobs:hemolymph_sac",
-    "P": "alexsmobs:mosquito_proboscis",
-    "M": "alexsmobs:warped_muscle",
-    "B": "alexsmobs:blood_sprayer"
+    "C": {
+      "item": "alexsmobs:mimicream"
+    },
+    "S": {
+      "item": "alexsmobs:hemolymph_sac"
+    },
+    "P": {
+      "item": "alexsmobs:mosquito_proboscis"
+    },
+    "M": {
+      "item": "alexsmobs:warped_muscle"
+    },
+    "B": {
+      "item": "alexsmobs:blood_sprayer"
+    }
   },
   "result": {
     "id": "alexsmobs:hemolymph_blaster",

@@ -1,8 +1,12 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "minecraft:paper",
-    "alexsmobs:shed_snake_skin"
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "alexsmobs:shed_snake_skin"
+    }
   ],
   "result": {
     "id": "alexsmobs:banner_pattern_brazil",

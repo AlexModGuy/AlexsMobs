@@ -6,9 +6,15 @@
     "OOO"
   ],
   "key": {
-    "O": "minecraft:obsidian",
-    "S": "alexsmobs:farseer_arm",
-    "N": "minecraft:nether_star"
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "S": {
+      "item": "alexsmobs:farseer_arm"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    }
   },
   "result": {
     "id": "alexsmobs:transmutation_table",

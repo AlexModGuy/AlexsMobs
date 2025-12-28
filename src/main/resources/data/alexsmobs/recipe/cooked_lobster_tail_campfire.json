@@ -1,6 +1,8 @@
 {
   "type": "minecraft:campfire_cooking",
-  "ingredient": "alexsmobs:lobster_tail",
+  "ingredient": {
+    "item": "alexsmobs:lobster_tail"
+  },
   "result": {
     "id": "alexsmobs:cooked_lobster_tail"
   },

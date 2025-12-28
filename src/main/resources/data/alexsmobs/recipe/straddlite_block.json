@@ -6,7 +6,9 @@
     "SSS"
   ],
   "key": {
-    "S": "alexsmobs:straddlite"
+    "S": {
+      "item": "alexsmobs:straddlite"
+    }
   },
   "result": {
     "id": "alexsmobs:straddlite_block",

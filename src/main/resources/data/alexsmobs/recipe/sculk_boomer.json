@@ -6,9 +6,15 @@
     "BBB"
   ],
   "key": {
-    "S": "alexsmobs:skreecher_soul",
-    "F": "minecraft:sculk",
-    "B": "minecraft:bone_block"
+    "S": {
+      "item": "alexsmobs:skreecher_soul"
+    },
+    "F": {
+      "item": "minecraft:sculk"
+    },
+    "B": {
+      "item": "minecraft:bone_block"
+    }
   },
   "result": {
     "id": "alexsmobs:sculk_boomer",

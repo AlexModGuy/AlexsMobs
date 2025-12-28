@@ -6,7 +6,9 @@
     "SSS"
   ],
   "key": {
-    "S": "alexsmobs:rocky_shell"
+    "S": {
+      "item": "alexsmobs:rocky_shell"
+    }
   },
   "result": {
     "id": "alexsmobs:rocky_chestplate",

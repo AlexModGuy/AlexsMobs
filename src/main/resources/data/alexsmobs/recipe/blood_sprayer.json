@@ -6,9 +6,15 @@
     "B  "
   ],
   "key": {
-    "S": "alexsmobs:blood_sac",
-    "P": "alexsmobs:mosquito_proboscis",
-    "B": "minecraft:nether_brick"
+    "S": {
+      "item": "alexsmobs:blood_sac"
+    },
+    "P": {
+      "item": "alexsmobs:mosquito_proboscis"
+    },
+    "B": {
+      "item": "minecraft:nether_brick"
+    }
   },
   "result": {
     "id": "alexsmobs:blood_sprayer",

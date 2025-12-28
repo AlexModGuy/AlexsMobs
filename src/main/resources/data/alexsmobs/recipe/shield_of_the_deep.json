@@ -6,10 +6,18 @@
     "TPT"
   ],
   "key": {
-    "T": "alexsmobs:shark_tooth",
-    "S": "alexsmobs:serrated_shark_tooth",
-    "P": "minecraft:prismarine_bricks",
-    "H": "minecraft:heart_of_the_sea"
+    "T": {
+      "item": "alexsmobs:shark_tooth"
+    },
+    "S": {
+      "item": "alexsmobs:serrated_shark_tooth"
+    },
+    "P": {
+      "item": "minecraft:prismarine_bricks"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
+    }
   },
   "result": {
     "id": "alexsmobs:shield_of_the_deep",

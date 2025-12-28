@@ -4,7 +4,9 @@
     "FF"
   ],
   "key": {
-    "F": "alexsmobs:bison_fur_block"
+    "F": {
+      "item": "alexsmobs:bison_fur_block"
+    }
   },
   "result": {
     "id": "alexsmobs:bison_carpet",

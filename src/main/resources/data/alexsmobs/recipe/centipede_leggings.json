@@ -6,7 +6,9 @@
     "S S"
   ],
   "key": {
-    "S": "alexsmobs:centipede_leg"
+    "S": {
+      "item": "alexsmobs:centipede_leg"
+    }
   },
   "result": {
     "id": "alexsmobs:centipede_leggings",

@@ -1,7 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "alexsmobs:bison_fur_block"
+    {
+      "item": "alexsmobs:bison_fur_block"
+    }
   ],
   "result": {
     "id": "alexsmobs:bison_fur",

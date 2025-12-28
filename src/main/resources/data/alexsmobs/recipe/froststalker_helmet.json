@@ -6,8 +6,12 @@
     "I I"
   ],
   "key": {
-    "H": "alexsmobs:froststalker_horn",
-    "I": "minecraft:packed_ice"
+    "H": {
+      "item": "alexsmobs:froststalker_horn"
+    },
+    "I": {
+      "item": "minecraft:packed_ice"
+    }
   },
   "result": {
     "id": "alexsmobs:froststalker_helmet",

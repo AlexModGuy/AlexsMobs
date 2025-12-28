@@ -6,8 +6,12 @@
     "L L"
   ],
   "key": {
-    "S": "alexsmobs:straddlite",
-    "L": "minecraft:string"
+    "S": {
+      "item": "alexsmobs:straddlite"
+    },
+    "L": {
+      "item": "minecraft:string"
+    }
   },
   "result": {
     "id": "alexsmobs:straddle_helmet",

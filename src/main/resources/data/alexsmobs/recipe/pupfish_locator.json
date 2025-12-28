@@ -6,9 +6,15 @@
     "SBS"
   ],
   "key": {
-    "S": "minecraft:slime_ball",
-    "B": "alexsmobs:fish_bones",
-    "A": "alexsmobs:echolocator"
+    "S": {
+      "item": "minecraft:slime_ball"
+    },
+    "B": {
+      "item": "alexsmobs:fish_bones"
+    },
+    "A": {
+      "item": "alexsmobs:echolocator"
+    }
   },
   "result": {
     "id": "alexsmobs:pupfish_locator",

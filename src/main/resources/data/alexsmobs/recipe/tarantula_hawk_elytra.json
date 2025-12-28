@@ -4,8 +4,12 @@
     "WEW"
   ],
   "key": {
-    "W": "alexsmobs:tarantula_hawk_wing",
-    "E": "minecraft:elytra"
+    "W": {
+      "item": "alexsmobs:tarantula_hawk_wing"
+    },
+    "E": {
+      "item": "minecraft:elytra"
+    }
   },
   "result": {
     "id": "alexsmobs:tarantula_hawk_elytra",

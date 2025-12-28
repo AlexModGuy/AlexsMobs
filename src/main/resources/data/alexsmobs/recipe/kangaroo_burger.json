@@ -6,8 +6,12 @@
     "B"
   ],
   "key": {
-    "K": "alexsmobs:cooked_kangaroo_meat",
-    "B": "minecraft:bread"
+    "K": {
+      "item": "alexsmobs:cooked_kangaroo_meat"
+    },
+    "B": {
+      "item": "minecraft:bread"
+    }
   },
   "result": {
     "id": "alexsmobs:kangaroo_burger",

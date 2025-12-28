@@ -5,9 +5,15 @@
     "S S"
   ],
   "key": {
-    "S": "#c:string",
-    "A": "alexsmobs:moose_antler",
-    "I": "#c:ingots/iron"
+    "S": {
+      "tag": "c:string"
+    },
+    "A": {
+      "item": "alexsmobs:moose_antler"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
   },
   "result": {
     "id": "alexsmobs:moose_headgear",

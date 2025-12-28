@@ -6,9 +6,15 @@
     " X "
   ],
   "key": {
-    "E": "alexsmobs:void_worm_eye",
-    "M": "alexsmobs:void_worm_mandible",
-    "X": "#c:ingots/netherite"
+    "E": {
+      "item": "alexsmobs:void_worm_eye"
+    },
+    "M": {
+      "item": "alexsmobs:void_worm_mandible"
+    },
+    "X": {
+      "tag": "c:ingots/netherite"
+    }
   },
   "result": {
     "id": "alexsmobs:dimensional_carver",

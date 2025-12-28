@@ -1,6 +1,8 @@
 {
   "type": "minecraft:smoking",
-  "ingredient": "alexsmobs:raw_catfish",
+  "ingredient": {
+    "item": "alexsmobs:raw_catfish"
+  },
   "result": {
     "id": "alexsmobs:cooked_catfish"
   },

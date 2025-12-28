@@ -6,9 +6,15 @@
     "SV "
   ],
   "key": {
-    "L": "minecraft:lead",
-    "S": "alexsmobs:shed_snake_skin",
-    "V": "minecraft:vine"
+    "L": {
+      "item": "minecraft:lead"
+    },
+    "S": {
+      "item": "alexsmobs:shed_snake_skin"
+    },
+    "V": {
+      "item": "minecraft:vine"
+    }
   },
   "result": {
     "id": "alexsmobs:vine_lasso",

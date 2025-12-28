@@ -1,8 +1,12 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "alexsmobs:dropbear_claw",
-    "minecraft:flint"
+    {
+      "item": "alexsmobs:dropbear_claw"
+    },
+    {
+      "item": "minecraft:flint"
+    }
   ],
   "result": {
     "id": "minecraft:flint_and_steel",

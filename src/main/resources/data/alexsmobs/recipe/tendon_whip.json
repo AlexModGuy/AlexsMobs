@@ -6,9 +6,15 @@
     "ST "
   ],
   "key": {
-    "C": "alexsmobs:dropbear_claw",
-    "T": "alexsmobs:elastic_tendon",
-    "S": "#c:rods/wooden"
+    "C": {
+      "item": "alexsmobs:dropbear_claw"
+    },
+    "T": {
+      "item": "alexsmobs:elastic_tendon"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
   },
   "result": {
     "id": "alexsmobs:tendon_whip",

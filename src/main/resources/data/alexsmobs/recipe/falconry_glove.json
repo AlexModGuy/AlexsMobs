@@ -6,8 +6,12 @@
     " H "
   ],
   "key": {
-    "H": "alexsmobs:bear_fur",
-    "L": "minecraft:leather"
+    "H": {
+      "item": "alexsmobs:bear_fur"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
   },
   "result": {
     "id": "alexsmobs:falconry_glove",

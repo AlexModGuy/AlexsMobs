@@ -6,9 +6,15 @@
     " C "
   ],
   "key": {
-    "C": "minecraft:copper_ingot",
-    "T": "alexsmobs:lost_tentacle",
-    "B": "minecraft:crossbow"
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "T": {
+      "item": "alexsmobs:lost_tentacle"
+    },
+    "B": {
+      "item": "minecraft:crossbow"
+    }
   },
   "result": {
     "id": "alexsmobs:squid_grapple",

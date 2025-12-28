@@ -6,9 +6,15 @@
     "EIE"
   ],
   "key": {
-    "C": "alexsmobs:capsid",
-    "E": "minecraft:end_stone",
-    "I": "#c:nuggets/iron"
+    "C": {
+      "item": "alexsmobs:capsid"
+    },
+    "E": {
+      "item": "minecraft:end_stone"
+    },
+    "I": {
+      "tag": "c:nuggets/iron"
+    }
   },
   "result": {
     "id": "alexsmobs:enderiophage_rocket",

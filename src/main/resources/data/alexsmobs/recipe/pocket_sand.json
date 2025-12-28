@@ -6,9 +6,15 @@
     "LLL"
   ],
   "key": {
-    "E": "alexsmobs:guster_eye",
-    "S": "#minecraft:sand",
-    "L": "minecraft:leather"
+    "E": {
+      "item": "alexsmobs:guster_eye"
+    },
+    "S": {
+      "tag": "minecraft:sand"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
   },
   "result": {
     "id": "alexsmobs:pocket_sand",

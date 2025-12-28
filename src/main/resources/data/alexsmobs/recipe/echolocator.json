@@ -6,9 +6,15 @@
     " P "
   ],
   "key": {
-    "C": "alexsmobs:cachalot_whale_tooth",
-    "P": "#c:ingots/iron",
-    "A": "alexsmobs:ambergris"
+    "C": {
+      "item": "alexsmobs:cachalot_whale_tooth"
+    },
+    "P": {
+      "tag": "c:ingots/iron"
+    },
+    "A": {
+      "item": "alexsmobs:ambergris"
+    }
   },
   "result": {
     "id": "alexsmobs:echolocator",

@@ -6,9 +6,15 @@
     "SRS"
   ],
   "key": {
-    "E": "alexsmobs:guster_eye",
-    "S": "minecraft:cut_sandstone",
-    "R": "minecraft:redstone"
+    "E": {
+      "item": "alexsmobs:guster_eye"
+    },
+    "S": {
+      "item": "minecraft:cut_sandstone"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
   },
   "result": {
     "id": "alexsmobs:gustmaker",

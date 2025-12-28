@@ -6,9 +6,15 @@
     "FPF"
   ],
   "key": {
-    "G": "minecraft:glass_bottle",
-    "P": "minecraft:copper_ingot",
-    "F": "minecraft:sunflower"
+    "G": {
+      "item": "minecraft:glass_bottle"
+    },
+    "P": {
+      "item": "minecraft:copper_ingot"
+    },
+    "F": {
+      "item": "minecraft:sunflower"
+    }
   },
   "result": {
     "id": "alexsmobs:hummingbird_feeder",

@@ -5,8 +5,12 @@
     "SS"
   ],
   "key": {
-    "S": "alexsmobs:straddlite",
-    "E": "minecraft:saddle"
+    "S": {
+      "item": "alexsmobs:straddlite"
+    },
+    "E": {
+      "item": "minecraft:saddle"
+    }
   },
   "result": {
     "id": "alexsmobs:straddle_saddle",

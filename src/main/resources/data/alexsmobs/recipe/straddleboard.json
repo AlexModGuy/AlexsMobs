@@ -6,8 +6,12 @@
     "NS "
   ],
   "key": {
-    "N": "#c:ingots/netherite",
-    "S": "alexsmobs:straddlite"
+    "N": {
+      "tag": "c:ingots/netherite"
+    },
+    "S": {
+      "item": "alexsmobs:straddlite"
+    }
   },
   "result": {
     "id": "alexsmobs:straddleboard",

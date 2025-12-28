@@ -6,9 +6,15 @@
     "SBS"
   ],
   "key": {
-    "S": "minecraft:chiseled_sandstone",
-    "F": "alexsmobs:roadrunner_feather",
-    "B": "minecraft:leather_boots"
+    "S": {
+      "item": "minecraft:chiseled_sandstone"
+    },
+    "F": {
+      "item": "alexsmobs:roadrunner_feather"
+    },
+    "B": {
+      "item": "minecraft:leather_boots"
+    }
   },
   "result": {
     "id": "alexsmobs:roadrunner_boots",

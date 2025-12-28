@@ -5,8 +5,12 @@
     "F F"
   ],
   "key": {
-    "F": "alexsmobs:flying_fish",
-    "S": "#c:string"
+    "F": {
+      "item": "alexsmobs:flying_fish"
+    },
+    "S": {
+      "tag": "c:string"
+    }
   },
   "result": {
     "id": "alexsmobs:flying_fish_boots",

@@ -6,7 +6,9 @@
     "FFF"
   ],
   "key": {
-    "F": "alexsmobs:tarantula_hawk_wing_fragment"
+    "F": {
+      "item": "alexsmobs:tarantula_hawk_wing_fragment"
+    }
   },
   "result": {
     "id": "alexsmobs:tarantula_hawk_wing",

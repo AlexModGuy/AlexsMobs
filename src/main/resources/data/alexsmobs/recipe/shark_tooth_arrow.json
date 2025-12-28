@@ -6,9 +6,15 @@
     "K"
   ],
   "key": {
-    "T": "alexsmobs:shark_tooth",
-    "K": "minecraft:kelp",
-    "S": "#c:rods/wooden"
+    "T": {
+      "item": "alexsmobs:shark_tooth"
+    },
+    "K": {
+      "item": "minecraft:kelp"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
   },
   "result": {
     "id": "alexsmobs:shark_tooth_arrow",

@@ -1,10 +1,18 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "minecraft:bowl",
-    "alexsmobs:triops_eggs",
-    "alexsmobs:stink_bottle",
-    "alexsmobs:triops_eggs"
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "alexsmobs:triops_eggs"
+    },
+    {
+      "item": "alexsmobs:stink_bottle"
+    },
+    {
+      "item": "alexsmobs:triops_eggs"
+    }
   ],
   "result": {
     "id": "alexsmobs:mosquito_repellent_stew",

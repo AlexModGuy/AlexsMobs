@@ -6,8 +6,12 @@
     "GGG"
   ],
   "key": {
-    "R": "alexsmobs:rainbow_jelly",
-    "G": "#c:glass"
+    "R": {
+      "item": "alexsmobs:rainbow_jelly"
+    },
+    "G": {
+      "tag": "c:glass"
+    }
   },
   "result": {
     "id": "alexsmobs:rainbow_glass",

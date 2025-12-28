@@ -1,6 +1,8 @@
 {
   "type": "minecraft:smoking",
-  "ingredient": "alexsmobs:kangaroo_meat",
+  "ingredient": {
+    "item": "alexsmobs:kangaroo_meat"
+  },
   "result": {
     "id": "alexsmobs:cooked_kangaroo_meat"
   },

@@ -1,6 +1,8 @@
 {
   "type": "minecraft:smoking",
-  "ingredient": "alexsmobs:moose_ribs",
+  "ingredient": {
+    "item": "alexsmobs:moose_ribs"
+  },
   "result": {
     "id": "alexsmobs:cooked_moose_ribs"
   },
