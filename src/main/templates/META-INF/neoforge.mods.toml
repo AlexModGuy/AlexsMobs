@@ -11,6 +11,9 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/alexs-mobs"
 authors="${mod_authors}"
 description='''${mod_description}'''
 
+[[mixins]]
+config = "${mod_id}.mixins.json"
+
 [[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"

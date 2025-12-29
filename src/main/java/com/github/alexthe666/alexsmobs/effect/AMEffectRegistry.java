@@ -13,6 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -67,8 +68,9 @@ public class AMEffectRegistry {
         builder.addMix(Potions.STRENGTH, AMItemRegistry.BEAR_FUR.get(), KNOCKBACK_RESISTANCE_POTION);
         builder.addMix(KNOCKBACK_RESISTANCE_POTION, Items.REDSTONE, LONG_KNOCKBACK_RESISTANCE_POTION);
         builder.addMix(KNOCKBACK_RESISTANCE_POTION, Items.GLOWSTONE_DUST, STRONG_KNOCKBACK_RESISTANCE_POTION);
-        builder.addMix(Potions.POISON, AMItemRegistry.RATTLESNAKE_RATTLE.get(), Potions.AWKWARD);
-        builder.addMix(Potions.AWKWARD, AMItemRegistry.CENTIPEDE_LEG.get(), POISON_RESISTANCE_POTION);
+        builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(AMItemRegistry.KOMODO_SPIT_BOTTLE.get()), Ingredient.of(AMItemRegistry.RATTLESNAKE_RATTLE.get()), new ItemStack(AMItemRegistry.POISON_BOTTLE.get())));
+        builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(AMItemRegistry.KOMODO_SPIT_BOTTLE.get()), Ingredient.of(AMItemRegistry.CENTIPEDE_LEG.get()), new ItemStack(AMItemRegistry.POISON_BOTTLE.get())));
+        builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(AMItemRegistry.POISON_BOTTLE.get()), Ingredient.of(AMItemRegistry.CENTIPEDE_LEG.get()), createPotion(POISON_RESISTANCE_POTION)));
         builder.addMix(POISON_RESISTANCE_POTION, AMItemRegistry.KOMODO_SPIT.get(), LONG_POISON_RESISTANCE_POTION);
         builder.addMix(Potions.STRONG_SWIFTNESS, AMItemRegistry.GAZELLE_HORN.get(), SPEED_III_POTION);
         builder.addMix(Potions.AWKWARD, AMItemRegistry.COCKROACH_WING.get(), BUG_PHEROMONES_POTION);
