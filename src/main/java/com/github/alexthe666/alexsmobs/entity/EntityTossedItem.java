@@ -42,7 +42,7 @@ public class EntityTossedItem extends ThrowableItemProjectile {
     }
 
     public boolean isDart() {
-        return this.entityData.get(DART);
+        return this.entityData != null && this.entityData.get(DART);
     }
 
     public void setDart(boolean dart) {
