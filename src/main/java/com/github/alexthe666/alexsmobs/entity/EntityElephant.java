@@ -921,7 +921,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
 
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + scaleY + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY, this.getZ() + extraZ);
         }
     }
 
@@ -957,9 +957,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         float scale = this.isBaby() ? 0.5F : this.isTusked() ? 1.1F : 1.0F;
         float f = Math.min(0.25F, this.walkAnimation.speed());
         float f1 = this.walkAnimation.position();
-        float sitAdd = 0.01F * 0;
-        float standAdd = 0.07F * 0;
-        return (double) this.getBbHeight() - 0.05F - scale * ((double) (0.1F * Mth.cos(f1 * 1.4F) * 1.4F * f) + sitAdd + standAdd);
+        return (double) this.getBbHeight() - (0.6F * scale) - scale * ((double) (0.1F * Mth.cos(f1 * 1.4F) * 1.4F * f));
     }
 
     public boolean isAlliedTo(Entity entityIn) {
