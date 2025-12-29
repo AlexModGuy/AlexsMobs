@@ -69,6 +69,7 @@ public class AMEffectRegistry {
         builder.addMix(KNOCKBACK_RESISTANCE_POTION, Items.REDSTONE, LONG_KNOCKBACK_RESISTANCE_POTION);
         builder.addMix(KNOCKBACK_RESISTANCE_POTION, Items.GLOWSTONE_DUST, STRONG_KNOCKBACK_RESISTANCE_POTION);
         builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(AMItemRegistry.KOMODO_SPIT_BOTTLE.get()), Ingredient.of(AMItemRegistry.RATTLESNAKE_RATTLE.get()), new ItemStack(AMItemRegistry.POISON_BOTTLE.get())));
+        builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(Potions.POISON)), Ingredient.of(AMItemRegistry.RATTLESNAKE_RATTLE.get()), new ItemStack(AMItemRegistry.POISON_BOTTLE.get())));
         builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(AMItemRegistry.KOMODO_SPIT_BOTTLE.get()), Ingredient.of(AMItemRegistry.CENTIPEDE_LEG.get()), new ItemStack(AMItemRegistry.POISON_BOTTLE.get())));
         builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(AMItemRegistry.POISON_BOTTLE.get()), Ingredient.of(AMItemRegistry.CENTIPEDE_LEG.get()), createPotion(POISON_RESISTANCE_POTION)));
         builder.addMix(POISON_RESISTANCE_POTION, AMItemRegistry.KOMODO_SPIT.get(), LONG_POISON_RESISTANCE_POTION);
