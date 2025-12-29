@@ -1,9 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "EE",
-    "SS"
-  ],
+  "pattern": ["EES", "S  "],
   "key": {
     "S": {
       "item": "alexsmobs:straddlite"
