@@ -16,7 +16,8 @@ import org.joml.Quaternionf;
 import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
 public class RenderVoidWormShot extends EntityRenderer<EntityVoidWormShot> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_shot.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/void_worm/void_worm_shot.png");
     private static final ModelVoidWormShot MODEL = new ModelVoidWormShot();
 
     public RenderVoidWormShot(EntityRendererProvider.Context renderManager) {
@@ -29,21 +30,24 @@ public class RenderVoidWormShot extends EntityRenderer<EntityVoidWormShot> {
     }
 
     @Override
-    public void render(EntityVoidWormShot entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntityVoidWormShot entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.mulPose((new Quaternionf()).rotateX(Maths.rad(180)));
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot())));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.pushPose();
         MODEL.animate(entityIn, entityIn.tickCount + partialTicks);
-        float home = (entityIn.prevStopHomingProgress + (entityIn.getStopHomingProgress() - entityIn.prevStopHomingProgress) * partialTicks) / EntityVoidWormShot.HOME_FOR;
+        float home = (entityIn.prevStopHomingProgress
+                + (entityIn.getStopHomingProgress() - entityIn.prevStopHomingProgress) * partialTicks)
+                / EntityVoidWormShot.HOME_FOR;
         float colorize = home;
         matrixStackIn.translate(0, -1.5F, 0);
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getFullBright(getTextureLocation(entityIn)));
-        MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, 210, NO_OVERLAY, Math.max(colorize, 0.2F), Math.max(colorize, 0.2F), 1.0F, 1.0F);
+        MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, 210, NO_OVERLAY,
+                AMColorUtil.packColor(Math.max(colorize, 0.2F), Math.max(colorize, 0.2F), 1.0F, 1.0F));
         matrixStackIn.popPose();
         matrixStackIn.popPose();
-
 
     }
 

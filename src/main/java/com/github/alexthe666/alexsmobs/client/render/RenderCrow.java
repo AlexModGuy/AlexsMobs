@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderCrow extends MobRenderer<EntityCrow, ModelCrow> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/crow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/crow.png");
 
     public RenderCrow(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCrow(), 0.2F);

@@ -2,11 +2,14 @@ package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
-
-public class MessageSetPupfishChunkOnClient {
+public class MessageSetPupfishChunkOnClient implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<MessageSetPupfishChunkOnClient> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "set_pupfish_chunk"));
+    public static final StreamCodec<FriendlyByteBuf, MessageSetPupfishChunkOnClient> CODEC = StreamCodec.ofMember(MessageSetPupfishChunkOnClient::write, MessageSetPupfishChunkOnClient::read);
 
     public int chunkX;
     public int chunkZ;
@@ -16,8 +19,7 @@ public class MessageSetPupfishChunkOnClient {
         this.chunkZ = chunkZ;
     }
 
-    public MessageSetPupfishChunkOnClient() {
-    }
+    public MessageSetPupfishChunkOnClient() {}
 
     public static MessageSetPupfishChunkOnClient read(FriendlyByteBuf buf) {
         return new MessageSetPupfishChunkOnClient(buf.readInt(), buf.readInt());
@@ -28,15 +30,12 @@ public class MessageSetPupfishChunkOnClient {
         buf.writeInt(message.chunkZ);
     }
 
-    public static class Handler {
-        public Handler() {
-        }
+    @Override
+    public Type<? extends CustomPacketPayload> type() { return TYPE; }
 
-        public static void handle(MessageSetPupfishChunkOnClient message, Supplier<NetworkEvent.Context> context) {
-            context.get().setPacketHandled(true);
-            context.get().enqueueWork(() -> {
-                AlexsMobs.PROXY.setPupfishChunkForItem(message.chunkX, message.chunkZ);
-            });
-        }
+    public static void handle(MessageSetPupfishChunkOnClient message, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            AlexsMobs.PROXY.setPupfishChunkForItem(message.chunkX, message.chunkZ);
+        });
     }
 }

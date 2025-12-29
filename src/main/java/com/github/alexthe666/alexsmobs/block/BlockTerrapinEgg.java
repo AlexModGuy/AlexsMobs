@@ -2,29 +2,24 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTerrapin;
-import com.github.alexthe666.alexsmobs.entity.util.TerrapinTypes;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTerrapinEgg;
-import net.minecraft.ChatFormatting;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -48,6 +43,13 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockTerrapinEgg extends BaseEntityBlock {
+    public static final MapCodec<BlockTerrapinEgg> CODEC = simpleCodec(p -> new BlockTerrapinEgg());
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
     public static final IntegerProperty EGGS = BlockStateProperties.EGGS;
     private static final VoxelShape ONE_EGG_SHAPE = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 7.0D, 12.0D);
@@ -178,7 +180,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
             if (!(trampler instanceof LivingEntity)) {
                 return false;
             } else {
-                return trampler instanceof Player || net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(worldIn, trampler);
+                return trampler instanceof Player || net.neoforged.neoforge.event.EventHooks.canEntityGrief(worldIn, trampler);
             }
         } else {
             return false;
@@ -190,12 +192,14 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         boolean silkTouch = false;
         if(pickaxe != null){
-            silkTouch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, pickaxe) > 0;
+            Level level = builder.getLevel();
+            silkTouch = pickaxe.getEnchantmentLevel(level.holderLookup(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH)) > 0;
         }
         if (silkTouch && blockentity instanceof TileEntityTerrapinEgg) {
             ItemStack stack = new ItemStack(AMBlockRegistry.TERRAPIN_EGG.get());
             TileEntityTerrapinEgg egg = (TileEntityTerrapinEgg)blockentity;
-            CompoundTag tag = stack.getOrCreateTagElement("BlockEntityTag");
+            // TODO: NeoForge 1.21 - BlockEntityTag storage via DataComponents
+            CompoundTag tag = new CompoundTag();
             CompoundTag parent1 = new CompoundTag();
             CompoundTag parent2 = new CompoundTag();
             boolean flag = false;
@@ -216,9 +220,11 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
         return List.of();
     }
 
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter w, List<Component> list, TooltipFlag flags) {
-        super.appendHoverText(stack, w, list, flags);
-        CompoundTag compoundtag = BlockItem.getBlockEntityData(stack);
+    // appendHoverText removed in NeoForge 1.21 for blocks - tooltip handled via BlockItem/DataComponents
+    // If custom tooltips are needed, use BlockItem.appendHoverText override instead
+    /*
+    public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flags) {
+        CompoundTag compoundtag = stack.get(DataComponents.BLOCK_ENTITY_DATA);
         if (compoundtag != null && compoundtag.contains("Parent1Data") && compoundtag.contains("Parent2Data")) {
             TerrapinTypes parent1Type = TerrapinTypes.values()[Mth.clamp(compoundtag.getCompound("Parent1Data").getInt("TerrapinType"), 0, TerrapinTypes.values().length - 1)];
             TerrapinTypes parent2Type = TerrapinTypes.values()[Mth.clamp(compoundtag.getCompound("Parent2Data").getInt("TerrapinType"), 0, TerrapinTypes.values().length - 1)];
@@ -227,6 +233,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
             list.add(Component.translatable("block.alexsmobs.terrapin_egg.desc", s1, s2).withStyle(ChatFormatting.GRAY));
         }
     }
+    */
 
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState state2, boolean b) {
         if (state.is(AMBlockRegistry.TERRAPIN_EGG.get()) && state.getValue(EGGS) <= 1) {

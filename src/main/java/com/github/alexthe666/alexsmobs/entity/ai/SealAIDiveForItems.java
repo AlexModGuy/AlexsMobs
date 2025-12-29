@@ -3,6 +3,8 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -31,14 +33,14 @@ public class SealAIDiveForItems extends Goal {
     private BlockPos digPos;
     private boolean returnToPlayer = false;
     private int digTime = 0;
-    public static final ResourceLocation SEAL_REWARD = new ResourceLocation("alexsmobs","gameplay/seal_reward");
+    public static final ResourceKey<LootTable> SEAL_REWARD = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "gameplay/seal_reward"));
 
     public SealAIDiveForItems(EntitySeal seal) {
         this.seal = seal;
     }
 
     private static List<ItemStack> getItemStacks(EntitySeal seal) {
-        LootTable loottable = seal.level().getServer().getLootData().getLootTable(SEAL_REWARD);
+        LootTable loottable = seal.level().getServer().reloadableRegistries().getLootTable(SEAL_REWARD);
         return loottable.getRandomItems((new LootParams.Builder((ServerLevel) seal.level())).withParameter(LootContextParams.THIS_ENTITY, seal).create(LootContextParamSets.PIGLIN_BARTER));
     }
 

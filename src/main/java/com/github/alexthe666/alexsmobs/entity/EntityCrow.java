@@ -50,16 +50,15 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -90,11 +89,11 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     protected EntityCrow(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
-        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
+        this.setPathfindingMalus(PathType.COCOA, -1.0F);
+        this.setPathfindingMalus(PathType.FENCE, -1.0F);
         switchNavigator(false);
     }
 
@@ -331,7 +330,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                 this.playSound(SoundEvents.PARROT_EAT, this.getSoundVolume(), this.getVoicePitch());
                 if (seedThrowerID != null && this.getMainHandItem().is(AMTagRegistry.CROW_TAMEABLES) && !this.isTame()) {
                     if (getRandom().nextFloat() < 0.3F) {
-                        this.setTame(true);
+                        this.setTame(true, true);
                         this.setCommand(1);
                         this.setOwnerUUID(this.seedThrowerID);
                         final Player player = level().getPlayerByUUID(seedThrowerID);
@@ -476,13 +475,13 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
-        this.entityData.define(ATTACK_TICK, 0);
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(PERCH_POS, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
+        builder.define(ATTACK_TICK, 0);
+        builder.define(COMMAND, 0);
+        builder.define(SITTING, false);
+        builder.define(PERCH_POS, Optional.empty());
     }
 
     @Override
@@ -594,7 +593,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     }
 
     private boolean isCrowEdible(ItemStack stack) {
-        return stack.getItem().isEdible() || stack.is(AMTagRegistry.CROW_FOODSTUFFS);
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) || stack.is(AMTagRegistry.CROW_FOODSTUFFS);
     }
 
     public double getMaxDistToItem() {
@@ -1016,8 +1015,8 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                     BlockPos hangingPosition = e.getPos().relative(e.getDirection().getOpposite());
                     BlockEntity entity = e.level().getBlockEntity(hangingPosition);
                     if(entity != null){
-                        LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, e.getDirection().getOpposite());
-                        if(handler != null && handler.isPresent()){
+                        IItemHandler handler = e.level().getCapability(Capabilities.ItemHandler.BLOCK, hangingPosition, e.getDirection().getOpposite());
+                        if(handler != null){
                             return ItemStack.isSameItem(e.getItem(), EntityCrow.this.getMainHandItem());
                         }
                     }
@@ -1089,12 +1088,12 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                         final BlockPos hangingPosition = targetEntity.getPos().relative(targetEntity.getDirection().getOpposite());
                         final BlockEntity entity = targetEntity.level().getBlockEntity(hangingPosition);
                         final Direction deposit = targetEntity.getDirection();
-                        final LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, deposit);
-                        if(handler.orElse(null) != null && cooldown == 0) {
+                        final IItemHandler handler = targetEntity.level().getCapability(Capabilities.ItemHandler.BLOCK, hangingPosition, deposit);
+                        if(handler != null && cooldown == 0) {
                             ItemStack duplicate = EntityCrow.this.getItemInHand(InteractionHand.MAIN_HAND).copy();
-                            ItemStack insertSimulate = ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, true);
+                            ItemStack insertSimulate = ItemHandlerHelper.insertItem(handler, duplicate, true);
                             if (!insertSimulate.equals(duplicate)) {
-                                ItemStack shrunkenStack = ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, false);
+                                ItemStack shrunkenStack = ItemHandlerHelper.insertItem(handler, duplicate, false);
                                 if(shrunkenStack.isEmpty()){
                                     EntityCrow.this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                                 }else{

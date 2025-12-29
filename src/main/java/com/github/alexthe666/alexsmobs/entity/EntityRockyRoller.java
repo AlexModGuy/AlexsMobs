@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
-import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.entity.ai.MovementControllerCustomCollisions;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -38,8 +37,8 @@ import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -98,10 +97,11 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANGRY, false);
-        this.entityData.define(ROLLING, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANGRY, false);
+        builder.define(ROLLING, false);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -147,9 +147,13 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             if (this.rollCounter > 2 && !this.isMoving() || !this.isAlive()) {
                 this.setRolling(false);
             }
-            this.setMaxUpStep(1F);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         } else {
-            this.setMaxUpStep(0.66F);
+            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.rollCounter = 0;
         }
         if (rollCooldown > 0) {
@@ -169,7 +173,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(6, 8, 6));
         for (LivingEntity e : list) {
             if (!(e instanceof EntityRockyRoller) && e.isAlive()) {
-                e.addEffect(new MobEffectInstance(AMEffectRegistry.EARTHQUAKE.get(), 20, 0, false, false, true));
+                e.addEffect(new MobEffectInstance(AMEffectRegistry.EARTHQUAKE, 20, 0, false, false, true));
                 flag = true;
             }
         }
@@ -204,7 +208,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             }
         }
         if(flag){
-            this.gameEvent(GameEvent.ENTITY_ROAR);
+            this.gameEvent(GameEvent.ENTITY_ACTION);
             this.playSound(AMSoundRegistry.ROCKY_ROLLER_EARTHQUAKE.get(), this.getSoundVolume(), this.getVoicePitch());
         }
     }
@@ -328,8 +332,8 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     static class RockyRollerNodeEvaluator extends WalkNodeEvaluator {
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
-            return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
+        protected PathType evaluateBlockPathType(BlockGetter level, BlockPos pos, PathType typeIn) {
+            return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? PathType.OPEN : typeIn /* evaluateBlockPathType changed in 1.21 */;
         }
     }
 

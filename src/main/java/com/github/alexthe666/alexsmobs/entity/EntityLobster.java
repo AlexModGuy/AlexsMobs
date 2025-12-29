@@ -37,7 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
@@ -54,8 +54,8 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
 
     protected EntityLobster(EntityType type, Level p_i48565_2_) {
         super(type, p_i48565_2_);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
     }
 
     public int getMaxSpawnClusterSize() {
@@ -106,10 +106,6 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
     }
 
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
     public void travel(Vec3 travelVector) {
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), travelVector);
@@ -129,11 +125,11 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(ATTACK_TICK, 0);
-        this.entityData.define(FROM_BUCKET, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VARIANT, 0);
+        builder.define(ATTACK_TICK, 0);
+        builder.define(FROM_BUCKET, false);
     }
 
     @Override
@@ -141,7 +137,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.LOBSTER_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -149,11 +145,12 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        CompoundTag compoundnbt = bucket.getOrCreateTag();
-        compoundnbt.putInt("BucketVariantTag", this.getVariant());
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
+        // CompoundTag compoundnbt = bucket.getOrCreateTag();
+        // TODO: Use DataComponents for bucket variant in 1.21
     }
 
     @Override
@@ -257,7 +254,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         float variantChange = this.getRandom().nextFloat();
         if(variantChange <= 0.00001){
             this.setVariant(5);
@@ -272,7 +269,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
         }else{
             this.setVariant(0);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     protected PathNavigation createNavigation(Level worldIn) {

@@ -14,7 +14,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -122,12 +121,13 @@ public class EntitySkreecher extends Monster {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 2D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.FOLLOW_RANGE, 64F);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DIST_TO_CEILING, 0F);
-        this.entityData.define(CLINGING, false);
-        this.entityData.define(JUMPING_UP, false);
-        this.entityData.define(CLAPPING, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DIST_TO_CEILING, 0F);
+        builder.define(CLINGING, false);
+        builder.define(JUMPING_UP, false);
+        builder.define(CLAPPING, false);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -224,7 +224,7 @@ public class EntitySkreecher extends Monster {
             float dir = this.isClinging() ? -0.5F : 0.1F;
             if(clapTick % 8 == 0){
                 this.playSound(AMSoundRegistry.SKREECHER_CLAP.get(), this.getSoundVolume() * 3F, this.getVoicePitch());
-                this.gameEvent(GameEvent.ENTITY_ROAR);
+                this.gameEvent(GameEvent.ENTITY_ACTION);
                 angerAllNearbyWardens();
                 this.level().addParticle(AMParticleRegistry.SKULK_BOOM.get(), this.getX(), this.getEyeY(), this.getZ(), 0, dir, 0);
             }else if(clapTick % 15 == 0){
@@ -242,7 +242,7 @@ public class EntitySkreecher extends Monster {
                         Warden warden = EntityType.WARDEN.create(this.level());
 
                         warden.moveTo(this.getX(), spawnAt.getY() + 1, this.getZ(), this.getYRot(), 0.0F);
-                        warden.finalizeSpawn((ServerLevel)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
+                        warden.finalizeSpawn((ServerLevelAccessor)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null);
                         warden.setAttackTarget(this);
                         warden.increaseAngerAt(this, 79, false);
                         this.level().addFreshEntity(warden);
@@ -306,8 +306,8 @@ public class EntitySkreecher extends Monster {
     }
 
 
-    public EntityDimensions getDimensions(Pose poseIn) {
-        return isClinging() ? super.getDimensions(poseIn) : GROUND_SIZE.scale(this.getScale());
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
+        return isClinging() ? super.getDefaultDimensions(poseIn) : GROUND_SIZE.scale(this.getScale());
     }
 
     public boolean isClinging() {

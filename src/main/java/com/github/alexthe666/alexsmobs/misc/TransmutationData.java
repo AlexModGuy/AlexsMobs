@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.misc;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ public class TransmutationData {
 
     public double getWeight(ItemStack stack){
         for(Object2DoubleMap.Entry<ItemStack> entry : itemstackData.object2DoubleEntrySet()){
-            if(ItemStack.isSameItemSameTags(stack, entry.getKey())){
+            if(ItemStack.isSameItemSameComponents(stack, entry.getKey())){
                 return entry.getDoubleValue();
             }
         }
@@ -40,7 +41,7 @@ public class TransmutationData {
     public void putWeight(ItemStack stack, double newWeight){
         ItemStack replace = stack;
         for(ItemStack entry : itemstackData.keySet()){
-            if(ItemStack.isSameItemSameTags(stack, entry)){
+            if(ItemStack.isSameItemSameComponents(stack, entry)){
                 replace = entry;
                 break;
             }
@@ -66,12 +67,12 @@ public class TransmutationData {
         return result;
     }
 
-    public CompoundTag saveAsNBT(){
+    public CompoundTag saveAsNBT(HolderLookup.Provider registries){
         CompoundTag compound = new CompoundTag();
         ListTag listTag = new ListTag();
         for(Object2DoubleMap.Entry<ItemStack> entry : itemstackData.object2DoubleEntrySet()) {
             CompoundTag tag = new CompoundTag();
-            tag.put("Item", entry.getKey().save(new CompoundTag()));
+            tag.put("Item", entry.getKey().save(registries));
             tag.putDouble("Weight", entry.getDoubleValue());
             listTag.add(tag);
         }
@@ -79,14 +80,14 @@ public class TransmutationData {
         return compound;
     }
 
-    public static TransmutationData fromNBT(CompoundTag compound){
+    public static TransmutationData fromNBT(CompoundTag compound, HolderLookup.Provider registries){
         TransmutationData data = new TransmutationData();
         if (compound.contains("TransmutationData")) {
             ListTag listtag = compound.getList("TransmutationData", 10);
             for (int i = 0; i < listtag.size(); ++i) {
                 CompoundTag innerTag = listtag.getCompound(i);
                 try{
-                    ItemStack from = ItemStack.of(innerTag.getCompound("Item"));
+                    ItemStack from = ItemStack.parseOptional(registries, innerTag.getCompound("Item"));
                     if(!from.isEmpty()){
                         data.putWeight(from, innerTag.getDouble("Weight"));
                     }

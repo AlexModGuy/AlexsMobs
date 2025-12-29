@@ -12,10 +12,12 @@ public class EffectPoisonResistance extends MobEffect {
 
     }
 
-    public void applyEffectTick(LivingEntity LivingEntityIn, int amplifier) {
+    @Override
+    public boolean applyEffectTick(LivingEntity LivingEntityIn, int amplifier) {
         if(LivingEntityIn.hasEffect(MobEffects.POISON)){
             LivingEntityIn.removeEffect(MobEffects.POISON);
         }
+        return true;
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

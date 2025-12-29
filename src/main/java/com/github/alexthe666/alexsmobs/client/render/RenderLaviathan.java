@@ -24,11 +24,15 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/laviathan.png");
-    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/laviathan_glow.png");
-    private static final ResourceLocation TEXTURE_OBSIDIAN = new ResourceLocation("alexsmobs:textures/entity/laviathan_obsidian.png");
-    private static final ResourceLocation TEXTURE_GEAR = new ResourceLocation("alexsmobs:textures/entity/laviathan_gear.png");
-    private static final ResourceLocation TEXTURE_HELMET = new ResourceLocation("alexsmobs:textures/entity/laviathan_helmet.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/laviathan.png");
+    private static final ResourceLocation TEXTURE_GLOW = ResourceLocation
+            .parse("alexsmobs:textures/entity/laviathan_glow.png");
+    private static final ResourceLocation TEXTURE_OBSIDIAN = ResourceLocation
+            .parse("alexsmobs:textures/entity/laviathan_obsidian.png");
+    private static final ResourceLocation TEXTURE_GEAR = ResourceLocation
+            .parse("alexsmobs:textures/entity/laviathan_gear.png");
+    private static final ResourceLocation TEXTURE_HELMET = ResourceLocation
+            .parse("alexsmobs:textures/entity/laviathan_helmet.png");
     private static final float REINS_COLOR_R = 98F / 255F;
     private static final float REINS_COLOR_G = 77F / 255F;
     private static final float REINS_COLOR_B = 52F / 255F;
@@ -42,7 +46,9 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         this.addLayer(new LayerOverlays(this));
     }
 
-    private static void addVertexPairAlex(VertexConsumer p_174308_, Matrix4f p_174309_, float p_174310_, float p_174311_, float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_, float p_174317_, float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
+    private static void addVertexPairAlex(VertexConsumer p_174308_, Matrix4f p_174309_, float p_174310_,
+            float p_174311_, float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_,
+            float p_174317_, float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
         float f = (float) p_174321_ / 24.0F;
         int i = (int) Mth.lerp(f, (float) p_174313_, (float) p_174314_);
         int j = (int) Mth.lerp(f, (float) p_174315_, (float) p_174316_);
@@ -58,8 +64,10 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         float f5 = p_174310_ * f;
         float f6 = p_174311_ > 0.0F ? p_174311_ * f * f : p_174311_ - p_174311_ * (1.0F - f) * (1.0F - f);
         float f7 = p_174312_ * f;
-        p_174308_.vertex(p_174309_, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).color(f2, f3, f4, 1.0F).uv2(k).endVertex();
-        p_174308_.vertex(p_174309_, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_).color(f2, f3, f4, 1.0F).uv2(k).endVertex();
+        p_174308_.addVertex(p_174309_, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).setColor(f2, f3, f4, 1.0F)
+                .setLight(k);
+        p_174308_.addVertex(p_174309_, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_)
+                .setColor(f2, f3, f4, 1.0F).setLight(k);
     }
 
     public boolean shouldRender(EntityLaviathan livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
@@ -75,7 +83,8 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         }
     }
 
-    public void render(EntityLaviathan mob, float p_115456_, float partialTick, PoseStack ms, MultiBufferSource p_115459_, int p_115460_) {
+    public void render(EntityLaviathan mob, float p_115456_, float partialTick, PoseStack ms,
+            MultiBufferSource p_115459_, int p_115460_) {
         super.render(mob, p_115456_, partialTick, ms, p_115459_, p_115460_);
         Entity entity = mob.getControllingPassenger();
         if (entity != null) {
@@ -115,7 +124,8 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         float swimDegree = 0.5F + swim * 0.05F;
         float boxOffset = (float) (-21 * 3.141592653589793D / (double) (2 * 3));
         float moveScale = 1;
-        return 1.3F * Mth.cos(swing * swimSpeed * moveScale + boxOffset * (float) 2) * swingAmount * swimDegree * moveScale;
+        return 1.3F * Mth.cos(swing * swimSpeed * moveScale + boxOffset * (float) 2) * swingAmount * swimDegree
+                * moveScale;
     }
 
     private float getHeadBobForReins(EntityLaviathan mob, float partialTick) {
@@ -125,10 +135,12 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         float idleDegree = 0.3f;
         float boxOffset = (float) (9 * 3.141592653589793D / (double) (2 * 3));
         float moveScale = 1;
-        return 0.8F * Mth.cos(swing * idleSpeed * moveScale + boxOffset * (float) 2) * swingAmount * idleDegree * moveScale;
+        return 0.8F * Mth.cos(swing * idleSpeed * moveScale + boxOffset * (float) 2) * swingAmount * idleDegree
+                * moveScale;
     }
 
-    private <E extends Entity> void renderRein(EntityLaviathan mob, float partialTick, PoseStack p_115464_, MultiBufferSource p_115465_, E rider, boolean left) {
+    private <E extends Entity> void renderRein(EntityLaviathan mob, float partialTick, PoseStack p_115464_,
+            MultiBufferSource p_115465_, E rider, boolean left) {
         p_115464_.pushPose();
         Entity head = mob.headPart;
         if (head == null) {
@@ -137,11 +149,14 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         float limbSwingAmount = mob.walkAnimation.speed(partialTick);
         float shake = getHeadShakeForReins(mob, partialTick);
         float headYaw = Math.abs(mob.getHeadYaw(partialTick)) / 50F;
-        float headPitch = 1F - Math.abs((mob.prevHeadHeight + (mob.getHeadHeight() - mob.prevHeadHeight) * partialTick) / 3F);
+        float headPitch = 1F
+                - Math.abs((mob.prevHeadHeight + (mob.getHeadHeight() - mob.prevHeadHeight) * partialTick) / 3F);
         float yawAdd = (1F - headYaw) * 0.4F * (1F - limbSwingAmount * 0.7F) - headPitch * 0.2F;
-        Vec3 vec3 = rider instanceof LivingEntity ? getReinPosition((LivingEntity) rider, partialTick, left, shake) : rider.getRopeHoldPosition(partialTick);
+        Vec3 vec3 = rider instanceof LivingEntity ? getReinPosition((LivingEntity) rider, partialTick, left, shake)
+                : rider.getRopeHoldPosition(partialTick);
         double d0 = (double) (Mth.lerp(partialTick, mob.yBodyRot, mob.yBodyRotO) * Mth.DEG_TO_RAD) + (Math.PI / 2D);
-        Vec3 vec31 = new Vec3((left ? -0.05F - yawAdd : 0.05F + yawAdd) + shake, 0.45F - headYaw * 0.2F + getHeadBobForReins(mob, partialTick), 0.1F);
+        Vec3 vec31 = new Vec3((left ? -0.05F - yawAdd : 0.05F + yawAdd) + shake,
+                0.45F - headYaw * 0.2F + getHeadBobForReins(mob, partialTick), 0.1F);
         double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
         double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;
         double d3 = Mth.lerp(partialTick, head.xo, head.getX()) + d1;
@@ -151,7 +166,7 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         float f = (float) (vec3.x - d3);
         float f1 = (float) (vec3.y - d4);
         float f2 = (float) (vec3.z - d5);
-        //float f3 = 0.025F;
+        // float f3 = 0.025F;
         VertexConsumer vertexconsumer = p_115465_.getBuffer(RenderType.leash());
         Matrix4f matrix4f = p_115464_.last().pose();
         float f4 = (float) (Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F);
@@ -209,18 +224,23 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
             super(render);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityLaviathan laviathan, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntityLaviathan laviathan, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
+                float netHeadYaw, float headPitch) {
             if (!laviathan.isObsidian()) {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(TEXTURE_GLOW));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn,
+                        OverlayTexture.NO_OVERLAY, -1);
             }
             if (laviathan.hasBodyGear()) {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_GEAR));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn,
+                        OverlayTexture.NO_OVERLAY, -1);
             }
             if (laviathan.hasHeadGear()) {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_HELMET));
-                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn,
+                        OverlayTexture.NO_OVERLAY, -1);
             }
         }
 

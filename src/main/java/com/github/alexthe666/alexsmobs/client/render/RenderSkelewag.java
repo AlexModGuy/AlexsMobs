@@ -9,8 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderSkelewag extends MobRenderer<EntitySkelewag, ModelSkelewag> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/skelewag_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/skelewag_1.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/skelewag_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/skelewag_1.png");
 
     public RenderSkelewag(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSkelewag(), 0.5F);

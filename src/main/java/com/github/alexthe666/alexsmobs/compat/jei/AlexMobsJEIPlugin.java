@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 @JeiPlugin
 public class AlexMobsJEIPlugin implements IModPlugin {
-    public static final ResourceLocation MOD = new ResourceLocation("alexsmobs:alexsmobs");
+    public static final ResourceLocation MOD = ResourceLocation.parse("alexsmobs:alexsmobs");
     @Nullable
     private IRecipeCategory<CapsidRecipe> capsidCategory;
 

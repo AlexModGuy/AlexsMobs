@@ -11,8 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,9 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
+import net.neoforged.neoforge.entity.PartEntity;
 import org.antlr.v4.runtime.misc.Triple;
 
 import javax.annotation.Nullable;
@@ -56,10 +52,6 @@ public class EntityVoidPortal extends Entity {
         super(entityTypeIn, worldIn);
     }
 
-    public EntityVoidPortal(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.VOID_PORTAL.get(), world);
-    }
-
     public EntityVoidPortal(Level world, ItemDimensionalCarver item) {
         this(AMEntityRegistry.VOID_PORTAL.get(), world);
         if(item == AMItemRegistry.SHATTERED_DIMENSIONAL_CARVER.get()){
@@ -71,10 +63,13 @@ public class EntityVoidPortal extends Entity {
         }
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     public void tick() {
         super.tick();
@@ -152,7 +147,8 @@ public class EntityVoidPortal extends Entity {
                             }
                         }
                         if(flag){
-                            e.teleportToWithTicket(offsetPos.getX() + 0.5f, offsetPos.getY() + 0.5f, offsetPos.getZ() + 0.5f);
+                            // teleportToWithTicket removed in 1.21, use teleportTo
+                            e.teleportTo(offsetPos.getX() + 0.5f, offsetPos.getY() + 0.5f, offsetPos.getZ() + 0.5f);
                             e.setPortalCooldown();
                         }
                     }
@@ -183,7 +179,7 @@ public class EntityVoidPortal extends Entity {
             }
         } else {
             entity.unRide();
-            entity.setLevel(endpointWorld);
+            // entity.setLevel is protected in 1.21 - need to use changeDimension or respawn entity
             Entity teleportedEntity = entity.getType().create(endpointWorld);
             if (teleportedEntity != null) {
                 teleportedEntity.restoreFrom(entity);
@@ -251,7 +247,8 @@ public class EntityVoidPortal extends Entity {
         EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(world);
         portal.setAttachmentFacing(dir != null ? dir : this.getAttachmentFacing().getOpposite());
         BlockPos safeDestination = this.getDestination();
-        portal.teleportToWithTicket(safeDestination.getX() + 0.5f, safeDestination.getY() + 0.5f, safeDestination.getZ() + 0.5f);
+        // teleportToWithTicket removed in 1.21, use teleportTo
+        portal.teleportTo(safeDestination.getX() + 0.5f, safeDestination.getY() + 0.5f, safeDestination.getZ() + 0.5f);
         portal.link(this);
         portal.exitDimension = this.level().dimension();
         world.addFreshEntity(portal);
@@ -274,12 +271,12 @@ public class EntityVoidPortal extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(ATTACHED_FACE, Direction.DOWN);
-        this.entityData.define(LIFESPAN, 300);
-        this.entityData.define(SHATTERED, false);
-        this.entityData.define(SISTER_UUID, Optional.empty());
-        this.entityData.define(DESTINATION, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(ATTACHED_FACE, Direction.DOWN);
+        builder.define(LIFESPAN, 300);
+        builder.define(SHATTERED, false);
+        builder.define(SISTER_UUID, Optional.empty());
+        builder.define(DESTINATION, Optional.empty());
     }
 
     @Override

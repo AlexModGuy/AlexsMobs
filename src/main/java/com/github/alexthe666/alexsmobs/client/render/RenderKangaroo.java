@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderKangaroo extends MobRenderer<EntityKangaroo, ModelKangaroo> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/kangaroo.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/kangaroo.png");
 
     public RenderKangaroo(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelKangaroo(), 0.5F);

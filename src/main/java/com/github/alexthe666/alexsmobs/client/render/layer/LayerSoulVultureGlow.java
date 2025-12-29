@@ -11,19 +11,19 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class LayerSoulVultureGlow extends RenderLayer<EntitySoulVulture, ModelSoulVulture> {
-    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/soul_vulture/soul_vulture_glow.png");
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/soul_vulture/soul_vulture_flames_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/soul_vulture/soul_vulture_flames_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/soul_vulture/soul_vulture_flames_2.png");
+    private static final ResourceLocation TEXTURE_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/soul_vulture/soul_vulture_glow.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/soul_vulture/soul_vulture_flames_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/soul_vulture/soul_vulture_flames_1.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation.parse("alexsmobs:textures/entity/soul_vulture/soul_vulture_flames_2.png");
 
     public LayerSoulVultureGlow(RenderSoulVulture renderSoulVulture) {
         super(renderSoulVulture);
     }
 
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntitySoulVulture entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.getParentModel().renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.getGhost(TEXTURE_GLOW)), 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1F);
+        this.getParentModel().renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.getGhost(TEXTURE_GLOW)), 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), -1);
         if(entitylivingbaseIn.hasSoulHeart()){
-            this.getParentModel().renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.getGhost(getFlames(entitylivingbaseIn.tickCount))), 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1F);
+            this.getParentModel().renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.getGhost(getFlames(entitylivingbaseIn.tickCount))), 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), -1);
         }
     }
 

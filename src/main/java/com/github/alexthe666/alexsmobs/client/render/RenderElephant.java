@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderElephant extends MobRenderer<EntityElephant, ModelElephant> {
-    private static final ResourceLocation TEXTURE_TUSK = new ResourceLocation("alexsmobs:textures/entity/elephant/elephant_tusks.png");
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/elephant/elephant.png");
+    private static final ResourceLocation TEXTURE_TUSK = ResourceLocation.parse("alexsmobs:textures/entity/elephant/elephant_tusks.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/elephant/elephant.png");
 
     public RenderElephant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelElephant(0), 1.4F);

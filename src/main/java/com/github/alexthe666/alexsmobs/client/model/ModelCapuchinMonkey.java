@@ -211,7 +211,7 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 		float walkSpeed = 0.8F;
 		float walkDegree = 0.7F;
 		float stillProgress = 5F * (1F - limbSwingAmount);
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float sitProgress = entity.isPassenger() ? 0 :entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
 		float rideProgress = entity.isPassenger() && entity.getVehicle() instanceof LivingEntity && entity.isOwnedBy((LivingEntity) entity.getVehicle()) ? 10 : 0;
 		progressPositionPrev(body, rideProgress, 3, 12F, 0, 10F);
@@ -244,7 +244,7 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 
 	}
 
-	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
 		if (this.young) {
 			float f = 1.75F;
 			head.setScale(f, f, f);
@@ -253,14 +253,14 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			matrixStackIn.translate(0.0D, 1.5D, 0.125D);
 			parts().forEach((p_228292_8_) -> {
-				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 			head.setScale(1, 1, 1);
 		} else {
 			matrixStackIn.pushPose();
 			parts().forEach((p_228290_8_) -> {
-				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 		}

@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderMantisShrimp extends MobRenderer<EntityMantisShrimp, ModelMantisShrimp> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_2.png");
-    private static final ResourceLocation TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_3.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/mantis_shrimp_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/mantis_shrimp_1.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation.parse("alexsmobs:textures/entity/mantis_shrimp_2.png");
+    private static final ResourceLocation TEXTURE_3 = ResourceLocation.parse("alexsmobs:textures/entity/mantis_shrimp_3.png");
 
     public RenderMantisShrimp(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMantisShrimp(), 0.6F);

@@ -33,7 +33,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,7 +67,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
 
     protected EntityGeladaMonkey(EntityType type, Level lvl) {
         super(type, lvl);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -99,7 +99,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.5D, true) {
             protected double getAttackReachSqr(LivingEntity attackTarget) {
-                return super.getAttackReachSqr(attackTarget) + 1.5D;
+                return EntityGeladaMonkey.this.getBbWidth() * 2.0F * EntityGeladaMonkey.this.getBbWidth() * 2.0F + attackTarget.getBbWidth() + 1.5;
             }
 
             @Override
@@ -148,12 +148,12 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(LEADER, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(HAS_TARGET, false);
-        this.entityData.define(GRASS_TIME, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(LEADER, false);
+        builder.define(SITTING, false);
+        builder.define(HAS_TARGET, false);
+        builder.define(GRASS_TIME, 0);
     }
 
     public boolean isLeader() {
@@ -386,7 +386,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     }
 
     @javax.annotation.Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn, @javax.annotation.Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn) {
         if (spawnDataIn instanceof AgeableMob.AgeableMobGroupData) {
             AgeableMob.AgeableMobGroupData pack = (AgeableMob.AgeableMobGroupData) spawnDataIn;
             if (pack.getGroupSize() == 0 || pack.getGroupSize() > 4 && random.nextInt(2) == 0) {
@@ -396,7 +396,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
             this.setLeader(this.getRandom().nextInt(4) == 0);
         }
 
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public boolean canBeGroomed() {

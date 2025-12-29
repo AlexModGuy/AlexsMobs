@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import org.joml.Quaternionf;
 
 public class RenderSugarGlider extends MobRenderer<EntitySugarGlider, ModelSugarGlider> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/sugar_glider.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/sugar_glider.png");
 
     public RenderSugarGlider(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSugarGlider(), 0.35F);
@@ -31,9 +31,9 @@ public class RenderSugarGlider extends MobRenderer<EntitySugarGlider, ModelSugar
     }
 
     @Override
-    protected void setupRotations(EntitySugarGlider entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void setupRotations(EntitySugarGlider entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks, float tickDelta) {
         if(entityLiving.isPassenger()){
-            super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
+            super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks, tickDelta);
             return;
         }
         if (this.isShaking(entityLiving)) {

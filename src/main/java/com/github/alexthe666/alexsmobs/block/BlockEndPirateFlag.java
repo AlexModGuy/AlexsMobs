@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateFlag;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,6 +26,12 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockEndPirateFlag extends BaseEntityBlock {
+    public static final MapCodec<BlockEndPirateFlag> CODEC = simpleCodec(p -> new BlockEndPirateFlag());
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape AABB = Block.box(6, 0, 6, 10, 16, 10);

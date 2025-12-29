@@ -95,16 +95,16 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VARIANT, 0);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.3D, true){
             protected double getAttackReachSqr(LivingEntity attackTarget) {
-                return super.getAttackReachSqr(attackTarget) + 2.5D;
+                return EntityEmu.this.getBbWidth() * 2.0F * EntityEmu.this.getBbWidth() * 2.0F + attackTarget.getBbWidth() + 2.5;
             }
 
             @Override
@@ -255,13 +255,13 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if(this.random.nextInt(200) == 0){
             this.setVariant(2);
         }else if(random.nextInt(3) == 0){
             this.setVariant(1);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     @Override

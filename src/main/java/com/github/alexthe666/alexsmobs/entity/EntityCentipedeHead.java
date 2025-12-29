@@ -52,7 +52,9 @@ public class EntityCentipedeHead extends Monster {
     protected EntityCentipedeHead(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.xpReward = 13;
-        this.setMaxUpStep(3);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -88,10 +90,6 @@ public class EntityCentipedeHead extends Monster {
         return AMSoundRegistry.CENTIPEDE_HURT.get();
     }
 
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(AMSoundRegistry.CENTIPEDE_WALK.get(), 1F, 1.0F);
     }
@@ -109,11 +107,11 @@ public class EntityCentipedeHead extends Monster {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CHILD_UUID, Optional.empty());
-        this.entityData.define(CHILD_ID, -1);
-        this.entityData.define(SEGMENT_COUNT, 5);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CHILD_UUID, Optional.empty());
+        builder.define(CHILD_ID, -1);
+        builder.define(SEGMENT_COUNT, 5);
     }
 
     public boolean doHurtTarget(Entity entityIn) {
@@ -169,9 +167,9 @@ public class EntityCentipedeHead extends Monster {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setSegmentCount(random.nextInt(4) + 5);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -211,7 +209,7 @@ public class EntityCentipedeHead extends Monster {
 
     public void tick() {
         super.tick();
-        isInsidePortal = false;
+        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.yBodyRot = Mth.clamp(this.getYRot(), this.yBodyRot - 2, this.yBodyRot + 2);
         this.yHeadRot = this.yBodyRot;
         if (this.ringBufferIndex < 0) {

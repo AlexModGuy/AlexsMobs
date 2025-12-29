@@ -45,10 +45,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import org.jetbrains.annotations.Nullable;
 
 public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollower {
@@ -73,19 +73,19 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
 
     public EntityCaiman(EntityType type, Level level) {
         super(type, level);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(false);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(BELLOWING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(HAS_EGG, false);
-        this.entityData.define(HELD_MOB_ID, -1);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(COMMAND, 0);
+        builder.define(BELLOWING, false);
+        builder.define(SITTING, false);
+        builder.define(HAS_EGG, false);
+        builder.define(HELD_MOB_ID, -1);
     }
 
     protected void registerGoals() {
@@ -238,7 +238,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
                 WaterAnimal fish = (WaterAnimal) this.getTarget();
                 CompoundTag fishNbt = new CompoundTag();
                 fish.addAdditionalSaveData(fishNbt);
-                fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
+                fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.location().toString());
                 fish.readAdditionalSaveData(fishNbt);
             }
         } else {
@@ -246,7 +246,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
                 int particles = 4 + getRandom().nextInt(3);
                 for (int i = 0; i <= particles; i++) {
                     Vec3 particleVec = new Vec3(0, 0, 1.0F).yRot((i / (float) particles) * (Mth.PI) * 2F).add(this.position());
-                    double particleY = this.getBoundingBox().minY + getFluidTypeHeight(ForgeMod.WATER_TYPE.get());
+                    double particleY = this.getBoundingBox().minY + getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
                     this.level().addParticle(ParticleTypes.SPLASH, particleVec.x, particleY, particleVec.z, 0, 0.3F, 0);
                 }
             }
@@ -363,9 +363,9 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
         this.walkAnimation.update(f2, 0.4F);
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     @Override
     public boolean shouldEnterWater() {

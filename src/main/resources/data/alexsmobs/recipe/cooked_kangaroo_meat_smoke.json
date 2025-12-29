@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "alexsmobs:kangaroo_meat"
+  },
+  "result": {
+    "id": "alexsmobs:cooked_kangaroo_meat"
+  },
+  "experience": 0.15,
+  "cookingtime": 100
+}

@@ -33,6 +33,7 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -78,9 +79,9 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SCORCHING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SCORCHING, false);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -105,6 +106,11 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
 
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.SUNBIRD_HURT.get();
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
     }
 
     protected void registerGoals() {
@@ -134,10 +140,10 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             if (source.getEntity() != null) {
                 if (source.getEntity() instanceof LivingEntity) {
                     LivingEntity hurter = (LivingEntity) source.getEntity();
-                    if (hurter.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING.get())) {
-                        hurter.removeEffect(AMEffectRegistry.SUNBIRD_BLESSING.get());
+                    if (hurter.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING)) {
+                        hurter.removeEffect(AMEffectRegistry.SUNBIRD_BLESSING);
                     }
-                    hurter.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE.get(), 600, 0));
+                    hurter.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE, 600, 0));
                 }
             }
             return prev;
@@ -199,8 +205,8 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                 }
                 List<Player> playerList = this.level().getEntitiesOfClass(Player.class, this.getScorchArea(), Predicates.alwaysTrue());
                 for (Player e : playerList) {
-                    if (!e.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING.get()) && !e.hasEffect(AMEffectRegistry.SUNBIRD_CURSE.get())) {
-                        e.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_BLESSING.get(), 600, 0));
+                    if (!e.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING) && !e.hasEffect(AMEffectRegistry.SUNBIRD_CURSE)) {
+                        e.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_BLESSING, 600, 0));
                     }
                 }
             }
@@ -246,9 +252,9 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                 this.setScorching(false);
             }else if(fullScorchTime % 5 == 0){
                 for (Entity e : getScorchingMobs()) {
-                    e.setSecondsOnFire(4);
+                    e.igniteForSeconds(4);
                     if (e instanceof Phantom) {
-                        ((Phantom) e).addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE.get(), 200, 0));
+                        ((Phantom) e).addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE, 200, 0));
                     }
                 }
             }

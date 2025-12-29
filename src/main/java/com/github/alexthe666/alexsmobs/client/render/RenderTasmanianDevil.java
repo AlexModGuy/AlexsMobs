@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderTasmanianDevil extends MobRenderer<EntityTasmanianDevil, ModelTasmanianDevil> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tasmanian_devil.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tasmanian_devil_angry.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/tasmanian_devil.png");
+    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/tasmanian_devil_angry.png");
 
     public RenderTasmanianDevil(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTasmanianDevil(), 0.3F);

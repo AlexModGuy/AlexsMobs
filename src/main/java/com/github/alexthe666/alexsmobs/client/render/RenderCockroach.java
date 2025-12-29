@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderCockroach extends MobRenderer<EntityCockroach, ModelCockroach> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/cockroach.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/cockroach.png");
 
     public RenderCockroach(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCockroach(), 0.3F);

@@ -12,8 +12,9 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderSkreecher extends MobRenderer<EntitySkreecher, ModelSkreecher> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/skreecher.png");
-    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/skreecher_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/skreecher.png");
+    private static final ResourceLocation TEXTURE_GLOW = ResourceLocation
+            .parse("alexsmobs:textures/entity/skreecher_glow.png");
 
     public RenderSkreecher(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSkreecher(), 0.35F);
@@ -33,10 +34,14 @@ public class RenderSkreecher extends MobRenderer<EntitySkreecher, ModelSkreecher
             super(render);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntitySkreecher entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntitySkreecher entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
             VertexConsumer scorch = bufferIn.getBuffer(AMRenderTypes.getEyesAlphaEnabled(TEXTURE_GLOW));
-            float alpha = (float)Math.sin((entitylivingbaseIn.tickCount + partialTicks) * 0.1F) * 0.35F + 0.5F;
-            this.getParentModel().renderToBuffer(matrixStackIn, scorch, 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, alpha);
+            float alpha = (float) Math.sin((entitylivingbaseIn.tickCount + partialTicks) * 0.1F) * 0.35F + 0.5F;
+            this.getParentModel().renderToBuffer(matrixStackIn, scorch, 240,
+                    LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0),
+                    AMColorUtil.packColor(1.0F, 1.0F, 1.0F, alpha));
         }
     }
 }

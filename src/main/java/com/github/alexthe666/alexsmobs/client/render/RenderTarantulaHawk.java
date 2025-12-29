@@ -14,11 +14,11 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 
 public class RenderTarantulaHawk extends MobRenderer<EntityTarantulaHawk, EntityModel<EntityTarantulaHawk>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_angry.png");
-    private static final ResourceLocation TEXTURE_NETHER = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_nether.png");
-    private static final ResourceLocation TEXTURE_NETHER_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_nether_angry.png");
-    private static final ResourceLocation TEXTURE_BABY = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_baby.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/tarantula_hawk.png");
+    private static final ResourceLocation TEXTURE_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/tarantula_hawk_angry.png");
+    private static final ResourceLocation TEXTURE_NETHER = ResourceLocation.parse("alexsmobs:textures/entity/tarantula_hawk_nether.png");
+    private static final ResourceLocation TEXTURE_NETHER_ANGRY = ResourceLocation.parse("alexsmobs:textures/entity/tarantula_hawk_nether_angry.png");
+    private static final ResourceLocation TEXTURE_BABY = ResourceLocation.parse("alexsmobs:textures/entity/tarantula_hawk_baby.png");
     private static final ModelTarantulaHawk MODEL = new ModelTarantulaHawk();
     private static final ModelTarantulaHawkBaby MODEL_BABY = new ModelTarantulaHawkBaby();
     public RenderTarantulaHawk(EntityRendererProvider.Context renderManagerIn) {

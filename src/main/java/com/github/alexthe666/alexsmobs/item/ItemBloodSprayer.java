@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -95,9 +96,7 @@ public class ItemBloodSprayer extends Item {
                 if (!worldIn.isClientSide) {
                     worldIn.addFreshEntity(blood);
                 }
-                stack.hurtAndBreak(1, livingEntityIn, (player) -> {
-                    player.broadcastBreakEvent(livingEntityIn.getUsedItemHand());
-                });
+                stack.hurtAndBreak(1, livingEntityIn, EquipmentSlot.MAINHAND);
             }
         }else{
             if(livingEntityIn instanceof Player){

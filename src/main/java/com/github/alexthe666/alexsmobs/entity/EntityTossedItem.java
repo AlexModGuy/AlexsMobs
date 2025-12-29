@@ -4,8 +4,6 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,11 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 public class EntityTossedItem extends ThrowableItemProjectile {
 
     protected static final EntityDataAccessor<Boolean> DART = SynchedEntityData.defineId(EntityTossedItem.class, EntityDataSerializers.BOOLEAN);
@@ -40,28 +35,27 @@ public class EntityTossedItem extends ThrowableItemProjectile {
         super(AMEntityRegistry.TOSSED_ITEM.get(), x, y, z, worldIn);
     }
 
-    public EntityTossedItem(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.TOSSED_ITEM.get(), world);
-    }
-
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DART, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DART, false);
     }
 
     public boolean isDart() {
-        return this.entityData.get(DART);
+        return this.entityData != null && this.entityData.get(DART);
     }
 
     public void setDart(boolean dart) {
         this.entityData.set(DART, dart);
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {

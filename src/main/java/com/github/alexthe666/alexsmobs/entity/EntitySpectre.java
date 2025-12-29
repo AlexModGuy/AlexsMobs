@@ -6,7 +6,6 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -81,9 +80,9 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CARDINAL_ORDINAL, Integer.valueOf(Direction.NORTH.get3DDataValue()));
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CARDINAL_ORDINAL, Integer.valueOf(Direction.NORTH.get3DDataValue()));
     }
 
     public int getCardinalInt() {
@@ -102,6 +101,11 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
         setCardinalInt(dir.get3DDataValue());
     }
 
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new TemptHeartGoal(this, 1.0D, Ingredient.of(AMItemRegistry.SOUL_HEART.get()), false));
         this.goalSelector.addGoal(2, new FlyGoal(this));
@@ -113,10 +117,10 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setXRot(0.0F);
         this.randomizeDirection();
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
 
     }
 
@@ -160,6 +164,18 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
             if (entity.isShiftKeyDown()) {
                 this.dropLeash(true, true);
             }
+            // Custom leash handling for spectre (from tickLeash replacement)
+            if (!this.level().isClientSide) {
+                if (f > 30) {
+                    double dx = (this.getLeashHolder().getX() - this.getX()) / (double) f;
+                    double dy = (this.getLeashHolder().getY() - this.getY()) / (double) f;
+                    double dz = (this.getLeashHolder().getZ() - this.getZ()) / (double) f;
+                    this.setDeltaMovement(this.getDeltaMovement().add(Math.copySign(dx * dx * 0.4D, dx), Math.copySign(dy * dy * 0.4D, dy), Math.copySign(dz * dz * 0.4D, dz)));
+                }
+                if (!this.isAlive() || !this.getLeashHolder().isAlive()) {
+                    this.dropLeash(true, true);
+                }
+            }
         }
     }
 
@@ -167,32 +183,6 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return null;
-    }
-
-    protected void tickLeash() {
-        if (this.getLeashHolder() != null) {
-            if (this.getLeashHolder().isPassenger() || this.getLeashHolder() instanceof LeashFenceKnotEntity) {
-                super.tickLeash();
-                return;
-            }
-            float f = this.distanceTo(this.getLeashHolder());
-            if (f > 30) {
-                double lvt_3_1_ = (this.getLeashHolder().getX() - this.getX()) / (double) f;
-                double lvt_5_1_ = (this.getLeashHolder().getY() - this.getY()) / (double) f;
-                double lvt_7_1_ = (this.getLeashHolder().getZ() - this.getZ()) / (double) f;
-                this.setDeltaMovement(this.getDeltaMovement().add(Math.copySign(lvt_3_1_ * lvt_3_1_ * 0.4D, lvt_3_1_), Math.copySign(lvt_5_1_ * lvt_5_1_ * 0.4D, lvt_5_1_), Math.copySign(lvt_7_1_ * lvt_7_1_ * 0.4D, lvt_7_1_)));
-            }
-        }
-        if (this.leashInfoTag != null) {
-            this.restoreLeashFromSave();
-        }
-
-        if (this.getLeashHolder() != null) {
-            if (!this.isAlive() || !this.getLeashHolder().isAlive()) {
-                this.dropLeash(true, true);
-            }
-
-        }
     }
 
     private void randomizeDirection() {

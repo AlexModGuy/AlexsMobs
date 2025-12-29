@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormBody;
 import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormTail;
+import com.github.alexthe666.alexsmobs.client.render.AMColorUtil;
 import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
 import com.github.alexthe666.alexsmobs.client.render.misc.VoidWormMetadataSection;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
@@ -21,7 +22,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.LivingEntity;
 
-public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLayer<T, EntityModel<T>>  {
+public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLayer<T, EntityModel<T>> {
 
     private final ResourceManager resourceManager;
     private final Object2BooleanMap<ResourceLocation> mcmetaData;
@@ -29,7 +30,8 @@ public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLa
     private final EntityModel bodyModel = new ModelVoidWormBody(1.001F);
     private final EntityModel tailModel = new ModelVoidWormTail(1.001F);
 
-    public LayerVoidWormGlow(RenderLayerParent<T, EntityModel<T>> renderer, ResourceManager resourceManager, EntityModel<T> layerModel) {
+    public LayerVoidWormGlow(RenderLayerParent<T, EntityModel<T>> renderer, ResourceManager resourceManager,
+            EntityModel<T> layerModel) {
         super(renderer);
         this.resourceManager = resourceManager;
         this.mcmetaData = new Object2BooleanOpenHashMap<>();
@@ -37,37 +39,44 @@ public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLa
     }
 
     @Override
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T worm, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T worm, float limbSwing,
+            float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ResourceLocation texture = getGlowTexture(worm);
         boolean special = isSpecialRenderer(texture);
 
         if (isGlowing(worm) || special) {
-            if(special){
-                if(worm instanceof EntityVoidWormPart body){
+            if (special) {
+                if (worm instanceof EntityVoidWormPart body) {
                     this.layerModel = body.isTail() ? tailModel : bodyModel;
                 }
                 this.layerModel.setupAnim(worm, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                VertexConsumer consumer = AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY), bufferIn.getBuffer(RenderType.entityCutoutNoCull(texture)));
-                this.layerModel.renderToBuffer(matrixStackIn, consumer, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-            }else{
+                // In 1.21, merged vertex consumers with different formats can cause issues
+                // Render using just the entity texture without the portal overlay effect
+                VertexConsumer consumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(texture));
+                this.layerModel.renderToBuffer(matrixStackIn, consumer, 240, OverlayTexture.NO_OVERLAY, -1);
+            } else {
                 float f = getAlpha(worm);
-                this.getParentModel().renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(texture)), 240, LivingEntityRenderer.getOverlayCoords(worm, 1.0F), 1.0F, 1.0F, 1.0F, f);
+                this.getParentModel().renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(texture)), 240,
+                        LivingEntityRenderer.getOverlayCoords(worm, 1.0F), AMColorUtil.packColor(1.0F, 1.0F, 1.0F, f));
             }
         }
     }
 
     public abstract ResourceLocation getGlowTexture(LivingEntity worm);
+
     public abstract boolean isGlowing(LivingEntity livingEntity);
+
     public abstract float getAlpha(LivingEntity livingEntity);
 
-    private boolean isSpecialRenderer(ResourceLocation resourceLocation){
-        if(mcmetaData.containsKey(resourceLocation)){
+    private boolean isSpecialRenderer(ResourceLocation resourceLocation) {
+        if (mcmetaData.containsKey(resourceLocation)) {
             return mcmetaData.getBoolean(resourceLocation);
         }
-        if(this.resourceManager.getResource(resourceLocation).isPresent()){
+        if (this.resourceManager.getResource(resourceLocation).isPresent()) {
             Resource resource = this.resourceManager.getResource(resourceLocation).get();
             try {
-                VoidWormMetadataSection section = resource.metadata().getSection(VoidWormMetadataSection.SERIALIZER).orElse(new VoidWormMetadataSection());
+                VoidWormMetadataSection section = resource.metadata().getSection(VoidWormMetadataSection.SERIALIZER)
+                        .orElse(new VoidWormMetadataSection());
                 mcmetaData.put(resourceLocation, section.isEndPortalTexture());
                 return section.isEndPortalTexture();
             } catch (Exception e) {

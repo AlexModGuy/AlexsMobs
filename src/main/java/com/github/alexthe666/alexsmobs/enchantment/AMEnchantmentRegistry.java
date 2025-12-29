@@ -1,21 +1,28 @@
 package com.github.alexthe666.alexsmobs.enchantment;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.item.ItemStraddleboard;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
+/**
+ * Enchantments are now data-driven in NeoForge 1.21.
+ * Custom enchantments must be defined in JSON files under:
+ * data/alexsmobs/enchantment/
+ */
 public class AMEnchantmentRegistry {
-
-    public static final DeferredRegister<Enchantment> DEF_REG = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, AlexsMobs.MODID);
-    public static final EnchantmentCategory STRADDLEBOARD = EnchantmentCategory.create("straddleboard", (item -> item instanceof ItemStraddleboard));
-
-    public static final RegistryObject<Enchantment> STRADDLE_JUMP = DEF_REG.register("straddle_jump", () -> new StraddleJumpEnchantment(Enchantment.Rarity.COMMON, STRADDLEBOARD, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> STRADDLE_LAVAWAX = DEF_REG.register("lavawax", () -> new StraddleEnchantment(Enchantment.Rarity.UNCOMMON, STRADDLEBOARD, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> STRADDLE_SERPENTFRIEND = DEF_REG.register("serpentfriend", () -> new StraddleEnchantment(Enchantment.Rarity.RARE, STRADDLEBOARD, EquipmentSlot.MAINHAND));
-    public static final RegistryObject<Enchantment> STRADDLE_BOARDRETURN = DEF_REG.register("board_return", () -> new StraddleEnchantment(Enchantment.Rarity.UNCOMMON, STRADDLEBOARD, EquipmentSlot.MAINHAND));
+    // ResourceKeys for data-driven enchantments
+    public static final ResourceKey<Enchantment> STRADDLE_JUMP = createKey("straddle_jump");
+    public static final ResourceKey<Enchantment> STRADDLE_LAVAWAX = createKey("straddle_lavawax");
+    public static final ResourceKey<Enchantment> STRADDLE_SERPENTFRIEND = createKey("straddle_serpentfriend");
+    public static final ResourceKey<Enchantment> STRADDLE_BOARDRETURN = createKey("straddle_boardreturn");
+    
+    private static ResourceKey<Enchantment> createKey(String name) {
+        return ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
+    }
+    
+    public static void init() {
+        AlexsMobs.LOGGER.info("AMEnchantmentRegistry: Enchantments are now data-driven in 1.21");
+    }
 }

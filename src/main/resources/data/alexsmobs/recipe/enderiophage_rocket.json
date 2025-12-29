@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    " I ",
+    "EIE"
+  ],
+  "key": {
+    "C": {
+      "item": "alexsmobs:capsid"
+    },
+    "E": {
+      "item": "minecraft:end_stone"
+    },
+    "I": {
+      "tag": "c:nuggets/iron"
+    }
+  },
+  "result": {
+    "id": "alexsmobs:enderiophage_rocket",
+    "count": 1
+  }
+}

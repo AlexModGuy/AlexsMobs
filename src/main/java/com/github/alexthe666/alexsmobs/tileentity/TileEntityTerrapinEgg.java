@@ -44,8 +44,8 @@ public class TileEntityTerrapinEgg extends BlockEntity {
 
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
+    protected void loadAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
         if(compound.contains("Parent1Data")){
             this.parent1 = new ParentData(compound.getCompound("Parent1Data"));
         }
@@ -55,8 +55,8 @@ public class TileEntityTerrapinEgg extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    protected void saveAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
         if(this.parent1 != null){
             CompoundTag tag = new CompoundTag();
             parent1.writeToNBT(tag);

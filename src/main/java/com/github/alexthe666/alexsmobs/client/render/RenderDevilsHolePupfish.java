@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderDevilsHolePupfish extends MobRenderer<EntityDevilsHolePupfish, ModelDevilsHolePupfish> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/devils_hole_pupfish.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/devils_hole_pupfish.png");
 
     public RenderDevilsHolePupfish(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelDevilsHolePupfish(), 0.2F);

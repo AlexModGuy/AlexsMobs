@@ -14,13 +14,13 @@ public class ItemModArrow extends ArrowItem {
         super(group);
     }
 
-    public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+    @Override
+    public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter, ItemStack weaponStack) {
         if(this == AMItemRegistry.SHARK_TOOTH_ARROW.get()){
             Arrow arrowentity = new EntitySharkToothArrow(worldIn, shooter);
-            arrowentity.setEffectsFromItem(stack);
             return arrowentity;
         }else {
-            return super.createArrow(worldIn, stack, shooter);
+            return super.createArrow(worldIn, stack, shooter, weaponStack);
         }
     }
 

@@ -81,7 +81,7 @@ public class BlockHummingbirdFeeder extends Block {
             if(itemStack.is(AMTagRegistry.HUMMINGNBIRD_FEEDER_SWEETENERS)){
                 setContent = 2;
                 useItem(player, itemStack, false);
-            }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameTags(waterBottle, itemStack)){
+            }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameComponents(waterBottle, itemStack)){
                 setContent = 1;
                 useItem(player, itemStack, true);
             }
@@ -91,7 +91,7 @@ public class BlockHummingbirdFeeder extends Block {
                 useItem(player, itemStack, false);
             }
         }else if(contents == 2){
-            if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameTags(waterBottle, itemStack)){
+            if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameComponents(waterBottle, itemStack)){
                 setContent = 3;
                 useItem(player, itemStack, true);
             }

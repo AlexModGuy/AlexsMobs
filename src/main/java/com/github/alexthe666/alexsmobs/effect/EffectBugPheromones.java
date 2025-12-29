@@ -10,7 +10,8 @@ public class EffectBugPheromones extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0X78464B);
     }
 
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+        return true;
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

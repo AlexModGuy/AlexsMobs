@@ -115,7 +115,7 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		float walkDegree = 0.6F;
 		float idleSpeed = 0.1F;
 		float idleDegree = 0.1F;
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
 		float groundProgress = 5F - flyProgress;
 		float flapAmount = (entity.prevFlapAmount + (entity.flapAmount - entity.prevFlapAmount) * partialTick) * flyProgress * 0.2F;
@@ -161,7 +161,7 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, int color){
 		if (this.young) {
 			float f = 1.45F;
 			head.setScale(f, f, f);
@@ -170,7 +170,7 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			matrixStackIn.translate(0.0D, 1.5D, 0D);
 			parts().forEach((p_228292_8_) -> {
-				p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+				p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
 			});
 			matrixStackIn.popPose();
 			this.head.setScale(0.9F, 0.9F, 0.9F);
@@ -178,7 +178,7 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 			this.head.setScale(0.9F, 0.9F, 0.9F);
 			matrixStackIn.pushPose();
 			parts().forEach((p_228290_8_) -> {
-				p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+				p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, -1);
 			});
 			matrixStackIn.popPose();
 		}

@@ -2,8 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -17,10 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -54,10 +51,6 @@ public class EntityHemolymph extends Entity {
         this.setDeltaMovement(p_i47274_8_, p_i47274_10_, p_i47274_12_);
     }
 
-    public EntityHemolymph(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.HEMOLYMPH.get(), world);
-    }
-
     protected static float lerpRotation(float p_234614_0_, float p_234614_1_) {
         while (p_234614_1_ - p_234614_0_ < -180.0F) {
             p_234614_0_ -= 360.0F;
@@ -70,10 +63,13 @@ public class EntityHemolymph extends Entity {
         return Mth.lerp(0.2F, p_234614_0_, p_234614_1_);
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     public void tick() {
         if (!this.leftOwner) {
@@ -125,7 +121,8 @@ public class EntityHemolymph extends Entity {
         }
     }
 
-    protected void defineSynchedData() {
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
     }
 
     public void setShooter(@Nullable Entity entityIn) {

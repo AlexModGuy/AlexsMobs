@@ -16,8 +16,10 @@ import org.joml.Quaternionf;
 import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
 public class RenderStraddleboard extends EntityRenderer<EntityStraddleboard> {
-    private static final ResourceLocation TEXTURE_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/straddleboard_overlay.png");
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/straddleboard.png");
+    private static final ResourceLocation TEXTURE_OVERLAY = ResourceLocation
+            .parse("alexsmobs:textures/entity/straddleboard_overlay.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/straddleboard.png");
     private static final ModelStraddleboard BOARD_MODEL = new ModelStraddleboard();
 
     public RenderStraddleboard(EntityRendererProvider.Context renderManager) {
@@ -30,33 +32,35 @@ public class RenderStraddleboard extends EntityRenderer<EntityStraddleboard> {
     }
 
     @Override
-    public void render(EntityStraddleboard entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntityStraddleboard entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(new Quaternionf().rotateY(180F * Mth.DEG_TO_RAD));
-        matrixStackIn.mulPose(Axis.YN.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) + 180));
+        matrixStackIn
+                .mulPose(Axis.YN.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) + 180));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.pushPose();
-        boolean lava =  entityIn.isVehicle();
+        boolean lava = entityIn.isVehicle();
         float f2 = entityIn.getRockingAngle(partialTicks);
         if (!Mth.equal(f2, 0.0F)) {
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(entityIn.getRockingAngle(partialTicks)));
         }
         int k = entityIn.getColor();
-        float r = (float)(k >> 16 & 255) / 255.0F;
-        float g = (float)(k >> 8 & 255) / 255.0F;
-        float b = (float)(k & 255) / 255.0F;
+        float r = (float) (k >> 16 & 255) / 255.0F;
+        float g = (float) (k >> 8 & 255) / 255.0F;
+        float b = (float) (k & 255) / 255.0F;
         float boardRot = entityIn.prevBoardRot + partialTicks * (entityIn.getBoardRot() - entityIn.prevBoardRot);
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(boardRot));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(180));
         matrixStackIn.translate(0, -1.5F - Math.abs(boardRot * 0.007F) - (lava ? 0 : 0.25F), 0);
         BOARD_MODEL.animateBoard(entityIn, entityIn.tickCount + partialTicks);
         VertexConsumer ivertexbuilder2 = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_OVERLAY));
-        BOARD_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder2, packedLightIn, NO_OVERLAY, r, g, b, 1.0F);
+        BOARD_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder2, packedLightIn, NO_OVERLAY,
+                AMColorUtil.packColor(r, g, b, 1.0F));
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
-        BOARD_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        BOARD_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, NO_OVERLAY, -1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
-
 
     }
 

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -32,6 +33,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import java.util.ArrayList;
 
 public class BlockSkunkSpray extends MultifaceBlock implements SimpleWaterloggedBlock {
+    public static final MapCodec<BlockSkunkSpray> CODEC = simpleCodec(p -> new BlockSkunkSpray());
+
+    @Override
+    public MapCodec<BlockSkunkSpray> codec() {
+        return CODEC;
+    }
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -74,8 +81,7 @@ public class BlockSkunkSpray extends MultifaceBlock implements SimpleWaterlogged
         definition.add(WATERLOGGED, AGE);
     }
 
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        ItemStack itemStack = player.getItemInHand(handIn);
+    public ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         int setContent = -1;
         if(itemStack.is(Items.GLASS_BOTTLE)) {
            Direction dir = hit.getDirection().getOpposite();
@@ -88,10 +94,10 @@ public class BlockSkunkSpray extends MultifaceBlock implements SimpleWaterlogged
                if(!player.isCreative()){
                    itemStack.shrink(1);
                }
-               return InteractionResult.SUCCESS;
+               return ItemInteractionResult.SUCCESS;
            }
         }
-        return super.use(state, worldIn, pos, player, handIn, hit);
+        return super.useItemOn(itemStack, state, worldIn, pos, player, handIn, hit);
     }
 
     public static BlockState removeStinkFace(BlockState state, Direction faceProperty) {

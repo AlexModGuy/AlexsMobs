@@ -48,8 +48,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -74,10 +74,11 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 3.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DEPRESSURIZED, false);
-        this.entityData.define(FROM_BUCKET, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DEPRESSURIZED, false);
+        builder.define(FROM_BUCKET, false);
     }
 
     protected void registerGoals() {
@@ -121,8 +122,10 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("FromBucket", this.fromBucket());
-        compound.putBoolean("Depressurized", this.isDepressurized());
+        // TODO: NeoForge 1.21 - DataComponents needed
+        // compound.putBoolean("FromBucket", this.fromBucket());
+        // TODO: NeoForge 1.21 - DataComponents needed
+        // compound.putBoolean("Depressurized", this.isDepressurized());
     }
 
     public boolean requiresCustomPersistence() {
@@ -148,11 +151,11 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if (reason == MobSpawnType.NATURAL) {
             doInitialPosing(worldIn);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
@@ -184,7 +187,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.FRILLED_SHARK_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -192,12 +195,14 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.put("FrilledSharkData", platTag);
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
+        // CompoundTag compound = bucket.getOrCreateTag();
+        // TODO: NeoForge 1.21 - DataComponents needed
+        // compound.put("FrilledSharkData", platTag);
     }
 
     @Override
@@ -257,7 +262,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
             float f1 = this.getYRot() * Mth.DEG_TO_RAD;
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.06F, 0.0D, Mth.cos(f1) * 0.06F));
             if (this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
-                this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION.get(), 60, 2));
+                this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));
                 if(random.nextInt(15) == 0 && this.getTarget() instanceof Squid){
                     this.spawnAtLocation(AMItemRegistry.SERRATED_SHARK_TOOTH.get());
                 }

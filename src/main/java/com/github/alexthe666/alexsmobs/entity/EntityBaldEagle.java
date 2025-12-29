@@ -54,7 +54,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -253,15 +252,15 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
-        this.entityData.define(HAS_CAP, false);
-        this.entityData.define(TACKLING, false);
-        this.entityData.define(LAUNCHED, false);
-        this.entityData.define(ATTACK_TICK, 0);
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(SITTING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
+        builder.define(HAS_CAP, false);
+        builder.define(TACKLING, false);
+        builder.define(LAUNCHED, false);
+        builder.define(ATTACK_TICK, 0);
+        builder.define(COMMAND, 0);
+        builder.define(SITTING, false);
     }
 
     public boolean isSitting() {
@@ -373,15 +372,15 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                         itemstack.shrink(1);
                     }
                     this.gameEvent(GameEvent.ENTITY_INTERACT);
-                    this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, this.getSoundVolume(), this.getVoicePitch());
+                    this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER.value(), this.getSoundVolume(), this.getVoicePitch());
                     return InteractionResult.SUCCESS;
                 }
-            } else if (itemstack.is(Tags.Items.SHEARS) && this.hasCap()) {
+            } else if (itemstack.is(net.minecraft.world.item.Items.SHEARS) && this.hasCap()) {
                 this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
                 if (!this.level().isClientSide) {
                     if (player instanceof ServerPlayer) {
-                        itemstack.hurt(1, random, (ServerPlayer) player);
+                        itemstack.shrink(1);
                     }
                 }
                 this.spawnAtLocation(AMItemRegistry.FALCONRY_HOOD.get());
@@ -744,7 +743,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 return true;
             }
         }
-        return !this.isAlive() || this.isInsidePortal || launchTime > 12000 || this.portalTime > 0 || this.isRemoved();
+        return !this.isAlive() || launchTime > 12000 || this.isRemoved();
     }
 
     public void remove(RemovalReason reason) {
@@ -835,7 +834,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     public void awardKillScore(LivingEntity entity, int score, DamageSource src) {
         if (this.isLaunched() && this.hasCap() && this.isTame() && this.getOwner() != null) {
             if (this.getOwner() instanceof ServerPlayer && this.distanceTo(this.getOwner()) >= 100) {
-                AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.trigger((ServerPlayer) this.getOwner());
+                AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.get().trigger((ServerPlayer) this.getOwner());
             }
         }
         super.awardKillScore(entity, score, src);

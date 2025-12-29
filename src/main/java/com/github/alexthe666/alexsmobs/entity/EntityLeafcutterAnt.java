@@ -19,6 +19,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -50,11 +51,12 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -65,9 +67,15 @@ import java.util.stream.Stream;
 
 public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimatedEntity {
 
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
+
+
     public static final Animation ANIMATION_BITE = Animation.create(13);
     protected static final EntityDimensions QUEEN_SIZE = EntityDimensions.fixed(1.25F, 0.98F);
-    public static final ResourceLocation QUEEN_LOOT = new ResourceLocation("alexsmobs", "entities/leafcutter_ant_queen");
+    public static final ResourceKey<LootTable> QUEEN_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/leafcutter_ant_queen"));
     private static final EntityDataAccessor<Optional<BlockPos>> LEAF_HARVESTED_POS = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     private static final EntityDataAccessor<Optional<BlockState>> LEAF_HARVESTED_STATE = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
     private static final EntityDataAccessor<Boolean> HAS_LEAF = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.BOOLEAN);
@@ -96,7 +104,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     private int haveBabyCooldown = 0;
     public EntityLeafcutterAnt(EntityType type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
         switchNavigator(true);
 
     }
@@ -109,12 +117,8 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     @Nullable
-    protected ResourceLocation getDefaultLootTable() {
+    protected ResourceKey<LootTable> getDefaultLootTable() {
         return this.isQueen() ? QUEEN_LOOT : super.getDefaultLootTable();
-    }
-
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
     }
 
     private void switchNavigator(boolean rightsideUp) {
@@ -155,8 +159,8 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         this.targetSelector.addGoal(2, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
-        return isQueen() && !isBaby() ? QUEEN_SIZE : super.getDimensions(poseIn);
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
+        return isQueen() && !isBaby() ? QUEEN_SIZE : super.getDefaultDimensions(poseIn);
     }
 
     public boolean canTrample(BlockState state, BlockPos pos, float fallDistance) {
@@ -258,13 +262,13 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     public void tick() {
         this.prevAttachChangeProgress = this.attachChangeProgress;
         super.tick();
-        if (this.isQueen() && this.getBbWidth() < QUEEN_SIZE.width) {
+        if (this.isQueen() && this.getBbWidth() < QUEEN_SIZE.width()) {
             this.refreshDimensions();
         }
         if (attachChangeProgress > 0F) {
             attachChangeProgress -= 0.25F;
         }
-        this.setMaxUpStep(isQueen() ? 1F : 0.5F);
+        // Step height is now set via attributes in 1.21, not setMaxUpStep()
         Vec3 vector3d = this.getDeltaMovement();
         if (!this.level().isClientSide && !this.isQueen()) {
             this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.onGround());
@@ -406,22 +410,22 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CLIMBING, (byte) 0);
-        this.entityData.define(LEAF_HARVESTED_POS, Optional.empty());
-        this.entityData.define(LEAF_HARVESTED_STATE, Optional.empty());
-        this.entityData.define(HAS_LEAF, false);
-        this.entityData.define(QUEEN, false);
-        this.entityData.define(ATTACHED_FACE, Direction.DOWN);
-        this.entityData.define(ANT_SCALE, 1.0F);
-        this.entityData.define(ANGER_TIME, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CLIMBING, (byte) 0);
+        builder.define(LEAF_HARVESTED_POS, Optional.empty());
+        builder.define(LEAF_HARVESTED_STATE, Optional.empty());
+        builder.define(HAS_LEAF, false);
+        builder.define(QUEEN, false);
+        builder.define(ATTACHED_FACE, Direction.DOWN);
+        builder.define(ANT_SCALE, 1.0F);
+        builder.define(ANGER_TIME, 0);
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setAntScale(0.75F + random.nextFloat() * 0.3F);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public float getAntScale() {
@@ -491,7 +495,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         this.haveBabyCooldown = compound.getInt("BabyCooldown");
         this.hivePos = null;
         if (compound.contains("HivePos")) {
-            this.hivePos = NbtUtils.readBlockPos(compound.getCompound("HivePos"));
+            this.hivePos = NbtUtils.readBlockPos(compound, "HivePos").orElse(BlockPos.ZERO);
         }
         this.setLeafHarvestedState(blockstate);
         if (compound.contains("HLPX")) {

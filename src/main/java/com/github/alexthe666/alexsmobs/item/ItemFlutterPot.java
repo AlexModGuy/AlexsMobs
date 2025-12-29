@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityFlutter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -49,7 +51,8 @@ public class ItemFlutterPot extends Item implements DispensibleContainerItem {
     private boolean placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
         Entity entity = AMEntityRegistry.FLUTTER.get().spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
         if (entity != null && entity instanceof EntityFlutter) {
-            CompoundTag compoundnbt = stack.getOrCreateTag();
+            CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            CompoundTag compoundnbt = customData.copyTag();
             if(compoundnbt.contains("FlutterData")){
                 ((EntityFlutter)entity).readAdditionalSaveData(compoundnbt.getCompound("FlutterData"));
             }

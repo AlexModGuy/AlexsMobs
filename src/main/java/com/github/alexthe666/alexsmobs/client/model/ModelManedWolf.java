@@ -115,7 +115,7 @@ public class ModelManedWolf extends AdvancedEntityModel<EntityManedWolf> {
         return ImmutableList.of(root, body, head_pivot, head, neck, tail, left_ear, right_ear, left_arm, right_arm, left_leg, right_leg, right_ear_pivot, left_ear_pivot);
     }
 
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         if (this.young) {
             float f = 1.35F;
             float feet = 0.8F;
@@ -129,7 +129,7 @@ public class ModelManedWolf extends AdvancedEntityModel<EntityManedWolf> {
             matrixStackIn.scale(0.65F, 0.65F, 0.65F);
             matrixStackIn.translate(0.0D, 1D, 0.125D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
             head.setScale(1, 1, 1);
@@ -140,7 +140,7 @@ public class ModelManedWolf extends AdvancedEntityModel<EntityManedWolf> {
         } else {
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
         }

@@ -1,0 +1,55 @@
+{
+  "pools": [
+    {
+      "name": "warped_mosco_1",
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.7,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.7999999999999999,
+            "per_level_above_first": 0.1
+          }
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:warped_muscle",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "warped_mosco_2",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:hemolymph_sac",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 5
+              }
+            },
+            {
+              "function": "minecraft:enchanted_count_increase",
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "enchantment": "minecraft:looting"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

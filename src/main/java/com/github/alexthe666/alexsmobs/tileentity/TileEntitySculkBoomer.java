@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.VibrationParticleOption;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -78,15 +80,17 @@ public class TileEntitySculkBoomer extends BlockEntity implements GameEventListe
 
     }
 
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
         if (tag.contains("ScreamCooldown", 99)) {
             this.screamTime = tag.getInt("ScreamCooldown");
         }
     }
 
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
         tag.putInt("ScreamCooldown", this.screamTime);
     }
 
@@ -101,8 +105,8 @@ public class TileEntitySculkBoomer extends BlockEntity implements GameEventListe
     }
 
     @Override
-    public boolean handleGameEvent(ServerLevel serverLevel, GameEvent event, GameEvent.Context message, Vec3 from) {
-        if(event == GameEvent.SCULK_SENSOR_TENDRILS_CLICKING && !isOccluded(serverLevel, Vec3.atCenterOf(this.getBlockPos()), from)){
+    public boolean handleGameEvent(ServerLevel serverLevel, Holder<GameEvent> event, GameEvent.Context message, Vec3 from) {
+        if(event.is(GameEvent.SCULK_SENSOR_TENDRILS_CLICKING) && !isOccluded(serverLevel, Vec3.atCenterOf(this.getBlockPos()), from)){
             double distance = from.distanceTo(Vec3.atCenterOf(this.getBlockPos()));
             serverLevel.sendParticles(new VibrationParticleOption(new BlockPositionSource(this.getBlockPos()), Mth.floor(distance)), from.x, from.y, from.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
             if(screamTime == 0){

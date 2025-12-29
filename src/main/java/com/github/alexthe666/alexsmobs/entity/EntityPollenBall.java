@@ -8,8 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PlayMessages;
-
 public class EntityPollenBall extends EntityMobProjectile {
 
     public EntityPollenBall(EntityType type, Level level) {
@@ -20,10 +18,6 @@ public class EntityPollenBall extends EntityMobProjectile {
         super(AMEntityRegistry.POLLEN_BALL.get(), worldIn, flutter);
         Vec3 vec3 = flutter.position().add(calcOffsetVec(new Vec3(0, 0.4F * flutter.getScale(), 0), flutter.getFlutterPitch(), flutter.getYRot()));
         this.setPos(vec3.x, vec3.y, vec3.z);
-    }
-
-    public EntityPollenBall(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.POLLEN_BALL.get(), world);
     }
 
     public boolean isNoGravity() {

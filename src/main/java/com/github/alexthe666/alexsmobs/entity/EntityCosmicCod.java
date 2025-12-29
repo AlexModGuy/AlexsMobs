@@ -37,7 +37,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -62,7 +62,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
 
     protected EntityCosmicCod(EntityType<? extends Mob> mob, Level level) {
         super(mob, level);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
         this.moveControl = new FlightMoveController(this, 1F, false, true);
     }
 
@@ -90,10 +90,10 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FISH_PITCH, 0F);
-        this.entityData.define(FROM_BUCKET, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FISH_PITCH, 0F);
+        builder.define(FROM_BUCKET, false);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.COSMIC_COD_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -125,12 +125,10 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
-        CompoundTag platTag = new CompoundTag();
-        this.addAdditionalSaveData(platTag);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.put("CosmicCodData", platTag);
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
+        // TODO: NeoForge 1.21 - CosmicCod bucket data needs DataComponents approach
     }
 
     @Override
@@ -254,9 +252,9 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         return true;
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     public boolean isPushedByWater() {
         return false;
@@ -313,7 +311,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         final boolean flag = blockstate.isAir();
         if (flag && !blockstate.getFluidState().is(FluidTags.WATER)) {
             this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
-            net.minecraftforge.event.entity.EntityTeleportEvent.EnderEntity event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(this, x, y, z);
+            net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderEntity event = net.neoforged.neoforge.event.EventHooks.onEnderTeleport(this, x, y, z);
             if (event.isCanceled()) return false;
             level().broadcastEntityEvent(this, (byte) 46);
             this.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
@@ -393,7 +391,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if (spawnDataIn == null) {
             spawnDataIn = new EntityCosmicCod.GroupData(this);
         } else {
@@ -402,7 +400,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         if (reason == MobSpawnType.NATURAL && spawnDataIn instanceof EntityCosmicCod.GroupData) {
             doInitialPosing(worldIn, (GroupData) spawnDataIn);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public boolean isCircling() {

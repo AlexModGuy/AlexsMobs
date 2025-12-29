@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 import java.util.EnumSet;
@@ -84,8 +84,8 @@ public class FlyingAIFollowOwner extends Goal {
      */
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.tameable.getPathfindingMalus(BlockPathTypes.WATER);
-        this.tameable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.oldWaterCost = this.tameable.getPathfindingMalus(PathType.WATER);
+        this.tameable.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
     /**
@@ -94,7 +94,7 @@ public class FlyingAIFollowOwner extends Goal {
     public void stop() {
         this.owner = null;
         this.navigator.stop();
-        this.tameable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+        this.tameable.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
     }
 
     /**
@@ -145,8 +145,8 @@ public class FlyingAIFollowOwner extends Goal {
             BlockPos blockpos = pos.subtract(this.tameable.blockPosition());
             return this.world.noCollision(this.tameable, this.tameable.getBoundingBox().move(blockpos));
         }
-        BlockPathTypes pathnodetype = WalkNodeEvaluator.getBlockPathTypeStatic(this.world, pos.mutable());
-        if (pathnodetype != BlockPathTypes.WALKABLE) {
+        PathType pathnodetype = WalkNodeEvaluator.getPathTypeStatic(this.tameable, pos);
+        if (pathnodetype != PathType.WALKABLE) {
             return false;
         } else {
             BlockState blockstate = this.world.getBlockState(pos.below());

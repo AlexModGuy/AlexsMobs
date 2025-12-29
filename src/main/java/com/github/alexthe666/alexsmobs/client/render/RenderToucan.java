@@ -20,12 +20,12 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderToucan extends MobRenderer<EntityToucan, ModelToucan> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/toucan/toucan_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/toucan/toucan_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/toucan/toucan_2.png");
-    private static final ResourceLocation TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/toucan/toucan_3.png");
-    private static final ResourceLocation TEXTURE_GOLDEN = new ResourceLocation("alexsmobs:textures/entity/toucan/toucan_gold.png");
-    private static final ResourceLocation TEXTURE_SAM = new ResourceLocation("alexsmobs:textures/entity/toucan/toucan_sam.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/toucan/toucan_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/toucan/toucan_1.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation.parse("alexsmobs:textures/entity/toucan/toucan_2.png");
+    private static final ResourceLocation TEXTURE_3 = ResourceLocation.parse("alexsmobs:textures/entity/toucan/toucan_3.png");
+    private static final ResourceLocation TEXTURE_GOLDEN = ResourceLocation.parse("alexsmobs:textures/entity/toucan/toucan_gold.png");
+    private static final ResourceLocation TEXTURE_SAM = ResourceLocation.parse("alexsmobs:textures/entity/toucan/toucan_sam.png");
 
     public RenderToucan(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelToucan(), 0.2F);
@@ -64,8 +64,8 @@ public class RenderToucan extends MobRenderer<EntityToucan, ModelToucan> {
 
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityToucan entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             if(entitylivingbaseIn.isEnchanted()){
-                VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(TEXTURE_GOLDEN), false, true);
-                this.getParentModel().renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1, 1, 1, 1.0F);
+                VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(TEXTURE_GOLDEN), true);
+                this.getParentModel().renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), -1);
             }
         }
     }

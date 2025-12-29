@@ -92,7 +92,7 @@ public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurH
         poseStack.pushPose();
         poseStack.translate(from.x, from.y, from.z);
         NECK_MODEL.setAttributes((float) sub.length(), rotX, rotY, additionalYaw);
-        NECK_MODEL.renderToBuffer(poseStack, buffer, packedLightIn, overlayCoords, 1, 1F, 1, 1);
+        NECK_MODEL.renderToBuffer(poseStack, buffer, packedLightIn, overlayCoords, -1);
         poseStack.popPose();
     }
 

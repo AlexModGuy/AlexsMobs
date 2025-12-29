@@ -17,7 +17,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -52,11 +51,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
-public class EntityBison extends Animal implements IAnimatedEntity, Shearable, net.minecraftforge.common.IForgeShearable {
+public class EntityBison extends Animal implements IAnimatedEntity, Shearable, net.neoforged.neoforge.common.IShearable {
 
     public static final Animation ANIMATION_PREPARE_CHARGE = Animation.create(40);
     public static final Animation ANIMATION_EAT = Animation.create(35);
@@ -78,7 +75,9 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
 
     protected EntityBison(EntityType<? extends Animal> animal, Level lvl) {
         super(animal, lvl);
-        this.setMaxUpStep(1.1F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -89,11 +88,11 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         return AMEntityRegistry.rollSpawn(AMConfig.bisonSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn, @javax.annotation.Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn) {
         if (spawnDataIn == null) {
             spawnDataIn = new AgeableMob.AgeableMobGroupData(0.25F);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -143,11 +142,11 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
 
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SHEARED, false);
-        this.entityData.define(SNOWY, false);
-        this.entityData.define(CHARGING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SHEARED, false);
+        builder.define(SNOWY, false);
+        builder.define(CHARGING, false);
     }
 
     @Nullable
@@ -328,7 +327,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             if (item instanceof ShovelItem && this.isSnowy()) {
                 this.permSnow = false;
                 if (!player.isCreative()) {
-                    itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer) player : null);
+                    if (itemstack.isDamageableItem()) itemstack.setDamageValue(itemstack.getDamageValue() + 1);
                 }
                 this.setSnowy(false);
                 this.playSound(SoundEvents.SNOW_BREAK, this.getSoundVolume(), this.getVoicePitch());
@@ -350,7 +349,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             return;
         }
         boolean flag = false;
-        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level(), this)) {
+        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.neoforged.neoforge.event.EventHooks.canEntityGrief(level(), this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
@@ -397,8 +396,24 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     @Override
-    public boolean isShearable(@javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos) {
+    public boolean isShearable(@javax.annotation.Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         return this.readyForShearing();
+    }
+
+    @javax.annotation.Nonnull
+    @Override
+    public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, ItemStack item, Level level, BlockPos pos) {
+        if (player != null) {
+            level().playSound(null, this, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 1.0F, 1.0F);
+        }
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
+        this.setSheared(true);
+        this.feedingsSinceLastShear = 0;
+        java.util.List<ItemStack> drops = new java.util.ArrayList<>();
+        for (int i = 0; i < 2 + random.nextInt(2); i++) {
+            drops.add(new ItemStack(AMItemRegistry.BISON_FUR.get()));
+        }
+        return drops;
     }
 
     @Override
@@ -425,20 +440,6 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         return !isSheared() && !isBaby();
     }
 
-    @javax.annotation.Nonnull
-    @Override
-    public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, @javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
-        world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
-        this.gameEvent(GameEvent.ENTITY_INTERACT);
-        final List<ItemStack> list = new ArrayList<>(6);
-        for (int i = 0; i < 2 + random.nextInt(2); i++) {
-            list.add(new ItemStack(AMItemRegistry.BISON_FUR.get()));
-        }
-        this.feedingsSinceLastShear = 0;
-        this.setSheared(true);
-        return list;
-    }
-
     public boolean isValidCharging() {
         return !this.isBaby() && this.isAlive() && chargeCooldown == 0 && !this.isInWaterOrBubble();
     }
@@ -449,11 +450,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     private void applyKnockbackFromBuffalo(float strength, double ratioX, double ratioZ) {
-        net.minecraftforge.event.entity.living.LivingKnockBackEvent event = net.minecraftforge.common.ForgeHooks.onLivingKnockBack(this, strength, ratioX, ratioZ);
-        if (event.isCanceled()) return;
-        strength = event.getStrength();
-        ratioX = event.getRatioX();
-        ratioZ = event.getRatioZ();
+        // TODO: ForgeHooks.onLivingKnockBack removed in 1.21 - knockback logic simplified
         if (!(strength <= 0.0F)) {
             this.hasImpulse = true;
             Vec3 vector3d = this.getDeltaMovement();

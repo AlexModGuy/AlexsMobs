@@ -4,8 +4,6 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,7 +21,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -52,10 +49,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         this.radius = radius;
         this.angleYaw = (angleYaw + 90.0F) * Mth.DEG_TO_RAD;
         this.offsetY = offsetY;
-    }
-
-    public MobType getMobType() {
-        return MobType.UNDEAD;
     }
 
     public boolean startRiding(Entity entityIn) {
@@ -98,11 +91,11 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(PARENT_UUID, Optional.empty());
-        this.entityData.define(TAIL, false);
-        this.entityData.define(BODYINDEX, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(PARENT_UUID, Optional.empty());
+        builder.define(TAIL, false);
+        builder.define(BODYINDEX, 0);
     }
 
     @Nullable
@@ -120,7 +113,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
 
     @Override
     public void tick() {
-        isInsidePortal = false;
+        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         if (this.tickCount > 10) {
             Entity parent = getParent();
             refreshDimensions();
@@ -181,10 +174,13 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         return null;
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     public void pushEntities() {
         List<net.minecraft.world.entity.Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
@@ -257,6 +253,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     public boolean shouldContinuePersisting() {
-        return isAddedToWorld() || this.isRemoved();
+        return this.isRemoved();
     }
 }

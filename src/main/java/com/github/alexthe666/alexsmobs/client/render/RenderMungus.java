@@ -28,11 +28,15 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mungus.png");
-    private static final ResourceLocation BEAM_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mungus_beam.png");
-    private static final ResourceLocation TEXTURE_BEAM_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/mungus_beam_overlay.png");
-    private static final ResourceLocation TEXTURE_SACK_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/mungus_sack.png");
-    private static final ResourceLocation TEXTURE_SHOES = new ResourceLocation("alexsmobs:textures/entity/mungus_shoes.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/mungus.png");
+    private static final ResourceLocation BEAM_TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/mungus_beam.png");
+    private static final ResourceLocation TEXTURE_BEAM_OVERLAY = ResourceLocation
+            .parse("alexsmobs:textures/entity/mungus_beam_overlay.png");
+    private static final ResourceLocation TEXTURE_SACK_OVERLAY = ResourceLocation
+            .parse("alexsmobs:textures/entity/mungus_sack.png");
+    private static final ResourceLocation TEXTURE_SHOES = ResourceLocation
+            .parse("alexsmobs:textures/entity/mungus_shoes.png");
     private static final RenderType beamType = AMRenderTypes.getEyesNoFog(BEAM_TEXTURE);
 
     public RenderMungus(EntityRendererProvider.Context renderManagerIn) {
@@ -45,11 +49,20 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
         return mungus.isReverting();
     }
 
-    private static void vertex(VertexConsumer p_229108_0_, Matrix4f p_229108_1_, Matrix3f p_229108_2_, float p_229108_3_, float p_229108_4_, float p_229108_5_, int p_229108_6_, int p_229108_7_, int p_229108_8_, float p_229108_9_, float p_229108_10_) {
-        p_229108_0_.vertex(p_229108_1_, p_229108_3_, p_229108_4_, p_229108_5_).color(p_229108_6_, p_229108_7_, p_229108_8_, 255).uv(p_229108_9_, p_229108_10_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_229108_2_, 0.0F, 1.0F, 0.0F).endVertex();
+    private static void vertex(VertexConsumer p_229108_0_, Matrix4f p_229108_1_, Matrix3f p_229108_2_,
+            float p_229108_3_, float p_229108_4_, float p_229108_5_, int p_229108_6_, int p_229108_7_, int p_229108_8_,
+            float p_229108_9_, float p_229108_10_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f(0.0F, 1.0F, 0.0F);
+        normal.mul(p_229108_2_);
+        org.joml.Vector4f pos = new org.joml.Vector4f(p_229108_3_, p_229108_4_, p_229108_5_, 1.0F);
+        pos.mul(p_229108_1_);
+        p_229108_0_.addVertex(pos.x, pos.y, pos.z).setColor(p_229108_6_, p_229108_7_, p_229108_8_, 255)
+                .setUv(p_229108_9_, p_229108_10_)
+                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(240).setNormal(normal.x, normal.y, normal.z);
     }
 
-    protected void setupRotations(EntityMungus entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void setupRotations(EntityMungus entityLiving, PoseStack matrixStackIn, float ageInTicks,
+            float rotationYaw, float partialTicks, float tickDelta) {
         if (entityLiving.deathTime > 0) {
             matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
             float f = ((float) entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
@@ -59,7 +72,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             }
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(f * -90));
         } else {
-            super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
+            super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks, tickDelta);
         }
     }
 
@@ -70,7 +83,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
     protected void scale(EntityMungus entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
         String s = ChatFormatting.stripFormatting(entitylivingbaseIn.getName().getString());
         if (s != null && s.toLowerCase().contains("drip")) {
-            matrixStackIn.translate(0F,  entitylivingbaseIn.isBaby() ? -0.075F : -0.15F, 0F);
+            matrixStackIn.translate(0F, entitylivingbaseIn.isBaby() ? -0.075F : -0.15F, 0F);
         }
     }
 
@@ -84,8 +97,10 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
                     Vec3 vector3d = Vec3.atLowerCornerOf(pos);
                     Vec3 vector3dCorner = Vec3.atLowerCornerOf(pos).add(1, 1, 1);
                     Vec3 vector3d1 = this.getPosition(livingEntityIn, livingEntityIn.getEyeHeight(), 1.0F);
-                    return camera.isVisible(new AABB(vector3d1.x, vector3d1.y, vector3d1.z, vector3d.x, vector3d.y, vector3d.z))
-                            || camera.isVisible(new AABB(vector3d1.x, vector3d1.y, vector3d1.z, vector3dCorner.x, vector3dCorner.y, vector3dCorner.z));
+                    return camera.isVisible(
+                            new AABB(vector3d1.x, vector3d1.y, vector3d1.z, vector3d.x, vector3d.y, vector3d.z))
+                            || camera.isVisible(new AABB(vector3d1.x, vector3d1.y, vector3d1.z, vector3dCorner.x,
+                                    vector3dCorner.y, vector3dCorner.z));
                 }
             }
 
@@ -100,7 +115,8 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
         return new Vec3(d0, d1, d2);
     }
 
-    public void render(EntityMungus entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntityMungus entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         BlockPos target = entityIn.getBeamTarget();
         if (target != null) {
@@ -108,7 +124,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             float f1 = (float) entityIn.level().getGameTime() + partialTicks;
             float f2 = -1.0F * (f1 * 0.15F % 1.0F);
             float f3 = 1.13F;
-            if(entityIn.isBaby()){
+            if (entityIn.isBaby()) {
                 f3 = 0.555F;
             }
             matrixStackIn.pushPose();
@@ -186,21 +202,27 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             super(p_i50928_1_);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityMungus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntityMungus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
             VertexConsumer lead = bufferIn.getBuffer(AMRenderTypes.getEyesFlickering(TEXTURE_SACK_OVERLAY, 0));
             float alpha = 0.75F + (Mth.cos(ageInTicks * 0.2F) + 1F) * 0.125F;
-            this.getParentModel().renderToBuffer(matrixStackIn, lead, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
+            this.getParentModel().renderToBuffer(matrixStackIn, lead, 240, OverlayTexture.NO_OVERLAY,
+                    AMColorUtil.packColor(1.0F, 1.0F, 1.0F, alpha));
             if (entitylivingbaseIn.getBeamTarget() != null) {
                 VertexConsumer beam = bufferIn.getBuffer(AMRenderTypes.getGhost(TEXTURE_BEAM_OVERLAY));
                 float beamAlpha = 0.75F + (Mth.cos(ageInTicks * 1) + 1F) * 0.125F;
-                this.getParentModel().renderToBuffer(matrixStackIn, beam, 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, beamAlpha);
+                this.getParentModel().renderToBuffer(matrixStackIn, beam, 240,
+                        LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0),
+                        AMColorUtil.packColor(1.0F, 1.0F, 1.0F, beamAlpha));
             }
             String s = ChatFormatting.stripFormatting(entitylivingbaseIn.getName().getString());
             if (s != null && s.toLowerCase().contains("drip")) {
                 VertexConsumer shoeBuffer = bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_SHOES));
                 matrixStackIn.pushPose();
                 this.getParentModel().renderShoes();
-                this.getParentModel().renderToBuffer(matrixStackIn, shoeBuffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.getParentModel().renderToBuffer(matrixStackIn, shoeBuffer, packedLightIn,
+                        OverlayTexture.NO_OVERLAY, -1);
                 this.getParentModel().postRenderShoes();
                 matrixStackIn.popPose();
             }
@@ -213,7 +235,9 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             super(p_i50928_1_);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityMungus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntityMungus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+                float ageInTicks, float netHeadYaw, float headPitch) {
             BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
             BlockState blockstate = entitylivingbaseIn.getMushroomState();
             if (blockstate == null) {

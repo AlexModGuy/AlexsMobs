@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderManedWolf extends MobRenderer<EntityManedWolf, ModelManedWolf> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/maned_wolf.png");
-    private static final ResourceLocation TEXTURE_ENDER = new ResourceLocation("alexsmobs:textures/entity/maned_wolf_ender.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/maned_wolf.png");
+    private static final ResourceLocation TEXTURE_ENDER = ResourceLocation.parse("alexsmobs:textures/entity/maned_wolf_ender.png");
 
     public RenderManedWolf(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelManedWolf(), 0.45F);

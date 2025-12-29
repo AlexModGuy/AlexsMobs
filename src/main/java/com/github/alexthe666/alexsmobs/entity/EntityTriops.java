@@ -41,8 +41,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -80,11 +80,12 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         prevTail2Yaw = this.getYRot();
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(TRIOPS_SCALE, 1F);
-        this.entityData.define(BABY_AGE, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FROM_BUCKET, false);
+        builder.define(TRIOPS_SCALE, 1F);
+        builder.define(BABY_AGE, 0);
     }
 
     protected void registerGoals() {
@@ -218,9 +219,9 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setTriopsScale(0.9F + random.nextFloat() * 0.2F);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     protected void playStepSound(BlockPos pos, BlockState state) {
@@ -257,10 +258,6 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         this.walkAnimation.update(f2, 0.4F);
     }
 
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 67) {
@@ -282,7 +279,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     @Override
     public void onGetItem(ItemEntity e) {
         ItemStack stack = e.getItem();
-        if (stack.getItem().isEdible() && stack.getItem().getFoodProperties() != null) {
+        if (stack.has(net.minecraft.core.component.DataComponents.FOOD) && stack.getFoodProperties(this) != null) {
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getVoicePitch(), this.getSoundVolume());
             this.heal(5);
@@ -325,12 +322,13 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.put("TriopsTag", platTag);
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
+        // Store the data via BUCKET_ENTITY_DATA component
+        bucket.set(net.minecraft.core.component.DataComponents.BUCKET_ENTITY_DATA, net.minecraft.world.item.component.CustomData.of(platTag));
     }
 
     @Override
@@ -345,7 +343,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.TRIOPS_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }

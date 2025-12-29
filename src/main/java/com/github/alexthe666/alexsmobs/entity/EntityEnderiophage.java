@@ -41,6 +41,7 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -56,13 +57,19 @@ import java.util.function.Predicate;
 
 public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
 
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
+
+
     private static final EntityDataAccessor<Float> PHAGE_PITCH = SynchedEntityData.defineId(EntityEnderiophage.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(EntityEnderiophage.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> MISSING_EYE = SynchedEntityData.defineId(EntityEnderiophage.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> PHAGE_SCALE = SynchedEntityData.defineId(EntityEnderiophage.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityEnderiophage.class, EntityDataSerializers.INT);
     private static final Predicate<LivingEntity> ENDERGRADE_OR_INFECTED = (entity) -> {
-        return entity instanceof EntityEndergrade || entity.hasEffect(AMEffectRegistry.ENDER_FLU.get());
+        return entity instanceof EntityEndergrade || entity.hasEffect(AMEffectRegistry.ENDER_FLU);
     };
     public float prevPhagePitch;
     public float tentacleAngle;
@@ -108,12 +115,12 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if (reason == MobSpawnType.NATURAL) {
             doInitialPosing(worldIn);
         }
         setSkinForDimension();
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public int getMaxSpawnClusterSize() {
@@ -176,13 +183,13 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(PHAGE_PITCH, 0F);
-        this.entityData.define(PHAGE_SCALE, 1F);
-        this.entityData.define(FLYING, false);
-        this.entityData.define(MISSING_EYE, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VARIANT, 0);
+        builder.define(PHAGE_PITCH, 0F);
+        builder.define(PHAGE_SCALE, 1F);
+        builder.define(FLYING, false);
+        builder.define(MISSING_EYE, false);
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
@@ -249,21 +256,21 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                             } else {
                                 if (random.nextInt(3) == 0) {
                                     if (!this.isMissingEye()) {
-                                        if (target.getEffect(AMEffectRegistry.ENDER_FLU.get()) == null) {
-                                            target.addEffect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU.get(), 12000));
+                                        if (target.getEffect(AMEffectRegistry.ENDER_FLU) == null) {
+                                            target.addEffect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU, 12000));
                                         } else {
-                                            MobEffectInstance inst = target.getEffect(AMEffectRegistry.ENDER_FLU.get());
+                                            MobEffectInstance inst = target.getEffect(AMEffectRegistry.ENDER_FLU);
                                             int duration = 12000;
                                             int level = 0;
                                             if (inst != null) {
                                                 duration = inst.getDuration();
                                                 level = inst.getAmplifier();
                                             }
-                                            target.removeEffect(AMEffectRegistry.ENDER_FLU.get());
-                                            target.addEffect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU.get(), duration, Math.min(level + 1, 4)));
+                                            target.removeEffect(AMEffectRegistry.ENDER_FLU);
+                                            target.addEffect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU, duration, Math.min(level + 1, 4)));
                                         }
                                         this.heal(5);
-                                        this.gameEvent(GameEvent.ENTITY_ROAR);
+                                        this.gameEvent(GameEvent.ENTITY_ACTION);
                                         this.playSound(SoundEvents.ITEM_BREAK, this.getSoundVolume(), this.getVoicePitch());
                                         this.setMissingEye(true);
                                     }
@@ -271,8 +278,8 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                                         this.setTarget(null);
                                         this.setLastHurtMob(null);
                                         this.setLastHurtByMob(null);
-                                        this.goalSelector.getRunningGoals().forEach(Goal::stop);
-                                        this.targetSelector.getRunningGoals().forEach(Goal::stop);
+                                        this.goalSelector.getAvailableGoals().stream().filter(net.minecraft.world.entity.ai.goal.WrappedGoal::isRunning).forEach(Goal::stop);
+                                        this.targetSelector.getAvailableGoals().stream().filter(net.minecraft.world.entity.ai.goal.WrappedGoal::isRunning).forEach(Goal::stop);
                                     }
                                 }
                             }
@@ -355,8 +362,8 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                             ((NeutralMob) angryEnderman).stopBeingAngry();
                         }
                         try {
-                            angryEnderman.goalSelector.getRunningGoals().forEach(Goal::stop);
-                            angryEnderman.targetSelector.getRunningGoals().forEach(Goal::stop);
+                            angryEnderman.goalSelector.getAvailableGoals().stream().filter(net.minecraft.world.entity.ai.goal.WrappedGoal::isRunning).forEach(Goal::stop);
+                            angryEnderman.targetSelector.getAvailableGoals().stream().filter(net.minecraft.world.entity.ai.goal.WrappedGoal::isRunning).forEach(Goal::stop);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

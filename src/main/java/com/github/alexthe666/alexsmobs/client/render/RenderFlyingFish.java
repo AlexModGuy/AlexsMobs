@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderFlyingFish extends MobRenderer<EntityFlyingFish, ModelFlyingFish> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/flying_fish_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/flying_fish_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/flying_fish_2.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/flying_fish_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/flying_fish_1.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation.parse("alexsmobs:textures/entity/flying_fish_2.png");
 
     public RenderFlyingFish(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelFlyingFish(), 0.2F);

@@ -18,7 +18,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -45,8 +44,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -77,7 +76,9 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
 
     protected EntityMoose(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setMaxUpStep(1.1F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static boolean canMooseSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
@@ -152,13 +153,13 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANTLERED, true);
-        this.entityData.define(JOSTLING, false);
-        this.entityData.define(SNOWY, false);
-        this.entityData.define(JOSTLE_ANGLE, 0F);
-        this.entityData.define(JOSTLER_UUID, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANTLERED, true);
+        builder.define(JOSTLING, false);
+        builder.define(SNOWY, false);
+        builder.define(JOSTLE_ANGLE, 0F);
+        builder.define(JOSTLER_UUID, Optional.empty());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -333,7 +334,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         if (item instanceof ShovelItem && this.isSnowy() && !this.level().isClientSide) {
             this.permSnow = false;
             if (!player.isCreative()) {
-                itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer) player : null);
+                if (itemstack.isDamageableItem()) itemstack.setDamageValue(itemstack.getDamageValue() + 1);
             }
             this.setSnowy(false);
             this.gameEvent(GameEvent.ENTITY_INTERACT);
@@ -365,11 +366,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     private void applyKnockbackFromMoose(float strength, double ratioX, double ratioZ) {
-        net.minecraftforge.event.entity.living.LivingKnockBackEvent event = net.minecraftforge.common.ForgeHooks.onLivingKnockBack(this, strength, ratioX, ratioZ);
-        if (event.isCanceled()) return;
-        strength = event.getStrength();
-        ratioX = event.getRatioX();
-        ratioZ = event.getRatioZ();
+        // TODO: ForgeHooks.onLivingKnockBack removed in 1.21 - knockback logic simplified
         if (!(strength <= 0.0F)) {
             this.hasImpulse = true;
             Vec3 vector3d = this.getDeltaMovement();

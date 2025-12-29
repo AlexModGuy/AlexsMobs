@@ -169,21 +169,21 @@ public class ModelGorilla extends AdvancedEntityModel<EntityGorilla> {
 		animator.resetKeyframe(6);
 	}
 
-	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
 		if (this.young) {
 			float f = 1.35F;
 			head.setScale(f, f, f);
 			head.setShouldScaleChildren(true);
 			matrixStackIn.pushPose();
 			parts().forEach((p_228292_8_) -> {
-				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 			head.setScale(1, 1, 1);
 		} else {
 			matrixStackIn.pushPose();
 			parts().forEach((p_228290_8_) -> {
-				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 		}
@@ -197,7 +197,7 @@ public class ModelGorilla extends AdvancedEntityModel<EntityGorilla> {
 		float walkDegree = 0.5F;
 		float eatSpeed = 0.8F;
 		float eatDegree = 0.3F;
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float sitProgress = entityIn.prevSitProgress + (entityIn.sitProgress - entityIn.prevSitProgress) * partialTick;
 		float standProgress = entityIn.prevStandProgress + (entityIn.standProgress - entityIn.prevStandProgress) * partialTick;
 		float rideProgress = entityIn.isPassenger() && entityIn.isBaby() ? 5F : 0;

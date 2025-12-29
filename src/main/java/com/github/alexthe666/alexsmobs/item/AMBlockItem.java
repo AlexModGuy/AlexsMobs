@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.tags.DamageTypeTags;
@@ -11,20 +12,21 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class AMBlockItem extends BlockItem implements CustomTabBehavior {
 
-    private final RegistryObject<Block> blockSupplier;
+    private final DeferredHolder<Block, Block> blockSupplier;
 
-    public AMBlockItem(RegistryObject<Block> blockSupplier, Item.Properties props) {
-        super((Block)null, props);
+    public AMBlockItem(DeferredHolder<Block, Block> blockSupplier, Item.Properties props) {
+        super((Block) null, props);
         this.blockSupplier = blockSupplier;
     }
 
@@ -40,24 +42,27 @@ public class AMBlockItem extends BlockItem implements CustomTabBehavior {
     public void onDestroyed(ItemEntity p_150700_) {
         if (this.blockSupplier.get() instanceof ShulkerBoxBlock) {
             ItemStack itemstack = p_150700_.getItem();
-            CompoundTag compoundtag = getBlockEntityData(itemstack);
+            CustomData customData = itemstack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY);
+            CompoundTag compoundtag = customData.copyTag();
             if (compoundtag != null && compoundtag.contains("Items", 9)) {
                 ListTag listtag = compoundtag.getList("Items", 10);
-                ItemUtils.onContainerDestroyed(p_150700_, listtag.stream().map(CompoundTag.class::cast).map(ItemStack::of));
+                ItemUtils.onContainerDestroyed(p_150700_, listtag.stream().map(CompoundTag.class::cast)
+                        .map(tag -> ItemStack.parse(p_150700_.registryAccess(), tag).orElse(ItemStack.EMPTY)).toList());
             }
         }
     }
 
-
-    public boolean canBeHurtBy(DamageSource damage) {
-        return super.canBeHurtBy(damage) && (this != AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem() || !damage.is(DamageTypeTags.IS_EXPLOSION));
+    public boolean canBeHurtBy(ItemStack stack, DamageSource damage) {
+        return super.canBeHurtBy(stack, damage) && (this != AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem()
+                || !damage.is(DamageTypeTags.IS_EXPLOSION));
     }
 
     @Override
     public void fillItemCategory(CreativeModeTab.Output contents) {
-        if(blockSupplier.equals(AMBlockRegistry.SAND_CIRCLE) || blockSupplier.equals(AMBlockRegistry.RED_SAND_CIRCLE)){
+        if (blockSupplier.equals(AMBlockRegistry.SAND_CIRCLE)
+                || blockSupplier.equals(AMBlockRegistry.RED_SAND_CIRCLE)) {
 
-        }else{
+        } else {
             contents.accept(this);
         }
     }
@@ -67,12 +72,12 @@ public class AMBlockItem extends BlockItem implements CustomTabBehavior {
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if(blockSupplier.equals(AMBlockRegistry.TRIOPS_EGGS)){
+        if (blockSupplier.equals(AMBlockRegistry.TRIOPS_EGGS)) {
             BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
             BlockHitResult blockhitresult1 = blockhitresult.withPosition(blockhitresult.getBlockPos().above());
             InteractionResult interactionresult = super.useOn(new UseOnContext(player, hand, blockhitresult1));
             return new InteractionResultHolder<>(interactionresult, player.getItemInHand(hand));
-        }else{
+        } else {
             return super.use(level, player, hand);
         }
     }

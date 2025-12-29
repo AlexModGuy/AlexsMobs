@@ -81,7 +81,7 @@ public class ModelBlobfishDepressurized extends AdvancedEntityModel<EntityBlobfi
         this.swing(tail_fin, swimSpeed, swimDegree * 0.5F, false, 0, 0, limbSwing, limbSwingAmount);
         this.flap(fin_left, swimSpeed, swimDegree, false, 3F, -0.3F, limbSwing, limbSwingAmount);
         this.flap(fin_right, swimSpeed, swimDegree, true, 3F, -0.3F, limbSwing, limbSwingAmount);
-        float lvt_6_1_ = Mth.lerp(Minecraft.getInstance().getFrameTime(), entity.prevSquishFactor, entity.squishFactor);
+        float lvt_6_1_ = Mth.lerp(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false), entity.prevSquishFactor, entity.squishFactor);
         float lvt_7_1_ = 1.0F / (lvt_6_1_ + 1.0F);
         float squishScale = 1.0F / lvt_7_1_;
         this.body.setScale(1F, squishScale, 1F);

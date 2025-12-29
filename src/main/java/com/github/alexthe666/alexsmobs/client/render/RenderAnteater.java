@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderAnteater extends MobRenderer<EntityAnteater, ModelAnteater> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/anteater.png");
-    private static final ResourceLocation TEXTURE_PETER = new ResourceLocation("alexsmobs:textures/entity/anteater_peter.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/anteater.png");
+    private static final ResourceLocation TEXTURE_PETER = ResourceLocation.parse("alexsmobs:textures/entity/anteater_peter.png");
 
     public RenderAnteater(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelAnteater(), 0.45F);

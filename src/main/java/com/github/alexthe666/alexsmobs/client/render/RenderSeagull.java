@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderSeagull extends MobRenderer<EntitySeagull, ModelSeagull> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/seagull.png");
-    private static final ResourceLocation TEXTURE_WINGULL = new ResourceLocation("alexsmobs:textures/entity/seagull_wingull.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/seagull.png");
+    private static final ResourceLocation TEXTURE_WINGULL = ResourceLocation.parse("alexsmobs:textures/entity/seagull_wingull.png");
 
     public RenderSeagull(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSeagull(), 0.2F);

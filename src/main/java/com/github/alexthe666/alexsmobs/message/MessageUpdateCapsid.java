@@ -2,17 +2,18 @@ package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
-import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
-
-public class MessageUpdateCapsid  {
+public class MessageUpdateCapsid implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<MessageUpdateCapsid> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "update_capsid"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageUpdateCapsid> CODEC = StreamCodec.ofMember(MessageUpdateCapsid::write, MessageUpdateCapsid::read);
 
     public long blockPos;
     public ItemStack heldStack;
@@ -20,45 +21,31 @@ public class MessageUpdateCapsid  {
     public MessageUpdateCapsid(long blockPos, ItemStack heldStack) {
         this.blockPos = blockPos;
         this.heldStack = heldStack;
-
     }
 
-    public MessageUpdateCapsid() {
+    public MessageUpdateCapsid() {}
+
+    public static MessageUpdateCapsid read(RegistryFriendlyByteBuf buf) {
+        return new MessageUpdateCapsid(buf.readLong(), ItemStack.OPTIONAL_STREAM_CODEC.decode(buf));
     }
 
-    public static MessageUpdateCapsid read(FriendlyByteBuf buf) {
-        return new MessageUpdateCapsid(buf.readLong(), PacketBufferUtils.readItemStack(buf));
-    }
-
-    public static void write(MessageUpdateCapsid message, FriendlyByteBuf buf) {
+    public static void write(MessageUpdateCapsid message, RegistryFriendlyByteBuf buf) {
         buf.writeLong(message.blockPos);
-        PacketBufferUtils.writeItemStack(buf, message.heldStack);
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, message.heldStack);
     }
 
-    public static class Handler {
-        public Handler() {
-        }
+    @Override
+    public Type<? extends CustomPacketPayload> type() { return TYPE; }
 
-        public static void handle(MessageUpdateCapsid message, Supplier<NetworkEvent.Context> context) {
-            context.get().setPacketHandled(true);
-            context.get().enqueueWork(() -> {
-                Player player = context.get().getSender();
-                if (context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
-                    player = AlexsMobs.PROXY.getClientSidePlayer();
+    public static void handle(MessageUpdateCapsid message, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            Player player = context.player();
+            if (player != null && player.level() != null) {
+                BlockPos pos = BlockPos.of(message.blockPos);
+                if (player.level().getBlockEntity(pos) instanceof TileEntityCapsid podium) {
+                    podium.setItem(0, message.heldStack);
                 }
-                if (player != null) {
-                    if (player.level() != null) {
-                        BlockPos pos = BlockPos.of(message.blockPos);
-                        if (player.level().getBlockEntity(pos) != null) {
-                            if (player.level().getBlockEntity(pos) instanceof TileEntityCapsid) {
-                                TileEntityCapsid podium = (TileEntityCapsid) player.level().getBlockEntity(pos);
-                                podium.setItem(0, message.heldStack);
-                            }
-                        }
-                    }
-                }
-            });
-        }
+            }
+        });
     }
-
 }

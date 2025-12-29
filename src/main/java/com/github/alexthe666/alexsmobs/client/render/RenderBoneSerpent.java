@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderBoneSerpent extends MobRenderer<EntityBoneSerpent, ModelBoneSerpentHead> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/bone_serpent_head.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/bone_serpent_head.png");
 
     public RenderBoneSerpent(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelBoneSerpentHead(), 0.3F);

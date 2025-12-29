@@ -1,13 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity.util;
 
 import com.github.alexthe666.alexsmobs.entity.EntityTendonSegment;
-import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.github.alexthe666.citadel.server.message.PropertiesMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.UUID;
 
@@ -19,9 +19,9 @@ public class TendonWhipUtil {
     private static void sync(LivingEntity enchanted, CompoundTag tag) {
         CitadelEntityData.setCitadelTag(enchanted, tag);
         if (!enchanted.level().isClientSide) {
-            Citadel.sendMSGToAll(new PropertiesMessage("CitadelTagUpdate", tag, enchanted.getId()));
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(enchanted, new PropertiesMessage("CitadelTagUpdate", tag, enchanted.getId()));
         } else {
-            Citadel.sendMSGToServer(new PropertiesMessage("CitadelTagUpdate", tag, enchanted.getId()));
+            PacketDistributor.sendToServer(new PropertiesMessage("CitadelTagUpdate", tag, enchanted.getId()));
         }
     }
 

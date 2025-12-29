@@ -12,11 +12,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -52,7 +54,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -69,7 +71,7 @@ import java.util.stream.Stream;
 
 public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
-    public static final ResourceLocation SUGAR_GLIDER_REWARD = new ResourceLocation("alexsmobs", "gameplay/sugar_glider_reward");
+    public static final ResourceKey<LootTable> SUGAR_GLIDER_REWARD = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "gameplay/sugar_glider_reward"));
     public static final Map<Block, Item> LEAF_TO_SAPLING = Util.make(Maps.newHashMap(), (map) -> {
         map.put(Blocks.OAK_LEAVES, Items.OAK_SAPLING);
         map.put(Blocks.BIRCH_LEAVES, Items.BIRCH_SAPLING);
@@ -110,7 +112,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     protected EntitySugarGlider(EntityType type, Level level) {
         super(type, level);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
         switchNavigator(true);
     }
 
@@ -142,14 +144,14 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CLIMBING, (byte) 0);
-        this.entityData.define(ATTACHED_FACE, Direction.DOWN);
-        this.entityData.define(GLIDING, false);
-        this.entityData.define(FORAGING_TIME, 0);
-        this.entityData.define(COMMAND, Integer.valueOf(0));
-        this.entityData.define(SITTING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(CLIMBING, (byte) 0);
+        builder.define(ATTACHED_FACE, Direction.DOWN);
+        builder.define(GLIDING, false);
+        builder.define(FORAGING_TIME, 0);
+        builder.define(COMMAND, Integer.valueOf(0));
+        builder.define(SITTING, false);
     }
 
     private void switchNavigator(boolean onGround) {
@@ -199,7 +201,9 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     public void tick() {
         super.tick();
-        this.setMaxUpStep(1F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         prevGlideProgress = glideProgress;
         prevAttachChangeProgress = attachChangeProgress;
         prevForageProgress = forageProgress;
@@ -366,7 +370,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         if (rng < 0.25F && sapling != null) {
             return List.of(new ItemStack(sapling));
         }
-        LootTable loottable = this.level().getServer().getLootData().getLootTable(SUGAR_GLIDER_REWARD);
+        LootTable loottable = this.level().getServer().reloadableRegistries().getLootTable(SUGAR_GLIDER_REWARD);
         return loottable.getRandomItems((new LootParams.Builder((ServerLevel) this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.BLOCK_STATE, leafState).create(LootContextParamSets.PIGLIN_BARTER));
 
     }
@@ -538,7 +542,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     protected PathNavigation createNavigation(Level worldIn) {
         return new WallClimberNavigation(this, worldIn) {
             protected boolean canUpdatePath() {
-                return super.canUpdatePath() || ((EntitySugarGlider) mob).isBesideClimbableBlock() || mob.jumping;
+                // mob.jumping is protected in 1.21, check vertical velocity instead
+                return super.canUpdatePath() || ((EntitySugarGlider) mob).isBesideClimbableBlock() || mob.getDeltaMovement().y > 0;
             }
         };
     }

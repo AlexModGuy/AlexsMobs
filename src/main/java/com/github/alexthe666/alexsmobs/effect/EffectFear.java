@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.effect;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,13 +11,15 @@ public class EffectFear extends MobEffect {
 
     protected EffectFear() {
         super(MobEffectCategory.NEUTRAL, 0X7474F7);
-        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double)-1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
+        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, ResourceLocation.parse("alexsmobs:fear_speed"), -1.0D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
     }
 
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    @Override
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if(entity.getDeltaMovement().y > 0 && !entity.isInWaterOrBubble()){
             entity.setDeltaMovement(entity.getDeltaMovement().multiply(1, 0, 1));
         }
+        return true;
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

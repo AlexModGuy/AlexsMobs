@@ -32,8 +32,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -115,15 +113,15 @@ public class EntityPotoo extends Animal implements IFalconry {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
-        this.entityData.define(PERCHING, false);
-        this.entityData.define(PERCH_POS, Optional.empty());
-        this.entityData.define(PERCH_DIRECTION, Direction.NORTH);
-        this.entityData.define(SLEEPING, false);
-        this.entityData.define(MOUTH_TICK, 0);
-        this.entityData.define(TEMP_BRIGHTNESS, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
+        builder.define(PERCHING, false);
+        builder.define(PERCH_POS, Optional.empty());
+        builder.define(PERCH_DIRECTION, Direction.NORTH);
+        builder.define(SLEEPING, false);
+        builder.define(MOUTH_TICK, 0);
+        builder.define(TEMP_BRIGHTNESS, 0);
     }
 
     public boolean isSleeping() {
@@ -237,13 +235,13 @@ public class EntityPotoo extends Animal implements IFalconry {
                 if (j > 40) {
                     this.openMouth(30);
                     this.playSound(AMSoundRegistry.POTOO_CALL.get());
-                    this.gameEvent(GameEvent.ENTITY_ROAR);
+                    this.gameEvent(GameEvent.ENTITY_ACTION);
                 }
             } else if (getEyeScale(10, 1.0F) < 7) {
                 if (j > 300 && j % 300 == 0 && random.nextInt(4) == 0) {
                     this.openMouth(30);
                     this.playSound(AMSoundRegistry.POTOO_CALL.get());
-                    this.gameEvent(GameEvent.ENTITY_ROAR);
+                    this.gameEvent(GameEvent.ENTITY_ACTION);
                 }
             }
         }

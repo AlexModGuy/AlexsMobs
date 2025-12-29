@@ -130,7 +130,7 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         float idleSpeed = 0.1F;
         float idleDegree = 0.4F;
         float runProgress = 5F * limbSwingAmount;
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         boolean spinnyLegs = limbSwingAmount > 0.5F && entityIn.isMeep();
         float biteProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTick;
         progressRotationPrev(neck, biteProgress, Maths.rad(55), 0, 0, 5F);
@@ -153,7 +153,7 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         this.right_foot.rotateAngleX = -(right_leg.rotateAngleX + right_knee.rotateAngleX + body.rotateAngleX) - (float)(Math.PI/ 2F);
         this.left_leg.rotationPointY += 1.5F * (float) (Math.sin((double) (limbSwing * walkSpeed) + 2) * (double) limbSwingAmount * (double) walkDegree - (double) (limbSwingAmount * walkDegree));
         this.right_leg.rotationPointY += 1.5F * (float) (Math.sin(-(double) (limbSwing * walkSpeed) - 2) * (double) limbSwingAmount * (double) walkDegree - (double) (limbSwingAmount * walkDegree));
-        float partialTicks = Minecraft.getInstance().getFrameTime();
+        float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float f = Mth.lerp(partialTicks, entityIn.oFlap, entityIn.wingRotation);
         float f1 = Mth.lerp(partialTicks, entityIn.oFlapSpeed, entityIn.destPos);
         float wingSwing = (Mth.sin(f) + 1.0F) * f1;
@@ -183,7 +183,7 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         }
     }
 
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         if (this.young) {
             float f = 1.75F;
             neck.setScale(f, f, f);
@@ -192,14 +192,14 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0.125D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
             neck.setScale(1, 1, 1);
         } else {
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
         }

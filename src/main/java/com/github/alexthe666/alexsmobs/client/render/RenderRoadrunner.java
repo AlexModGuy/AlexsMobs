@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderRoadrunner extends MobRenderer<EntityRoadrunner, ModelRoadrunner> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/roadrunner.png");
-    private static final ResourceLocation TEXTURE_MEEP = new ResourceLocation("alexsmobs:textures/entity/roadrunner_meep.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/roadrunner.png");
+    private static final ResourceLocation TEXTURE_MEEP = ResourceLocation.parse("alexsmobs:textures/entity/roadrunner_meep.png");
 
     public RenderRoadrunner(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelRoadrunner(), 0.3F);

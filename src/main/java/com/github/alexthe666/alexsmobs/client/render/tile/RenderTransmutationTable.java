@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.render.tile;
 
 import com.github.alexthe666.alexsmobs.block.BlockTransmutationTable;
 import com.github.alexthe666.alexsmobs.client.model.ModelTransmutationTable;
+import com.github.alexthe666.alexsmobs.client.render.AMColorUtil;
 import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTransmutationTable;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,43 +20,62 @@ import org.joml.Matrix4f;
 
 public class RenderTransmutationTable<T extends TileEntityTransmutationTable> implements BlockEntityRenderer<T> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table.png");
-    private static final ResourceLocation OVERLAY = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table_overlay.png");
-    private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table_glow.png");
-    private static final ModelTransmutationTable MODEL = new ModelTransmutationTable(0F);
-    private static final ModelTransmutationTable OVERLAY_MODEL = new ModelTransmutationTable(0.01F);
+        private static final ResourceLocation TEXTURE = ResourceLocation
+                        .parse("alexsmobs:textures/entity/farseer/transmutation_table.png");
+        private static final ResourceLocation OVERLAY = ResourceLocation
+                        .parse("alexsmobs:textures/entity/farseer/transmutation_table_overlay.png");
+        private static final ResourceLocation GLOW_TEXTURE = ResourceLocation
+                        .parse("alexsmobs:textures/entity/farseer/transmutation_table_glow.png");
+        private static final ModelTransmutationTable MODEL = new ModelTransmutationTable(0F);
+        private static final ModelTransmutationTable OVERLAY_MODEL = new ModelTransmutationTable(0.01F);
 
-    public RenderTransmutationTable(BlockEntityRendererProvider.Context rendererDispatcherIn) {
-    }
-
-    @Override
-    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        matrixStackIn.pushPose();
-        Direction dir = tileEntityIn.getBlockState().getValue(BlockTransmutationTable.FACING);
-        switch (dir) {
-            case NORTH -> matrixStackIn.translate(0.5, 1.5F, 0.5F);
-            case EAST -> matrixStackIn.translate(0.5F, 1.5F, 0.5F);
-            case SOUTH -> matrixStackIn.translate(0.5, 1.5F, 0.5F);
-            case WEST -> matrixStackIn.translate(0.5F, 1.5F, 0.5F);
+        public RenderTransmutationTable(BlockEntityRendererProvider.Context rendererDispatcherIn) {
         }
-        float ageInTicks = partialTicks + tileEntityIn.ticksExisted;
-        
-        matrixStackIn.mulPose(dir.getOpposite().getRotation());
-        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
-        matrixStackIn.pushPose();
-        MODEL.animate(tileEntityIn, partialTicks);
-        MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
-        MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.getEyesAlphaEnabled(GLOW_TEXTURE)), 240, combinedOverlayIn, 1, 1, 1, 0.5F + (float)Math.sin(ageInTicks * 0.05F) * 0.25F);
-        VertexConsumer staticyOverlay = AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityCutoutNoCull(OVERLAY)));
-        OVERLAY_MODEL.animate(tileEntityIn, partialTicks);
-        OVERLAY_MODEL.renderToBuffer(matrixStackIn, staticyOverlay, combinedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-        matrixStackIn.popPose();
-        matrixStackIn.popPose();
-    }
 
+        @Override
+        public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+                        int combinedLightIn, int combinedOverlayIn) {
+                matrixStackIn.pushPose();
+                Direction dir = tileEntityIn.getBlockState().getValue(BlockTransmutationTable.FACING);
+                switch (dir) {
+                        case NORTH -> matrixStackIn.translate(0.5, 1.5F, 0.5F);
+                        case EAST -> matrixStackIn.translate(0.5F, 1.5F, 0.5F);
+                        case SOUTH -> matrixStackIn.translate(0.5, 1.5F, 0.5F);
+                        case WEST -> matrixStackIn.translate(0.5F, 1.5F, 0.5F);
+                }
+                float ageInTicks = partialTicks + tileEntityIn.ticksExisted;
 
-    private static void vertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, float p_114095_, int p_114096_, int p_114097_) {
-        p_114090_.vertex(p_114091_, p_114094_, p_114095_, 0.0F).color(255, 255, 255, 100).uv((float) p_114096_, (float) p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114093_).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
-    }
+                matrixStackIn.mulPose(dir.getOpposite().getRotation());
+                matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
+                matrixStackIn.pushPose();
+                MODEL.animate(tileEntityIn, partialTicks);
+                MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE)),
+                                combinedLightIn,
+                                combinedOverlayIn, -1);
+                MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.getEyesAlphaEnabled(GLOW_TEXTURE)),
+                                240,
+                                combinedOverlayIn, AMColorUtil.packColor(1.0F, 1.0F, 1.0F,
+                                                0.5F + (float) Math.sin(ageInTicks * 0.05F) * 0.25F));
+                // In 1.21, merged vertex consumers with different formats can cause issues
+                // Render using just the overlay texture without the static effect
+                VertexConsumer staticyOverlay = bufferIn.getBuffer(RenderType.entityCutoutNoCull(OVERLAY));
+                OVERLAY_MODEL.animate(tileEntityIn, partialTicks);
+                OVERLAY_MODEL.renderToBuffer(matrixStackIn, staticyOverlay, combinedLightIn, OverlayTexture.NO_OVERLAY,
+                                -1);
+                matrixStackIn.popPose();
+                matrixStackIn.popPose();
+        }
+
+        private static void vertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_,
+                        float p_114094_, float p_114095_, int p_114096_, int p_114097_) {
+                org.joml.Vector3f normal = new org.joml.Vector3f(0.0F, 1.0F, 0.0F);
+                normal.mul(p_114092_);
+                org.joml.Vector4f pos = new org.joml.Vector4f(p_114094_, p_114095_, 0.0F, 1.0F);
+                pos.mul(p_114091_);
+                p_114090_.addVertex(pos.x, pos.y, pos.z).setColor(255, 255, 255, 100)
+                                .setUv((float) p_114096_, (float) p_114097_).setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setLight(p_114093_)
+                                .setNormal(normal.x, normal.y, normal.z);
+        }
 
 }

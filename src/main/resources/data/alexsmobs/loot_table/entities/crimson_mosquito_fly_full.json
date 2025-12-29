@@ -1,0 +1,38 @@
+{
+  "pools": [
+    {
+      "name": "crimson_mosquito",
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.5,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.53,
+            "per_level_above_first": 0.03
+          }
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:mosquito_proboscis",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "crimson_mosquito",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:blood_sac",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

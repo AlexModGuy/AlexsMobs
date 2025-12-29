@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 
 public class RenderEndergrade extends MobRenderer<EntityEndergrade, ModelEndergrade> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/endergrade.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/endergrade.png");
 
     public RenderEndergrade(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelEndergrade(), 0.6F);

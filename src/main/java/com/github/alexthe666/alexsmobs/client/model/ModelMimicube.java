@@ -70,7 +70,7 @@ public class ModelMimicube extends AdvancedEntityModel<EntityMimicube> {
 		float idleDegree = 1F;
 		this.bob(innerbody, idleDegree, idleSpeed, false, limbSwing, limbSwingAmount);
 		this.flap(innerbody, idleSpeed * 1.3F, idleDegree * 0.05F, false, 2F, 0F, ageInTicks, 1);
-		float lvt_6_1_ = Mth.lerp(Minecraft.getInstance().getFrameTime(), entity.prevSquishFactor, entity.squishFactor);
+		float lvt_6_1_ = Mth.lerp(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false), entity.prevSquishFactor, entity.squishFactor);
 		float lvt_7_1_ = 1.0F / (lvt_6_1_ + 1.0F);
 		float squishScale = 1.0F / lvt_7_1_;
 		this.innerbody.rotationPointY += lvt_6_1_ * -5F;

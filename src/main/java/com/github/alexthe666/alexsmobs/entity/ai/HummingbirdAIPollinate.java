@@ -6,7 +6,6 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;

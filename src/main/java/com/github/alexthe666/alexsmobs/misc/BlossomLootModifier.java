@@ -3,27 +3,26 @@ package com.github.alexthe666.alexsmobs.misc;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class BlossomLootModifier implements IGlobalLootModifier {
 
-    public static final Supplier<Codec<BlossomLootModifier>> CODEC = () ->
-            RecordCodecBuilder.create(inst ->
+    public static final MapCodec<BlossomLootModifier> CODEC =
+            RecordCodecBuilder.mapCodec(inst ->
                     inst.group(
                                     LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(lm -> lm.conditions)
                             )
@@ -35,7 +34,12 @@ public class BlossomLootModifier implements IGlobalLootModifier {
 
     public BlossomLootModifier(LootItemCondition[] conditionsIn) {
         this.conditions = conditionsIn;
-        this.orConditions = LootItemConditions.orConditions(conditionsIn);
+        this.orConditions = (context) -> {
+            for (LootItemCondition condition : conditionsIn) {
+                if (condition.test(context)) return true;
+            }
+            return false;
+        };
     }
 
     @NotNull
@@ -49,12 +53,12 @@ public class BlossomLootModifier implements IGlobalLootModifier {
             ItemStack ctxTool = context.getParamOrNull(LootContextParams.TOOL);
             RandomSource random = context.getRandom();
             if (ctxTool != null) {
-                int silkTouch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, ctxTool);
+                int silkTouch = ctxTool.getEnchantmentLevel(context.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH));
                 if (silkTouch > 0 || ctxTool.getItem() instanceof ShearsItem) {
                     return generatedLoot;
                 }
             }
-            int bonusLevel = ctxTool != null ? EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, ctxTool) : 0;
+            int bonusLevel = ctxTool != null ? ctxTool.getEnchantmentLevel(context.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE)) : 0;
             int blossomStep = (int) Math.floor(AMConfig.acaciaBlossomChance * 0.1F);
             int blossomRarity = AMConfig.acaciaBlossomChance - (bonusLevel * blossomStep);
             if (blossomRarity < 1 || random.nextInt(blossomRarity) == 0) {
@@ -65,7 +69,7 @@ public class BlossomLootModifier implements IGlobalLootModifier {
     }
 
     @Override
-    public Codec<? extends IGlobalLootModifier> codec() {
-        return CODEC.get();
+    public MapCodec<? extends IGlobalLootModifier> codec() {
+        return CODEC;
     }
 }

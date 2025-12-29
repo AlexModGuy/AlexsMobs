@@ -1,0 +1,101 @@
+{
+  "pools": [
+    {
+      "name": "skelewag_sword",
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.1,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.15000000000000002,
+            "per_level_above_first": 0.05
+          }
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:skelewag_sword",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "skelewag_hat",
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.01,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.025,
+            "per_level_above_first": 0.015
+          }
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:novelty_hat",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "skelewag_bones",
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.3,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.5,
+            "per_level_above_first": 0.2
+          }
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:fish_bones",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "bone",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:bone",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            },
+            {
+              "function": "minecraft:enchanted_count_increase",
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "enchantment": "minecraft:looting"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

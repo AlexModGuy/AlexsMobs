@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderGorilla extends MobRenderer<EntityGorilla, ModelGorilla> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/gorilla.png");
-    private static final ResourceLocation TEXTURE_SILVERBACK = new ResourceLocation("alexsmobs:textures/entity/gorilla_silverback.png");
-    private static final ResourceLocation TEXTURE_DK = new ResourceLocation("alexsmobs:textures/entity/gorilla_dk.png");
-    private static final ResourceLocation TEXTURE_FUNKY = new ResourceLocation("alexsmobs:textures/entity/gorilla_funky.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/gorilla.png");
+    private static final ResourceLocation TEXTURE_SILVERBACK = ResourceLocation.parse("alexsmobs:textures/entity/gorilla_silverback.png");
+    private static final ResourceLocation TEXTURE_DK = ResourceLocation.parse("alexsmobs:textures/entity/gorilla_dk.png");
+    private static final ResourceLocation TEXTURE_FUNKY = ResourceLocation.parse("alexsmobs:textures/entity/gorilla_funky.png");
 
     public RenderGorilla(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGorilla(), 0.7F);

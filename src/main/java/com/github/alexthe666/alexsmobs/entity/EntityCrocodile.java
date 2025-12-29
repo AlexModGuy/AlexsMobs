@@ -50,9 +50,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
@@ -91,8 +91,8 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
     protected EntityCrocodile(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(false);
         this.baskingType = random.nextInt(1);
     }
@@ -126,9 +126,9 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setDesert(this.isBiomeDesert(worldIn, this.blockPosition()));
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     private boolean isBiomeDesert(LevelAccessor worldIn, BlockPos position) {
@@ -186,14 +186,15 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         }
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SITTING, false);
-        this.entityData.define(DESERT, false);
-        this.entityData.define(HAS_EGG, false);
-        this.entityData.define(IS_DIGGING, false);
-        this.entityData.define(CLIMBING, (byte) 0);
-        this.entityData.define(STUN_TICKS, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SITTING, false);
+        builder.define(DESERT, false);
+        builder.define(HAS_EGG, false);
+        builder.define(IS_DIGGING, false);
+        builder.define(CLIMBING, (byte) 0);
+        builder.define(STUN_TICKS, 0);
     }
 
     public boolean isBesideClimbableBlock() {
@@ -363,7 +364,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     protected void damageShieldFor(Player holder, float damage) {
-        if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+        if (holder.getUseItem().canPerformAction(ItemAbilities.SHIELD_BLOCK)) {
             if (!this.level().isClientSide) {
                 holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
             }
@@ -371,10 +372,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             if (damage >= 3.0F) {
                 int i = 1 + Mth.floor(damage);
                 InteractionHand hand = holder.getUsedItemHand();
-                holder.getUseItem().hurtAndBreak(i, holder, (p_213833_1_) -> {
-                    p_213833_1_.broadcastBreakEvent(hand);
-                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(holder, holder.getUseItem(), hand);
-                });
+                holder.getUseItem().hurtAndBreak(i, holder, EquipmentSlot.MAINHAND);
                 if (holder.getUseItem().isEmpty()) {
                     if (hand == InteractionHand.MAIN_HAND) {
                         holder.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -480,9 +478,9 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         return source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
         return super.getWalkTargetValue(pos, worldIn);
@@ -605,7 +603,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         if (item == Items.NAME_TAG) {
             return super.mobInteract(player, hand);
         }
-        if (isTame() && item.isEdible() && item.getFoodProperties() != null && item.getFoodProperties().isMeat() && this.getHealth() < this.getMaxHealth()) {
+        if (isTame() && itemstack.has(net.minecraft.core.component.DataComponents.FOOD) && itemstack.getFoodProperties(this) != null && true /* isMeat removed */ && this.getHealth() < this.getMaxHealth()) {
             this.usePlayerItem(player, hand, itemstack);
             this.heal(10);
             this.gameEvent(GameEvent.EAT);

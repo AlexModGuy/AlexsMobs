@@ -1,0 +1,40 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/Alex-the-666/AlexsMobs/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/alexs-mobs"
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+[[mixins]]
+config = "${mod_id}.mixins.json"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+# Citadel dependency - update when available for 1.21.1
+#[[dependencies.${mod_id}]]
+#    modId="citadel"
+#    type="required"
+#    versionRange="[2.6.0,)"
+#    ordering="AFTER"
+#    side="BOTH"
+
+[modproperties.${mod_id}]
+    catalogueItemIcon="alexsmobs:bear_dust"

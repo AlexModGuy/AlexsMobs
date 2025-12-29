@@ -6,8 +6,6 @@ import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,7 +27,6 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -84,8 +81,8 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         this.remove(RemovalReason.DISCARDED);
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
-        return this.isTail() ? TAIL_SIZE.scale(getScale()) : super.getDimensions(poseIn);
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
+        return this.isTail() ? TAIL_SIZE.scale(getScale()) : super.getDefaultDimensions(poseIn);
     }
 
     public float getWormScale() {
@@ -147,16 +144,16 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(PARENT_UUID, Optional.empty());
-        this.entityData.define(CHILD_UUID, Optional.empty());
-        this.entityData.define(TAIL, false);
-        this.entityData.define(BODYINDEX, 0);
-        this.entityData.define(WORM_SCALE, 1F);
-        this.entityData.define(WORM_YAW, 0F);
-        this.entityData.define(WORM_ANGLE, 0F);
-        this.entityData.define(PORTAL_TICKS, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(PARENT_UUID, Optional.empty());
+        builder.define(CHILD_UUID, Optional.empty());
+        builder.define(TAIL, false);
+        builder.define(BODYINDEX, 0);
+        builder.define(WORM_SCALE, 1F);
+        builder.define(WORM_YAW, 0F);
+        builder.define(WORM_ANGLE, 0F);
+        builder.define(PORTAL_TICKS, 0);
     }
 
     @Nullable
@@ -199,7 +196,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public void tick() {
-        isInsidePortal = false;
+        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         prevWormAngle = this.getWormAngle();
         prevWormYaw = this.entityData.get(WORM_YAW);
         this.setDeltaMovement(Vec3.ZERO);
@@ -322,7 +319,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 worm2.resetWormScales();
                 if (!this.level().isClientSide) {
                     if (cause != null && cause.getEntity() instanceof ServerPlayer) {
-                        AMAdvancementTriggerRegistry.VOID_WORM_SPLIT.trigger((ServerPlayer) cause.getEntity());
+                        AMAdvancementTriggerRegistry.VOID_WORM_SPLIT.get().trigger((ServerPlayer) cause.getEntity());
                     }
                 }
             }
@@ -387,10 +384,13 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         return null;
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     public void pushEntities() {
         List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
@@ -474,7 +474,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public boolean shouldContinuePersisting() {
-        return isAddedToWorld() || this.isRemoved();
+        return this.isRemoved();
     }
 
     public float getWormYaw(float partialTicks) {

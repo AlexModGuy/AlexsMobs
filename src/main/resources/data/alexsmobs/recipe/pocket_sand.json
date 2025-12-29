@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "LEL",
+    "LLL"
+  ],
+  "key": {
+    "E": {
+      "item": "alexsmobs:guster_eye"
+    },
+    "S": {
+      "tag": "minecraft:sand"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "id": "alexsmobs:pocket_sand",
+    "count": 1
+  }
+}

@@ -11,10 +11,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderCachalotWhale extends MobRenderer<EntityCachalotWhale, ModelCachalotWhale> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/cachalot/cachalot_whale.png");
-    private static final ResourceLocation TEXTURE_SLEEPING = new ResourceLocation("alexsmobs:textures/entity/cachalot/cachalot_whale_sleeping.png");
-    private static final ResourceLocation TEXTURE_ALBINO = new ResourceLocation("alexsmobs:textures/entity/cachalot/cachalot_whale_albino.png");
-    private static final ResourceLocation TEXTURE_ALBINO_SLEEPING = new ResourceLocation("alexsmobs:textures/entity/cachalot/cachalot_whale_albino_sleeping.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/cachalot/cachalot_whale.png");
+    private static final ResourceLocation TEXTURE_SLEEPING = ResourceLocation.parse("alexsmobs:textures/entity/cachalot/cachalot_whale_sleeping.png");
+    private static final ResourceLocation TEXTURE_ALBINO = ResourceLocation.parse("alexsmobs:textures/entity/cachalot/cachalot_whale_albino.png");
+    private static final ResourceLocation TEXTURE_ALBINO_SLEEPING = ResourceLocation.parse("alexsmobs:textures/entity/cachalot/cachalot_whale_albino_sleeping.png");
 
     public RenderCachalotWhale(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCachalotWhale(), 4.2F);

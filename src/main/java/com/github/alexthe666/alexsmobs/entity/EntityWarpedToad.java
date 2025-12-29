@@ -44,7 +44,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 
@@ -76,8 +76,8 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     protected EntityWarpedToad(EntityType entityType, Level world) {
         super(entityType, world);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.LAVA, 0.0F);
         switchNavigator(false);
     }
 
@@ -108,9 +108,9 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         return AMSoundRegistry.WARPED_TOAD_HURT.get();
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.warpedToadSpawnRolls, this.getRandom(), spawnReasonIn);
@@ -321,13 +321,13 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(TONGUE_LENGTH, 1F);
-        this.entityData.define(TONGUE_OUT, false);
-        this.entityData.define(COMMAND, 0);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(JUMP_ACTIVE, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TONGUE_LENGTH, 1F);
+        builder.define(TONGUE_OUT, false);
+        builder.define(COMMAND, 0);
+        builder.define(SITTING, false);
+        builder.define(JUMP_ACTIVE, false);
     }
 
     public int getCommand() {
@@ -356,7 +356,9 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         prevSwimProgress = swimProgress;
         prevJumpProgress = jumpProgress;
         prevReboundProgress = reboundProgress;
-        this.setMaxUpStep(1);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
 
         final boolean isTechnicalBlinking = this.tickCount % 50 > 42;
         if (isTechnicalBlinking) {
@@ -630,14 +632,14 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
         public void start() {
             this.timeToRecalcPath = 0;
-            this.oldWaterCost = this.tameable.getPathfindingMalus(BlockPathTypes.WATER);
-            this.tameable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+            this.oldWaterCost = this.tameable.getPathfindingMalus(PathType.WATER);
+            this.tameable.setPathfindingMalus(PathType.WATER, 0.0F);
         }
 
         public void stop() {
             this.owner = null;
             this.tameable.getNavigation().stop();
-            this.tameable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+            this.tameable.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
         }
 
         public void tick() {
@@ -683,8 +685,9 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         }
 
         private boolean isTeleportFriendlyBlock(BlockPos p_226329_1_) {
-            BlockPathTypes lvt_2_1_ = WalkNodeEvaluator.getBlockPathTypeStatic(this.world, p_226329_1_.mutable());
-            if (lvt_2_1_ != BlockPathTypes.WALKABLE) {
+            // In 1.21, getPathTypeStatic takes (Mob, BlockPos) instead of (LevelReader, MutableBlockPos)
+            PathType lvt_2_1_ = WalkNodeEvaluator.getPathTypeStatic(this.tameable, p_226329_1_);
+            if (lvt_2_1_ != PathType.WALKABLE) {
                 return false;
             } else {
                 BlockState lvt_3_1_ = this.world.getBlockState(p_226329_1_.below());

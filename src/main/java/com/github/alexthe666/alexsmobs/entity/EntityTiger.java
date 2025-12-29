@@ -49,8 +49,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.PathfindingContext;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -76,7 +77,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     private static final EntityDataAccessor<Integer> LAST_SCARED_MOB_ID = SynchedEntityData.defineId(EntityTiger.class, EntityDataSerializers.INT);
     private static final UniformInt ANGRY_TIMER = TimeUtil.rangeOfSeconds(40, 80);
     private static final Predicate<LivingEntity> NO_BLESSING_EFFECT = (mob) -> {
-        return !mob.hasEffect(AMEffectRegistry.TIGERS_BLESSING.get());
+        return !mob.hasEffect(AMEffectRegistry.TIGERS_BLESSING);
     };
     public float prevSitProgress;
     public float sitProgress;
@@ -98,8 +99,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
     protected EntityTiger(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0);
+        this.setPathfindingMalus(PathType.WATER, 0);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0);
         this.moveControl = new MovementControllerCustomCollisions(this);
     }
 
@@ -137,16 +138,17 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         this.setWhite(compound.getBoolean("White"));
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(WHITE, false);
-        this.entityData.define(RUNNING, false);
-        this.entityData.define(SITTING, false);
-        this.entityData.define(STEALTH_MODE, false);
-        this.entityData.define(HOLDING, false);
-        this.entityData.define(SLEEPING, false);
-        this.entityData.define(ANGER_TIME, 0);
-        this.entityData.define(LAST_SCARED_MOB_ID, -1);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(WHITE, false);
+        builder.define(RUNNING, false);
+        builder.define(SITTING, false);
+        builder.define(STEALTH_MODE, false);
+        builder.define(HOLDING, false);
+        builder.define(SLEEPING, false);
+        builder.define(ANGER_TIME, 0);
+        builder.define(LAST_SCARED_MOB_ID, -1);
     }
 
     protected void registerGoals() {
@@ -355,13 +357,17 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         if (!this.level().isClientSide) {
             if (isRunning() && !hasSpedUp) {
                 hasSpedUp = true;
-                this.setMaxUpStep(1F);
+                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
                 this.setSprinting(true);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F);
             }
             if (!isRunning() && hasSpedUp) {
                 hasSpedUp = false;
-                this.setMaxUpStep(0.6F);
+                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
                 this.setSprinting(false);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
             }
@@ -426,7 +432,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                 this.level().addParticle(AMParticleRegistry.SHOCKED.get(), e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
             }
         }
-        if(this.getTarget() != null && this.getTarget().hasEffect(AMEffectRegistry.TIGERS_BLESSING.get())){
+        if(this.getTarget() != null && this.getTarget().hasEffect(AMEffectRegistry.TIGERS_BLESSING)){
             this.setTarget(null);
             this.setLastHurtByMob(null);
         }
@@ -440,8 +446,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             if (source.getEntity() != null) {
                 if (source.getEntity() instanceof LivingEntity) {
                     LivingEntity hurter = (LivingEntity) source.getEntity();
-                    if (hurter.hasEffect(AMEffectRegistry.TIGERS_BLESSING.get())) {
-                        hurter.removeEffect(AMEffectRegistry.TIGERS_BLESSING.get());
+                    if (hurter.hasEffect(AMEffectRegistry.TIGERS_BLESSING)) {
+                        hurter.removeEffect(AMEffectRegistry.TIGERS_BLESSING);
                     }
                 }
             }
@@ -526,7 +532,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem().isEdible() && stack.getItem().getFoodProperties() != null && stack.getItem().getFoodProperties().isMeat() && stack.getItem() != Items.ROTTEN_FLESH;
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) && stack.getFoodProperties(this) != null && stack.getItem() != Items.ROTTEN_FLESH;
     }
 
     public double getMaxDistToItem() {
@@ -537,14 +543,14 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     public void onGetItem(ItemEntity e) {
         this.dontSitFlag = false;
         ItemStack stack = e.getItem();
-        if (stack.getItem().isEdible() && stack.getItem().getFoodProperties() != null && stack.getItem().getFoodProperties().isMeat() && stack.getItem() != Items.ROTTEN_FLESH) {
+        if (stack.has(net.minecraft.core.component.DataComponents.FOOD) && stack.getFoodProperties(this) != null && stack.getItem() != Items.ROTTEN_FLESH) {
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getVoicePitch(), this.getSoundVolume());
             this.heal(5);
             Entity thrower = e.getOwner();
             if (thrower != null && random.nextFloat() < getChanceForEffect(stack) && level().getPlayerByUUID(thrower.getUUID()) != null) {
                 Player player = level().getPlayerByUUID(thrower.getUUID());
-                player.addEffect(new MobEffectInstance(AMEffectRegistry.TIGERS_BLESSING.get(), 12000));
+                player.addEffect(new MobEffectInstance(AMEffectRegistry.TIGERS_BLESSING, 12000));
                 this.setTarget(null);
                 this.setLastHurtByMob(null);
             }
@@ -567,15 +573,19 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         return 0.1F;
     }
 
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         if (!this.isSleeping() && !this.isSitting()) {
             super.jumpFromGround();
         }
     }
 
     static class TigerNodeEvaluator extends WalkNodeEvaluator {
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
-            return typeIn == BlockPathTypes.LEAVES || level.getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
+        // evaluateBlockPathType signature changed in 1.21
+        public PathType getPathType(PathfindingContext context, int x, int y, int z) {
+            BlockPos pos = new BlockPos(x, y, z);
+            PathType typeIn = super.getPathType(context, x, y, z);
+            BlockGetter level = context.level();
+            return typeIn == PathType.LEAVES || level.getBlockState(pos).getBlock() == Blocks.BAMBOO ? PathType.OPEN : typeIn;
         }
     }
 
@@ -625,7 +635,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                     tiger.setRunning(true);
                     if (tiger.entityData.get(LAST_SCARED_MOB_ID) != target.getId()) {
                         tiger.entityData.set(LAST_SCARED_MOB_ID, target.getId());
-                        target.addEffect(new MobEffectInstance(AMEffectRegistry.FEAR.get(), 100, 0, true, false));
+                        target.addEffect(new MobEffectInstance(AMEffectRegistry.FEAR, 100, 0, true, false));
                     }
                 }
                 if (dist < 12 && tiger.getAnimation() == NO_ANIMATION && tiger.onGround() && jumpAttemptCooldown == 0 && !tiger.isHolding()) {

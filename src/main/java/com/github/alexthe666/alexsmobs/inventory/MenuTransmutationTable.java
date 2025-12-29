@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.message.MessageTransmuteFromMenu;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTransmutationTable;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -14,7 +15,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class MenuTransmutationTable extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
@@ -41,7 +41,7 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
         this.access = access;
         this.addSlot(transmuteSlot = new Slot(this.container, 0, 83, 83) {
             public boolean mayPlace(ItemStack stack) {
-                ResourceLocation name = ForgeRegistries.ITEMS.getKey(stack.getItem());
+                ResourceLocation name = BuiltInRegistries.ITEM.getKey(stack.getItem());
                 return stack.getMaxStackSize() > 1 && (name == null || !AMConfig.transmutationBlacklist.contains(name.toString()));
             }
         });

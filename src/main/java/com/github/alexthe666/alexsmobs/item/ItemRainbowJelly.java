@@ -44,11 +44,11 @@ public class ItemRainbowJelly extends Item {
 
     public ItemStack finishUsingItem(ItemStack st, Level level, LivingEntity e) {
         RainbowUtil.setRainbowType(e, RainbowUtil.getRainbowTypeFromStack(st));
-        return this.isEdible() ? e.eat(level, st) : st;
+        return st.has(net.minecraft.core.component.DataComponents.FOOD) ? e.eat(level, st) : st;
     }
 
     public int getUseDuration(ItemStack stack) {
-        if (stack.getItem().isEdible()) {
+        if (stack.has(net.minecraft.core.component.DataComponents.FOOD)) {
             return 64;
         } else {
             return 0;

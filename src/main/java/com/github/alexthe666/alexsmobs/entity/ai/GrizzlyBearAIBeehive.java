@@ -86,7 +86,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
     }
 
     private void eatHive() {
-        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(bear.level(), bear)) {
+        if (net.neoforged.neoforge.event.EventHooks.canEntityGrief(bear.level(), bear)) {
             BlockState blockstate = bear.level().getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
                 if (bear.level().getBlockEntity(this.blockPos) instanceof BeehiveBlockEntity) {

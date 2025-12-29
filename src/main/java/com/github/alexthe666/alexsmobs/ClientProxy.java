@@ -21,12 +21,10 @@ import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.*;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
-import com.mojang.blaze3d.vertex.BufferBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -38,26 +36,23 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
     public static final Int2ObjectMap<SoundBearMusicBox> BEAR_MUSIC_BOX_SOUND_MAP = new Int2ObjectOpenHashMap<>();
@@ -72,19 +67,18 @@ public class ClientProxy extends CommonProxy {
     private int singingBlueJayId = -1;
     private final ItemStack[] transmuteStacks = new ItemStack[3];
 
-    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onItemColors(RegisterColorHandlersEvent.Item event) {
 
         AlexsMobs.LOGGER.info("loaded in item colorizer");
-        if(AMItemRegistry.STRADDLEBOARD.isPresent()){
-            event.register((stack, colorIn) -> colorIn < 1 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack), AMItemRegistry.STRADDLEBOARD.get());
-        }else{
+        if (AMItemRegistry.STRADDLEBOARD.isBound()) {
+            event.register((stack, colorIn) -> colorIn < 1 ? -1 : ((ItemStraddleboard) stack.getItem()).getColor(stack),
+                    AMItemRegistry.STRADDLEBOARD.get());
+        } else {
             AlexsMobs.LOGGER.warn("Could not add straddleboard item to colorizer...");
         }
     }
 
-    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onBlockColors(RegisterColorHandlersEvent.Block event) {
         AlexsMobs.LOGGER.info("loaded in block colorizer");
@@ -93,17 +87,23 @@ public class ClientProxy extends CommonProxy {
         }, AMBlockRegistry.RAINBOW_GLASS.get());
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public static void onRegisterMenuScreens(net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
+        event.register(AMMenuRegistry.TRANSMUTATION_TABLE.get(), GUITransmutationTable::new);
+    }
+
     public void init() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus bus = net.neoforged.fml.ModLoadingContext.get().getActiveContainer().getEventBus();
         bus.addListener(ClientProxy::onBakingCompleted);
         bus.addListener(ClientProxy::onItemColors);
         bus.addListener(ClientProxy::onBlockColors);
         bus.addListener(ClientLayerRegistry::onAddLayers);
         bus.addListener(ClientProxy::setupParticles);
+        bus.addListener(ClientProxy::onRegisterMenuScreens);
     }
 
     public void clientInit() {
-        MinecraftForge.EVENT_BUS.register(new ClientEvents());
+        NeoForge.EVENT_BUS.register(new ClientEvents());
         initRainbowBuffers();
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         EntityRenderers.register(AMEntityRegistry.GRIZZLY_BEAR.get(), RenderGrizzlyBear::new);
@@ -229,59 +229,92 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.CAIMAN.get(), RenderCaiman::new);
         EntityRenderers.register(AMEntityRegistry.TRIOPS.get(), RenderTriops::new);
         try {
-            ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
-                return !ItemBloodSprayer.isUsable(stack) || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns().isOnCooldown(AMItemRegistry.BLOOD_SPRAYER.get()) ? 1.0F : 0.0F;
-            });
-            ItemProperties.register(AMItemRegistry.HEMOLYMPH_BLASTER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
-                return !ItemHemolymphBlaster.isUsable(stack) || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns().isOnCooldown(AMItemRegistry.HEMOLYMPH_BLASTER.get()) ? 1.0F : 0.0F;
-            });
-            ItemProperties.register(AMItemRegistry.TARANTULA_HAWK_ELYTRA.get(), new ResourceLocation("broken"), (stack, p_239428_1_, p_239428_2_, j) -> {
-                return ItemTarantulaHawkElytra.isUsable(stack) ? 0.0F : 1.0F;
-            });
-            ItemProperties.register(AMItemRegistry.SHIELD_OF_THE_DEEP.get(), new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_, j) -> {
-                return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
-            });
-            ItemProperties.register(AMItemRegistry.SOMBRERO.get(), new ResourceLocation("silly"), (stack, p_239421_1_, p_239421_2_, j) -> {
-                return AlexsMobs.isAprilFools() ? 1.0F : 0.0F;
-            });
-            ItemProperties.register(AMItemRegistry.TENDON_WHIP.get(), new ResourceLocation("active"), (stack, p_239421_1_, holder, j) -> {
-                return ItemTendonWhip.isActive(stack, holder) ? 1.0F : 0.0F;
-            });
-            ItemProperties.register(AMItemRegistry.PUPFISH_LOCATOR.get(), new ResourceLocation("in_chunk"), (stack, world, entity, j) -> {
-                int x = pupfishChunkX * 16;
-                int z = pupfishChunkZ * 16;
-                if (entity != null && entity.getX() >= x && entity.getX() <= x + 16 && entity.getZ() >= z && entity.getZ() <= z + 16) {
-                    return 1.0F;
-                }
-                return 0.0F;
-            });
-            ItemProperties.register(AMItemRegistry.SKELEWAG_SWORD.get(), new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_, j) -> {
-                return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
-            });
+            ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), ResourceLocation.withDefaultNamespace("empty"),
+                    (stack, p_239428_1_, p_239428_2_, j) -> {
+                        return !ItemBloodSprayer.isUsable(stack)
+                                || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns()
+                                        .isOnCooldown(AMItemRegistry.BLOOD_SPRAYER.get()) ? 1.0F : 0.0F;
+                    });
+            ItemProperties.register(AMItemRegistry.HEMOLYMPH_BLASTER.get(),
+                    ResourceLocation.withDefaultNamespace("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
+                        return !ItemHemolymphBlaster.isUsable(stack)
+                                || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns()
+                                        .isOnCooldown(AMItemRegistry.HEMOLYMPH_BLASTER.get()) ? 1.0F : 0.0F;
+                    });
+            ItemProperties.register(AMItemRegistry.TARANTULA_HAWK_ELYTRA.get(),
+                    ResourceLocation.withDefaultNamespace("broken"), (stack, p_239428_1_, p_239428_2_, j) -> {
+                        return ItemTarantulaHawkElytra.isUsable(stack) ? 0.0F : 1.0F;
+                    });
+            ItemProperties.register(AMItemRegistry.SHIELD_OF_THE_DEEP.get(),
+                    ResourceLocation.withDefaultNamespace("blocking"), (stack, p_239421_1_, p_239421_2_, j) -> {
+                        return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack
+                                ? 1.0F
+                                : 0.0F;
+                    });
+            ItemProperties.register(AMItemRegistry.SOMBRERO.get(), ResourceLocation.withDefaultNamespace("silly"),
+                    (stack, p_239421_1_, p_239421_2_, j) -> {
+                        return AlexsMobs.isAprilFools() ? 1.0F : 0.0F;
+                    });
+            ItemProperties.register(AMItemRegistry.TENDON_WHIP.get(), ResourceLocation.withDefaultNamespace("active"),
+                    (stack, p_239421_1_, holder, j) -> {
+                        return ItemTendonWhip.isActive(stack, holder) ? 1.0F : 0.0F;
+                    });
+            ItemProperties.register(AMItemRegistry.PUPFISH_LOCATOR.get(),
+                    ResourceLocation.withDefaultNamespace("in_chunk"), (stack, world, entity, j) -> {
+                        int x = pupfishChunkX * 16;
+                        int z = pupfishChunkZ * 16;
+                        if (entity != null && entity.getX() >= x && entity.getX() <= x + 16 && entity.getZ() >= z
+                                && entity.getZ() <= z + 16) {
+                            return 1.0F;
+                        }
+                        return 0.0F;
+                    });
+            ItemProperties.register(AMItemRegistry.SKELEWAG_SWORD.get(),
+                    ResourceLocation.withDefaultNamespace("blocking"), (stack, p_239421_1_, p_239421_2_, j) -> {
+                        return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack
+                                ? 1.0F
+                                : 0.0F;
+                    });
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
         }
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID.get(), RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK.get(), RenderVoidWormBeak::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.TRANSMUTATION_TABLE.get(), RenderTransmutationTable::new);
-        MenuScreens.register(AMMenuRegistry.TRANSMUTATION_TABLE.get(), GUITransmutationTable::new);
+        // MenuScreens.register handled via RegisterMenuScreensEvent
     }
 
     private void initRainbowBuffers() {
-        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.COMBJELLY_RAINBOW_GLINT, new BufferBuilder(AMRenderTypes.COMBJELLY_RAINBOW_GLINT.bufferSize()));
-        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY, new BufferBuilder(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY.bufferSize()));
-        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_PORTAL, new BufferBuilder(AMRenderTypes.STATIC_PORTAL.bufferSize()));
-        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_PARTICLE, new BufferBuilder(AMRenderTypes.STATIC_PARTICLE.bufferSize()));
-        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_ENTITY, new BufferBuilder(AMRenderTypes.STATIC_ENTITY.bufferSize()));
-        initializedRainbowBuffers = true;
+        // TODO: 1.21 Fix rainbow buffers. RenderBuffers.fixedBuffers is private and
+        // BufferBuilder constructor changed.
+        /*
+         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
+         * COMBJELLY_RAINBOW_GLINT, new
+         * BufferBuilder(AMRenderTypes.COMBJELLY_RAINBOW_GLINT.bufferSize()));
+         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
+         * VOID_WORM_PORTAL_OVERLAY, new
+         * BufferBuilder(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY.bufferSize()));
+         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
+         * STATIC_PORTAL, new BufferBuilder(AMRenderTypes.STATIC_PORTAL.bufferSize()));
+         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
+         * STATIC_PARTICLE, new
+         * BufferBuilder(AMRenderTypes.STATIC_PARTICLE.bufferSize()));
+         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
+         * STATIC_ENTITY, new BufferBuilder(AMRenderTypes.STATIC_ENTITY.bufferSize()));
+         * initializedRainbowBuffers = true;
+         */
     }
 
     private static void onBakingCompleted(final ModelEvent.ModifyBakingResult e) {
         String ghostlyPickaxe = "alexsmobs:ghostly_pickaxe";
-        for (ResourceLocation id : e.getModels().keySet()) {
-            if (id.toString().contains(ghostlyPickaxe)) {
-                e.getModels().put(id, new GhostlyPickaxeBakedModel(e.getModels().get(id)));
+        List<net.minecraft.client.resources.model.ModelResourceLocation> toProcess = new java.util.ArrayList<>();
+        for (net.minecraft.client.resources.model.ModelResourceLocation id : e.getModels().keySet()) {
+            if (id.id().toString().contains(ghostlyPickaxe)) {
+                toProcess.add(id);
             }
+        }
+        for (net.minecraft.client.resources.model.ModelResourceLocation id : toProcess) {
+            e.getModels().put(id, new GhostlyPickaxeBakedModel(e.getModels().get(id)));
         }
     }
 
@@ -301,21 +334,21 @@ public class ClientProxy extends CommonProxy {
     public Object getArmorModel(int armorId, LivingEntity entity) {
         switch (armorId) {
             /*
-            case 0:
-                return ROADRUNNER_BOOTS_MODEL;
-            case 1:
-                return MOOSE_HEADGEAR_MODEL;
-            case 2:
-                return FRONTIER_CAP_MODEL.withAnimations(entity);
-            case 3:
-                return SOMBRERO_MODEL;
-            case 4:
-                return SPIKED_TURTLE_SHELL_MODEL;
-            case 5:
-                return FEDORA_MODEL;
-            case 6:
-                return ELYTRA_MODEL.withAnimations(entity);
-
+             * case 0:
+             * return ROADRUNNER_BOOTS_MODEL;
+             * case 1:
+             * return MOOSE_HEADGEAR_MODEL;
+             * case 2:
+             * return FRONTIER_CAP_MODEL.withAnimations(entity);
+             * case 3:
+             * return SOMBRERO_MODEL;
+             * case 4:
+             * return SPIKED_TURTLE_SHELL_MODEL;
+             * case 5:
+             * return FEDORA_MODEL;
+             * case 6:
+             * return ELYTRA_MODEL.withAnimations(entity);
+             * 
              */
             default:
                 return null;
@@ -333,7 +366,8 @@ public class ClientProxy extends CommonProxy {
                 } else {
                     sound = COCKROACH_SOUND_MAP.get(entity.getId());
                 }
-                if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound() && sound.isOnlyCockroach()) {
+                if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound()
+                        && sound.isOnlyCockroach()) {
                     Minecraft.getInstance().getSoundManager().play(sound);
                 }
             } else if (entity instanceof EntityVoidWorm && entity.isAlive()) {
@@ -360,7 +394,8 @@ public class ClientProxy extends CommonProxy {
                 } else {
                     sound = BEAR_MUSIC_BOX_SOUND_MAP.get(entity.getId());
                 }
-                if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound() && sound.isOnlyMusicBox()) {
+                if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound()
+                        && sound.isOnlyMusicBox()) {
                     Minecraft.getInstance().getSoundManager().play(sound);
                 }
             } else if (entity instanceof EntityBlueJay && entity.isAlive()) {
@@ -380,10 +415,14 @@ public class ClientProxy extends CommonProxy {
         AlexsMobs.LOGGER.debug("Registered particle factories");
         registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SPIN.get(), ParticleGusterSandSpin.Factory::new);
         registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SHOT.get(), ParticleGusterSandShot.Factory::new);
-        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SPIN_RED.get(), ParticleGusterSandSpin.FactoryRed::new);
-        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SHOT_RED.get(), ParticleGusterSandShot.FactoryRed::new);
-        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SPIN_SOUL.get(), ParticleGusterSandSpin.FactorySoul::new);
-        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SHOT_SOUL.get(), ParticleGusterSandShot.FactorySoul::new);
+        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SPIN_RED.get(),
+                ParticleGusterSandSpin.FactoryRed::new);
+        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SHOT_RED.get(),
+                ParticleGusterSandShot.FactoryRed::new);
+        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SPIN_SOUL.get(),
+                ParticleGusterSandSpin.FactorySoul::new);
+        registry.registerSpriteSet(AMParticleRegistry.GUSTER_SAND_SHOT_SOUL.get(),
+                ParticleGusterSandShot.FactorySoul::new);
         registry.registerSpriteSet(AMParticleRegistry.HEMOLYMPH.get(), ParticleHemolymph.Factory::new);
         registry.registerSpriteSet(AMParticleRegistry.PLATYPUS_SENSE.get(), ParticlePlatypus.Factory::new);
         registry.registerSpriteSet(AMParticleRegistry.WHALE_SPLASH.get(), ParticleWhaleSplash.Factory::new);
@@ -393,7 +432,8 @@ public class ClientProxy extends CommonProxy {
         registry.registerSpriteSet(AMParticleRegistry.INVERT_DIG.get(), ParticleInvertDig.Factory::new);
         registry.registerSpriteSet(AMParticleRegistry.TEETH_GLINT.get(), ParticleTeethGlint.Factory::new);
         registry.registerSpriteSet(AMParticleRegistry.SMELLY.get(), ParticleSmelly.Factory::new);
-        registry.registerSpriteSet(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), ParticleBunfungusTransformation.Factory::new);
+        registry.registerSpriteSet(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(),
+                ParticleBunfungusTransformation.Factory::new);
         registry.registerSpriteSet(AMParticleRegistry.FUNGUS_BUBBLE.get(), ParticleFungusBubble.Factory::new);
         registry.registerSpecial(AMParticleRegistry.BEAR_FREDDY.get(), new ParticleBearFreddy.Factory());
         registry.registerSpriteSet(AMParticleRegistry.SUNBIRD_FEATHER.get(), ParticleSunbirdFeather.Factory::new);
@@ -401,7 +441,6 @@ public class ClientProxy extends CommonProxy {
         registry.registerSpecial(AMParticleRegistry.SKULK_BOOM.get(), new ParticleSkulkBoom.Factory());
         registry.registerSpriteSet(AMParticleRegistry.BIRD_SONG.get(), ParticleBirdSong.Factory::new);
     }
-
 
     public void setRenderViewEntity(Entity entity) {
         prevPOV = Minecraft.getInstance().options.getCameraType();
@@ -426,7 +465,7 @@ public class ClientProxy extends CommonProxy {
 
     }
 
-    @SubscribeEvent
+    // Empty method - kept for potential future use
     @OnlyIn(Dist.CLIENT)
     public void onRegisterEntityRenders(EntityRenderersEvent.RegisterLayerDefinitions event) {
     }
@@ -443,7 +482,9 @@ public class ClientProxy extends CommonProxy {
 
     public void spawnSpecialParticle(int type) {
         if (type == 0) {
-            Minecraft.getInstance().level.addParticle(AMParticleRegistry.BEAR_FREDDY.get(), Minecraft.getInstance().player.getX(), Minecraft.getInstance().player.getY(), Minecraft.getInstance().player.getZ(), 0, 0, 0);
+            Minecraft.getInstance().level.addParticle(AMParticleRegistry.BEAR_FREDDY.get(),
+                    Minecraft.getInstance().player.getX(), Minecraft.getInstance().player.getY(),
+                    Minecraft.getInstance().player.getZ(), 0, 0, 0);
         }
     }
 
@@ -458,11 +499,11 @@ public class ClientProxy extends CommonProxy {
         this.pupfishChunkZ = chunkZ;
     }
 
-    public void setDisplayTransmuteResult(int slot, ItemStack stack){
+    public void setDisplayTransmuteResult(int slot, ItemStack stack) {
         transmuteStacks[Mth.clamp(slot, 0, 2)] = stack;
     }
 
-    public ItemStack getDisplayTransmuteResult(int slot){
+    public ItemStack getDisplayTransmuteResult(int slot) {
         ItemStack stack = transmuteStacks[Mth.clamp(slot, 0, 2)];
         return stack == null ? ItemStack.EMPTY : stack;
     }

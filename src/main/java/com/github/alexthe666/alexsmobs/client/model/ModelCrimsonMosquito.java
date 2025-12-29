@@ -138,7 +138,7 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 		float flySpeed = 0.5F;
 		float flyDegree = 0.5F;
 
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float flyProgress = entityIn.prevFlyProgress + (entityIn.flyProgress - entityIn.prevFlyProgress) * partialTick;
 		float shootProgress = entityIn.prevShootProgress + (entityIn.shootProgress - entityIn.prevShootProgress) * partialTick;
 		this.walk(antennaR, flySpeed, flyDegree * 0.15F, false, 0, 0.1F, ageInTicks, 1);

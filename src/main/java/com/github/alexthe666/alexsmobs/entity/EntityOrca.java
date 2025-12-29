@@ -50,7 +50,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -74,7 +74,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
     protected EntityOrca(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
         this.moveControl = new MoveHelperController(this);
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
@@ -103,10 +103,11 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         this.entityData.set(MOISTNESS, p_211137_1_);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(MOISTNESS, 2400);
-        this.entityData.define(VARIANT, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MOISTNESS, 2400);
+        builder.define(VARIANT, 0);
     }
 
     public int getVariant() {
@@ -277,7 +278,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                 }
                 boolean flag = attackTarget.hurt(this.damageSources().mobAttack(this), damage);
                 if (flag) {
-                    this.doEnchantDamageEffects(this, attackTarget);
+                    // doEnchantDamageEffects removed in 1.21
                     this.playSound(SoundEvents.DOLPHIN_ATTACK, 1.0F, 1.0F);
                 }
             }
@@ -288,7 +289,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                 }
                 boolean flag = attackTarget.hurt(this.damageSources().mobAttack(this), damage);
                 if (flag) {
-                    this.doEnchantDamageEffects(this, attackTarget);
+                    // doEnchantDamageEffects removed in 1.21
                     this.playSound(SoundEvents.DOLPHIN_ATTACK, 1.0F, 1.0F);
                 }
                 final float yRotRad = this.getYRot() * Mth.DEG_TO_RAD;
@@ -298,8 +299,8 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
             }
         }
-        if (attackTarget != null && attackTarget instanceof Player && attackTarget.hasEffect(AMEffectRegistry.ORCAS_MIGHT.get())) {
-            attackTarget.removeEffect(AMEffectRegistry.ORCAS_MIGHT.get());
+        if (attackTarget != null && attackTarget instanceof Player && attackTarget.hasEffect(AMEffectRegistry.ORCAS_MIGHT)) {
+            attackTarget.removeEffect(AMEffectRegistry.ORCAS_MIGHT);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -369,12 +370,12 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         this.setVariant(determineVariant(this.blockPosition()));
         this.setXRot(0.0F);
         this.setMoistness(2400);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
-    public boolean canBreatheUnderwater() {
-        return false;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return false; }
 
     public void baseTick() {
         int i = this.getAirSupply();
@@ -384,10 +385,6 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
     public boolean isPushedByFluid() {
         return false;
-    }
-
-    public MobType getMobType() {
-        return MobType.WATER;
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
@@ -412,7 +409,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public void onJumpHit(LivingEntity entityIn) {
         boolean flag = entityIn.hurt(this.damageSources().mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
         if (flag) {
-            this.doEnchantDamageEffects(this, entityIn);
+            // doEnchantDamageEffects removed in 1.21
             this.playSound(SoundEvents.DOLPHIN_ATTACK, 1.0F, 1.0F);
         }
     }
@@ -466,7 +463,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
             }
 
             if (this.targetPlayer.isSwimming() && this.targetPlayer.level().random.nextInt(6) == 0) {
-                this.targetPlayer.addEffect(new MobEffectInstance(AMEffectRegistry.ORCAS_MIGHT.get(), 1000));
+                this.targetPlayer.addEffect(new MobEffectInstance(AMEffectRegistry.ORCAS_MIGHT, 1000));
             }
         }
     }

@@ -89,7 +89,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     }
 
     protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
-        return p_213348_2_.height * 0.65F;
+        return p_213348_2_.height() * 0.65F;
     }
 
     public boolean requiresCustomPersistence() {
@@ -104,16 +104,17 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
         return 4;
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(BLOBFISH_SCALE, 1.0F);
-        this.entityData.define(DEPRESSURIZED, false);
-        this.entityData.define(SLIMED, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FROM_BUCKET, false);
+        builder.define(BLOBFISH_SCALE, 1.0F);
+        builder.define(DEPRESSURIZED, false);
+        builder.define(SLIMED, false);
     }
 
-    public EntityDimensions getDimensions(Pose poseIn) {
-        return super.getDimensions(poseIn).scale(this.getBlobfishScale());
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
+        return super.getDefaultDimensions(poseIn).scale(this.getBlobfishScale());
     }
 
     @Override
@@ -236,7 +237,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.BLOBFISH_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -244,12 +245,11 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.putFloat("BucketScale", this.getBlobfishScale());
-        compound.putBoolean("Slimed", this.isSlimed());
+        // TODO: NeoForge 1.21 - Custom bucket data needs DataComponents approach
+        // Custom NBT data like BucketScale and Slimed should be stored in DataComponents.BUCKET_ENTITY_DATA
     }
 
     @Override
@@ -264,9 +264,9 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setBlobfishScale(0.75F + random.nextFloat() * 0.5F);
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     public void tick() {

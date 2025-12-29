@@ -19,7 +19,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 
 public class RenderPotoo extends MobRenderer<EntityPotoo, ModelPotoo> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/potoo.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/potoo.png");
 
     public RenderPotoo(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelPotoo(), 0.35F);

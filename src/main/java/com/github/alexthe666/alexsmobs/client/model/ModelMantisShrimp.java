@@ -130,7 +130,7 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 		return ImmutableList.of(root, body, head, eye_left, eye_right, fist_left, fist_right, arm_left, arm_right, whisker_left, whisker_right, flapper_left, flapper_right, tail, legs_back, legs_front);
 	}
 
-	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
 		if (this.young) {
 			this.eye_left.setScale(1.15F, 1.15F, 1.15F);
 			this.eye_right.setScale(1.15F, 1.15F, 1.15F);
@@ -138,7 +138,7 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			matrixStackIn.translate(0.0D, 1.5D, 0.125D);
 			parts().forEach((p_228292_8_) -> {
-				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 		} else {
@@ -146,7 +146,7 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 			this.eye_right.setScale(1F, 1F, 1F);
 			matrixStackIn.pushPose();
 			parts().forEach((p_228290_8_) -> {
-				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
 			});
 			matrixStackIn.popPose();
 		}
@@ -161,7 +161,7 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 		float idleDegree = 0.3f;
 		float walkSpeed = 0.9f;
 		float walkDegree = 0.6F;
-		float partialTick = Minecraft.getInstance().getFrameTime();
+		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
 		float swimProgress = (Math.min(limbSwingAmount, 0.25F) * 4F) * (entity.prevInWaterProgress + (entity.inWaterProgress - entity.prevInWaterProgress) * partialTick);
 		float punchProgress = entity.prevPunchProgress + (entity.punchProgress - entity.prevPunchProgress) * partialTick;
 		float leftEyePitch = entity.prevLeftPitch + (entity.getEyePitch(true) - entity.prevLeftPitch) * partialTick;

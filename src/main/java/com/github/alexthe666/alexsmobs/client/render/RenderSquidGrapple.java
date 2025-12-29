@@ -26,7 +26,8 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
-    private static final ResourceLocation SQUID_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/giant_squid.png");
+    private static final ResourceLocation SQUID_TEXTURE = ResourceLocation
+            .parse("alexsmobs:textures/entity/giant_squid.png");
     private static final ModelSquidGrapple SQUID_MODEL = new ModelSquidGrapple();
     private static final float TENTACLES_COLOR_R = 181F / 255F;
     private static final float TENTACLES_COLOR_G = 87F / 255F;
@@ -39,7 +40,9 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
         super(renderManagerIn);
     }
 
-    private static void addVertexPairAlex(VertexConsumer p_174308_, Matrix4f p_174309_, float p_174310_, float p_174311_, float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_, float p_174317_, float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
+    private static void addVertexPairAlex(VertexConsumer p_174308_, Matrix4f p_174309_, float p_174310_,
+            float p_174311_, float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_,
+            float p_174317_, float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
         float f = (float) p_174321_ / 24.0F;
         int i = (int) Mth.lerp(f, (float) p_174313_, (float) p_174314_);
         int j = (int) Mth.lerp(f, (float) p_174315_, (float) p_174316_);
@@ -55,11 +58,15 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
         float f5 = p_174310_ * f;
         float f6 = p_174311_ > 0.0F ? p_174311_ * f * f : p_174311_ - p_174311_ * (1.0F - f) * (1.0F - f);
         float f7 = p_174312_ * f;
-        p_174308_.vertex(p_174309_, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).color(f2, f3, f4, 1.0F).uv2(k).endVertex();
-        p_174308_.vertex(p_174309_, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_).color(f2, f3, f4, 1.0F).uv2(k).endVertex();
+        p_174308_.addVertex(p_174309_, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).setColor(f2, f3, f4, 1.0F)
+                .setLight(k);
+        p_174308_.addVertex(p_174309_, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_)
+                .setColor(f2, f3, f4, 1.0F)
+                .setLight(k);
     }
 
-    public static <E extends Entity> void renderTentacle(Entity mob, float partialTick, PoseStack p_115464_, MultiBufferSource p_115465_, LivingEntity player, boolean left, float zOffset) {
+    public static <E extends Entity> void renderTentacle(Entity mob, float partialTick, PoseStack p_115464_,
+            MultiBufferSource p_115465_, LivingEntity player, boolean left, float zOffset) {
         p_115464_.pushPose();
         float bodyRot = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRot : mob.getYRot();
         float bodyRot0 = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRotO : mob.yRotO;
@@ -101,16 +108,20 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
     }
 
     public boolean shouldRender(EntitySquidGrapple grapple, Frustum f, double d1, double d2, double d3) {
-        return super.shouldRender(grapple, f, d1, d2, d3) || grapple.getOwner() != null && (f.isVisible(grapple.getOwner().getBoundingBox()) || grapple.getOwner() == Minecraft.getInstance().player);
+        return super.shouldRender(grapple, f, d1, d2, d3)
+                || grapple.getOwner() != null && (f.isVisible(grapple.getOwner().getBoundingBox())
+                        || grapple.getOwner() == Minecraft.getInstance().player);
     }
 
-    public void render(EntitySquidGrapple entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntitySquidGrapple entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.YN.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot())));
-        matrixStackIn.mulPose(Axis.XP.rotationDegrees(180 + Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
+        matrixStackIn
+                .mulPose(Axis.XP.rotationDegrees(180 + Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.translate(0, -1.5F, -0.25F);
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(entityIn)));
-        SQUID_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1.0F);
+        SQUID_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
         matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         if (entityIn.getOwner() instanceof LivingEntity holder) {
@@ -119,7 +130,8 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
             final double d2 = Mth.lerp(partialTicks, entityIn.zOld, entityIn.getZ());
             matrixStackIn.pushPose();
             matrixStackIn.translate(-d0, -d1, -d2);
-            renderTentacle(entityIn, partialTicks, matrixStackIn, bufferIn, holder, holder.getMainArm() != HumanoidArm.LEFT, -0.1F);
+            renderTentacle(entityIn, partialTicks, matrixStackIn, bufferIn, holder,
+                    holder.getMainArm() != HumanoidArm.LEFT, -0.1F);
             matrixStackIn.popPose();
         }
     }
@@ -128,7 +140,17 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
         return SQUID_TEXTURE;
     }
 
-    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_, int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_, int p_229039_11_, int p_229039_12_) {
-        p_229039_3_.vertex(p_229039_1_, (float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_).color(255, 255, 255, 255).uv(p_229039_7_, p_229039_8_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_229039_12_).normal(p_229039_2_, (float) p_229039_9_, (float) p_229039_11_, (float) p_229039_10_).endVertex();
+    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_,
+            int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_,
+            int p_229039_11_, int p_229039_12_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f((float) p_229039_9_, (float) p_229039_11_,
+                (float) p_229039_10_);
+        normal.mul(p_229039_2_);
+        org.joml.Vector4f pos = new org.joml.Vector4f((float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_,
+                1.0F);
+        pos.mul(p_229039_1_);
+        p_229039_3_.addVertex(pos.x, pos.y, pos.z).setColor(255, 255, 255, 255).setUv(p_229039_7_, p_229039_8_)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(p_229039_12_).setNormal(normal.x, normal.y, normal.z);
     }
 }

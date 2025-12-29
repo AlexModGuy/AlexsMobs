@@ -3,8 +3,6 @@ package com.github.alexthe666.alexsmobs.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -44,10 +40,6 @@ public class EntitySquidGrapple extends Entity {
         this.setOwnerId(player.getUUID());
         float rot = player.yHeadRot + (rightHand ? 60 : -60);
         this.setPos(player.getX() - (double) (player.getBbWidth()) * 0.5D * (double) Mth.sin(rot * Mth.DEG_TO_RAD), player.getEyeY() - (double) 0.2F, player.getZ() + (double) (player.getBbWidth()) * 0.5D * (double) Mth.cos(rot * Mth.DEG_TO_RAD));
-    }
-
-    public EntitySquidGrapple(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AMEntityRegistry.SQUID_GRAPPLE.get(), level);
     }
 
     protected static float lerpRotation(float f2, float f3) {
@@ -100,11 +92,11 @@ public class EntitySquidGrapple extends Entity {
 
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(OWNER_UUID, Optional.empty());
-        this.entityData.define(ATTACHED_FACE, Direction.DOWN);
-        this.entityData.define(ATTACHED_POS, Optional.empty());
-        this.entityData.define(WITHDRAWING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER_UUID, Optional.empty());
+        builder.define(ATTACHED_FACE, Direction.DOWN);
+        builder.define(ATTACHED_POS, Optional.empty());
+        builder.define(WITHDRAWING, false);
     }
 
     public Entity getOwner() {
@@ -279,9 +271,12 @@ public class EntitySquidGrapple extends Entity {
         }
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
 }

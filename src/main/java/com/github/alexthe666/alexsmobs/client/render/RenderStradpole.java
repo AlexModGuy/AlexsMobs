@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderStradpole extends MobRenderer<EntityStradpole, ModelStradpole> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/stradpole.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/stradpole.png");
 
     public RenderStradpole(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelStradpole(), 0.25F);

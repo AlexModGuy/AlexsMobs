@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderAnaconda extends MobRenderer<EntityAnaconda, ModelAnaconda<EntityAnaconda>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/anaconda.png");
-    private static final ResourceLocation TEXTURE_SHEDDING = new ResourceLocation("alexsmobs:textures/entity/anaconda_shedding.png");
-    private static final ResourceLocation TEXTURE_YELLOW = new ResourceLocation("alexsmobs:textures/entity/anaconda_yellow.png");
-    private static final ResourceLocation TEXTURE_YELLOW_SHEDDING = new ResourceLocation("alexsmobs:textures/entity/anaconda_yellow_shedding.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/anaconda.png");
+    private static final ResourceLocation TEXTURE_SHEDDING = ResourceLocation.parse("alexsmobs:textures/entity/anaconda_shedding.png");
+    private static final ResourceLocation TEXTURE_YELLOW = ResourceLocation.parse("alexsmobs:textures/entity/anaconda_yellow.png");
+    private static final ResourceLocation TEXTURE_YELLOW_SHEDDING = ResourceLocation.parse("alexsmobs:textures/entity/anaconda_yellow_shedding.png");
 
     public RenderAnaconda(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelAnaconda(AnacondaPartIndex.HEAD), 0.3F);

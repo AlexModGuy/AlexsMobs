@@ -86,7 +86,7 @@ public class ShoebillAIFish extends Goal {
         LootParams.Builder lootcontext$builder = new LootParams.Builder((ServerLevel) this.bird.level());
         lootcontext$builder.withLuck((float) luck); // Forge: add player & looted bird to LootContext
         LootContextParamSet.Builder lootparameterset$builder = new LootContextParamSet.Builder();
-        LootTable loottable = bird.level().getServer().getLootData().getLootTable(BuiltInLootTables.FISHING);
+        LootTable loottable = bird.level().getServer().reloadableRegistries().getLootTable(BuiltInLootTables.FISHING);
         List<ItemStack> result = loottable.getRandomItems(lootcontext$builder.create(lootparameterset$builder.build()));
         for (ItemStack itemstack : result) {
             ItemEntity item = new ItemEntity(this.bird.level(), this.bird.getX() + 0.5F, this.bird.getY(), this.bird.getZ(), itemstack);

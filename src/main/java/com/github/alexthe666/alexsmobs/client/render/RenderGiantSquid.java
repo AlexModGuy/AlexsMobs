@@ -15,9 +15,11 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderGiantSquid extends MobRenderer<EntityGiantSquid, ModelGiantSquid> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/giant_squid.png");
-    private static final ResourceLocation TEXTURE_BLUE = new ResourceLocation("alexsmobs:textures/entity/giant_squid_blue.png");
-    private static final ResourceLocation TEXTURE_DEPRESSURIZED = new ResourceLocation("alexsmobs:textures/entity/giant_squid_depressurized.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/giant_squid.png");
+    private static final ResourceLocation TEXTURE_BLUE = ResourceLocation
+            .parse("alexsmobs:textures/entity/giant_squid_blue.png");
+    private static final ResourceLocation TEXTURE_DEPRESSURIZED = ResourceLocation
+            .parse("alexsmobs:textures/entity/giant_squid_depressurized.png");
 
     public RenderGiantSquid(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGiantSquid(), 1F);
@@ -28,8 +30,9 @@ public class RenderGiantSquid extends MobRenderer<EntityGiantSquid, ModelGiantSq
         return 0.0F;
     }
 
-    public boolean shouldRender(EntityGiantSquid livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
-        if(livingEntityIn.isCaptured() && livingEntityIn.isAlive()){
+    public boolean shouldRender(EntityGiantSquid livingEntityIn, Frustum camera, double camX, double camY,
+            double camZ) {
+        if (livingEntityIn.isCaptured() && livingEntityIn.isAlive()) {
             return false;
         }
         if (super.shouldRender(livingEntityIn, camera, camX, camY, camZ)) {
@@ -57,10 +60,14 @@ public class RenderGiantSquid extends MobRenderer<EntityGiantSquid, ModelGiantSq
             super(render);
         }
 
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityGiantSquid squid, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+                EntityGiantSquid squid, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
+                float netHeadYaw, float headPitch) {
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE_DEPRESSURIZED));
-            float alpha = squid.prevDepressurization + (squid.getDepressurization() - squid.prevDepressurization) * partialTicks;
-            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(squid, 0.0F), 1.0F, 1.0F, 1.0F, alpha);
+            float alpha = squid.prevDepressurization
+                    + (squid.getDepressurization() - squid.prevDepressurization) * partialTicks;
+            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn,
+                    LivingEntityRenderer.getOverlayCoords(squid, 0.0F), AMColorUtil.packColor(1.0F, 1.0F, 1.0F, alpha));
         }
     }
 }

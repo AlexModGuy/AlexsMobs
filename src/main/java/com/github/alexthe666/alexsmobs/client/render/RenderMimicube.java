@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderMimicube extends MobRenderer<EntityMimicube, ModelMimicube> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mimicube.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/mimicube.png");
 
     public RenderMimicube(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMimicube(), 0.5F);

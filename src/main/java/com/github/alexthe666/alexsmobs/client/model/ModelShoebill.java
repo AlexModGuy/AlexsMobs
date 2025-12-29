@@ -212,7 +212,7 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
         float idleDegree = 0.2F;
         float flapSpeed = 0.4F;
         float flapDegree = 0.2F;
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
         float scaledLimbSwing = Math.min(1.0F, limbSwingAmount * 1.6F);
         float runProgress = Math.max(5F * scaledLimbSwing - flyProgress, 0);

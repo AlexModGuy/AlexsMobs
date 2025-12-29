@@ -117,7 +117,7 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
         float idleDegree = 0.25F;
         float walkSpeed = entityIn.isInWater() ? 0.5F : 1F;
         float walkDegree = 0.75F;
-        float partialTicks = Minecraft.getInstance().getFrameTime();
+        float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float openProgress = entityIn.prevOpenMouthProgress + (entityIn.openMouthProgress - entityIn.prevOpenMouthProgress) * partialTicks;
         float snapProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTicks;
         progressRotationPrev(neck, openProgress, Maths.rad(-10), 0, 0, 5F);
@@ -140,7 +140,7 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
 
     }
 
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         this.head_inside.setScale(0.99F, 0.99F, 0.99F);
         if (this.young) {
             this.head.setScale(1.5F, 1.5F, 1.5F);
@@ -148,14 +148,14 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
             matrixStackIn.scale(0.25F, 0.25F, 0.25F);
             matrixStackIn.translate(0.0D, 4.5, 0.125D);
             parts().forEach((p_228292_8_) -> {
-                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
         } else {
             this.head.setScale(1F, 1F, 1F);
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
-                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, -1);
             });
             matrixStackIn.popPose();
         }

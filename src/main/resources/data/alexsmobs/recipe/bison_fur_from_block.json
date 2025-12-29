@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alexsmobs:bison_fur_block"
+    }
+  ],
+  "result": {
+    "id": "alexsmobs:bison_fur",
+    "count": 1
+  }
+}

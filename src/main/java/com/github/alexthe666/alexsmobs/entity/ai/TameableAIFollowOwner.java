@@ -11,7 +11,7 @@ public class TameableAIFollowOwner extends FollowOwnerGoal {
     private final TamableAnimal tameable;
 
     public TameableAIFollowOwner(TamableAnimal tameable, double speed, float minDist, float maxDist, boolean teleportToLeaves) {
-        super(tameable, speed, minDist, maxDist, teleportToLeaves);
+        super(tameable, speed, minDist, maxDist);
         this.follower = (IFollower)tameable;
         this.tameable = tameable;
     }

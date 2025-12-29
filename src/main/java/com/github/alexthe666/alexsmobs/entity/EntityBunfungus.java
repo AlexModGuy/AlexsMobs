@@ -136,7 +136,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
         });
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (mob) -> {
-            return mob instanceof Enemy && !(mob instanceof Creeper) && !(mob.getMobType() == MobType.WATER && mob.isInWaterOrBubble()) && !mob.getType().is(AMTagRegistry.BUNFUNGUS_IGNORES);
+            return mob instanceof Enemy && !(mob instanceof Creeper) && !(mob.getType().is(net.minecraft.tags.EntityTypeTags.AQUATIC) && mob.isInWaterOrBubble()) && !mob.getType().is(AMTagRegistry.BUNFUNGUS_IGNORES);
         }));
     }
 
@@ -149,13 +149,13 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(JUMP_ACTIVE, false);
-        this.entityData.define(SLEEPING, false);
-        this.entityData.define(BEGGING, false);
-        this.entityData.define(CARROTED, false);
-        this.entityData.define(TRANSFORMS_IN, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(JUMP_ACTIVE, false);
+        builder.define(SLEEPING, false);
+        builder.define(BEGGING, false);
+        builder.define(CARROTED, false);
+        builder.define(TRANSFORMS_IN, 0);
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {

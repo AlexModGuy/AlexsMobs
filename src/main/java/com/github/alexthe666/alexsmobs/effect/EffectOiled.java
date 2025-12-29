@@ -11,7 +11,8 @@ public class EffectOiled extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0XFFE89C);
     }
 
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    @Override
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
        if(entity.isInWaterRainOrBubble()){
            if(!entity.isShiftKeyDown()){
                entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1D, 0));
@@ -24,6 +25,7 @@ public class EffectOiled extends MobEffect {
 
            }
        }
+       return true;
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

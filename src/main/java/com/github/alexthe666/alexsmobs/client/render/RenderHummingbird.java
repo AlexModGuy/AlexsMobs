@@ -8,9 +8,9 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderHummingbird extends MobRenderer<EntityHummingbird, ModelHummingbird> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/hummingbird_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/hummingbird_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/hummingbird_2.png");
+    private static final ResourceLocation TEXTURE_0 = ResourceLocation.parse("alexsmobs:textures/entity/hummingbird_0.png");
+    private static final ResourceLocation TEXTURE_1 = ResourceLocation.parse("alexsmobs:textures/entity/hummingbird_1.png");
+    private static final ResourceLocation TEXTURE_2 = ResourceLocation.parse("alexsmobs:textures/entity/hummingbird_2.png");
 
     public RenderHummingbird(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelHummingbird(), 0.15F);

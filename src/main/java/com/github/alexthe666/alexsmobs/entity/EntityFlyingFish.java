@@ -96,11 +96,11 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(GLIDING, false);
-        this.entityData.define(VARIANT, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FROM_BUCKET, false);
+        builder.define(GLIDING, false);
+        builder.define(VARIANT, 0);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -261,7 +261,8 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("FromBucket", this.fromBucket());
-        compound.putInt("Variant", this.getVariant());
+        // TODO: NeoForge 1.21 - DataComponents needed
+        // compound.putInt("Variant", this.getVariant());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -274,7 +275,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.FLYING_FISH_BUCKET.get());
         if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         return stack;
     }
@@ -282,11 +283,13 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
+            bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        CompoundTag compound = bucket.getOrCreateTag();
-        compound.putInt("Variant", this.getVariant());
+        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
+        // CompoundTag compound = bucket.getOrCreateTag();
+        // TODO: NeoForge 1.21 - DataComponents needed
+        // compound.putInt("Variant", this.getVariant());
     }
 
     @Override
@@ -298,7 +301,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance diff, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance diff, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
         int i;
         if (data instanceof FlyingFishGroupData) {
             i = ((FlyingFishGroupData)data).variant;
@@ -308,7 +311,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         }
 
         this.setVariant(i);
-        return super.finalizeSpawn(world, diff, spawnType, data, tag);
+        return super.finalizeSpawn(world, diff, spawnType, data);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
@@ -370,8 +371,9 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
 
     }
 
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    @Override
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
         this.ants.clear();
         this.leafFeedings = nbt.getInt("LeafFeedings");
         ListTag listnbt = nbt.getList("Ants", 10);
@@ -399,8 +401,8 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         compound.put("Ants", this.getAnts());
         compound.putInt("LeafFeedings", leafFeedings);
     }

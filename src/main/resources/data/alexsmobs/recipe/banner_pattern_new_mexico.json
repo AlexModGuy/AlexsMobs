@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "alexsmobs:tarantula_hawk_wing_fragment"
+    }
+  ],
+  "result": {
+    "id": "alexsmobs:banner_pattern_new_mexico",
+    "count": 1
+  }
+}

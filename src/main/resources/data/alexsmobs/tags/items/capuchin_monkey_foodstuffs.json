@@ -1,7 +1,0 @@
-{
-  "__comment": "Heals when dropped on the ground",
-  "replace": false,
-  "values": [
-    "#forge:eggs"
-  ]
-}

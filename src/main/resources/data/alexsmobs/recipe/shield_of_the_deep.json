@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "PHP",
+    "TPT"
+  ],
+  "key": {
+    "T": {
+      "item": "alexsmobs:shark_tooth"
+    },
+    "S": {
+      "item": "alexsmobs:serrated_shark_tooth"
+    },
+    "P": {
+      "item": "minecraft:prismarine_bricks"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
+    }
+  },
+  "result": {
+    "id": "alexsmobs:shield_of_the_deep",
+    "count": 1
+  }
+}

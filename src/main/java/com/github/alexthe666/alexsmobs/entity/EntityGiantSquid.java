@@ -47,12 +47,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -94,7 +94,7 @@ public class EntityGiantSquid extends WaterAnimal {
 
     protected EntityGiantSquid(EntityType type, Level level) {
         super(type, level);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
         this.mantlePart1 = new EntityGiantSquidPart(this, 0.9F, 0.9F);
         this.mantlePart2 = new EntityGiantSquidPart(this, 1.2F, 1.2F);
         this.mantlePart3 = new EntityGiantSquidPart(this, 0.45F, 0.45F);
@@ -121,11 +121,11 @@ public class EntityGiantSquid extends WaterAnimal {
 
 
     @javax.annotation.Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn) {
         if (reason == MobSpawnType.NATURAL) {
             doInitialPosing(worldIn);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
     private void doInitialPosing(LevelAccessor world) {
@@ -150,15 +150,15 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SQUID_PITCH, 0F);
-        this.entityData.define(OVERRIDE_BODYROT, false);
-        this.entityData.define(DEPRESSURIZATION, 0F);
-        this.entityData.define(GRABBING, false);
-        this.entityData.define(CAPTURED, false);
-        this.entityData.define(BLUE, false);
-        this.entityData.define(GRAB_ENTITY, -1);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SQUID_PITCH, 0F);
+        builder.define(OVERRIDE_BODYROT, false);
+        builder.define(DEPRESSURIZATION, 0F);
+        builder.define(GRABBING, false);
+        builder.define(CAPTURED, false);
+        builder.define(BLUE, false);
+        builder.define(GRAB_ENTITY, -1);
     }
 
     @Nullable
@@ -333,8 +333,14 @@ public class EntityGiantSquid extends WaterAnimal {
                     this.incrementSquidPitch(dist);
                 }
             }
-            if (!this.onGround() && this.getFluidHeight(FluidTags.WATER) < this.getBbHeight()) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.1F, 0));
+            if (!this.onGround() && !this.isInWater() && this.getFluidHeight(FluidTags.WATER) < this.getBbHeight()) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.05F, 0));
+            }
+            // Flop on land like other fish
+            if (!this.isInWaterOrBubble() && this.onGround() && this.random.nextFloat() < 0.02F) {
+                this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.15F, 0.3D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F));
+                this.setYRot(this.random.nextFloat() * 360.0F);
+                this.playSound(SoundEvents.GUARDIAN_FLOP, this.getSoundVolume(), this.getVoicePitch());
             }
             float pressure = getDepressureLevel();
             if (this.getDepressurization() < pressure) {
@@ -407,16 +413,12 @@ public class EntityGiantSquid extends WaterAnimal {
         }
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+    // TODO: 1.21 - canBreatheUnderwater is now final
+    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
+    // public boolean canBreatheUnderwater() { return true; }
 
     public boolean isPushedByFluid() {
         return false;
-    }
-
-    public MobType getMobType() {
-        return MobType.WATER;
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -499,33 +501,38 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public Vec3 collide(Vec3 movement) {
-        if (touchingUnloadedChunk() || !this.isInWaterOrBubble()) {
-            return super.collide(movement);
+        if (touchingUnloadedChunk()) {
+            return movement;
+        } else if (!this.isInWaterOrBubble()) {
+            return performCollision(movement, this.getBoundingBox());
         } else {
-            AABB aabb = this.mantleCollisionPart.getBoundingBox();
-            List<VoxelShape> list = this.level().getEntityCollisions(this, aabb.expandTowards(movement));
-            Vec3 vec3 = movement.lengthSqr() == 0.0D ? movement : collideBoundingBox(this, movement, aabb, this.level(), list);
-            boolean flag = movement.x != vec3.x;
-            boolean flag1 = movement.y != vec3.y;
-            boolean flag2 = movement.z != vec3.z;
-            boolean flag3 = this.onGround() || flag1 && movement.y < 0.0D;
-            if (this.getStepHeight() > 0.0F && flag3 && (flag || flag2)) {
-                Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, this.getStepHeight(), movement.z), aabb, this.level(), list);
-                Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, this.getStepHeight(), 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level(), list);
-                if (vec32.y < (double) this.getStepHeight()) {
-                    Vec3 vec33 = collideBoundingBox(this, new Vec3(movement.x, 0.0D, movement.z), aabb.move(vec32), this.level(), list).add(vec32);
-                    if (vec33.horizontalDistanceSqr() > vec31.horizontalDistanceSqr()) {
-                        vec31 = vec33;
-                    }
-                }
+            return performCollision(movement, this.mantleCollisionPart.getBoundingBox());
+        }
+    }
 
-                if (vec31.horizontalDistanceSqr() > vec3.horizontalDistanceSqr()) {
-                    return vec31.add(collideBoundingBox(this, new Vec3(0.0D, -vec31.y + movement.y, 0.0D), aabb.move(vec31), this.level(), list));
+    private Vec3 performCollision(Vec3 movement, AABB aabb) {
+        List<VoxelShape> list = this.level().getEntityCollisions(this, aabb.expandTowards(movement));
+        Vec3 vec3 = movement.lengthSqr() == 0.0D ? movement : collideBoundingBox(this, movement, aabb, this.level(), list);
+        boolean flag = movement.x != vec3.x;
+        boolean flag1 = movement.y != vec3.y;
+        boolean flag2 = movement.z != vec3.z;
+        boolean flag3 = this.onGround() || flag1 && movement.y < 0.0D;
+        if ((float)this.getAttributeValue(Attributes.STEP_HEIGHT) > 0.0F && flag3 && (flag || flag2)) {
+            Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, (float)this.getAttributeValue(Attributes.STEP_HEIGHT), movement.z), aabb, this.level(), list);
+            Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, (float)this.getAttributeValue(Attributes.STEP_HEIGHT), 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level(), list);
+            if (vec32.y < (double) (float)this.getAttributeValue(Attributes.STEP_HEIGHT)) {
+                Vec3 vec33 = collideBoundingBox(this, new Vec3(movement.x, 0.0D, movement.z), aabb.move(vec32), this.level(), list).add(vec32);
+                if (vec33.horizontalDistanceSqr() > vec31.horizontalDistanceSqr()) {
+                    vec31 = vec33;
                 }
             }
 
-            return vec3;
+            if (vec31.horizontalDistanceSqr() > vec3.horizontalDistanceSqr()) {
+                return vec31.add(collideBoundingBox(this, new Vec3(0.0D, -vec31.y + movement.y, 0.0D), aabb.move(vec31), this.level(), list));
+            }
         }
+
+        return vec3;
     }
 
     public float getXRot() {
@@ -538,7 +545,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     @Override
-    public net.minecraftforge.entity.PartEntity<?>[] getParts() {
+    public net.neoforged.neoforge.entity.PartEntity<?>[] getParts() {
         return this.allParts;
     }
 

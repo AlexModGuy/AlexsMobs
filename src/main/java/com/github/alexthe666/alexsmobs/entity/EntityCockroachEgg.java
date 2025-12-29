@@ -4,8 +4,6 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,11 +13,8 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 public class EntityCockroachEgg extends ThrowableItemProjectile {
 
     public EntityCockroachEgg(EntityType p_i50154_1_, Level p_i50154_2_) {
@@ -34,14 +29,13 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
         super(AMEntityRegistry.COCKROACH_EGG.get(), x, y, z, worldIn);
     }
 
-    public EntityCockroachEgg(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.COCKROACH_EGG.get(), world);
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-    }
+    // TODO: getAddEntityPacket override removed - entities use default packet now
+    //     @Override
+    /*
+        public Packet<ClientGamePacketListener> getAddEntityPacket() {
+            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+        }
+    */
 
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
@@ -62,7 +56,7 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
                 final EntityCockroach croc = AMEntityRegistry.COCKROACH.get().create(this.level());
                 croc.setAge(-24000);
                 croc.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                croc.finalizeSpawn((ServerLevel)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
+                croc.finalizeSpawn((ServerLevel)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null);
                 croc.restrictTo(this.blockPosition(), 20);
                 this.level().addFreshEntity(croc);
             }

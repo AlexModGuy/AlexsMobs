@@ -66,7 +66,9 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     protected EntityTusklin(EntityType<? extends Animal> type, Level level) {
         super(type, level);
-        this.setMaxUpStep(1.1F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -136,7 +138,9 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         super.tickRidden(player, vec3);
         this.setRot(player.getYRot(), player.getXRot() * 0.25F);
         this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-        this.setMaxUpStep(1);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.getNavigation().stop();
         this.setTarget(null);
         this.setSprinting(true);
@@ -203,7 +207,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
         }
     }
 
@@ -267,16 +271,17 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         return stack.is(AMTagRegistry.TUSKLIN_BREEDABLES);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(SADDLED, false);
-        this.getEntityData().define(PASSIVETICKS, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SADDLED, false);
+        builder.define(PASSIVETICKS, 0);
     }
 
     public void addAdditionalSaveData(CompoundTag p_31808_) {
         super.addAdditionalSaveData(p_31808_);
         if (!this.getShoeStack().isEmpty()) {
-            p_31808_.put("ShoeItem", this.getShoeStack().save(new CompoundTag()));
+            p_31808_.put("ShoeItem", this.getShoeStack().save(this.registryAccess()));
         }
         p_31808_.putInt("PassiveTicks", this.getPassiveTicks());
 
@@ -289,7 +294,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         this.setPassiveTicks(p_31795_.getInt("PassiveTicks"));
         CompoundTag compoundtag = p_31795_.getCompound("ShoeItem");
         if (compoundtag != null && !compoundtag.isEmpty()) {
-            ItemStack itemstack = ItemStack.of(compoundtag);
+            ItemStack itemstack = ItemStack.parseOptional(this.registryAccess(), compoundtag);
             if (itemstack.isEmpty()) {
                 AlexsMobs.LOGGER.warn("Unable to load item from: {}", compoundtag);
             }
@@ -403,9 +408,13 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                         }
                     }
                 }
-                this.setMaxUpStep(2F);
+                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }else{
-                this.setMaxUpStep(1.1F);
+                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }
             if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + this.getBbWidth() + 1.8F) {
                 if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 6) {
@@ -479,12 +488,12 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         currentAnimation = animation;
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
         if (spawnDataIn == null) {
             spawnDataIn = new AgeableMob.AgeableMobGroupData(0.34F);
         }
 
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
 

@@ -37,11 +37,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -58,11 +58,11 @@ public class EntityFly extends Animal implements FlyingAnimal {
     protected EntityFly(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new FlyingMoveControl(this, 20, true);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
-        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.WATER, -1.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 16.0F);
+        this.setPathfindingMalus(PathType.COCOA, -1.0F);
+        this.setPathfindingMalus(PathType.FENCE, -1.0F);
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {}
@@ -78,9 +78,9 @@ public class EntityFly extends Animal implements FlyingAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(NO_DESPAWN, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(NO_DESPAWN, false);
     }
 
         public boolean isNoDespawn() {
@@ -168,7 +168,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
     }
 
     protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
-        return this.isBaby() ? sizeIn.height * 0.5F : sizeIn.height * 0.5F;
+        return this.isBaby() ? sizeIn.height() * 0.5F : sizeIn.height() * 0.5F;
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
@@ -195,7 +195,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
                 EntityCrimsonMosquito mosquito = AMEntityRegistry.CRIMSON_MOSQUITO.get().create(level());
                 mosquito.copyPosition(this);
                 if(!this.level().isClientSide){
-                    mosquito.finalizeSpawn((ServerLevelAccessor)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                    mosquito.finalizeSpawn((ServerLevelAccessor)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null);
                 }
                 level().addFreshEntity(mosquito);
                 mosquito.onSpawnFromFly();
@@ -220,10 +220,6 @@ public class EntityFly extends Animal implements FlyingAnimal {
 
     protected boolean makeFlySound() {
         return true;
-    }
-
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
     }
 
     protected void jumpInLiquid(TagKey<Fluid> fluidTag) {

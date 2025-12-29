@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelKangaroo;
+import com.github.alexthe666.alexsmobs.client.render.AMColorUtil;
 import com.github.alexthe666.alexsmobs.client.render.RenderKangaroo;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -10,7 +11,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import org.joml.Quaternionf;
 
 import java.util.Map;
@@ -42,31 +44,30 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
         this.renderer = render;
     }
 
-    public static ResourceLocation getArmorResource(net.minecraft.world.entity.Entity entity, ItemStack stack, EquipmentSlot slot, @javax.annotation.Nullable String type) {
+    public static ResourceLocation getArmorResource(net.minecraft.world.entity.Entity entity, ItemStack stack,
+            EquipmentSlot slot, @javax.annotation.Nullable String type) {
         ArmorItem item = (ArmorItem) stack.getItem();
-        String texture = item.getMaterial().getName();
-        String domain = "minecraft";
-        int idx = texture.indexOf(':');
-        if (idx != -1) {
-            domain = texture.substring(0, idx);
-            texture = texture.substring(idx + 1);
-        }
-        String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1), type == null ? "" : String.format("_%s", type));
+        ResourceLocation materialName = item.getMaterial().unwrapKey().get().location();
+        String domain = materialName.getNamespace();
+        String texture = materialName.getPath();
+        String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, (1),
+                type == null ? "" : String.format("_%s", type));
 
-        s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
         ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
 
         if (resourcelocation == null) {
-            resourcelocation = new ResourceLocation(s1);
+            resourcelocation = ResourceLocation.parse(s1);
             ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
         }
 
         return resourcelocation;
     }
 
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityKangaroo roo, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityKangaroo roo,
+            float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw,
+            float headPitch) {
         matrixStackIn.pushPose();
-        if(roo.isRoger()){
+        if (roo.isRoger()) {
             ItemStack haloStack = new ItemStack(AMItemRegistry.HALO.get());
             matrixStackIn.pushPose();
             translateToHead(matrixStackIn);
@@ -75,10 +76,11 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
             ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
-            renderer.renderItem(roo, haloStack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(roo, haloStack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn,
+                    packedLightIn);
             matrixStackIn.popPose();
         }
-        if(!roo.isBaby()) {
+        if (!roo.isBaby()) {
             {
                 matrixStackIn.pushPose();
                 ItemStack itemstack = roo.getItemBySlot(EquipmentSlot.HEAD);
@@ -91,31 +93,36 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                         this.setModelSlotVisible(a, EquipmentSlot.HEAD);
                         translateToHead(matrixStackIn);
                         matrixStackIn.translate(0, 0.015F, -0.05F);
-                        if(itemstack.getItem() == AMItemRegistry.FEDORA.get()){
+                        if (itemstack.getItem() == AMItemRegistry.FEDORA.get()) {
                             matrixStackIn.translate(0, 0.05F, 0F);
 
                         }
                         matrixStackIn.scale(0.7F, 0.7F, 0.7F);
                         final boolean flag1 = itemstack.hasFoil();
                         int clampedLight = packedLightIn;
-                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                            final int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(itemstack);
+                        DyedItemColor dyedColor = itemstack.get(DataComponents.DYED_COLOR);
+                        if (dyedColor != null) {
+                            final int i = dyedColor.rgb();
                             final float f = (float) (i >> 16 & 255) / 255.0F;
                             final float f1 = (float) (i >> 8 & 255) / 255.0F;
                             final float f2 = (float) (i & 255) / 255.0F;
-                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, null), notAVanillaModel);
-                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, "overlay"), notAVanillaModel);
+                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2,
+                                    getArmorResource(roo, itemstack, EquipmentSlot.HEAD, null), notAVanillaModel);
+                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F,
+                                    getArmorResource(roo, itemstack, EquipmentSlot.HEAD, "overlay"), notAVanillaModel);
                         } else {
-                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.HEAD, null), notAVanillaModel);
+                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F,
+                                    getArmorResource(roo, itemstack, EquipmentSlot.HEAD, null), notAVanillaModel);
                         }
                     }
-                }else{
+                } else {
                     translateToHead(matrixStackIn);
                     matrixStackIn.translate(0, -0.2, -0.1F);
                     matrixStackIn.mulPose((new Quaternionf()).rotateX(Mth.PI));
                     matrixStackIn.mulPose((new Quaternionf()).rotateY(Mth.PI));
                     matrixStackIn.scale(1.0F, 1.0F, 1.0F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, roo.level(), 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED,
+                            packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, roo.level(), 0);
                 }
                 matrixStackIn.popPose();
             }
@@ -134,15 +141,19 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                         matrixStackIn.scale(1F, 1F, 1F);
                         boolean flag1 = itemstack.hasFoil();
                         int clampedLight = packedLightIn;
-                        if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
-                            int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(itemstack);
+                        DyedItemColor chestDyedColor = itemstack.get(DataComponents.DYED_COLOR);
+                        if (chestDyedColor != null) {
+                            int i = chestDyedColor.rgb();
                             float f = (float) (i >> 16 & 255) / 255.0F;
                             float f1 = (float) (i >> 8 & 255) / 255.0F;
                             float f2 = (float) (i & 255) / 255.0F;
-                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(roo, itemstack, EquipmentSlot.CHEST, null), notAVanillaModel);
-                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.CHEST, "overlay"), notAVanillaModel);
+                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2,
+                                    getArmorResource(roo, itemstack, EquipmentSlot.CHEST, null), notAVanillaModel);
+                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F,
+                                    getArmorResource(roo, itemstack, EquipmentSlot.CHEST, "overlay"), notAVanillaModel);
                         } else {
-                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlot.CHEST, null), notAVanillaModel);
+                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F,
+                                    getArmorResource(roo, itemstack, EquipmentSlot.CHEST, null), notAVanillaModel);
                         }
 
                     }
@@ -166,11 +177,14 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
         this.renderer.getModel().chest.translateAndRotate(matrixStackIn);
     }
 
-
-    private void renderChestplate(EntityKangaroo entity, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, boolean glintIn, HumanoidModel modelIn, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
-        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(armorResource), false, glintIn);
+    private void renderChestplate(EntityKangaroo entity, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+            int packedLightIn, boolean glintIn, HumanoidModel modelIn, float red, float green, float blue,
+            ResourceLocation armorResource, boolean notAVanillaModel) {
+        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn,
+                RenderType.entityCutoutNoCull(armorResource), false, glintIn);
         renderer.getModel().copyPropertiesTo(modelIn);
-        float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * Minecraft.getInstance().getFrameTime();
+        float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress)
+                * Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         modelIn.body.xRot = 90 * 0.017453292F;
         modelIn.body.yRot = 0;
         modelIn.body.zRot = 0;
@@ -194,21 +208,26 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
         modelIn.leftArm.z = renderer.getModel().arm_left.rotationPointZ - 0.5F;
         modelIn.rightArm.z = renderer.getModel().arm_right.rotationPointZ - 0.5F;
         modelIn.body.visible = false;
-        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY,
+                AMColorUtil.packColor(red, green, blue, 1.0F));
         modelIn.body.visible = true;
         modelIn.rightArm.visible = false;
         modelIn.leftArm.visible = false;
         matrixStackIn.pushPose();
         matrixStackIn.scale(1.1F, 1.65F, 1.1F);
-        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY,
+                AMColorUtil.packColor(red, green, blue, 1.0F));
         matrixStackIn.popPose();
         modelIn.rightArm.visible = true;
         modelIn.leftArm.visible = true;
 
     }
 
-    private void renderHelmet(EntityKangaroo entity, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, boolean glintIn, HumanoidModel modelIn, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
-        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(armorResource), false, glintIn);
+    private void renderHelmet(EntityKangaroo entity, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+            int packedLightIn, boolean glintIn, HumanoidModel modelIn, float red, float green, float blue,
+            ResourceLocation armorResource, boolean notAVanillaModel) {
+        VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn,
+                RenderType.entityCutoutNoCull(armorResource), false, glintIn);
         renderer.getModel().copyPropertiesTo(modelIn);
         modelIn.head.xRot = 0F;
         modelIn.head.yRot = 0F;
@@ -222,10 +241,10 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
         modelIn.hat.x = 0F;
         modelIn.hat.y = 0F;
         modelIn.hat.z = 0F;
-        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY,
+                AMColorUtil.packColor(red, green, blue, 1.0F));
 
     }
-
 
     protected void setModelSlotVisible(HumanoidModel p_188359_1_, EquipmentSlot slotIn) {
         this.setModelVisible(p_188359_1_);
@@ -256,9 +275,8 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
 
     }
 
-
-    protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot, HumanoidModel model) {
-         Model basicModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
-         return basicModel instanceof HumanoidModel ? (HumanoidModel<?>) basicModel : model;
+    protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot,
+            HumanoidModel model) {
+        return model;
     }
 }

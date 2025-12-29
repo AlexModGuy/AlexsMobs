@@ -11,6 +11,8 @@ import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -32,7 +34,7 @@ import java.util.List;
 
 public class AnteaterAIRaidNest extends MoveToBlockGoal {
 
-    public static final ResourceLocation ANTEATER_REWARD = new ResourceLocation("alexsmobs", "gameplay/anteater_reward");
+    public static final ResourceKey<LootTable> ANTEATER_REWARD = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "gameplay/anteater_reward"));
     private final EntityAnteater anteater;
     private int idleAtHiveTime = 0;
     private boolean isAboveDestinationAnteater;
@@ -45,7 +47,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
     }
 
     private static List<ItemStack> getItemStacks(EntityAnteater anteater) {
-        LootTable loottable = anteater.level().getServer().getLootData().getLootTable(ANTEATER_REWARD);
+        LootTable loottable = anteater.level().getServer().reloadableRegistries().getLootTable(ANTEATER_REWARD);
         return loottable.getRandomItems((new LootParams.Builder((ServerLevel) anteater.level())).withParameter(LootContextParams.THIS_ENTITY, anteater).create(LootContextParamSets.PIGLIN_BARTER));
     }
 
@@ -132,7 +134,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
     }
 
     private void breakHiveEffect(){
-        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(anteater.level(), anteater)) {
+        if (net.neoforged.neoforge.event.EventHooks.canEntityGrief(anteater.level(), anteater)) {
             BlockState blockstate = anteater.level().getBlockState(this.blockPos);
             if (blockstate.is(AMBlockRegistry.LEAFCUTTER_ANTHILL.get())) {
                 if (anteater.level().getBlockEntity(this.blockPos) instanceof TileEntityLeafcutterAnthill) {
@@ -152,7 +154,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
     }
 
     private void eatHive() {
-        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(anteater.level(), anteater)) {
+        if (net.neoforged.neoforge.event.EventHooks.canEntityGrief(anteater.level(), anteater)) {
             BlockState blockstate = anteater.level().getBlockState(this.blockPos);
             if (blockstate.is(AMBlockRegistry.LEAFCUTTER_ANTHILL.get())) {
                 if (anteater.level().getBlockEntity(this.blockPos) instanceof TileEntityLeafcutterAnthill) {

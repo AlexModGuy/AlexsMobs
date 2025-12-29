@@ -13,8 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 public class RenderVoidWormHead extends MobRenderer<EntityVoidWorm, ModelVoidWorm> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_head.png");
-    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_head_glow.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_head.png");
+    private static final ResourceLocation TEXTURE_GLOW = ResourceLocation.parse("alexsmobs:textures/entity/void_worm/void_worm_head_glow.png");
 
     public RenderVoidWormHead(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelVoidWorm(0.0f), 1F);

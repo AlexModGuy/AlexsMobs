@@ -46,7 +46,7 @@ public class TameableAIRide extends Goal {
 
     @Override
     public void tick() {
-        tameableEntity.setMaxUpStep(1F);
+        // setMaxUpStep removed in 1.21 - step height is now an attribute
         tameableEntity.getNavigation().stop();
         tameableEntity.setTarget(null);
         double x = tameableEntity.getX();

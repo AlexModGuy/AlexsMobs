@@ -82,7 +82,7 @@ public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
         this.flap(wing_left, flySpeed, flyDegree * 0.85F, true, 7F, 0, ageInTicks, 1);
         this.flap(wing_right, flySpeed, flyDegree * 0.85F, false, 7F, 0, ageInTicks, 1);
         this.walk(root, flySpeed, flyDegree * 0.15F, true, 7.3F, 0, ageInTicks, 1);
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float birdPitch = entity.prevBirdPitch + (entity.birdPitch - entity.prevBirdPitch) * partialTick;
         this.root.rotateAngleX += birdPitch * Mth.DEG_TO_RAD;
 

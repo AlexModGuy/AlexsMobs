@@ -1,7 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIPanicBaby;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -11,6 +14,9 @@ import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -40,7 +46,7 @@ import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -50,7 +56,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -79,22 +84,24 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
 
     protected EntityRhinoceros(EntityType type, Level level) {
         super(type, level);
-        this.setMaxUpStep(1.1F);
+        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
+
+        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 60.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.ARMOR, 12.0D).add(Attributes.ARMOR_TOUGHNESS, 4.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.9D).add(Attributes.ATTACK_KNOCKBACK, 2.0D);
     }
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_TRUSTED_ID_0, Optional.empty());
-        this.entityData.define(DATA_TRUSTED_ID_1, Optional.empty());
-        this.entityData.define(APPLIED_POTION, "");
-        this.entityData.define(POTION_LEVEL, 0);
-        this.entityData.define(INFLICTED_COUNT, 0);
-        this.entityData.define(POTION_DURATION, 0);
-        this.entityData.define(ANGRY, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_TRUSTED_ID_0, Optional.empty());
+        builder.define(DATA_TRUSTED_ID_1, Optional.empty());
+        builder.define(APPLIED_POTION, "");
+        builder.define(POTION_LEVEL, 0);
+        builder.define(INFLICTED_COUNT, 0);
+        builder.define(POTION_DURATION, 0);
+        builder.define(ANGRY, false);
     }
 
     protected void registerGoals() {
@@ -234,9 +241,9 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
             return -1;
         } else {
             if (!potionToColor.containsKey(s)) {
-                MobEffect effect = getPotionEffect();
-                if (effect != null) {
-                    int color = effect.getColor();
+                Holder<MobEffect> effectHolder = getPotionEffectHolder();
+                if (effectHolder != null) {
+                    int color = effectHolder.value().getColor();
                     potionToColor.put(s, color);
                     return color;
                 }
@@ -247,8 +254,8 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         }
     }
 
-    public MobEffect getPotionEffect() {
-        return ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(this.getAppliedPotionId()));
+    public Holder<MobEffect> getPotionEffectHolder() {
+        return BuiltInRegistries.MOB_EFFECT.wrapAsHolder(BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(this.getAppliedPotionId())));
     }
 
     public int getPotionDuration() {
@@ -355,12 +362,12 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     private void attackWithPotion(LivingEntity target, float dmg) {
-        MobEffect potion = this.getPotionEffect();
+        Holder<MobEffect> potionHolder = this.getPotionEffectHolder();
 
         target.hurt(this.damageSources().mobAttack(this), dmg);
-        if(potion != null){
-            MobEffectInstance instance = new MobEffectInstance(potion, this.getPotionDuration(), this.getPotionLevel());
-            if (!target.hasEffect(potion) && target.addEffect(instance)) {
+        if(potionHolder != null){
+            MobEffectInstance instance = new MobEffectInstance(potionHolder, this.getPotionDuration(), this.getPotionLevel());
+            if (!target.hasEffect(potionHolder) && target.addEffect(instance)) {
                 this.setInflictedCount(this.getInflictedCount() + 1);
             }
         }
@@ -423,7 +430,8 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         ItemStack itemstack = player.getItemInHand(hand);
         InteractionResult type = super.mobInteract(player, hand);
         if(!isBaby() && (itemstack.getItem() == Items.POTION || itemstack.getItem() == Items.SPLASH_POTION || itemstack.getItem() == Items.LINGERING_POTION)){
-            Potion contained = PotionUtils.getPotion(itemstack);
+            PotionContents potionContents = itemstack.get(DataComponents.POTION_CONTENTS);
+            Potion contained = potionContents != null && potionContents.potion().isPresent() ? potionContents.potion().get().value() : null;
             if(applyPotion(contained)){
                 this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.playSound(SoundEvents.DYE_USE);
@@ -451,7 +459,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         }else{
             if(potion.getEffects().size() >= 1){
                 MobEffectInstance first = potion.getEffects().get(0);
-                ResourceLocation loc = ForgeRegistries.MOB_EFFECTS.getKey(first.getEffect());
+                ResourceLocation loc = BuiltInRegistries.MOB_EFFECT.getKey(first.getEffect().value());
                 if(loc != null){
                     this.setAppliedPotionId(loc.toString());
                     this.setPotionLevel(first.getAmplifier());

@@ -17,8 +17,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class ParticleBearFreddy extends Particle {
     private final ModelGrizzlyBear model = new ModelGrizzlyBear();
@@ -55,7 +55,8 @@ public class ParticleBearFreddy extends Particle {
         boolean baby = this.model.young;
         this.model.young = false;
         this.model.positionForParticle(partialTick, age + partialTick);
-        this.model.renderToBuffer(posestack, vertexconsumer, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        // renderToBuffer in 1.21 takes color as single int (ARGB), not 4 floats
+        this.model.renderToBuffer(posestack, vertexconsumer, 240, OverlayTexture.NO_OVERLAY);
         this.model.young = baby;
         multibuffersource$buffersource.endBatch();
         RenderSystem.setShaderFogEnd(fogBefore);

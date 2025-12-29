@@ -11,13 +11,14 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 
 public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/raccoon.png");
-    private static final ResourceLocation TEXTURE_RIGBY = new ResourceLocation("alexsmobs:textures/entity/raccoon_rigby.png");
-    private static final ResourceLocation TEXTURE_BANDANA = new ResourceLocation("alexsmobs:textures/entity/raccoon_bandana.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/raccoon.png");
+    private static final ResourceLocation TEXTURE_RIGBY = ResourceLocation
+            .parse("alexsmobs:textures/entity/raccoon_rigby.png");
+    private static final ResourceLocation TEXTURE_BANDANA = ResourceLocation
+            .parse("alexsmobs:textures/entity/raccoon_bandana.png");
 
     public RenderRaccoon(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelRaccoon(), 0.4F);
@@ -30,7 +31,6 @@ public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
         matrixStackIn.scale(0.75F, 0.75F, 0.75F);
     }
 
-
     public ResourceLocation getTextureLocation(EntityRaccoon entity) {
         return entity.isRigby() ? TEXTURE_RIGBY : TEXTURE;
     }
@@ -40,7 +40,9 @@ public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
             super(renderRaccoon);
         }
 
-        public void render(PoseStack p_225628_1_, MultiBufferSource p_225628_2_, int p_225628_3_, EntityRaccoon raccoon, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
+        public void render(PoseStack p_225628_1_, MultiBufferSource p_225628_2_, int p_225628_3_, EntityRaccoon raccoon,
+                float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_,
+                float p_225628_10_) {
             if (raccoon.getColor() != null && !raccoon.isInvisible()) {
                 float lvt_11_2_;
                 float lvt_12_2_;
@@ -50,19 +52,27 @@ public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
                     int lvt_16_1_ = DyeColor.values().length;
                     int lvt_17_1_ = lvt_15_1_ % lvt_16_1_;
                     int lvt_18_1_ = (lvt_15_1_ + 1) % lvt_16_1_;
-                    float lvt_19_1_ = ((float)(raccoon.tickCount % 25) + p_225628_7_) / 25.0F;
-                    float[] lvt_20_1_ = Sheep.getColorArray(DyeColor.byId(lvt_17_1_));
-                    float[] lvt_21_1_ = Sheep.getColorArray(DyeColor.byId(lvt_18_1_));
-                    lvt_11_2_ = lvt_20_1_[0] * (1.0F - lvt_19_1_) + lvt_21_1_[0] * lvt_19_1_;
-                    lvt_12_2_ = lvt_20_1_[1] * (1.0F - lvt_19_1_) + lvt_21_1_[1] * lvt_19_1_;
-                    lvt_13_2_ = lvt_20_1_[2] * (1.0F - lvt_19_1_) + lvt_21_1_[2] * lvt_19_1_;
+                    float lvt_19_1_ = ((float) (raccoon.tickCount % 25) + p_225628_7_) / 25.0F;
+                    int color1 = DyeColor.byId(lvt_17_1_).getTextureDiffuseColor();
+                    int color2 = DyeColor.byId(lvt_18_1_).getTextureDiffuseColor();
+                    float r1 = (float)(color1 >> 16 & 255) / 255.0F;
+                    float g1 = (float)(color1 >> 8 & 255) / 255.0F;
+                    float b1 = (float)(color1 & 255) / 255.0F;
+                    float r2 = (float)(color2 >> 16 & 255) / 255.0F;
+                    float g2 = (float)(color2 >> 8 & 255) / 255.0F;
+                    float b2 = (float)(color2 & 255) / 255.0F;
+                    lvt_11_2_ = r1 * (1.0F - lvt_19_1_) + r2 * lvt_19_1_;
+                    lvt_12_2_ = g1 * (1.0F - lvt_19_1_) + g2 * lvt_19_1_;
+                    lvt_13_2_ = b1 * (1.0F - lvt_19_1_) + b2 * lvt_19_1_;
                 } else {
-                    float[] lvt_14_2_ = Sheep.getColorArray(raccoon.getColor());
-                    lvt_11_2_ = lvt_14_2_[0];
-                    lvt_12_2_ = lvt_14_2_[1];
-                    lvt_13_2_ = lvt_14_2_[2];
+                    int color = raccoon.getColor().getTextureDiffuseColor();
+                    lvt_11_2_ = (float)(color >> 16 & 255) / 255.0F;
+                    lvt_12_2_ = (float)(color >> 8 & 255) / 255.0F;
+                    lvt_13_2_ = (float)(color & 255) / 255.0F;
                 }
-                this.getParentModel().renderToBuffer(p_225628_1_, p_225628_2_.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_BANDANA)), p_225628_3_, OverlayTexture.NO_OVERLAY, lvt_11_2_, lvt_12_2_, lvt_13_2_, 1.0F);
+                this.getParentModel().renderToBuffer(p_225628_1_,
+                        p_225628_2_.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_BANDANA)), p_225628_3_,
+                        OverlayTexture.NO_OVERLAY, AMColorUtil.packColor(lvt_11_2_, lvt_12_2_, lvt_13_2_, 1.0F));
             }
         }
     }

@@ -7,6 +7,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -62,9 +63,7 @@ public class ItemPocketSand extends Item {
             }
             livingEntityIn.getCooldowns().addCooldown(this, 2);
             ammo.shrink(1);
-            itemstack.hurtAndBreak(1, livingEntityIn, (player) -> {
-                player.broadcastBreakEvent(livingEntityIn.getUsedItemHand());
-            });
+            itemstack.hurtAndBreak(1, livingEntityIn, EquipmentSlot.MAINHAND);
         }
         livingEntityIn.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide());

@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderRattlesnake extends MobRenderer<EntityRattlesnake, ModelRattlesnake> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/rattlesnake.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/rattlesnake.png");
 
     public RenderRattlesnake(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelRattlesnake(), 0.2F);

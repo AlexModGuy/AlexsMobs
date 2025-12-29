@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderJerboa extends MobRenderer<EntityJerboa, ModelJerboa> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/jerboa.png");
-    private static final ResourceLocation TEXTURE_SLEEPING = new ResourceLocation("alexsmobs:textures/entity/jerboa_sleeping.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/jerboa.png");
+    private static final ResourceLocation TEXTURE_SLEEPING = ResourceLocation.parse("alexsmobs:textures/entity/jerboa_sleeping.png");
 
     public RenderJerboa(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelJerboa(), 0.1F);

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "alexsmobs:emu_egg"
+  },
+  "result": {
+    "id": "alexsmobs:boiled_emu_egg"
+  },
+  "experience": 0.15,
+  "cookingtime": 600
+}

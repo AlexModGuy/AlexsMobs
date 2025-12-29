@@ -4,14 +4,16 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.IDancingMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
-
-public class MessageStartDancing {
+public class MessageStartDancing implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<MessageStartDancing> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "start_dancing"));
+    public static final StreamCodec<FriendlyByteBuf, MessageStartDancing> CODEC = StreamCodec.ofMember(MessageStartDancing::write, MessageStartDancing::read);
 
     public int entityID;
     public boolean dance;
@@ -23,8 +25,7 @@ public class MessageStartDancing {
         this.jukeBox = jukeBox;
     }
 
-    public MessageStartDancing() {
-    }
+    public MessageStartDancing() {}
 
     public static MessageStartDancing read(FriendlyByteBuf buf) {
         return new MessageStartDancing(buf.readInt(), buf.readBoolean(), buf.readBlockPos());
@@ -36,32 +37,23 @@ public class MessageStartDancing {
         buf.writeBlockPos(message.jukeBox);
     }
 
-    public static class Handler {
-        public Handler() {
-        }
+    @Override
+    public Type<? extends CustomPacketPayload> type() { return TYPE; }
 
-        public static void handle(MessageStartDancing message, Supplier<NetworkEvent.Context> context) {
-            context.get().setPacketHandled(true);
-            context.get().enqueueWork(() -> {
-                Player player = context.get().getSender();
-                if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
-                    player = AlexsMobs.PROXY.getClientSidePlayer();
-                }
-
-                if (player != null) {
-                    if (player.level() != null) {
-                        Entity entity = player.level().getEntity(message.entityID);
-                        if (entity instanceof IDancingMob) {
-                            ((IDancingMob)entity).setDancing(message.dance);
-                            if(message.dance){
-                                ((IDancingMob)entity).setJukeboxPos(message.jukeBox);
-                            }else{
-                                ((IDancingMob)entity).setJukeboxPos(null);
-                            }
-                        }
+    public static void handle(MessageStartDancing message, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            Player player = context.player();
+            if (player != null && player.level() != null) {
+                Entity entity = player.level().getEntity(message.entityID);
+                if (entity instanceof IDancingMob) {
+                    ((IDancingMob) entity).setDancing(message.dance);
+                    if (message.dance) {
+                        ((IDancingMob) entity).setJukeboxPos(message.jukeBox);
+                    } else {
+                        ((IDancingMob) entity).setJukeboxPos(null);
                     }
                 }
-            });
-        }
+            }
+        });
     }
 }

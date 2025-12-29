@@ -9,10 +9,12 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -38,13 +40,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -54,7 +56,7 @@ import java.util.stream.Stream;
 
 public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemiAquatic {
 
-    public static final ResourceLocation SPIKED_LOOT = new ResourceLocation("alexsmobs", "entities/froststalker_spikes");
+    public static final ResourceKey<LootTable> SPIKED_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/froststalker_spikes"));
     public static final Animation ANIMATION_BITE = Animation.create(13);
     public static final Animation ANIMATION_SPEAK = Animation.create(11);
     public static final Animation ANIMATION_SLASH_L = Animation.create(12);
@@ -88,9 +90,9 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
 
     protected EntityFroststalker(EntityType<? extends Animal> type, Level level) {
         super(type, level);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.LAVA, -1.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -114,7 +116,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     @Nullable
-    protected ResourceLocation getDefaultLootTable() {
+    protected ResourceKey<LootTable> getDefaultLootTable() {
         return this.hasSpikes() ? SPIKED_LOOT : super.getDefaultLootTable();
     }
 
@@ -192,13 +194,13 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(TURN_ANGLE, 0F);
-        this.entityData.define(SPIKES, true);
-        this.entityData.define(BIPEDAL, false);
-        this.entityData.define(SPIKE_SHAKING, false);
-        this.entityData.define(TACKLING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TURN_ANGLE, 0F);
+        builder.define(SPIKES, true);
+        builder.define(BIPEDAL, false);
+        builder.define(SPIKE_SHAKING, false);
+        builder.define(TACKLING, false);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -437,15 +439,13 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         return 0.52F * this.getBlockJumpFactor();
     }
 
-    @Override
-    protected void jumpFromGround() {
+        protected void customJumpFromGround() {
         double d0 = (double) this.getJumpPower() + this.getJumpBoostPower();
         Vec3 vec3 = this.getDeltaMovement();
         this.setDeltaMovement(vec3.x, d0, vec3.z);
         float f = this.getYRot() * Mth.DEG_TO_RAD;
         this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0, Mth.cos(f) * 0.2F));
         this.hasImpulse = true;
-        net.minecraftforge.common.ForgeHooks.onLivingJump(this);
     }
 
     public void frostJump() {
@@ -613,22 +613,40 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         }
     }
 
-    @Override
+    // onChangedBlock renamed or has different signature in 1.21
     protected void onChangedBlock(BlockPos pos) {
-        int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FROST_WALKER, this);
+        int i = EnchantmentHelper.getEnchantmentLevel(this.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), this);
         if (i > 0 || this.hasSpikes()) {
-            FrostWalkerEnchantment.onEntityMoved(this, this.level(), pos, i == 0 ? -1 : i);
+            freezeNearby(this, this.level(), pos, i == 0 ? 2 : i + 2);
         }
-        if (this.shouldRemoveSoulSpeed(this.getBlockStateOn())) {
-            this.removeSoulSpeed();
+        // Soul speed methods removed in 1.21
+        // tryAddSoulSpeed() removed in 1.21
+    }
+
+    private static void freezeNearby(LivingEntity entity, Level level, BlockPos pos, int radius) {
+        if (entity.onGround()) {
+            BlockState frostedIce = Blocks.FROSTED_ICE.defaultBlockState();
+            BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+            for (BlockPos nearbyPos : BlockPos.betweenClosed(pos.offset(-radius, -1, -radius), pos.offset(radius, -1, radius))) {
+                if (nearbyPos.closerToCenterThan(entity.position(), radius)) {
+                    mutablePos.set(nearbyPos.getX(), nearbyPos.getY() + 1, nearbyPos.getZ());
+                    BlockState aboveState = level.getBlockState(mutablePos);
+                    if (aboveState.isAir()) {
+                        BlockState belowState = level.getBlockState(nearbyPos);
+                        if (belowState == Blocks.WATER.defaultBlockState() && frostedIce.canSurvive(level, nearbyPos)) {
+                            level.setBlockAndUpdate(nearbyPos, frostedIce);
+                            level.scheduleTick(nearbyPos, Blocks.FROSTED_ICE, net.minecraft.util.Mth.nextInt(entity.getRandom(), 60, 120));
+                        }
+                    }
+                }
+            }
         }
-        this.tryAddSoulSpeed();
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_27528_, DifficultyInstance p_27529_, MobSpawnType p_27530_, @Nullable SpawnGroupData p_27531_, @Nullable CompoundTag p_27532_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_27528_, DifficultyInstance p_27529_, MobSpawnType p_27530_, @Nullable SpawnGroupData p_27531_) {
         //do not call super here
-        this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("Random spawn bonus", this.random.nextGaussian() * 0.05D, AttributeModifier.Operation.MULTIPLY_BASE));
+        this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("alexsmobs", "random_spawn_bonus"), this.random.nextGaussian() * 0.05D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         if (p_27531_ == null) {
             p_27531_ = new SchoolSpawnGroupData(this);
         } else {

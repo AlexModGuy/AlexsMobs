@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderBunfungus extends MobRenderer<EntityBunfungus, ModelBunfungus> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/bunfungus.png");
-    private static final ResourceLocation TEXTURE_SLEEPING = new ResourceLocation("alexsmobs:textures/entity/bunfungus_sleeping.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/bunfungus.png");
+    private static final ResourceLocation TEXTURE_SLEEPING = ResourceLocation.parse("alexsmobs:textures/entity/bunfungus_sleeping.png");
 
     public RenderBunfungus(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelBunfungus(), 0.6F);

@@ -16,7 +16,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -102,7 +105,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
     }
 
     public void killed(ServerLevel world, LivingEntity entity) {
-        if(this.getRandom().nextBoolean() && (entity instanceof Animal || entity.getMobType() == MobType.UNDEAD)){
+        if(this.getRandom().nextBoolean() && (entity instanceof Animal || entity.getType().is(net.minecraft.tags.EntityTypeTags.UNDEAD))){
             entity.spawnAtLocation(new ItemStack(Items.BONE));
         }
     }
@@ -128,10 +131,10 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(BASKING, false);
-        this.entityData.define(SITTING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BASKING, false);
+        builder.define(SITTING, false);
     }
 
 
@@ -149,7 +152,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem().isEdible() && stack.getItem().getFoodProperties() != null && stack.getItem().getFoodProperties().isMeat() && !stack.is(AMTagRegistry.TASMANIAN_DEVIL_HOWLING_FOODS);
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) && stack.getFoodProperties(this) != null && !stack.is(AMTagRegistry.TASMANIAN_DEVIL_HOWLING_FOODS);
     }
 
     public void tick(){
@@ -199,7 +202,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
             }
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() == 1){
-            this.gameEvent(GameEvent.ENTITY_ROAR);
+            this.gameEvent(GameEvent.ENTITY_ACTION);
             this.playSound(AMSoundRegistry.TASMANIAN_DEVIL_ROAR.get(), this.getSoundVolume() * 2F, this.getVoicePitch());
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() > 3){
@@ -293,7 +296,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem().isEdible() && stack.getItem().getFoodProperties() != null && stack.getItem().getFoodProperties().isMeat() || stack.getItem() == Items.BONE;
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) && stack.getFoodProperties(this) != null || stack.getItem() == Items.BONE;
     }
 
     @Override

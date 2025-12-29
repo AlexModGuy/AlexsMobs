@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class LayerAnteaterTongueItem extends RenderLayer<EntityAnteater, ModelAnteater> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/leafcutter_ant.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/leafcutter_ant.png");
     private final ModelLeafcutterAnt ANT_MODEL = new ModelLeafcutterAnt();
 
     public LayerAnteaterTongueItem(RenderAnteater render) {
@@ -49,7 +49,7 @@ public class LayerAnteaterTongueItem extends RenderLayer<EntityAnteater, ModelAn
                 matrixStackIn.translate(0F, -1.35F, -0.01F);
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
                 ANT_MODEL.animateAnteater(anteater, partialTicks);
-                ANT_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                ANT_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
                 matrixStackIn.popPose();
 
             }else{

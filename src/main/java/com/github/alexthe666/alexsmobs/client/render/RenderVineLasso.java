@@ -24,7 +24,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/vine_lasso.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("alexsmobs:textures/entity/vine_lasso.png");
 
     private static final float VINES_COLOR_R = 96F / 255F;
     private static final float VINES_COLOR_G = 143F / 255F;
@@ -33,15 +33,16 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
     private static final float VINES_COLOR_G2 = 191F / 255F;
     private static final float VINES_COLOR_B2 = 97F / 255F;
 
-
     public RenderVineLasso(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 
-    public void render(EntityVineLasso entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(EntityVineLasso entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.0D, 0.25F, 0.0D);
-        matrixStackIn.mulPose(Axis.YN.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 180F));
+        matrixStackIn
+                .mulPose(Axis.YN.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 180F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.translate(0.0D, -0.1F, 0.0D);
         matrixStackIn.pushPose();
@@ -58,7 +59,8 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
             double d2 = Mth.lerp(partialTicks, entityIn.zOld, entityIn.getZ());
             matrixStackIn.pushPose();
             matrixStackIn.translate(-d0, -d1, -d2);
-            renderVine(entityIn, partialTicks, matrixStackIn, bufferIn, holder, holder.getMainArm() != HumanoidArm.LEFT, -0.4F);
+            renderVine(entityIn, partialTicks, matrixStackIn, bufferIn, holder, holder.getMainArm() != HumanoidArm.LEFT,
+                    -0.4F);
             matrixStackIn.popPose();
         }
     }
@@ -76,8 +78,8 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         matrixStackIn.popPose();
     }
 
-
-    public static <E extends Entity> void renderVine(Entity mob, float partialTick, PoseStack p_115464_, MultiBufferSource p_115465_, LivingEntity player, boolean left, float zOffset) {
+    public static <E extends Entity> void renderVine(Entity mob, float partialTick, PoseStack p_115464_,
+            MultiBufferSource p_115465_, LivingEntity player, boolean left, float zOffset) {
         p_115464_.pushPose();
         float bodyRot = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRot : mob.getYRot();
         float bodyRot0 = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRotO : mob.yRotO;
@@ -118,7 +120,6 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         return p_114496_.isOnFire() ? 15 : p_114496_.level().getBrightness(LightLayer.BLOCK, p_114497_);
     }
 
-
     private static Vec3 getVinePosition(LivingEntity entity, float p_36374_, boolean left, float shake) {
         double d0 = 0.4D * (left ? -1.0D : 1.0D) - 0;
         float f = Mth.lerp(p_36374_ * 0.5F, entity.getXRot(), entity.xRotO) * Mth.DEG_TO_RAD;
@@ -149,8 +150,9 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         }
     }
 
-
-    private static void addVertexPairAlex(VertexConsumer p_174308_, Matrix4f p_174309_, float p_174310_, float p_174311_, float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_, float p_174317_, float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
+    private static void addVertexPairAlex(VertexConsumer p_174308_, Matrix4f p_174309_, float p_174310_,
+            float p_174311_, float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_,
+            float p_174317_, float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
         float f = (float) p_174321_ / 24.0F;
         int i = (int) Mth.lerp(f, (float) p_174313_, (float) p_174314_);
         int j = (int) Mth.lerp(f, (float) p_174315_, (float) p_174316_);
@@ -166,8 +168,11 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         float f5 = p_174310_ * f;
         float f6 = p_174311_ > 0.0F ? p_174311_ * f * f : p_174311_ - p_174311_ * (1.0F - f) * (1.0F - f);
         float f7 = p_174312_ * f;
-        p_174308_.vertex(p_174309_, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).color(f2, f3, f4, 1.0F).uv2(k).endVertex();
-        p_174308_.vertex(p_174309_, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_).color(f2, f3, f4, 1.0F).uv2(k).endVertex();
+        p_174308_.addVertex(p_174309_, f5 - p_174319_, f6 + p_174318_, f7 + p_174320_).setColor(f2, f3, f4, 1.0F)
+                .setLight(k);
+        p_174308_.addVertex(p_174309_, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_)
+                .setColor(f2, f3, f4, 1.0F)
+                .setLight(k);
     }
 
     @Override
@@ -175,8 +180,17 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         return TEXTURE;
     }
 
-
-    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_, int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_, int p_229039_11_, int p_229039_12_) {
-        p_229039_3_.vertex(p_229039_1_, (float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_).color(255, 255, 255, 255).uv(p_229039_7_, p_229039_8_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_229039_12_).normal(p_229039_2_, (float) p_229039_9_, (float) p_229039_11_, (float) p_229039_10_).endVertex();
+    public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_,
+            int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_,
+            int p_229039_11_, int p_229039_12_) {
+        org.joml.Vector3f normal = new org.joml.Vector3f((float) p_229039_9_, (float) p_229039_11_,
+                (float) p_229039_10_);
+        normal.mul(p_229039_2_);
+        org.joml.Vector4f pos = new org.joml.Vector4f((float) p_229039_4_, (float) p_229039_5_, (float) p_229039_6_,
+                1.0F);
+        pos.mul(p_229039_1_);
+        p_229039_3_.addVertex(pos.x, pos.y, pos.z).setColor(255, 255, 255, 255).setUv(p_229039_7_, p_229039_8_)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(p_229039_12_).setNormal(normal.x, normal.y, normal.z);
     }
 }

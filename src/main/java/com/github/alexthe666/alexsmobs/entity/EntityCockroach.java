@@ -9,10 +9,12 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -37,20 +39,21 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EntityCockroach extends Animal implements Shearable, net.minecraftforge.common.IForgeShearable, ITargetsDroppedItems {
+public class EntityCockroach extends Animal implements Shearable, net.neoforged.neoforge.common.IShearable, ITargetsDroppedItems {
 
-    public static final ResourceLocation MARACA_LOOT = new ResourceLocation("alexsmobs", "entities/cockroach_maracas");
-    public static final ResourceLocation MARACA_HEADLESS_LOOT = new ResourceLocation("alexsmobs", "entities/cockroach_maracas_headless");
+    public static final ResourceKey<LootTable> MARACA_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/cockroach_maracas"));
+    public static final ResourceKey<LootTable> MARACA_HEADLESS_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("alexsmobs", "entities/cockroach_maracas_headless"));
     protected static final EntityDimensions STAND_SIZE = EntityDimensions.fixed(0.7F, 0.9F);
     private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(EntityCockroach.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HEADLESS = SynchedEntityData.defineId(EntityCockroach.class, EntityDataSerializers.BOOLEAN);
@@ -173,7 +176,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     @Nullable
-    protected ResourceLocation getDefaultLootTable() {
+    protected ResourceKey<LootTable> getDefaultLootTable() {
         return this.hasMaracas() ? this.isHeadless() ? MARACA_HEADLESS_LOOT : MARACA_LOOT : super.getDefaultLootTable();
     }
 
@@ -181,12 +184,8 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         return 0.5F - Math.max(worldIn.getBrightness(LightLayer.BLOCK, pos), worldIn.getBrightness(LightLayer.SKY, pos));
     }
 
-    public MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
-    public EntityDimensions getDimensions(Pose poseIn) {
-        return isDancing() ? STAND_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
+    public EntityDimensions getDefaultDimensions(Pose poseIn) {
+        return isDancing() ? STAND_SIZE.scale(this.getScale()) : super.getDefaultDimensions(poseIn);
     }
 
     @Override
@@ -211,13 +210,13 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DANCING, false);
-        this.entityData.define(HEADLESS, false);
-        this.entityData.define(MARACAS, false);
-        this.entityData.define(NEAREST_MUSICIAN, Optional.empty());
-        this.entityData.define(BREADED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DANCING, false);
+        builder.define(HEADLESS, false);
+        builder.define(MARACAS, false);
+        builder.define(NEAREST_MUSICIAN, Optional.empty());
+        builder.define(BREADED, false);
     }
 
     public boolean isDancing() {
@@ -376,7 +375,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     @Override
-    public boolean isShearable(@javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos) {
+    public boolean isShearable(@javax.annotation.Nullable Player player, ItemStack item, Level level, BlockPos pos) {
         return readyForShearing();
     }
 
@@ -390,11 +389,13 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
 
     @javax.annotation.Nonnull
     @Override
-    public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, @javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
-        world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
+    public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, ItemStack item, Level level, BlockPos pos) {
+        if (player != null) {
+            level().playSound(null, this, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 1.0F, 1.0F);
+        }
         this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.hurt(damageSources().generic(), 0F);
-        if (!world.isClientSide) {
+        if (!level().isClientSide) {
             for (int i = 0; i < 3; i++) {
                 ((ServerLevel) this.level()).sendParticles(ParticleTypes.SNEEZE, this.getRandomX(0.52F), this.getY(1D), this.getRandomZ(0.52F), 1, 0.0D, 0.0D, 0.0D, 0.0D);
             }
@@ -405,7 +406,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem().isEdible() || stack.is(AMTagRegistry.COCKROACH_BREEDABLES);
+        return stack.has(net.minecraft.core.component.DataComponents.FOOD) || stack.is(AMTagRegistry.COCKROACH_BREEDABLES);
     }
 
     public void travel(Vec3 vec3d) {

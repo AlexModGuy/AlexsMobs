@@ -24,13 +24,17 @@ public class CrocodileAIMelee extends MeleeAttackGoal {
     }
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-        double d0 = this.getAttackReachSqr(enemy);
+        double d0 = getAttackReachSqr(enemy);
         if (distToEnemySqr <= d0) {
             this.resetAttackCooldown();
             this.mob.swing(InteractionHand.MAIN_HAND);
             this.mob.doHurtTarget(enemy);
         }
 
+    }
+
+    protected double getAttackReachSqr(LivingEntity target) {
+        return (double)(this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + target.getBbWidth());
     }
 
 }

@@ -149,7 +149,7 @@ public class ModelSunbird extends AdvancedEntityModel<EntitySunbird> {
         this.walk(right_leg, flySpeed, flyDegree * 0.2F, false, 3F, 0F, limbSwing, limbSwingAmount);
         this.bob(body, flySpeed, flyDegree * 6F, false, limbSwing, limbSwingAmount);
         this.faceTarget(netHeadYaw, headPitch, 1, neck, head);
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float birdPitch = entityIn.prevBirdPitch + (entityIn.birdPitch - entityIn.prevBirdPitch) * partialTick;
         this.body.rotateAngleX = birdPitch * Mth.DEG_TO_RAD;
 

@@ -4,6 +4,8 @@ import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidPortal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -11,10 +13,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -29,6 +33,16 @@ public class ItemDimensionalCarver extends Item {
 
     public ItemDimensionalCarver(Item.Properties props) {
         super(props);
+    }
+
+    // Helper methods for 1.21 DataComponents NBT replacement
+    private static CompoundTag getCustomData(ItemStack stack) {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        return customData != null ? customData.copyTag() : new CompoundTag();
+    }
+    
+    private static void setCustomData(ItemStack stack, CompoundTag tag) {
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
 
     protected static BlockHitResult rayTracePortal(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
@@ -64,16 +78,17 @@ public class ItemDimensionalCarver extends Item {
             double x = raytraceresult.getLocation().x - dir.getNormal().getX() * 0.1F;
             double y = raytraceresult.getLocation().y - dir.getNormal().getY() * 0.1F;
             double z = raytraceresult.getLocation().z - dir.getNormal().getZ() * 0.1F;
-            if (itemstack.getOrCreateTag().getBoolean("HASBLOCK")) {
-                x = itemstack.getOrCreateTag().getDouble("BLOCKX");
-                y = itemstack.getOrCreateTag().getDouble("BLOCKY");
-                z = itemstack.getOrCreateTag().getDouble("BLOCKZ");
+            CompoundTag tag = getCustomData(itemstack);
+            if (tag.getBoolean("HASBLOCK")) {
+                x = tag.getDouble("BLOCKX");
+                y = tag.getDouble("BLOCKY");
+                z = tag.getDouble("BLOCKZ");
             } else {
-                itemstack.getOrCreateTag().putBoolean("HASBLOCK", true);
-                itemstack.getOrCreateTag().putDouble("BLOCKX", x);
-                itemstack.getOrCreateTag().putDouble("BLOCKY", y);
-                itemstack.getOrCreateTag().putDouble("BLOCKZ", z);
-                itemstack.setTag(itemstack.getOrCreateTag());
+                tag.putBoolean("HASBLOCK", true);
+                tag.putDouble("BLOCKX", x);
+                tag.putDouble("BLOCKY", y);
+                tag.putDouble("BLOCKZ", z);
+                setCustomData(itemstack, tag);
             }
             worldIn.addParticle(AMParticleRegistry.INVERT_DIG.get(), x, y, z, playerIn.getId(), 0, 0);
             return InteractionResultHolder.consume(itemstack);
@@ -97,10 +112,11 @@ public class ItemDimensionalCarver extends Item {
             player.playSound(SoundEvents.NETHERITE_BLOCK_HIT, 1, 0.5F + random.nextFloat());
         }
         boolean flag = false;
-        if (itemstack.getOrCreateTag().getBoolean("HASBLOCK")) {
-            double x = itemstack.getOrCreateTag().getDouble("BLOCKX");
-            double y = itemstack.getOrCreateTag().getDouble("BLOCKY");
-            double z = itemstack.getOrCreateTag().getDouble("BLOCKZ");
+        CompoundTag tag = getCustomData(itemstack);
+        if (tag.getBoolean("HASBLOCK")) {
+            double x = tag.getDouble("BLOCKX");
+            double y = tag.getDouble("BLOCKY");
+            double z = tag.getDouble("BLOCKZ");
             if (random.nextFloat() < 0.2) {
                 player.level().addParticle(AMParticleRegistry.WORM_PORTAL.get(), x + random.nextGaussian() * 0.1F, y + random.nextGaussian() * 0.1F, z + random.nextGaussian() * 0.1F, random.nextGaussian() * 0.1F, -0.1F, random.nextGaussian() * 0.1F);
             }
@@ -122,9 +138,7 @@ public class ItemDimensionalCarver extends Item {
                 portal.setAttachmentFacing(dir);
                 player.level().addFreshEntity(portal);
                 onPortalOpen(player.level(), player, portal, dir);
-                itemstack.hurtAndBreak(1, player, (playerIn) -> {
-                    player.broadcastBreakEvent(playerIn.getUsedItemHand());
-                });
+                itemstack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                 flag = true;
                 if (player instanceof Player) {
                     ((Player) player).getCooldowns().addCooldown(this, 200);
@@ -133,21 +147,23 @@ public class ItemDimensionalCarver extends Item {
         }
         if (flag) {
             player.stopUsingItem();
-            itemstack.getOrCreateTag().putBoolean("HASBLOCK", false);
-            itemstack.getOrCreateTag().putDouble("BLOCKX", 0);
-            itemstack.getOrCreateTag().putDouble("BLOCKY", 0);
-            itemstack.getOrCreateTag().putDouble("BLOCKZ", 0);
-            itemstack.setTag(itemstack.getOrCreateTag());
+            CompoundTag resetTag = getCustomData(itemstack);
+            resetTag.putBoolean("HASBLOCK", false);
+            resetTag.putDouble("BLOCKX", 0);
+            resetTag.putDouble("BLOCKY", 0);
+            resetTag.putDouble("BLOCKZ", 0);
+            setCustomData(itemstack, resetTag);
         }
     }
 
 
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        stack.getOrCreateTag().putBoolean("HASBLOCK", false);
-        stack.getOrCreateTag().putDouble("BLOCKX", 0);
-        stack.getOrCreateTag().putDouble("BLOCKY", 0);
-        stack.getOrCreateTag().putDouble("BLOCKZ", 0);
-        stack.setTag(stack.getOrCreateTag());
+        CompoundTag tag = getCustomData(stack);
+        tag.putBoolean("HASBLOCK", false);
+        tag.putDouble("BLOCKX", 0);
+        tag.putDouble("BLOCKY", 0);
+        tag.putDouble("BLOCKZ", 0);
+        setCustomData(stack, tag);
 
     }
 
