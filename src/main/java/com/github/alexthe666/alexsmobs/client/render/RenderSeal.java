@@ -48,7 +48,7 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
     protected void renderNameTag(EntitySeal seal, Component text, PoseStack poseStack, MultiBufferSource bufferSrc, int numberIn, float partialTicks) {
         if(seal.isTearsEasterEgg()){
             double d0 = this.entityRenderDispatcher.distanceToSqr(seal);
-            if (d0 < 4096) {
+            if (d0 < 4096) { // 64 blocks squared
                 boolean flag = !seal.isDiscrete();
                 float f = seal.getBbHeight() + 0.5F;
                 String[] split = text.getString(512).split(" ");
