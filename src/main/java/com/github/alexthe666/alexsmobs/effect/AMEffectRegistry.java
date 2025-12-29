@@ -80,8 +80,8 @@ public class AMEffectRegistry {
         builder.addMix(SOULSTEAL_POTION, Items.GLOWSTONE_DUST, STRONG_SOULSTEAL_POTION);
         builder.addMix(Potions.AWKWARD, AMItemRegistry.DROPBEAR_CLAW.get(), CLINGING_POTION);
         builder.addMix(CLINGING_POTION, Items.REDSTONE, LONG_CLINGING_POTION);
-        // Note: Lava vision potion requires brewing with a lava bottle (not water bottle),
-        // which needs custom brewing logic and is not supported by standard addMix recipes.
+        builder.addRecipe(new ProperBrewingRecipe(Ingredient.of(AMItemRegistry.LAVA_BOTTLE.get()), Ingredient.of(AMItemRegistry.BONE_SERPENT_TOOTH.get()), createPotion(LAVA_VISION_POTION)));
+        builder.addMix(LAVA_VISION_POTION, Items.REDSTONE, LONG_LAVA_VISION_POTION);
     }
 
     public static void init(){
