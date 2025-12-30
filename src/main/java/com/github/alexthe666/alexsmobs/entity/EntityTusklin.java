@@ -58,6 +58,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     public static final Animation ANIMATION_BUCK = Animation.create(15);
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EntityTusklin.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> PASSIVETICKS = SynchedEntityData.defineId(EntityTusklin.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<ItemStack> SHOE_STACK = SynchedEntityData.defineId(EntityTusklin.class, EntityDataSerializers.ITEM_STACK);
     private int animationTick;
     private Animation currentAnimation;
     private int ridingTime = 0;
@@ -277,6 +278,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         super.defineSynchedData(builder);
         builder.define(SADDLED, false);
         builder.define(PASSIVETICKS, 0);
+        builder.define(SHOE_STACK, ItemStack.EMPTY);
     }
 
     public void addAdditionalSaveData(CompoundTag p_31808_) {
@@ -340,11 +342,11 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public ItemStack getShoeStack() {
-        return this.getItemBySlot(EquipmentSlot.FEET);
+        return this.entityData.get(SHOE_STACK);
     }
 
     public void setShoeStack(ItemStack shoe) {
-        this.setItemSlot(EquipmentSlot.FEET, shoe);
+        this.entityData.set(SHOE_STACK, shoe);
     }
 
     public void tick() {
