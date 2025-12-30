@@ -76,9 +76,6 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
 
     protected EntityMoose(EntityType type, Level worldIn) {
         super(type, worldIn);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static boolean canMooseSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
@@ -87,7 +84,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 55D).add(Attributes.ATTACK_DAMAGE, 7.5D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 55D).add(Attributes.ATTACK_DAMAGE, 7.5D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {

@@ -74,13 +74,10 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
 
     protected EntityAnteater(EntityType type, Level world) {
         super(type, world);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.ATTACK_DAMAGE, 6D).add(Attributes.MOVEMENT_SPEED, 0.25F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.ATTACK_DAMAGE, 6D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public static boolean canAnteaterSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {

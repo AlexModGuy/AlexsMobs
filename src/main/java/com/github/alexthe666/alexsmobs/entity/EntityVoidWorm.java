@@ -117,7 +117,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, AMConfig.voidWormMaxHealth).add(Attributes.ARMOR, 4.0D).add(Attributes.FOLLOW_RANGE, 256.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 5);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, AMConfig.voidWormMaxHealth).add(Attributes.ARMOR, 4.0D).add(Attributes.FOLLOW_RANGE, 256.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 5).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     @Nullable
@@ -321,18 +321,12 @@ public class EntityVoidWorm extends Monster {
                     launch(entity, false);
                 }
             }
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }else{
             this.setDeltaMovement(new Vec3(0, 0.03F, 0));
         }
         yBodyRot = getYRot();
         final float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
         this.setXRot(f2);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         if (!this.level().isClientSide) {
             Entity child = getChild();
             if (child == null) {

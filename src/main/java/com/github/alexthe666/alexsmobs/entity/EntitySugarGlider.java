@@ -117,7 +117,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     protected void registerGoals() {
@@ -201,9 +201,6 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     public void tick() {
         super.tick();
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         prevGlideProgress = glideProgress;
         prevAttachChangeProgress = attachChangeProgress;
         prevForageProgress = forageProgress;

@@ -85,7 +85,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.FOLLOW_RANGE, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.FOLLOW_RANGE, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public boolean isFood(ItemStack stack) {
@@ -380,13 +380,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             spawnGroundEffects();
         }
         if (inWaterProgress > 0) {
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         } else {
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }
         if (!this.level().isClientSide) {
             if (isInWater()) {

@@ -93,7 +93,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ARMOR, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.1F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ARMOR, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -217,13 +217,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             }
 
             if (swimProgress > 0) {
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             } else {
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }
             if (hideInShellTimer > 0) {
                 hideInShellTimer--;

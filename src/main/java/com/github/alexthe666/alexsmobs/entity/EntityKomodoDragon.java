@@ -140,9 +140,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);
@@ -422,7 +419,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         }
     }
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.23F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.23F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     @Nullable

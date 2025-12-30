@@ -93,9 +93,6 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         this.setPathfindingMalus(PathType.WATER, 0.0F);
         this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         switchNavigator(false);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -147,7 +144,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.1D).add(Attributes.ARMOR, 8D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ATTACK_DAMAGE, 3.0D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.1D).add(Attributes.ARMOR, 8D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ATTACK_DAMAGE, 3.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {

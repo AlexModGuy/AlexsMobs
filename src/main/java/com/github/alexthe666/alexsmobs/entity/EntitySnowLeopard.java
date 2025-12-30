@@ -58,9 +58,6 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
 
     protected EntitySnowLeopard(EntityType type, Level worldIn) {
         super(type, worldIn);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
@@ -101,7 +98,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.MOVEMENT_SPEED, 0.35F).add(Attributes.FOLLOW_RANGE, 64F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.MOVEMENT_SPEED, 0.35F).add(Attributes.FOLLOW_RANGE, 64F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     protected SoundEvent getAmbientSound() {

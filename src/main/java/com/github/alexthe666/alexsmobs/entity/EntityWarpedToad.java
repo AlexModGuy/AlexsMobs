@@ -93,7 +93,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.25F).add(Attributes.MOVEMENT_SPEED, 0.2F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.25F).add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -356,9 +356,6 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         prevSwimProgress = swimProgress;
         prevJumpProgress = jumpProgress;
         prevReboundProgress = reboundProgress;
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
 
         final boolean isTechnicalBlinking = this.tickCount % 50 > 42;
         if (isTechnicalBlinking) {

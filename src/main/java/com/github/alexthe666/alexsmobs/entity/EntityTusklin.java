@@ -67,9 +67,6 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     protected EntityTusklin(EntityType<? extends Animal> type, Level level) {
         super(type, level);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -81,7 +78,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE, 9.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE, 9.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -139,9 +136,6 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         super.tickRidden(player, vec3);
         this.setRot(player.getYRot(), player.getXRot() * 0.25F);
         this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.getNavigation().stop();
         this.setTarget(null);
         this.setSprinting(true);
@@ -411,13 +405,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                         }
                     }
                 }
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }else{
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }
             if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + this.getBbWidth() + 1.8F) {
                 if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 6) {

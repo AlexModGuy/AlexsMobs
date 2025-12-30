@@ -117,9 +117,6 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     protected EntityLaviathan(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.setPathfindingMalus(PathType.WATER, 0.0F);
         this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         this.setPathfindingMalus(PathType.LAVA, 0.0F);
@@ -171,7 +168,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 60D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.ARMOR, 10D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 60D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.ARMOR, 10D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.STEP_HEIGHT, 1.1D);
     }
 
     public boolean canBeCollidedWith() {
@@ -469,9 +466,6 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         super.tickRidden(player, vec3);
         this.setRot(player.getYRot(), player.getXRot() * 0.5F);
         this.setYHeadRot(player.getYHeadRot());
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.setTarget(null);
     }
 

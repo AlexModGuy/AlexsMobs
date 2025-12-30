@@ -80,7 +80,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -165,13 +165,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
     public void tick() {
         super.tick();
         if(this.isInWater()){
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }else{
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }
         prevFlyProgress = flyProgress;
 
