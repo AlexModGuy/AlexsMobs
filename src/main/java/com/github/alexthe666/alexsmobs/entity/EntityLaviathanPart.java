@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.message.MessageInteractMultipart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -46,7 +48,11 @@ public class EntityLaviathanPart extends PartEntity<EntityLaviathan> {
 
     }
 
-    public InteractionResult getEntityInteractionResult(Player player, InteractionHand hand) {
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        if(this.level().isClientSide && this.getParent() != null){
+            AlexsMobs.sendMSGToServer(new MessageInteractMultipart(this.getParent().getId(), hand == InteractionHand.OFF_HAND));
+        }
         return this.getParent() == null ? InteractionResult.PASS : this.getParent().mobInteract(player, hand);
     }
 

@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
@@ -65,6 +66,7 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -397,7 +399,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                 return super.canUse() && !EntityLaviathan.this.hasHeadGear();
             }
         });
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new LaviathanBreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.fromValues(Stream.of(new Ingredient.TagValue(AMTagRegistry.LAVIATHAN_BREEDABLES), new Ingredient.TagValue(AMTagRegistry.LAVIATHAN_FOODSTUFFS))), false));
         this.goalSelector.addGoal(4, new AnimalAIFindWaterLava(this, 1.0D));
         this.goalSelector.addGoal(5, new LaviathanAIRandomSwimming(this, 1.0D, 22) {
@@ -1091,6 +1093,74 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             } else if (!laviathan.level().getBlockState(this.laviathan.blockPosition().above()).getFluidState().isEmpty() && laviathan.getChillTime() <= 0) {
                 this.laviathan.setDeltaMovement(this.laviathan.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
             }
+        }
+    }
+
+    static class LaviathanBreedGoal extends Goal {
+        protected final EntityLaviathan animal;
+        protected final Class<? extends Animal> partnerClass;
+        protected final Level level;
+        protected EntityLaviathan partner;
+        protected int loveTime;
+        protected final double speedModifier;
+
+        public LaviathanBreedGoal(EntityLaviathan animal, double speed) {
+            this(animal, speed, animal.getClass());
+        }
+
+        public LaviathanBreedGoal(EntityLaviathan animal, double speed, Class<? extends Animal> partnerClass) {
+            this.animal = animal;
+            this.level = animal.level();
+            this.partnerClass = partnerClass;
+            this.speedModifier = speed;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            if (!this.animal.isInLove()) {
+                return false;
+            } else {
+                this.partner = this.getFreePartner();
+                return this.partner != null;
+            }
+        }
+
+        public boolean canContinueToUse() {
+            return this.partner.isAlive() && this.partner.isInLove() && this.loveTime < 60;
+        }
+
+        public void stop() {
+            this.partner = null;
+            this.loveTime = 0;
+        }
+
+        public void tick() {
+            this.animal.getLookControl().setLookAt(this.partner, 10.0F, (float)this.animal.getMaxHeadXRot());
+            this.animal.getNavigation().moveTo(this.partner, this.speedModifier);
+            ++this.loveTime;
+            if (this.loveTime >= 60 && this.animal.distanceToSqr(this.partner) < 20.0D) {
+                this.breed();
+            }
+        }
+
+        @Nullable
+        private EntityLaviathan getFreePartner() {
+            List<EntityLaviathan> list = this.level.getEntitiesOfClass(EntityLaviathan.class, this.animal.getBoundingBox().inflate(20.0D));
+            double d0 = Double.MAX_VALUE;
+            EntityLaviathan animal = null;
+
+            for(EntityLaviathan animal1 : list) {
+                if (this.animal.canMate(animal1) && this.animal.distanceToSqr(animal1) < d0) {
+                    animal = animal1;
+                    d0 = this.animal.distanceToSqr(animal1);
+                }
+            }
+
+            return animal;
+        }
+
+        protected void breed() {
+            this.animal.spawnChildFromBreeding( (ServerLevel)this.level, this.partner);
         }
     }
 }
