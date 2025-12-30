@@ -26,8 +26,13 @@ import com.github.alexthe666.citadel.client.event.EventGetStarBrightness;
 import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -495,20 +500,17 @@ public class ClientEvents {
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, staticLevel);
                 RenderSystem.setShaderTexture(0, AMRenderTypes.STATIC_TEXTURE);
-                // Tesselator tesselator = Tesselator.getInstance();
-                // BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS,
-                // DefaultVertexFormat.POSITION_TEX);
-                // Buffer already begun
-                // float minU = 10 * staticIndexX * 0.125F;
-                // float maxU = 10 * (0.5F + staticIndexX * 0.125F);
-                // float minV = 10 * staticIndexY * 0.125F;
-                // float maxV = 10 * (0.125F + staticIndexY * 0.125F);
-                // TODO: BufferBuilder API changed in 1.21 - needs rewrite with Matrix4f or
-                // GuiGraphics
-                // bufferbuilder.addVertex(...).setUv(...);
-                // bufferbuilder.addVertex(...).setUv(...);
-                // bufferbuilder.addVertex(...).setUv(...);
-                // BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+                Tesselator tesselator = Tesselator.getInstance();
+                BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+                float minU = 10 * staticIndexX * 0.125F;
+                float maxU = 10 * (0.5F + staticIndexX * 0.125F);
+                float minV = 10 * staticIndexY * 0.125F;
+                float maxV = 10 * (0.125F + staticIndexY * 0.125F);
+                bufferbuilder.addVertex(0.0F, screenHeight, -190.0F).setUv(minU, maxV);
+                bufferbuilder.addVertex(screenWidth, screenHeight, -190.0F).setUv(maxU, maxV);
+                bufferbuilder.addVertex(screenWidth, 0.0F, -190.0F).setUv(maxU, minV);
+                bufferbuilder.addVertex(0.0F, 0.0F, -190.0F).setUv(minU, minV);
+                BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
                 RenderSystem.depthMask(true);
                 RenderSystem.enableDepthTest();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
