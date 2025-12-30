@@ -62,6 +62,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -456,9 +457,10 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         this.walkAnimation.update(f2, 0.4F);
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return false; // Mimic octopus can breathe underwater
+    }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {

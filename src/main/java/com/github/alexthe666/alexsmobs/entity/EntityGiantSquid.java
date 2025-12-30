@@ -413,9 +413,7 @@ public class EntityGiantSquid extends WaterAnimal {
         }
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    // EntityGiantSquid extends WaterAnimal which already can breathe underwater by default
 
     public boolean isPushedByFluid() {
         return false;

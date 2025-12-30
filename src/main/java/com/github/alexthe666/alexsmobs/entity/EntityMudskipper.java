@@ -43,6 +43,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -114,9 +115,10 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         return !worldIn.getBlockState(pos).isSuffocating(worldIn, pos);
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return false; // Mudskipper can breathe underwater
+    }
 
     protected void registerGoals() {
         super.registerGoals();
