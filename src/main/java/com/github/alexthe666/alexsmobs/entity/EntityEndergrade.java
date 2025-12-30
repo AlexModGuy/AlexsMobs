@@ -183,7 +183,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
+            double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passengerYOffset, this.getZ() + extraZ);
         }
     }
 

@@ -345,7 +345,8 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                 passenger.stopRiding();
             } else {
                 EntityLaviathanPart seat = seatParts[posit];
-                passenger.setPos(seat.getX(), this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, seat.getZ());
+                double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+                passenger.setPos(seat.getX(), this.getY() + this.getPassengersRidingOffset() + passengerYOffset, seat.getZ());
             }
         }
     }

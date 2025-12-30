@@ -920,8 +920,8 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY, this.getZ() + extraZ);
+            double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY + passengerYOffset, this.getZ() + extraZ);
         }
     }
 

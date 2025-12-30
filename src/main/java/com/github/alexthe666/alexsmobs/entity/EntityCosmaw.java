@@ -202,7 +202,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             final float f = this.walkAnimation.position();
             final float f1 = this.walkAnimation.speed();
             final float bob = (float) (Math.sin(f * 0.7F) * (double) f1 * 0.0625F * 1.6F - (f1 * 0.0625F * 1.6F));
-            passenger.setPos(this.getX(), this.getY() - bob + 0.3F - this.getVehicleAttachmentPoint(this).y, this.getZ());
+            passenger.setPos(this.getX(), this.getY() - bob + 0.3F - (this.getBbHeight() * 0.75D), this.getZ());
         }
     }
 
