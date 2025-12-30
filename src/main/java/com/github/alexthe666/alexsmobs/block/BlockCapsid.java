@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -70,10 +71,11 @@ public class BlockCapsid extends BaseEntityBlock {
         return p_200122_2_.getBlock() == this ? true : super.skipRendering(p_200122_1_, p_200122_2_, p_200122_3_);
     }
 
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        ItemStack heldItem = player.getItemInHand(handIn);
-        if (worldIn.getBlockEntity(pos) instanceof TileEntityCapsid && (!player.isShiftKeyDown()  && heldItem.getItem() != this.asItem())) {
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (worldIn.getBlockEntity(pos) instanceof TileEntityCapsid && !player.isShiftKeyDown() && heldItem.getItem() != this.asItem()) {
             TileEntityCapsid capsid = (TileEntityCapsid)worldIn.getBlockEntity(pos);
+            // Has item in hand: try to put in or swap
             ItemStack copy = heldItem.copy();
             copy.setCount(1);
             if(capsid.getItem(0).isEmpty()){
@@ -81,20 +83,20 @@ public class BlockCapsid extends BaseEntityBlock {
                 if(!player.isCreative()){
                     heldItem.shrink(1);
                 }
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }else if(ItemStack.isSameItem(capsid.getItem(0), copy) && capsid.getItem(0).getMaxStackSize() > capsid.getItem(0).getCount() + copy.getCount()){
                 capsid.getItem(0).grow(1);
                 if(!player.isCreative()){
                     heldItem.shrink(1);
                 }
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }else{
                 popResource(worldIn, pos, capsid.getItem(0).copy());
                 capsid.setItem(0, ItemStack.EMPTY);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
-        return InteractionResult.PASS;
+        return super.useItemOn(heldItem, state, worldIn, pos, player, handIn, hit);
     }
 
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
