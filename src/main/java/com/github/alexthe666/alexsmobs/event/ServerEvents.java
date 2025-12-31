@@ -21,6 +21,8 @@ import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import com.github.alexthe666.alexsmobs.mixin.AbstractArrowAccessor;
+import com.github.alexthe666.alexsmobs.mixin.NoiseBasedChunkGeneratorAccessor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.ChatFormatting;
@@ -42,6 +44,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -258,7 +261,10 @@ public class ServerEvents {
                 && hitResult.getEntity() instanceof EntityEmu emu && !event.getEntity().level().isClientSide) {
             if (event.getEntity() instanceof AbstractArrow arrow) {
                 // In 1.21, setPierceLevel is private - arrow piercing is handled via item properties
-                // Skip this as we can't modify it directly
+                // Restored using Mixin Accessor
+                if(arrow instanceof AbstractArrowAccessor accessor){
+                    accessor.setPierceLevel((byte) (accessor.getPierceLevel() + 1));
+                }
             }
             if ((emu.getAnimation() == EntityEmu.ANIMATION_DODGE_RIGHT
                     || emu.getAnimation() == EntityEmu.ANIMATION_DODGE_LEFT) && emu.getAnimationTick() < 7) {
@@ -342,21 +348,6 @@ public class ServerEvents {
             rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC.get(), 5, 2, 3, 1));
         }
     }
-
-    // LootingLevelEvent was removed in 1.21 - looting modifiers are now data-driven
-    // TODO: Implement snow leopard looting boost via loot modifier JSON
-    /*
-     * @SubscribeEvent
-     * public void onLootLevelEvent(LootingLevelEvent event) {
-     * DamageSource src = event.getDamageSource();
-     * if (src != null) {
-     * if (src.getEntity() instanceof EntitySnowLeopard) {
-     * event.setLootingLevel(event.getLootingLevel() + 2);
-     * }
-     * }
-     * 
-     * }
-     */
 
     @SubscribeEvent
     public static void onUseItem(PlayerInteractEvent.RightClickItem event) {
@@ -513,6 +504,22 @@ public class ServerEvents {
             event.getDrops()
                     .add(new ItemEntity(event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(),
                             event.getEntity().getZ(), new ItemStack(AMItemRegistry.VINE_LASSO.get())));
+        }
+        // Snow Leopard looting boost: +2 looting level (LootingLevelEvent was removed in 1.21)
+        // When a snow leopard kills an entity, increase drop counts to simulate looting
+        DamageSource src = event.getSource();
+        if (src != null && src.getEntity() instanceof EntitySnowLeopard) {
+            for (ItemEntity itemEntity : event.getDrops()) {
+                ItemStack stack = itemEntity.getItem();
+                // Only increase stackable items, not equipment or special items
+                if (stack.getMaxStackSize() > 1 && stack.getCount() < stack.getMaxStackSize()) {
+                    // Add extra items based on looting level 2 (random 0-2 extra)
+                    int extraItems = RAND.nextInt(3); // 0, 1, or 2 extra items
+                    if (extraItems > 0) {
+                        stack.grow(extraItems);
+                    }
+                }
+            }
         }
     }
 

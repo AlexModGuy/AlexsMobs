@@ -111,6 +111,11 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.giantSquidSpawnRolls, this.getRandom(), spawnReasonIn);
     }

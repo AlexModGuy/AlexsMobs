@@ -37,6 +37,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
@@ -599,8 +601,9 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         ItemStack stack = new ItemStack(AMItemRegistry.POTTED_FLUTTER.get());
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        // TODO: NeoForge 1.21 - DataComponents needed
-        // stack.getOrCreateTag().put("FlutterData", platTag);
+        stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.put("FlutterData", platTag);
+        }));
         if (this.hasCustomName()) {
             stack.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }

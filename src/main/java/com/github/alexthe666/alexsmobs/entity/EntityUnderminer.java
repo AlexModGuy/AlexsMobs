@@ -136,8 +136,8 @@ public class EntityUnderminer extends PathfinderMob {
         compound.putInt("Variant", this.getVariant());
         compound.putInt("ResetItemTime", resetStackTime);
         compound.putInt("MineCooldown", mineCooldown);
-        if(lastGivenStack != null){
-            compound.put("MineStack", /* TODO: Use lastGivenStack.save(registryAccess) */ new CompoundTag());
+        if(lastGivenStack != null && !lastGivenStack.isEmpty()){
+            compound.put("MineStack", lastGivenStack.save(this.registryAccess()));
         }
     }
 

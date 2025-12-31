@@ -121,14 +121,14 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         return null;
     }
     protected void tickLeash() {
-        // tickLeash() removed in 1.21
+        // tickLeash() removed in 1.21 - Restored manually
         Entity lvt_1_1_ = this.getLeashHolder();
         if (lvt_1_1_ != null && lvt_1_1_.level() == this.level()) {
             this.restrictTo(lvt_1_1_.blockPosition(), 5);
             float lvt_2_1_ = this.distanceTo(lvt_1_1_);
             if (this.isSitting()) {
                 if (lvt_2_1_ > 10.0F) {
-                    this.dropLeash(true, true);
+                    this.unleash();
                 }
 
                 return;
@@ -136,7 +136,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
             // onLeashDistance() removed in 1.21
             if (lvt_2_1_ > 10.0F) {
-                this.dropLeash(true, true);
+                this.unleash();
                 this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
             } else if (lvt_2_1_ > 6.0F) {
                 double lvt_3_1_ = (lvt_1_1_.getX() - this.getX()) / (double) lvt_2_1_;
@@ -697,6 +697,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     public void customServerAiStep() {
         super.customServerAiStep();
+        tickLeash();
 
         if (this.currentMoveTypeDuration > 0) {
             --this.currentMoveTypeDuration;
@@ -857,41 +858,6 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         }
     }
 
-    @Nullable
-    private Map<EquipmentSlot, ItemStack> collectEquipmentChanges() {
-        Map<EquipmentSlot, ItemStack> map = null;
-
-        for (EquipmentSlot equipmentslottype : EquipmentSlot.values()) {
-            ItemStack itemstack;
-            switch (equipmentslottype.getType()) {
-                case HAND -> itemstack = this.getItemInHand(equipmentslottype);
-                case HUMANOID_ARMOR -> itemstack = this.getArmorInSlot(equipmentslottype);
-                default -> {
-                    continue;
-                }
-            }
-
-            ItemStack itemstack1 = this.getItemBySlot(equipmentslottype);
-            if (!ItemStack.matches(itemstack1, itemstack)) {
-                net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent(this, equipmentslottype, itemstack, itemstack1));
-                if (map == null) {
-                    map = Maps.newEnumMap(EquipmentSlot.class);
-                }
-
-                map.put(equipmentslottype, itemstack1);
-                if (!itemstack.isEmpty()) {
-                    // TODO: getAttributeModifiers API changed in 1.21 - needs rewrite
-                }
-
-                if (!itemstack1.isEmpty()) {
-                    // TODO: getAttributeModifiers API changed in 1.21 - needs rewrite
-                }
-            }
-        }
-
-        return map;
-    }
-
     public ItemStack getItemBySlot(EquipmentSlot slotIn) {
         return switch (slotIn.getType()) {
             case HAND -> getItemInHand(slotIn);
@@ -916,7 +882,11 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         var modifiers = itemStack.getAttributeModifiers();
         if (!modifiers.modifiers().isEmpty()) {
             double d = 0;
-            // TODO: Attribute map access changed in 1.21
+            for (var entry : modifiers.modifiers()) {
+                if (entry.attribute().equals(Attributes.ATTACK_DAMAGE)) {
+                    d += entry.modifier().amount();
+                }
+            }
             return d;
         }
         return 0;
@@ -928,7 +898,11 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         var modifiers = itemStack.getAttributeModifiers();
         if (!modifiers.modifiers().isEmpty()) {
             double d = 0;
-            // TODO: Attribute map access changed in 1.21
+            for (var entry : modifiers.modifiers()) {
+                if (entry.attribute().equals(Attributes.ARMOR)) {
+                    d += entry.modifier().amount();
+                }
+            }
             return d;
         }
         return 0;

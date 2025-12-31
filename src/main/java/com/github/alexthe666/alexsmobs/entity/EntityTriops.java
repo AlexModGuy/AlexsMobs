@@ -35,6 +35,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -326,9 +328,9 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
-        // Store the data via BUCKET_ENTITY_DATA component
-        bucket.set(net.minecraft.core.component.DataComponents.BUCKET_ENTITY_DATA, net.minecraft.world.item.component.CustomData.of(platTag));
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.put("TriopsTag", platTag);
+        }));
     }
 
     @Override

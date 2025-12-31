@@ -49,6 +49,8 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -447,7 +449,12 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     private void applyKnockbackFromBuffalo(float strength, double ratioX, double ratioZ) {
-        // TODO: ForgeHooks.onLivingKnockBack removed in 1.21 - knockback logic simplified
+        LivingKnockBackEvent event = new LivingKnockBackEvent(this, strength, ratioX, ratioZ);
+        NeoForge.EVENT_BUS.post(event);
+        if (event.isCanceled()) return;
+        strength = event.getStrength();
+        ratioX = event.getRatioX();
+        ratioZ = event.getRatioZ();
         if (!(strength <= 0.0F)) {
             this.hasImpulse = true;
             Vec3 vector3d = this.getDeltaMovement();

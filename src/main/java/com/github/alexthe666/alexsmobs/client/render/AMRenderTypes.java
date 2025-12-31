@@ -17,9 +17,8 @@ import org.joml.Matrix4f;
 public class AMRenderTypes extends RenderType {
 
     public static final ResourceLocation STATIC_TEXTURE = ResourceLocation.parse("alexsmobs:textures/static.png");
-    // TODO: 1.21 Find correct VertexFormat for Entities (formerly NEW_ENTITY).
-    // BLOCK is a placeholder and will crash rendering.
-    public static final VertexFormat AM_NEW_ENTITY = DefaultVertexFormat.BLOCK;
+    // Use DefaultVertexFormat.NEW_ENTITY for entity rendering
+    public static final VertexFormat AM_NEW_ENTITY = DefaultVertexFormat.NEW_ENTITY;
 
     private static boolean encounteredMultiConsumerError = false;
 

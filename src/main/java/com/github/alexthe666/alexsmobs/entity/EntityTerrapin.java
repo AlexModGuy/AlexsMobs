@@ -41,6 +41,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -539,19 +541,20 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
 
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         if (this.hasCustomName()) {
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents - need to store data differently
-        // For now, store via custom data component or bucket NBT helper
-        // Storing the data in a separate tag that can be attached via DataComponents
-        bucket.set(net.minecraft.core.component.DataComponents.BUCKET_ENTITY_DATA, net.minecraft.world.item.component.CustomData.of(platTag));
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.put("TerrapinData", platTag);
+        }));
     }
 
     @Override
     public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
         if (compound.contains("TerrapinData")) {
             this.readAdditionalSaveData(compound.getCompound("TerrapinData"));
         }

@@ -84,14 +84,6 @@ public class EntityCachalotEcho extends Entity {
         this.entityData.set(FASTER_ANIM, anim);
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     public void tick() {
         final double yMot = Mth.sqrt((float)(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z));
         this.setXRot((float) (Mth.atan2(this.getDeltaMovement().y, yMot) * Mth.RAD_TO_DEG));

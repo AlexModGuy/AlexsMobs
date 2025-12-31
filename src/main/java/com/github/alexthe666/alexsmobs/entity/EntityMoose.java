@@ -363,7 +363,12 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     private void applyKnockbackFromMoose(float strength, double ratioX, double ratioZ) {
-        // TODO: ForgeHooks.onLivingKnockBack removed in 1.21 - knockback logic simplified
+        net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent event = new net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent(this, strength, ratioX, ratioZ);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+        if (event.isCanceled()) return;
+        strength = event.getStrength();
+        ratioX = event.getRatioX();
+        ratioZ = event.getRatioZ();
         if (!(strength <= 0.0F)) {
             this.hasImpulse = true;
             Vec3 vector3d = this.getDeltaMovement();

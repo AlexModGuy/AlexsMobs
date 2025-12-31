@@ -18,6 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -81,12 +83,8 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
                 if (flag) {
                     CompoundTag compoundnbt = new CompoundTag();
                     compoundnbt.put("Ants", anthivetileentity.getAnts());
-                    // TODO: NeoForge 1.21 - use DataComponents
-                    // itemstack.addTagElement("BlockEntityTag", compoundnbt);
+                    itemstack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(compoundnbt));
                 }
-                CompoundTag compoundnbt1 = new CompoundTag();
-                // TODO: NeoForge 1.21 - use DataComponents
-                // itemstack.addTagElement("BlockStateTag", compoundnbt1);
                 ItemEntity itementity = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
                 itementity.setDefaultPickUpDelay();
                 worldIn.addFreshEntity(itementity);

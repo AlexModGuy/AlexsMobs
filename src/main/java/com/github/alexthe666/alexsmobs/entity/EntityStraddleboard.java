@@ -411,14 +411,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return Mth.lerp(partialTicks, this.prevRockingAngle, this.rockingAngle);
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
 
     @Override
     protected Entity.MovementEmission getMovementEmission() {

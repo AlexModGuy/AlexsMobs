@@ -99,6 +99,11 @@ public class EntityCentipedeHead extends Monster {
         return 1;
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public int getHeadRotSpeed() {
         return 1;
     }
@@ -206,7 +211,6 @@ public class EntityCentipedeHead extends Monster {
 
     public void tick() {
         super.tick();
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.yBodyRot = Mth.clamp(this.getYRot(), this.yBodyRot - 2, this.yBodyRot + 2);
         this.yHeadRot = this.yBodyRot;
         if (this.ringBufferIndex < 0) {

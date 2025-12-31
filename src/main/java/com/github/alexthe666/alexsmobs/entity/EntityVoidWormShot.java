@@ -74,14 +74,6 @@ public class EntityVoidWormShot extends Entity {
         return Mth.lerp(0.2F, p_234614_0_, p_234614_1_);
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     public void tick() {
         this.prevStopHomingProgress = this.getStopHomingProgress();
         if (!this.leftOwner) {

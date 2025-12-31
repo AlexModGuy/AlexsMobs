@@ -86,6 +86,11 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public boolean isNoGravity() {
         return false;
     }
@@ -97,7 +102,6 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
         prevStrangleProgess = strangleProgess;
         prevSwell = this.getSwell();
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
             final Entity parent = getParent();

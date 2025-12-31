@@ -19,6 +19,8 @@ import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
@@ -198,7 +200,6 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
         if (silkTouch && blockentity instanceof TileEntityTerrapinEgg) {
             ItemStack stack = new ItemStack(AMBlockRegistry.TERRAPIN_EGG.get());
             TileEntityTerrapinEgg egg = (TileEntityTerrapinEgg)blockentity;
-            // TODO: NeoForge 1.21 - BlockEntityTag storage via DataComponents
             CompoundTag tag = new CompoundTag();
             CompoundTag parent1 = new CompoundTag();
             CompoundTag parent2 = new CompoundTag();
@@ -214,6 +215,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
             if(flag){
                 tag.put("Parent1Data", parent1);
                 tag.put("Parent2Data", parent2);
+                stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
             }
             return List.of(stack);
         }

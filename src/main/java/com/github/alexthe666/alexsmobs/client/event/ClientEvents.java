@@ -3,8 +3,11 @@ package com.github.alexthe666.alexsmobs.client.event;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.ClientProxy;
 import com.github.alexthe666.alexsmobs.client.model.ModelRockyChestplateRolling;
+import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
 import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
+import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.client.render.RenderVineLasso;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
@@ -48,6 +51,7 @@ import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -205,8 +209,14 @@ public class ClientEvents {
         if (event.getEntity() instanceof WanderingTrader
                 && event.getEntity().getType() == EntityType.WANDERING_TRADER) {
             if (event.getEntity().getVehicle() instanceof EntityElephant) {
-                // Note: model field is protected in 1.21, this feature is temporarily disabled
-                // TODO: Use mixins or access transformers to re-enable model swapping
+                // Swap model to sitting villager when riding elephant
+                // Uses Access Transformer to access protected 'model' field in LivingEntityRenderer
+                if (event.getRenderer() instanceof LivingEntityRenderer livingRenderer) {
+                    if (!(livingRenderer.model instanceof ModelWanderingVillagerRider)) {
+                        livingRenderer.model = new ModelWanderingVillagerRider(
+                            Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SITTING_WANDERING_VILLAGER));
+                    }
+                }
             }
         }
         if (event.getEntity().hasEffect(AMEffectRegistry.CLINGING)
@@ -395,9 +405,22 @@ public class ClientEvents {
     public void onRenderWorldLastEvent(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             if (!AMConfig.shadersCompat) {
-                // liquidBlockRenderer is private in 1.21 - lava vision custom rendering
-                // temporarily disabled
-                // TODO: Use mixins or access transformers to re-enable custom fluid rendering
+                // Lava vision custom fluid rendering using Access Transformer
+                // liquidBlockRenderer field is made public via accesstransformer.cfg
+                if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)) {
+                    if (!previousLavaVision) {
+                        previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
+                        Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
+                        updateAllChunks();
+                    }
+                } else {
+                    if (previousLavaVision) {
+                        if (previousFluidRenderer != null) {
+                            Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = previousFluidRenderer;
+                        }
+                        updateAllChunks();
+                    }
+                }
                 previousLavaVision = Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION);
                 if (AMConfig.clingingFlipEffect) {
                     if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.CLINGING)

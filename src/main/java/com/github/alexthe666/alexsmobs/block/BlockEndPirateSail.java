@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -20,6 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.Locale;
 
 public class BlockEndPirateSail extends Block {
+    public static final MapCodec<BlockEndPirateSail> CODEC = simpleCodec(p -> new BlockEndPirateSail(false));
 
     public static final BooleanProperty EASTORWEST = BooleanProperty.create("eastorwest");
     public static final EnumProperty<SailType> SAIL = EnumProperty.create("sail", SailType.class);
@@ -29,6 +31,11 @@ public class BlockEndPirateSail extends Block {
     public BlockEndPirateSail(boolean spectre) {
         super(Properties.of().mapColor(MapColor.COLOR_BLUE).noOcclusion().emissiveRendering((a, b, c) -> true).sound(SoundType.WOOL).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(0.4F));
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(SAIL, SailType.SINGLE));
+    }
+
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
     }
 
     public VoxelShape getShape(BlockState p_52807_, BlockGetter p_52808_, BlockPos p_52809_, CollisionContext p_52810_) {

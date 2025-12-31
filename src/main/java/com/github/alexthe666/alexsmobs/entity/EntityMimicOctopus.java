@@ -50,6 +50,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
@@ -224,16 +226,17 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         if (this.hasCustomName()) {
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
-        // CompoundTag compound = bucket.getOrCreateTag();
-        // TODO: Use DataComponents for MimicOctopusData in 1.21
-        // compound.put("MimicOctopusData", platTag);
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.put("MimicOctopusData", platTag);
+        }));
     }
 
     @Override
     public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
         if (compound.contains("MimicOctopusData")) {
             this.readAdditionalSaveData(compound.getCompound("MimicOctopusData"));
         }
@@ -876,8 +879,9 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     private void creeperExplode() {
-        // Simplified explosion handling for 1.21 - level().explode handles everything
-        level().explode(this, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Level.ExplosionInteraction.NONE);
+        boolean flag = this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+        Level.ExplosionInteraction interaction = flag ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE;
+        level().explode(this, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, interaction);
     }
 
     public enum MimicState {

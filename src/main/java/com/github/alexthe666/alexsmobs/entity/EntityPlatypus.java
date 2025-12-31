@@ -43,6 +43,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -117,19 +119,20 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         if (this.hasCustomName()) {
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
-        // CompoundTag compound = bucket.getOrCreateTag();
-        // TODO: Use DataComponents for PlatypusData in 1.21
-        // compound.put("PlatypusData", platTag);
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.put("PlatypusData", platTag);
+        }));
     }
 
     @Override
     public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
         if (compound.contains("PlatypusData")) {
             this.readAdditionalSaveData(compound.getCompound("PlatypusData"));
         }
@@ -314,6 +317,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         compound.putBoolean("Sensing", this.isSensing());
         compound.putBoolean("FromBucket", this.fromBucket());
         compound.putBoolean("HasEgg", this.hasEgg());
+        compound.putBoolean("SuperCharged", this.superCharged);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -322,6 +326,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         this.setSensing(compound.getBoolean("Sensing"));
         this.setFromBucket(compound.getBoolean("FromBucket"));
         this.setHasEgg(compound.getBoolean("HasEgg"));
+        this.superCharged = compound.getBoolean("SuperCharged");
     }
 
     @Override

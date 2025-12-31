@@ -30,6 +30,8 @@ import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -261,8 +263,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("FromBucket", this.fromBucket());
-        // TODO: NeoForge 1.21 - DataComponents needed
-        // compound.putInt("Variant", this.getVariant());
+        compound.putInt("Variant", this.getVariant());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -286,10 +287,9 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
-        // CompoundTag compound = bucket.getOrCreateTag();
-        // TODO: NeoForge 1.21 - DataComponents needed
-        // compound.putInt("Variant", this.getVariant());
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.putInt("Variant", this.getVariant());
+        }));
     }
 
     @Override

@@ -78,14 +78,6 @@ public class EntitySharkToothArrow extends Arrow {
         return false;
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
 
     @Override
     protected ItemStack getPickupItem() {

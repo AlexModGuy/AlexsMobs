@@ -33,6 +33,8 @@ import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -148,9 +150,9 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
-        // CompoundTag compoundnbt = bucket.getOrCreateTag();
-        // TODO: Use DataComponents for bucket variant in 1.21
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.putInt("BucketVariantTag", this.getVariant());
+        }));
     }
 
     @Override

@@ -42,6 +42,8 @@ import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -122,10 +124,8 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        // TODO: NeoForge 1.21 - DataComponents needed
-        // compound.putBoolean("FromBucket", this.fromBucket());
-        // TODO: NeoForge 1.21 - DataComponents needed
-        // compound.putBoolean("Depressurized", this.isDepressurized());
+        compound.putBoolean("FromBucket", this.fromBucket());
+        compound.putBoolean("Depressurized", this.isDepressurized());
     }
 
     public boolean requiresCustomPersistence() {
@@ -197,16 +197,17 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
         if (this.hasCustomName()) {
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
-        // CompoundTag compound = bucket.getOrCreateTag();
-        // TODO: NeoForge 1.21 - DataComponents needed
-        // compound.put("FrilledSharkData", platTag);
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.put("FrilledSharkData", platTag);
+        }));
     }
 
     @Override
     public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
         if (compound.contains("FrilledSharkData")) {
             this.readAdditionalSaveData(compound.getCompound("FrilledSharkData"));
         }

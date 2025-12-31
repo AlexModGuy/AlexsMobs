@@ -48,6 +48,11 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         multipartSize = type.getDimensions();
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public boolean requiresCustomPersistence() {
         return super.requiresCustomPersistence() || this.getParent() != null;
     }
@@ -65,7 +70,6 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     @Override
     public void tick() {
         super.tick();
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
             final Entity parent = getParent();

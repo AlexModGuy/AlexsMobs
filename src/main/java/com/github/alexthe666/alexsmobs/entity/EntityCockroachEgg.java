@@ -29,14 +29,6 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
         super(AMEntityRegistry.COCKROACH_EGG.get(), x, y, z, worldIn);
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 3) {

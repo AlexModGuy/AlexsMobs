@@ -57,11 +57,9 @@ public class RenderCombJelly extends MobRenderer<EntityCombJelly, ModelCombJelly
         }
 
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityCombJelly entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            // In 1.21, merged vertex consumers with different formats can cause issues
-            // Instead of merging, just render the overlay texture directly
-            VertexConsumer overlayConsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_OVERLAY));
+            VertexConsumer rainbow = AMRenderTypes.createMergedVertexConsumer(bufferIn.getBuffer(AMRenderTypes.COMBJELLY_RAINBOW_GLINT), bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_OVERLAY)));
             STRIPES_MODEL.setupAnim(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            STRIPES_MODEL.renderToBuffer(matrixStackIn, overlayConsumer, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
+            STRIPES_MODEL.renderToBuffer(matrixStackIn, rainbow, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
         }
     }
 }

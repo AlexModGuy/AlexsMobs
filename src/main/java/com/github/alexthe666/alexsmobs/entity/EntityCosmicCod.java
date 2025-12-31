@@ -31,6 +31,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -129,11 +131,16 @@ public class EntityCosmicCod extends Mob implements Bucketable {
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        // TODO: NeoForge 1.21 - CosmicCod bucket data needs DataComponents approach
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            CompoundTag codData = new CompoundTag();
+            codData.putBoolean("FromBucket", this.fromBucket());
+            tag.put("CosmicCodData", codData);
+        }));
     }
 
     @Override
     public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
         if (compound.contains("CosmicCodData")) {
             this.readAdditionalSaveData(compound.getCompound("CosmicCodData"));
         }

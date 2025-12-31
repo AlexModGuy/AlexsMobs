@@ -61,14 +61,6 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         this.entityData.set(DATA_ATTACHED_TARGET, OptionalInt.of(p_i47367_3_.getId()));
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     public void tick() {
         super.tick();
         ++this.phageAge;

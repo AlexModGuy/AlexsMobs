@@ -97,6 +97,11 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         return getWormScale() + 0.5F;
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public boolean startRiding(Entity entityIn) {
         if (!(entityIn instanceof AbstractMinecart || entityIn instanceof Boat)) {
             return super.startRiding(entityIn);
@@ -196,7 +201,6 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public void tick() {
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         prevWormAngle = this.getWormAngle();
         prevWormYaw = this.entityData.get(WORM_YAW);
         this.setDeltaMovement(Vec3.ZERO);
@@ -383,14 +387,6 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     public HumanoidArm getMainArm() {
         return null;
     }
-
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
 
     public void pushEntities() {
         List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));

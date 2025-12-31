@@ -326,43 +326,38 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                         matrixStackIn, bufferIn, level, 0);
             }
         }
-        // TODO reimplement
-        /*
-         * if(itemStackIn.getItem() ==
-         * AMBlockRegistry.END_PIRATE_ANCHOR.get().asItem()){
-         * matrixStackIn.pushPose();
-         * matrixStackIn.translate(1F, 0F, 0);
-         * matrixStackIn.mulPose(Axis.XP.rotationDegrees(-180));
-         * matrixStackIn.scale(0.75F, 0.75F, 0.75F);
-         * ANCHOR_MODEL.animateStack(itemStackIn);
-         * ANCHOR_MODEL.renderToBuffer(matrixStackIn,
-         * bufferIn.getBuffer(RenderType.entityCutoutNoCull(ANCHOR_TEXTURE)),
-         * combinedLightIn, combinedOverlayIn, -1);
-         * matrixStackIn.popPose();
-         * }
-         * if(itemStackIn.getItem() ==
-         * AMBlockRegistry.END_PIRATE_ANCHOR_WINCH.get().asItem()){
-         * matrixStackIn.pushPose();
-         * matrixStackIn.translate(1, -1F, 0);
-         * matrixStackIn.mulPose(Axis.YP.rotationDegrees(-180));
-         * WINCH_MODEL.animateStack(itemStackIn);
-         * WINCH_MODEL.renderToBuffer(matrixStackIn,
-         * bufferIn.getBuffer(RenderType.entityCutoutNoCull(WINCH_TEXTURE)),
-         * combinedLightIn, combinedOverlayIn, -1);
-         * matrixStackIn.popPose();
-         * }
-         * if(itemStackIn.getItem() ==
-         * AMBlockRegistry.END_PIRATE_SHIP_WHEEL.get().asItem()){
-         * matrixStackIn.pushPose();
-         * matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90));
-         * matrixStackIn.scale(0.8F, 0.8F, 0.8F);
-         * SHIP_WHEEL_MODEL.resetToDefaultPose();
-         * SHIP_WHEEL_MODEL.renderToBuffer(matrixStackIn,
-         * bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHIP_WHEEL_TEXTURE)),
-         * combinedLightIn, combinedOverlayIn, -1);
-         * matrixStackIn.popPose();
-         * }
-         */
+        // End Pirate item rendering
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR.get().asItem()){
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(1F, 0F, 0);
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-180));
+            matrixStackIn.scale(0.75F, 0.75F, 0.75F);
+            ANCHOR_MODEL.animateStack(itemStackIn);
+            ANCHOR_MODEL.renderToBuffer(matrixStackIn,
+                bufferIn.getBuffer(RenderType.entityCutoutNoCull(ANCHOR_TEXTURE)),
+                combinedLightIn, combinedOverlayIn, -1);
+            matrixStackIn.popPose();
+        }
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH.get().asItem()){
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(1, -1F, 0);
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(-180));
+            WINCH_MODEL.animateStack(itemStackIn);
+            WINCH_MODEL.renderToBuffer(matrixStackIn,
+                bufferIn.getBuffer(RenderType.entityCutoutNoCull(WINCH_TEXTURE)),
+                combinedLightIn, combinedOverlayIn, -1);
+            matrixStackIn.popPose();
+        }
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_SHIP_WHEEL.get().asItem()){
+            matrixStackIn.pushPose();
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90));
+            matrixStackIn.scale(0.8F, 0.8F, 0.8F);
+            SHIP_WHEEL_MODEL.resetToDefaultPose();
+            SHIP_WHEEL_MODEL.renderToBuffer(matrixStackIn,
+                bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHIP_WHEEL_TEXTURE)),
+                combinedLightIn, combinedOverlayIn, -1);
+            matrixStackIn.popPose();
+        }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON.get()) {
             Entity fakeEntity = null;
             List<Pair<EntityType, Float>> mobIcons = AMMobIcons.getMobIcons();

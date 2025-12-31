@@ -228,9 +228,13 @@ public class EntityBoneSerpent extends Monster {
         return null;
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public void tick() {
         super.tick();
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         final boolean ground = !this.isInLava() && !this.isInWater() && this.onGround();
         if (jumpCooldown > 0) {
             jumpCooldown--;

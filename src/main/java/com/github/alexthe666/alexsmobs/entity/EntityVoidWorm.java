@@ -100,6 +100,11 @@ public class EntityVoidWorm extends Monster {
         return AMSoundRegistry.VOID_WORM_HURT.get();
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.VOID_WORM_HURT.get();
     }

@@ -49,14 +49,6 @@ public class EntityTossedItem extends ThrowableItemProjectile {
         this.entityData.set(DART, dart);
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 3) {

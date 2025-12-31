@@ -48,14 +48,6 @@ public abstract class EntityMobProjectile extends Entity {
         return Mth.lerp(0.2F, f, f1);
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
