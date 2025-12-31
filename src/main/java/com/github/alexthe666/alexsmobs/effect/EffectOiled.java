@@ -22,10 +22,14 @@ public class EffectOiled extends MobEffect {
            if (!entity.onGround()) {
                Vec3 vector3d = entity.getDeltaMovement();
                entity.setDeltaMovement(vector3d.multiply(1.0D, 0.9D, 1.0D));
-
            }
        }
        return true;
+    }
+
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return true; // Apply every tick
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {
