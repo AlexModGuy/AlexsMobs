@@ -2,13 +2,13 @@ package com.github.alexthe666.alexsmobs.mixin;
 
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(AbstractArrow.class)
 public interface AbstractArrowAccessor {
-    @Accessor("pierceLevel")
+    @Invoker("setPierceLevel")
     void setPierceLevel(byte pierceLevel);
 
-    @Accessor("pierceLevel")
+    @Invoker("getPierceLevel")
     byte getPierceLevel();
 }
