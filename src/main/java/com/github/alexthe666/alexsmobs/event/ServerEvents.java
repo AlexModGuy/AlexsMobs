@@ -837,14 +837,5 @@ public class ServerEvents {
         event.addListener(AlexsMobs.PROXY.getCapsidRecipeManager());
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onHarvestCheck(PlayerEvent.HarvestCheck event) {
-        if (event.getEntity() != null && event.getEntity().isHolding(AMItemRegistry.GHOSTLY_PICKAXE.get())
-                && ItemGhostlyPickaxe.shouldStoreInGhost(event.getEntity(), event.getEntity().getMainHandItem())) {
-            // stops drops from being spawned
-            event.setCanHarvest(false);
-        }
-    }
-
 }
 

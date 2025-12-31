@@ -6,6 +6,7 @@
   "refmap": "alexsmobs.refmap.json",
   "mixins": [
     "AbstractArrowAccessor",
+    "MixinBlock",
     "MixinBrewingStandBlockEntity",
     "NoiseBasedChunkGeneratorAccessor"
   ],

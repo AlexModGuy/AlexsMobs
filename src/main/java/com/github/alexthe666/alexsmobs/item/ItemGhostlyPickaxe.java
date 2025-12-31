@@ -41,31 +41,7 @@ public class ItemGhostlyPickaxe extends PickaxeItem {
         return blockState.is(BlockTags.MINEABLE_WITH_PICKAXE) ? 20.0F : 1.0F;
     }
 
-    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity user) {
-        if(shouldStoreInGhost(user, stack)){
-            if(user instanceof Player){
-                Player player = (Player)user;
-                player.awardStat(Stats.BLOCK_MINED.get(state.getBlock()));
-                player.causeFoodExhaustion(0.005F);
-            }
-            if(!level.isClientSide){
-                BlockEntity blockentity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
-                Block.getDrops(state, (ServerLevel)level, pos, blockentity, user, stack).forEach((item) -> {
-                    putItemInGhostInventoryOrDrop(user, stack, item);
-                });
-                state.spawnAfterBreak((ServerLevel)level, pos, stack, true);
-                int fortuneLevel = stack.getEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE));
-                int silkTouchLevel = stack.getEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH));
-                int exp = state.getExpDrop((ServerLevel)level, pos, blockentity, user, stack);
-                if(exp > 0){
-                    state.getBlock().popExperience((ServerLevel)level, pos, exp);
-                }
-            }
-        }
-        return super.mineBlock(stack, level, state, pos, user);
-    }
-
-    private static void putItemInGhostInventoryOrDrop(LivingEntity user, ItemStack pickaxe, ItemStack item) {
+    public static void putItemInGhostInventoryOrDrop(LivingEntity user, ItemStack pickaxe, ItemStack item) {
         CustomData customData = pickaxe.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
         CompoundTag compoundtag = customData.copyTag();
         SimpleContainer container = new SimpleContainer(9);
