@@ -54,6 +54,8 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(AMTagRegistry.KOMODO_DRAGON_TAMEABLES);
     public int slaughterCooldown = 0;
     public int timeUntilSpit = this.random.nextInt(12000) + 24000;
+    private int fedFoodCount = 0; // Accumulated food count for taming
+    private int tameThreshold = -1; // Threshold for taming (58-73), -1 means not yet determined
     public float nextJostleAngleFromServer;
     private int riderAttackCooldown = 0;
     public static final Predicate<EntityKomodoDragon> HURT_OR_BABY = (p_213616_0_) -> {
@@ -183,7 +185,11 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.setCommand(compound.getInt("KomodoCommand"));
         this.jostleCooldown = compound.getInt("JostlingCooldown");
         this.setSaddled(compound.getBoolean("Saddle"));
-
+        this.fedFoodCount = compound.getInt("FedFoodCount");
+        this.tameThreshold = compound.getInt("TameThreshold");
+        if (this.tameThreshold == 0) {
+            this.tameThreshold = -1; // Fix for old saves
+        }
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -192,6 +198,8 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         compound.putInt("KomodoCommand", this.getCommand());
         compound.putBoolean("Saddle", this.isSaddled());
         compound.putInt("JostlingCooldown", this.jostleCooldown);
+        compound.putInt("FedFoodCount", this.fedFoodCount);
+        compound.putInt("TameThreshold", this.tameThreshold);
     }
 
     public boolean isFood(ItemStack stack) {
@@ -354,9 +362,16 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if(itemstack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES)){
             if(!isTame()){
                 int size = itemstack.getCount();
-                int tameAmount = 58 + random.nextInt(16);
-                if(size > tameAmount){
+                // Initialize tame threshold on first feeding (58-73 food items required)
+                if (this.tameThreshold < 0) {
+                    this.tameThreshold = 58 + random.nextInt(16);
+                }
+                // Accumulate fed food count
+                this.fedFoodCount += size;
+                if(this.fedFoodCount >= this.tameThreshold){
                     this.tame(player);
+                    this.fedFoodCount = 0;
+                    this.tameThreshold = -1;
                 }
                 itemstack.shrink(size);
                 return InteractionResult.SUCCESS;
