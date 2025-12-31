@@ -252,11 +252,11 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
         bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
             tag.putFloat("CatfishSize", this.getCatfishSize());
-            if (this.containedEntityType != null) {
-                tag.putString("ContainedEntityType", BuiltInRegistries.ENTITY_TYPE.getKey(this.containedEntityType).toString());
+            if (this.getSwallowedEntityType() != null) {
+                tag.putString("ContainedEntityType", this.getSwallowedEntityType());
             }
-            if (this.containedData != null) {
-                tag.put("ContainedData", this.containedData);
+            if (this.getSwallowedData() != null) {
+                tag.put("ContainedData", this.getSwallowedData());
             }
             tag.putBoolean("HasSwallowedEntity", this.hasSwallowedEntity());
             if (catfishInventory != null) {

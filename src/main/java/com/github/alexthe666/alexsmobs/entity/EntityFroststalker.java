@@ -614,8 +614,8 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     // onChangedBlock renamed or has different signature in 1.21
-    protected void onChangedBlock(BlockPos pos) {
-        super.onChangedBlock(pos);
+    protected void onChangedBlock(net.minecraft.server.level.ServerLevel serverLevel, BlockPos pos) {
+        super.onChangedBlock(serverLevel, pos);
         int i = EnchantmentHelper.getEnchantmentLevel(this.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), this);
         if (i > 0 || this.hasSpikes()) {
             freezeNearby(this, this.level(), pos, i == 0 ? 2 : i + 2);

@@ -128,7 +128,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             float lvt_2_1_ = this.distanceTo(lvt_1_1_);
             if (this.isSitting()) {
                 if (lvt_2_1_ > 10.0F) {
-                    this.unleash();
+                    this.dropLeash(true, true);
                 }
 
                 return;
@@ -136,7 +136,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
             // onLeashDistance() removed in 1.21
             if (lvt_2_1_ > 10.0F) {
-                this.unleash();
+                this.dropLeash(true, true);
                 this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
             } else if (lvt_2_1_ > 6.0F) {
                 double lvt_3_1_ = (lvt_1_1_.getX() - this.getX()) / (double) lvt_2_1_;

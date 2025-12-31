@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.mixin;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseColumn;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.LevelHeightAccessor;
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -15,5 +14,5 @@ import java.util.function.Predicate;
 @Mixin(NoiseBasedChunkGenerator.class)
 public interface NoiseBasedChunkGeneratorAccessor {
     @Invoker("iterateNoiseColumn")
-    OptionalInt invokeIterateNoiseColumn(LevelHeightAccessor level, RandomState random, int x, int z, MutableObject<NoiseColumn> column, Predicate<BlockState> stoppingState);
+    OptionalInt invokeIterateNoiseColumn(LevelHeightAccessor level, RandomState random, int x, int z, MutableObject column, Predicate<BlockState> stoppingState);
 }
