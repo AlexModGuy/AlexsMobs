@@ -91,7 +91,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.21F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.21F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
 

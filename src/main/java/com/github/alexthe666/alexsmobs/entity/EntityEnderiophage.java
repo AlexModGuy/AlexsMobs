@@ -98,7 +98,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.FOLLOW_RANGE, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.15F).add(Attributes.ATTACK_DAMAGE, 2F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.FOLLOW_RANGE, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.15F).add(Attributes.ATTACK_DAMAGE, 2F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public static boolean canEnderiophageSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
