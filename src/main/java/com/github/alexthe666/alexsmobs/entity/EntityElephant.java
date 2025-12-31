@@ -144,8 +144,14 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     @Nullable
     public static DyeColor getCarpetColor(ItemStack stack) {
-        Block lvt_1_1_ = Block.byItem(stack.getItem());
-        return lvt_1_1_ instanceof WoolCarpetBlock ? ((WoolCarpetBlock) lvt_1_1_).getColor() : null;
+        Item item = stack.getItem();
+        for (Map.Entry<DyeColor, Item> entry : DYE_COLOR_ITEM_MAP.entrySet()) {
+            if (entry.getValue() != null && entry.getValue().equals(item)) {
+                return entry.getKey();
+            }
+        }
+        Block block = Block.byItem(item);
+        return block instanceof WoolCarpetBlock ? ((WoolCarpetBlock) block).getColor() : null;
     }
 
     protected SoundEvent getAmbientSound() {
