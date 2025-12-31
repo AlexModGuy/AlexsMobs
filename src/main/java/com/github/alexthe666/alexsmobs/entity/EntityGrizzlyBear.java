@@ -279,7 +279,6 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
-        InteractionResult type = super.mobInteract(player, hand);
         if(item == Items.SNOW && !this.isSnowy() && !this.level().isClientSide){
             this.usePlayerItem(player, hand, itemstack);
             this.permSnow = true;
@@ -299,7 +298,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             return InteractionResult.SUCCESS;
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
-        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)){
+        if (interactionresult != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)){
             if(!player.isShiftKeyDown() && !this.isBaby()){
                 player.startRiding(this);
                 return InteractionResult.SUCCESS;
@@ -322,6 +321,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 }
             }
         }
+        InteractionResult type = super.mobInteract(player, hand);
         return type;
     }
 
@@ -427,7 +427,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                     }
                     if(stack.is(AMTagRegistry.GRIZZLY_TAMEABLES) && !this.isTame() && this.salmonThrowerID != null){
                        if(getRandom().nextFloat() < 0.3F){
-                           this.setTame(true, true);
+                           this.setTame(true);
                            this.setOwnerUUID(this.salmonThrowerID);
                            Player player = level().getPlayerByUUID(salmonThrowerID);
                            if (player instanceof ServerPlayer) {
