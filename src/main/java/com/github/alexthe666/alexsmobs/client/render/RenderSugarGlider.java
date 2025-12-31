@@ -98,13 +98,6 @@ public class RenderSugarGlider extends MobRenderer<EntitySugarGlider, ModelSugar
                 if(Minecraft.getInstance().player == mount && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON){
                     //handled via event
                 }else if (playerRender instanceof LivingEntityRenderer && ((LivingEntityRenderer) playerRender).getModel() instanceof HumanoidModel) {
-                    double x = Mth.lerp(partialTickTime, mob.xo, mob.getX());
-                    double y = Mth.lerp(partialTickTime, mob.yo, mob.getY());
-                    double z = Mth.lerp(partialTickTime, mob.zo, mob.getZ());
-                    double mountX = Mth.lerp(partialTickTime, mount.xo, mount.getX());
-                    double mountY = Mth.lerp(partialTickTime, mount.yo, mount.getY());
-                    double mountZ = Mth.lerp(partialTickTime, mount.zo, mount.getZ());
-                    matrixStackIn.translate(mountX - x, mountY - y, mountZ - z);
                     matrixStackIn.translate(0.0F, 0.5F, 0.0F);
                     ((HumanoidModel) ((LivingEntityRenderer) playerRender).getModel()).head.translateAndRotate(matrixStackIn);
                     matrixStackIn.translate(0.0F, -0.5F, 0.0F);
