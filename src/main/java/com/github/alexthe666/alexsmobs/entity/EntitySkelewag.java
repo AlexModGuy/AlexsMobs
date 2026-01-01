@@ -209,7 +209,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         if (this.hasPassenger(passenger)) {
             passenger.setYBodyRot(this.yBodyRot);
             Vec3 vec = new Vec3(0, this.getBbHeight() * 0.4F, this.getBbWidth() * -0.2F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
-            double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+            double passengerYOffset = passenger instanceof Player ? -0.35D : -0.5D;
             passenger.setPos(this.getX() + vec.x, this.getY() + vec.y + passengerYOffset, this.getZ() + vec.z);
         }
     }
