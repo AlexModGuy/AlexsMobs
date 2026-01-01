@@ -187,12 +187,22 @@ public class EntityVoidPortal extends Entity {
     public void clearObstructions(){
         if(!hasClearedObstructions){
             if(isShattered() && this.getDestination() != null){
-                hasClearedObstructions = true;
-                for (int i = -1; i <= -1; i++){
-                    for (int j = -1; j <= -1; j++){
-                        for (int k = -1; k <= -1; k++){
-                            BlockPos toAir = this.getDestination().offset(i, j, k);
-                            level().destroyBlock(toAir, true);
+                // Only run on server side and ensure chunk is loaded to prevent deadlock
+                if(level() instanceof ServerLevel serverLevel){
+                    BlockPos destination = this.getDestination();
+                    // Check if the chunk is loaded before attempting to modify blocks
+                    // This prevents synchronous chunk loading which can cause server hangs
+                    if(serverLevel.isLoaded(destination)){
+                        hasClearedObstructions = true;
+                        for (int i = -1; i <= 1; i++){
+                            for (int j = -1; j <= 1; j++){
+                                for (int k = -1; k <= 1; k++){
+                                    BlockPos toAir = destination.offset(i, j, k);
+                                    if(serverLevel.isLoaded(toAir)){
+                                        serverLevel.destroyBlock(toAir, true);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
