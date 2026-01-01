@@ -1,5 +1,9 @@
 {
-  "ingredients": ["alexsmobs:mosquito_larva"],
+  "ingredients": [
+    {
+      "item": "alexsmobs:mosquito_larva"
+    }
+  ],
   "result": {
     "id": "alexsmobs:mysterious_worm",
     "count": 1
