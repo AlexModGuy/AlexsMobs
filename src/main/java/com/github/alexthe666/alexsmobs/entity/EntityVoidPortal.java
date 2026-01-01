@@ -267,7 +267,7 @@ public class EntityVoidPortal extends Entity {
     public void link(EntityVoidPortal portal) {
         this.setSisterId(portal.getUUID());
         portal.setSisterId(this.getUUID());
-        portal.setLifespan(this.getLifespan());
+        this.setLifespan(portal.getLifespan());
         this.setDestination(portal.blockPosition());
         portal.setDestination(this.blockPosition());
     }
