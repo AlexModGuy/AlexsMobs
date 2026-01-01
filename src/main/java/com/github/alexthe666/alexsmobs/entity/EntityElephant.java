@@ -895,13 +895,12 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
-        if (this.hasPassenger(passenger)) {
+        if (this.isPassengerOfSameVehicle(passenger) && passenger instanceof LivingEntity && !this.touchingUnloadedChunk()) {
             float standAdd = -0.3F * standProgress;
             float scale = this.isBaby() ? 0.5F : this.isTusked() ? 1.1F : 1.0F;
             float sitAdd = -0.065F * sitProgress;
             float scaleY = scale * (2.4F * sitAdd - 0.4F * standAdd);
             if (passenger instanceof AbstractVillager) {
-                AbstractVillager villager = (AbstractVillager) passenger;
                 scaleY -= 0.3F;
             }
             float radius = scale * (0.5F + standAdd);
@@ -918,7 +917,11 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY + passengerYOffset, this.getZ() + extraZ);
+            passenger.setYBodyRot(this.yBodyRot);
+            passenger.fallDistance = 0.0F;
+            moveFunc.accept(passenger, this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY + passengerYOffset, this.getZ() + extraZ);
+        } else {
+            super.positionRider(passenger, moveFunc);
         }
     }
 
@@ -951,7 +954,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         float scale = this.isBaby() ? 0.5F : this.isTusked() ? 1.1F : 1.0F;
         float f = Math.min(0.25F, this.walkAnimation.speed());
         float f1 = this.walkAnimation.position();
-        return (double) this.getBbHeight() - (0.6F * scale) - scale * ((double) (0.1F * Mth.cos(f1 * 1.4F) * 1.4F * f));
+        return (double) this.getBbHeight() - (0.2F * scale) - scale * ((double) (0.1F * Mth.cos(f1 * 1.4F) * 1.4F * f));
     }
 
     public boolean isAlliedTo(Entity entityIn) {

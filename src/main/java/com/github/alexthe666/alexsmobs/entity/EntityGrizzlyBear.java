@@ -427,7 +427,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                     }
                     if(stack.is(AMTagRegistry.GRIZZLY_TAMEABLES) && !this.isTame() && this.salmonThrowerID != null){
                        if(getRandom().nextFloat() < 0.3F){
-                           this.setTame(true);
+                           this.setTame(true, true);
                            this.setOwnerUUID(this.salmonThrowerID);
                            Player player = level().getPlayerByUUID(salmonThrowerID);
                            if (player instanceof ServerPlayer) {
