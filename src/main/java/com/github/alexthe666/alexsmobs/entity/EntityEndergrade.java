@@ -54,12 +54,14 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
 
     private static final EntityDataAccessor<Integer> BITE_TICK = SynchedEntityData.defineId(EntityEndergrade.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EntityEndergrade.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> BOOST_TIME = SynchedEntityData.defineId(EntityEndergrade.class, EntityDataSerializers.INT);
     public float tartigradePitch = 0;
     public float prevTartigradePitch = 0;
     public float biteProgress = 0;
     public float prevBiteProgress = 0;
     public boolean stopWandering = false;
     public boolean hasItemTarget = false;
+    private int boostTimeTotal = 0;
 
     protected EntityEndergrade(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -81,11 +83,13 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Saddled", this.isSaddled());
+        compound.putInt("BoostTime", this.entityData.get(BOOST_TIME));
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setSaddled(compound.getBoolean("Saddled"));
+        this.entityData.set(BOOST_TIME, compound.getInt("BoostTime"));
     }
 
     @Override
@@ -93,6 +97,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         super.defineSynchedData(builder);
         builder.define(BITE_TICK, 0);
         builder.define(SADDLED, false);
+        builder.define(BOOST_TIME, 0);
     }
 
     protected void registerGoals() {
@@ -206,6 +211,17 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         this.entityData.set(SADDLED, Boolean.valueOf(saddled));
     }
 
+    public boolean boost() {
+        if (this.entityData.get(BOOST_TIME) <= 0) {
+            int boostDuration = 100 + this.random.nextInt(40); // 5-7 seconds of boost
+            this.boostTimeTotal = boostDuration;
+            this.entityData.set(BOOST_TIME, boostDuration);
+            this.playSound(net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
+            return true;
+        }
+        return false;
+    }
+
     public void tick() {
         super.tick();
         prevTartigradePitch = this.tartigradePitch;
@@ -224,6 +240,11 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             this.biteProgress++;
         } else if (biteProgress > 0) {
             biteProgress--;
+        }
+        // Handle boost time countdown
+        int currentBoostTime = this.entityData.get(BOOST_TIME);
+        if (currentBoostTime > 0) {
+            this.entityData.set(BOOST_TIME, currentBoostTime - 1);
         }
     }
 
@@ -308,7 +329,14 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     protected float getRiddenSpeed(Player rider) {
-        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.onGround() ? 0.2F : 0.8F));
+        float baseSpeed = (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.onGround() ? 0.2F : 0.8F));
+        int boostTime = this.entityData.get(BOOST_TIME);
+        if (boostTime > 0) {
+            // 使用固定的加速倍数，不依赖boostTimeTotal
+            float boostMultiplier = 2.0F;
+            return baseSpeed * boostMultiplier;
+        }
+        return baseSpeed;
     }
 
     @Override

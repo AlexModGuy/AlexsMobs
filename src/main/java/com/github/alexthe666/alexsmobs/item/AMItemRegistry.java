@@ -79,7 +79,7 @@ public class AMItemRegistry {
     public static final DeferredHolder<Item, Item> MOSQUITO_PROBOSCIS = DEF_REG.register("mosquito_proboscis", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> BLOOD_SPRAYER = DEF_REG.register("blood_sprayer", () -> new ItemBloodSprayer(new Item.Properties().durability(100)));
     public static final DeferredHolder<Item, Item> RATTLESNAKE_RATTLE = DEF_REG.register("rattlesnake_rattle", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> CHORUS_ON_A_STICK = DEF_REG.register("chorus_on_a_stick", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, Item> CHORUS_ON_A_STICK = DEF_REG.register("chorus_on_a_stick", () -> new ItemChorusOnAStick(new Item.Properties().stacksTo(1)));
     public static final DeferredHolder<Item, Item> SHARK_TOOTH = DEF_REG.register("shark_tooth", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SHARK_TOOTH_ARROW = DEF_REG.register("shark_tooth_arrow", () -> new ItemModArrow(new Item.Properties()));
     public static final DeferredHolder<Item, Item> LOBSTER_TAIL = DEF_REG.register("lobster_tail", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4F).build())));
