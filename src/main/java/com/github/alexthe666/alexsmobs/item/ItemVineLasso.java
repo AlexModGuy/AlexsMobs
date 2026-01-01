@@ -44,7 +44,7 @@ public class ItemVineLasso extends Item {
         }
     }
 
-    public int getUseDuration(ItemStack p_40680_) {
+    public int getUseDuration(ItemStack p_40680_, LivingEntity entity) {
         return 72000;
     }
 
@@ -72,7 +72,7 @@ public class ItemVineLasso extends Item {
                             && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
                 left = true;
             }
-            int power = this.getUseDuration(stack) - i;
+            int power = this.getUseDuration(stack, livingEntityIn) - i;
             EntityVineLasso lasso = new EntityVineLasso(worldIn, livingEntityIn);
             Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
             lasso.shoot((double) vector3d.x(), (double) vector3d.y(), (double) vector3d.z(), getPowerForTime(power), 1);
