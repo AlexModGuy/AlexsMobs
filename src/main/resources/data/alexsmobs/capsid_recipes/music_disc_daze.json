@@ -1,9 +1,5 @@
 {
-  "ingredients": [
-    {
-      "tag": "minecraft:music_discs"
-    }
-  ],
+  "ingredients": ["#minecraft:music_discs"],
   "result": {
     "id": "alexsmobs:music_disc_daze",
     "count": 1

@@ -1,9 +1,5 @@
 {
-  "ingredients": [
-    {
-      "item": "minecraft:cod"
-    }
-  ],
+  "ingredients": ["minecraft:cod"],
   "result": {
     "id": "alexsmobs:cosmic_cod",
     "count": 1

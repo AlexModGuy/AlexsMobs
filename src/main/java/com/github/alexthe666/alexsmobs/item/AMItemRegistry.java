@@ -13,9 +13,11 @@ import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import com.github.alexthe666.alexsmobs.misc.AMProjectileDispenseBehavior;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -211,10 +213,12 @@ public class AMItemRegistry {
     public static final DeferredHolder<Item, Item> MOSQUITO_REPELLENT_STEW = DEF_REG.register("mosquito_repellent_stew", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).alwaysEdible().saturationModifier(0.3F).effect(() -> new MobEffectInstance(AMEffectRegistry.MOSQUITO_REPELLENT, 24000), 1.0F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
     public static final DeferredHolder<Item, Item> TRIOPS_BUCKET = DEF_REG.register("triops_bucket", () -> new ItemModFishBucket(AMEntityRegistry.TRIOPS, Fluids.WATER, new Item.Properties()));
 
-    // Music discs - in 1.21+, use jukeboxPlayable component in item properties instead of RecordItem
-    // The jukebox songs are now data-driven and defined in data/alexsmobs/jukebox_song/
-    public static final DeferredHolder<Item, Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
-    public static final DeferredHolder<Item, Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+    // Music discs - in 1.21+, use jukeboxPlayable component in item properties
+    // The jukebox songs are data-driven and defined in data/alexsmobs/jukebox_song/
+    public static final ResourceKey<JukeboxSong> JUKEBOX_SONG_THIME = ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath("alexsmobs", "thime"));
+    public static final ResourceKey<JukeboxSong> JUKEBOX_SONG_DAZE = ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath("alexsmobs", "daze"));
+    public static final DeferredHolder<Item, Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JUKEBOX_SONG_THIME)));
+    public static final DeferredHolder<Item, Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JUKEBOX_SONG_DAZE)));
 
     public static void initSpawnEggs() {
         DEF_REG.register("spawn_egg_grizzly_bear", () -> new DeferredSpawnEggItem(AMEntityRegistry.GRIZZLY_BEAR, 0X693A2C, 0X976144, new Item.Properties()));

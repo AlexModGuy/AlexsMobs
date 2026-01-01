@@ -1,9 +1,5 @@
 {
-  "ingredients": [
-    {
-      "item": "alexsmobs:dimensional_carver"
-    }
-  ],
+  "ingredients": ["alexsmobs:dimensional_carver"],
   "result": {
     "id": "alexsmobs:shattered_dimensional_carver",
     "count": 1

@@ -263,6 +263,8 @@
   "item.alexsmobs.music_disc_thime.desc": "LudoCrypt - Thime",
   "item.alexsmobs.music_disc_daze": "Musikskiva",
   "item.alexsmobs.music_disc_daze.desc": "LudoCrypt - Daze",
+  "jukebox_song.alexsmobs.thime": "LudoCrypt - Thime",
+  "jukebox_song.alexsmobs.daze": "LudoCrypt - Daze",
   "item.alexsmobs.insulated_with_fur": "Isolerad från snö",
   "block.alexsmobs.banana_peel": "Bananskal",
   "block.alexsmobs.crocodile_egg": "Krokodilägg",

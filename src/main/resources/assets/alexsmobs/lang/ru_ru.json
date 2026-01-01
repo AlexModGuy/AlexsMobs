@@ -1,4 +1,4 @@
-     {
+{
   "itemGroup.alexsmobs": "Мобы Alex'а",
   "item.alexsmobs.spawn_egg_grizzly_bear": "Яйцо призыва бурого медведя",
   "item.alexsmobs.spawn_egg_roadrunner": "Яйцо призыва кукушки",
@@ -71,7 +71,7 @@
   "item.alexsmobs.spawn_egg_bunfungus": "Яйцо призыва грибного кролика",
   "item.alexsmobs.spawn_egg_bison": "Яйцо приызва бизона",
   "item.alexsmobs.spawn_egg_giant_squid": "Яйцо призыва гигантского спрута",
-  "item.alexsmobs.spawn_egg_devils_hole_pupfish":"Яйцо призыва карпозубика",
+  "item.alexsmobs.spawn_egg_devils_hole_pupfish": "Яйцо призыва карпозубика",
   "item.alexsmobs.spawn_egg_catfish": "Яйцо призыва сома",
   "item.alexsmobs.spawn_egg_flying_fish": "Яйцо призыва летучей рыбы",
   "item.alexsmobs.spawn_egg_skelewag": "Яйцо призыва рыбы-кости",
@@ -263,6 +263,8 @@
   "item.alexsmobs.music_disc_thime.desc": "LudoCrypt - Thime",
   "item.alexsmobs.music_disc_daze": "Пластинка",
   "item.alexsmobs.music_disc_daze.desc": "LudoCrypt - Daze",
+  "jukebox_song.alexsmobs.thime": "LudoCrypt - Thime",
+  "jukebox_song.alexsmobs.daze": "LudoCrypt - Daze",
   "item.alexsmobs.insulated_with_fur": "Оторванный от снега",
   "block.alexsmobs.banana_peel": "Банановая кожура",
   "block.alexsmobs.crocodile_egg": "Крокодилье яйцо",
