@@ -359,6 +359,12 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             }
             this.standingTime = 0;
         }
+        // Debug: force sitting state for testing if name contains "Sitty"
+        if(this.hasCustomName() && this.getName().getString().contains("Sitty")){
+            if(!this.isSitting()) {
+                this.setOrderedToSit(true);
+            }
+        }
         this.prevStandProgress = this.standProgress;
         this.prevBegProgress = this.begProgress;
         this.prevWashProgress = this.washProgress;
@@ -628,7 +634,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         // Height when on all fours (medium)
         double quadrupedOffset = baseHeight * 0.6D;
         // Height when sitting (lowest)
-        double sittingOffset = baseHeight * 0.3D;
+        double sittingOffset = baseHeight * 0.4D;
 
         // Use synced boolean states instead of animation progress for consistent rider position
         // Begging also makes the raccoon stand up visually, but sitting overrides it
