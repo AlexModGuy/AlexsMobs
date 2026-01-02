@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "alexsmobs.refmap.json",
   "mixins": [
-    "AbstractArrowAccessor",
     "MixinBlock",
     "MixinBrewingStandBlockEntity",
     "NoiseBasedChunkGeneratorAccessor"

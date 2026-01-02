@@ -21,7 +21,6 @@ import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
-import com.github.alexthe666.alexsmobs.mixin.AbstractArrowAccessor;
 import com.github.alexthe666.alexsmobs.mixin.NoiseBasedChunkGeneratorAccessor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
@@ -260,11 +259,8 @@ public class ServerEvents {
         if (event.getRayTraceResult() instanceof EntityHitResult hitResult
                 && hitResult.getEntity() instanceof EntityEmu emu && !event.getEntity().level().isClientSide) {
             if (event.getEntity() instanceof AbstractArrow arrow) {
-                // In 1.21, setPierceLevel is private - arrow piercing is handled via item properties
-                // Restored using Mixin Accessor
-                if(arrow instanceof AbstractArrowAccessor accessor){
-                    accessor.setPierceLevel((byte) (accessor.getPierceLevel() + 1));
-                }
+                // In 1.21, setPierceLevel is now public
+                arrow.setPierceLevel((byte) (arrow.getPierceLevel() + 1));
             }
             if ((emu.getAnimation() == EntityEmu.ANIMATION_DODGE_RIGHT
                     || emu.getAnimation() == EntityEmu.ANIMATION_DODGE_LEFT) && emu.getAnimationTick() < 7) {
