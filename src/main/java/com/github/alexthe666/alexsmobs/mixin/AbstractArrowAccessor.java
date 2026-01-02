@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(AbstractArrow.class)
 public interface AbstractArrowAccessor {
     @Invoker("setPierceLevel")
-    void setPierceLevel(byte pierceLevel);
+    void invokeSetPierceLevel(byte pierceLevel);
 
     @Invoker("getPierceLevel")
-    byte getPierceLevel();
+    byte invokeGetPierceLevel();
 }
