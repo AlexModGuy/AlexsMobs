@@ -56,9 +56,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(AMTagRegistry.KOMODO_DRAGON_TAMEABLES);
     public int slaughterCooldown = 0;
     public int timeUntilSpit = this.random.nextInt(12000) + 24000;
-    private int fedFoodCount = 0; // Accumulated food count for taming
-    private int tameThreshold = -1; // Threshold for taming (58-73), -1 means not yet determined
-    private UUID foodThrowerID = null; // UUID of the player who threw taming food
     public float nextJostleAngleFromServer;
     private int riderAttackCooldown = 0;
     public static final Predicate<EntityKomodoDragon> HURT_OR_BABY = (p_213616_0_) -> {
@@ -188,11 +185,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.setCommand(compound.getInt("KomodoCommand"));
         this.jostleCooldown = compound.getInt("JostlingCooldown");
         this.setSaddled(compound.getBoolean("Saddle"));
-        this.fedFoodCount = compound.getInt("FedFoodCount");
-        this.tameThreshold = compound.getInt("TameThreshold");
-        if (this.tameThreshold == 0) {
-            this.tameThreshold = -1; // Fix for old saves
-        }
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -201,8 +193,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         compound.putInt("KomodoCommand", this.getCommand());
         compound.putBoolean("Saddle", this.isSaddled());
         compound.putInt("JostlingCooldown", this.jostleCooldown);
-        compound.putInt("FedFoodCount", this.fedFoodCount);
-        compound.putInt("TameThreshold", this.tameThreshold);
     }
 
     public boolean isFood(ItemStack stack) {
@@ -362,6 +352,17 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         ItemStack itemstack = player.getItemInHand(hand);
         InteractionResult type = super.mobInteract(player, hand);
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if(itemstack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES) && !isTame()){
+            int tameAmount = 58 + this.random.nextInt(15);
+            if(itemstack.getCount() > tameAmount){
+                this.tame(player);
+                this.level().broadcastEntityEvent(this, (byte) 7);
+            }else{
+                this.level().broadcastEntityEvent(this, (byte) 6);
+            }
+            itemstack.shrink(itemstack.getCount());
+            return InteractionResult.SUCCESS;
+        }
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)){
             if(isFood(itemstack)){
                 this.setInLoveTime(600);
@@ -516,40 +517,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
 
     @Override
     public void onGetItem(ItemEntity e) {
-        ItemStack stack = e.getItem();
-        Entity thrower = e.getOwner();
-        
-        // Handle taming through dropped items
-        if (stack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES) && !this.isTame()) {
-            if (thrower instanceof Player) {
-                this.foodThrowerID = thrower.getUUID();
-            }
-            
-            if (this.foodThrowerID != null) {
-                if (this.tameThreshold < 0) {
-                    this.tameThreshold = 58 + random.nextInt(16);
-                }
-                this.fedFoodCount += 1;
-                
-                if (this.fedFoodCount >= this.tameThreshold) {
-                    if (!this.level().isClientSide) {
-                        this.setTame(true, true);
-                        this.setOwnerUUID(this.foodThrowerID);
-                        Player player = this.level().getPlayerByUUID(this.foodThrowerID);
-                        if (player instanceof ServerPlayer serverPlayer) {
-                            CriteriaTriggers.TAME_ANIMAL.trigger(serverPlayer, this);
-                        }
-                        this.level().broadcastEntityEvent(this, (byte) 7);
-                    }
-                    this.fedFoodCount = 0;
-                    this.tameThreshold = -1;
-                    this.foodThrowerID = null;
-                }
-            }
-        } else if (!stack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES)) {
-            this.foodThrowerID = null;
-        }
-        
         this.heal(10);
     }
 
