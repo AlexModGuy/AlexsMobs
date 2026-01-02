@@ -124,6 +124,17 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                 EntityEndergrade.this.stopWandering = false;
             }
         });
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.ENDERGRADE_FOLLOWS), false) {
+            public void start() {
+                super.start();
+                EntityEndergrade.this.stopWandering = true;
+            }
+
+            public void stop() {
+                super.stop();
+                EntityEndergrade.this.stopWandering = false;
+            }
+        });
         this.goalSelector.addGoal(4, new RandomFlyGoal(this));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 10));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
