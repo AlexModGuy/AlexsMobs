@@ -352,6 +352,10 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
     public void tick() {
         super.tick();
+        if(this.hasCustomName() && this.getName().getString().contains("Standy")){
+            this.setStanding(true);
+            this.standingTime = 0;
+        }
         this.prevStandProgress = this.standProgress;
         this.prevBegProgress = this.begProgress;
         this.prevWashProgress = this.washProgress;
@@ -606,9 +610,31 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         }
     }
 
+    @Override
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
+        if (this.hasPassenger(passenger)) {
+            double passengerYOffset = 0.0D;
+            moveFunc.accept(passenger, this.getX(), this.getY() + this.getPassengersRidingOffset() + passengerYOffset, this.getZ());
+        }
+    }
 
     public double getPassengersRidingOffset() {
-        return (double) this.getBbHeight() * 0.45D;
+        double baseHeight = this.getBbHeight();
+        // Height when standing (highest)
+        double standingOffset = baseHeight * 6.0D;
+        // Height when on all fours (medium)
+        double quadrupedOffset = baseHeight * 0.6D;
+        // Height when sitting (lowest)
+        double sittingOffset = baseHeight * 0.55D;
+
+        // Use synced boolean states instead of animation progress for consistent rider position
+        if (this.isStanding()) {
+            return standingOffset;
+        } else if (this.isSitting()) {
+            return sittingOffset;
+        } else {
+            return quadrupedOffset;
+        }
     }
 
     private boolean bondWithBlueJays(UUID uuid) {
