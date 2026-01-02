@@ -150,11 +150,15 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     }
 
     public static boolean checkFarseerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && isFarseerArea(worldIn, pos);
+        boolean notPeaceful = worldIn.getDifficulty() != Difficulty.PEACEFUL;
+        boolean darkEnough = isDarkEnoughToSpawn(worldIn, pos, random);
+        boolean inFarseerArea = isFarseerArea(worldIn, pos);
+        return notPeaceful && darkEnough && inFarseerArea;
     }
 
     private static boolean isFarseerArea(ServerLevelAccessor iServerWorld, BlockPos pos) {
-        return !AMConfig.restrictFarseerSpawns || iServerWorld.getWorldBorder().getDistanceToBorder(pos.getX(), pos.getZ()) < AMConfig.farseerBorderSpawnDistance;
+        double borderDistance = iServerWorld.getWorldBorder().getDistanceToBorder(pos.getX(), pos.getZ());
+        return !AMConfig.restrictFarseerSpawns || borderDistance < AMConfig.farseerBorderSpawnDistance;
     }
 
     @Override
