@@ -31,9 +31,16 @@ public abstract class MixinBlock {
     private static void alexsmobs_dropResources(BlockState state, Level level, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack tool, CallbackInfo ci) {
         if (entity instanceof Player && tool.getItem() instanceof ItemGhostlyPickaxe && ItemGhostlyPickaxe.shouldStoreInGhost((LivingEntity)entity, tool)) {
             if (level instanceof ServerLevel) {
-                getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach((item) -> {
-                    ItemGhostlyPickaxe.putItemInGhostInventoryOrDrop((LivingEntity)entity, tool, item);
-                });
+                ItemStack realTool = ((Player)entity).getMainHandItem();
+                if(realTool.getItem() == tool.getItem()){
+                    getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach((item) -> {
+                        ItemGhostlyPickaxe.putItemInGhostInventoryOrDrop((LivingEntity)entity, realTool, item);
+                    });
+                }else{
+                    getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach((item) -> {
+                        Block.popResource(level, pos, item);
+                    });
+                }
             }
             ci.cancel();
         }

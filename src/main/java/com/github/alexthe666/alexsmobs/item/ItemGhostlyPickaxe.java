@@ -65,9 +65,8 @@ public class ItemGhostlyPickaxe extends PickaxeItem {
                 for(int i = 0; i < container.getContainerSize(); ++i) {
                     ItemStack itemstack = container.getItem(i);
                     if (!itemstack.isEmpty()) {
-                        CompoundTag compoundtag1 = new CompoundTag();
+                        CompoundTag compoundtag1 = (CompoundTag) itemstack.save(user.registryAccess());
                         compoundtag1.putByte("Slot", (byte)i);
-                        itemstack.save(user.registryAccess(), compoundtag1);
                         listtag.add(compoundtag1);
                     }
                 }
@@ -104,7 +103,7 @@ public class ItemGhostlyPickaxe extends PickaxeItem {
                 for(int slot = 0; slot < container.getContainerSize(); slot++) {
                     ItemStack stackAt = container.getItem(slot);
                     if(!stackAt.isEmpty() && player.addItem(stackAt)){
-                        container.removeItem(slot, stack.getCount());
+                        container.removeItem(slot, stackAt.getCount());
                         flag = true;
                         break;
                     }
@@ -114,9 +113,8 @@ public class ItemGhostlyPickaxe extends PickaxeItem {
                     for(int k = 0; k < container.getContainerSize(); ++k) {
                         ItemStack itemstack = container.getItem(k);
                         if (!itemstack.isEmpty()) {
-                            CompoundTag compoundtag1 = new CompoundTag();
+                            CompoundTag compoundtag1 = (CompoundTag) itemstack.save(entity.registryAccess());
                             compoundtag1.putByte("Slot", (byte)k);
-                            itemstack.save(entity.registryAccess(), compoundtag1);
                             listtag.add(compoundtag1);
                         }
                     }
@@ -194,9 +192,8 @@ public class ItemGhostlyPickaxe extends PickaxeItem {
             for(int k = 0; k < container.getContainerSize(); ++k) {
                 ItemStack itemstack = container.getItem(k);
                 if (!itemstack.isEmpty()) {
-                    CompoundTag compoundtag1 = new CompoundTag();
+                    CompoundTag compoundtag1 = (CompoundTag) itemstack.save(level.registryAccess());
                     compoundtag1.putByte("Slot", (byte)k);
-                    itemstack.save(level.registryAccess(), compoundtag1);
                     listtag1.add(compoundtag1);
                 }
             }
