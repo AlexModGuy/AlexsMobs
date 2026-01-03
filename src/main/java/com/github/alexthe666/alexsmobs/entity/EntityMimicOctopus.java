@@ -703,11 +703,11 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isUpgraded() {
-        return this.entityData.get(FROM_BUCKET);
+        return this.entityData.get(UPGRADED);
     }
 
-    public void setUpgraded(boolean sit) {
-        this.entityData.set(FROM_BUCKET, Boolean.valueOf(sit));
+    public void setUpgraded(boolean upgraded) {
+        this.entityData.set(UPGRADED, Boolean.valueOf(upgraded));
     }
 
     public boolean isStopChange() {
