@@ -22,7 +22,8 @@ public class EffectExsanguination extends MobEffect {
         return true;
     }
 
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         lastDuration = duration;
         return duration > 0 && duration % 20 == 0;
     }

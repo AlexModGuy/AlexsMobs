@@ -48,7 +48,8 @@ public class EffectClinging extends MobEffect {
         entity.refreshDimensions();
     }
 
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return duration > 0;
     }
 

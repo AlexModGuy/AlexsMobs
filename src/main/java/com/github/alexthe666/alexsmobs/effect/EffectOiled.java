@@ -29,10 +29,6 @@ public class EffectOiled extends MobEffect {
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return true; // Apply every tick
-    }
-
-    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration > 0;
     }
 

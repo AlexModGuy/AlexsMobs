@@ -35,7 +35,8 @@ public class EffectPowerDown extends MobEffect {
         return firstDuration - lastDuration;
     }
 
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         lastDuration = duration;
         if(duration <= 0){
             lastDuration = -1;
