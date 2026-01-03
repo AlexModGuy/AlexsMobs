@@ -145,7 +145,8 @@ public class AlexsMobs {
         registrar.playToClient(MessageMosquitoMountPlayer.TYPE, MessageMosquitoMountPlayer.CODEC, MessageMosquitoMountPlayer::handle);
         registrar.playToClient(MessageKangarooEat.TYPE, MessageKangarooEat.CODEC, MessageKangarooEat::handle);
         registrar.playToClient(MessageKangarooInventorySync.TYPE, MessageKangarooInventorySync.CODEC, MessageKangarooInventorySync::handle);
-        registrar.playToClient(MessageStartDancing.TYPE, MessageStartDancing.CODEC, MessageStartDancing::handle);
+        // Client to Server - sent from client when jukebox plays near dancing mobs (e.g., rain frog rain dance)
+        registrar.playToServer(MessageStartDancing.TYPE, MessageStartDancing.CODEC, MessageStartDancing::handle);
         // Bidirectional - sent from client (falconry glove launch) and from server (sendMSGToAll for sync)
         registrar.playBidirectional(MessageSyncEntityPos.TYPE, MessageSyncEntityPos.CODEC, MessageSyncEntityPos::handle);
         registrar.playToClient(MessageSendVisualFlagFromServer.TYPE, MessageSendVisualFlagFromServer.CODEC, MessageSendVisualFlagFromServer::handle);

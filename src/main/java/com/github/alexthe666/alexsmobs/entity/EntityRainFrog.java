@@ -42,6 +42,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.EnumSet;
 
@@ -366,8 +368,10 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         weatherCooldown = time + 24000;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void setRecordPlayingNearby(BlockPos pos, boolean isPartying) {
         AlexsMobs.sendMSGToServer(new MessageStartDancing(this.getId(), isPartying, pos));
+        this.setDancing(isPartying);
         if (isPartying) {
             this.setJukeboxPos(pos);
         } else {
@@ -377,6 +381,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
 
     @Override
     public void setDancing(boolean dancing) {
+        this.isJukeboxing = dancing;
         this.setDanceTime(dancing && weatherCooldown == 0 ? 240 + random.nextInt(200) : 0);
     }
 
