@@ -624,6 +624,21 @@ public class ServerEvents {
                                 -Mth.cos((attacker.getYRot() + 180) * Mth.DEG_TO_RAD));
                     }
                 }
+                // Tigers Blessing: When player with the effect is attacked, nearby tigers will protect them
+                if (player.hasEffect(AMEffectRegistry.TIGERS_BLESSING)
+                        && !attacker.isAlliedTo(player)
+                        && !(attacker instanceof EntityTiger)) {
+                    AABB bb = new AABB(player.getX() - 32, player.getY() - 32,
+                            player.getZ() - 32, player.getX() + 32, player.getY() + 32,
+                            player.getZ() + 32);
+                    final var tigers = player.level().getEntitiesOfClass(EntityTiger.class, bb,
+                            EntitySelector.ENTITY_STILL_ALIVE);
+                    for (EntityTiger tiger : tigers) {
+                        if (!tiger.isBaby()) {
+                            tiger.setTarget(attacker);
+                        }
+                    }
+                }
             }
         }
         if (!event.getEntity().getItemBySlot(EquipmentSlot.LEGS).isEmpty()
