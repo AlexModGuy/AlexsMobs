@@ -125,7 +125,8 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
 
     }
 
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
         boolean open = state.getValue(OPEN);
         boolean powered = state.getValue(POWERED);
         Direction swap = state.getValue(HINGE) == DoorHingeSide.LEFT ? state.getValue(HORIZONTAL_FACING).getClockWise() : state.getValue(HORIZONTAL_FACING).getCounterClockWise();
