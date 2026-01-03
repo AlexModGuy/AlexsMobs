@@ -296,7 +296,7 @@ public class AMRenderTypes extends RenderType {
     public static RenderType getEyesNoFog(ResourceLocation locationIn) {
         RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(
                 locationIn, false, false);
-        return create("eyes_nofog", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, true, false,
+        return create("eyes_nofog", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 256, true, false,
                 RenderType.CompositeState.builder().setShaderState(RENDERTYPE_OUTLINE_SHADER)
                         .setTextureState(renderstateshard$texturestateshard)
                         .setTransparencyState(LIGHTNING_TRANSPARENCY).setWriteMaskState(COLOR_DEPTH_WRITE)
