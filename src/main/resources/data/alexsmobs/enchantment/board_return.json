@@ -1,6 +1,6 @@
 {
   "description": {
-    "translate": "enchantment.alexsmobs.straddle_lavawax"
+    "translate": "enchantment.alexsmobs.board_return"
   },
   "supported_items": "alexsmobs:straddleboard",
   "weight": 5,

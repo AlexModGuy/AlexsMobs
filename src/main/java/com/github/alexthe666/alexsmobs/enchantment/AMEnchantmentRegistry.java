@@ -14,9 +14,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 public class AMEnchantmentRegistry {
     // ResourceKeys for data-driven enchantments
     public static final ResourceKey<Enchantment> STRADDLE_JUMP = createKey("straddle_jump");
-    public static final ResourceKey<Enchantment> STRADDLE_LAVAWAX = createKey("straddle_lavawax");
-    public static final ResourceKey<Enchantment> STRADDLE_SERPENTFRIEND = createKey("straddle_serpentfriend");
-    public static final ResourceKey<Enchantment> STRADDLE_BOARDRETURN = createKey("straddle_boardreturn");
+    public static final ResourceKey<Enchantment> STRADDLE_LAVAWAX = createKey("lavawax");
+    public static final ResourceKey<Enchantment> STRADDLE_SERPENTFRIEND = createKey("serpentfriend");
+    public static final ResourceKey<Enchantment> STRADDLE_BOARDRETURN = createKey("board_return");
     
     private static ResourceKey<Enchantment> createKey(String name) {
         return ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));

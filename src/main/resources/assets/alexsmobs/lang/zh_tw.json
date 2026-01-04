@@ -262,5 +262,13 @@
   "block.minecraft.banner.bear.brown": "棕色熊",
   "block.minecraft.banner.bear.green": "綠色熊",
   "block.minecraft.banner.bear.red": "紅色熊",
-  "block.minecraft.banner.bear.black": "黑色熊"
+  "block.minecraft.banner.bear.black": "黑色熊",
+  "enchantment.alexsmobs.straddle_jump": "跳躍跨板",
+  "enchantment.alexsmobs.straddle_jump.desc": "增加跨板跳躍的高度。",
+  "enchantment.alexsmobs.lavawax": "熔岩防護",
+  "enchantment.alexsmobs.lavawax.desc": "給予跨板騎乘者火焰抗性。",
+  "enchantment.alexsmobs.serpentfriend": "舞蛇者",
+  "enchantment.alexsmobs.serpentfriend.desc": "當騎乘跨板時可以令骨蟒保持中立。",
+  "enchantment.alexsmobs.board_return": "返板",
+  "enchantment.alexsmobs.board_return.desc": "當跨板損壞時，自動收入騎乘者的物品欄。"
 }

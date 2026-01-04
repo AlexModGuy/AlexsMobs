@@ -331,5 +331,13 @@
   "advancements.alexsmobs.crocodile.desc": "Encounter a Crocodile",
   "advancements.alexsmobs.crocodile_chestplate.title": "Cover me with... scutes?",
   "advancements.alexsmobs.crocodile_chestplate.desc": "Craft a crocodile chestplate from many crocodile scutes",
-  "item.alexsmobs.crocodile_egg": "鱷魚蛋"
+  "item.alexsmobs.crocodile_egg": "鱷魚蛋",
+  "enchantment.alexsmobs.straddle_jump": "跳躍跨板",
+  "enchantment.alexsmobs.straddle_jump.desc": "增加跨板跳躍的高度。",
+  "enchantment.alexsmobs.lavawax": "熔岩防護",
+  "enchantment.alexsmobs.lavawax.desc": "給予跨板騎乘者火焰抗性。",
+  "enchantment.alexsmobs.serpentfriend": "舞蛇者",
+  "enchantment.alexsmobs.serpentfriend.desc": "當騎乘跨板時可以令骨蟒保持中立。",
+  "enchantment.alexsmobs.board_return": "返板",
+  "enchantment.alexsmobs.board_return.desc": "當跨板損壞時，自動收入騎乘者的物品欄。"
 }
