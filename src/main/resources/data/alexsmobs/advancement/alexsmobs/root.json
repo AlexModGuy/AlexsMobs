@@ -1,29 +1,33 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:animal_dictionary"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.root.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.root.desc"
-        },
-        "background": "alexsmobs:textures/advancement_background.png",
-        "show_toast": true,
-        "announce_to_chat": true,
-        "hidden" : false
-    },
-    "criteria": {
-        "useitem": {
-            "trigger": "minecraft:consume_item",
-            "conditions": {
-                "item": {
-                    "items": [
-                        "alexsmobs:animal_dictionary"
-                    ]
-                }
-            }
+  "criteria": {
+    "useitem": {
+      "conditions": {
+        "item": {
+          "items": "alexsmobs:animal_dictionary"
         }
+      },
+      "trigger": "minecraft:consume_item"
     }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "alexsmobs:textures/advancement_background.png",
+    "description": {
+      "translate": "advancements.alexsmobs.root.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:animal_dictionary"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alexsmobs.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "useitem"
+    ]
+  ],
+  "sends_telemetry_event": true
 }
