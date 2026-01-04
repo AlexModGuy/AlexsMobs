@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateShipWheel;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -71,7 +70,8 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock implements AMSpecia
         return remove || world.getBlockState(offset).isFaceSturdy(world, offset, dir.getOpposite());
     }
 
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
         if(worldIn.getBlockEntity(pos) instanceof TileEntityEndPirateShipWheel wheel){
             boolean clockwise = false;
             Vec3 offset = hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
