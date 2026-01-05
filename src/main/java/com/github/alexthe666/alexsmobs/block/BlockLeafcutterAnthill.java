@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -50,19 +51,19 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
         super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.75F));
     }
 
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (worldIn.getBlockEntity(pos) instanceof TileEntityLeafcutterAnthill) {
             TileEntityLeafcutterAnthill hill = (TileEntityLeafcutterAnthill) worldIn.getBlockEntity(pos);
-            ItemStack heldItem = player.getItemInHand(handIn);
             if (heldItem.getItem() == AMItemRegistry.GONGYLIDIA.get() && hill.hasQueen()) {
                 hill.releaseQueens();
                 if (!player.isCreative()) {
                     heldItem.shrink(1);
                 }
+                return ItemInteractionResult.SUCCESS;
             }
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return super.useItemOn(heldItem, state, worldIn, pos, player, handIn, hit);
     }
 
 
