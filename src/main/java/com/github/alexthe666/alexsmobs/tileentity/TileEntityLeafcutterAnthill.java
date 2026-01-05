@@ -391,6 +391,12 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
         for (Ant beehiveTileEntity$ant : this.ants) {
             beehiveTileEntity$ant.entityData.remove("UUID");
             CompoundTag compoundnbt = new CompoundTag();
+            // Copy the entity id to the root level for NeoForge 1.21.1 serialization compatibility
+            if (beehiveTileEntity$ant.entityData.contains("id")) {
+                compoundnbt.putString("id", beehiveTileEntity$ant.entityData.getString("id"));
+            } else {
+                compoundnbt.putString("id", AMEntityRegistry.LEAFCUTTER_ANT.getId().toString());
+            }
             compoundnbt.put("EntityData", beehiveTileEntity$ant.entityData);
             compoundnbt.putInt("TicksInHive", beehiveTileEntity$ant.ticksInHive);
             compoundnbt.putInt("MinOccupationTicks", beehiveTileEntity$ant.minOccupationTicks);
