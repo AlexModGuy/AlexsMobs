@@ -53,6 +53,9 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderBuffersEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +114,9 @@ public class ClientProxy extends CommonProxy {
 
     public void clientInit() {
         NeoForge.EVENT_BUS.register(new ClientEvents());
+        // Set lava to translucent render layer for lava vision effect
+        ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, RenderType.translucent());
         initializedRainbowBuffers = true;
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         EntityRenderers.register(AMEntityRegistry.GRIZZLY_BEAR.get(), RenderGrizzlyBear::new);
@@ -240,13 +246,13 @@ public class ClientProxy extends CommonProxy {
                     (stack, p_239428_1_, p_239428_2_, j) -> {
                         return !ItemBloodSprayer.isUsable(stack)
                                 || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns()
-                                        .isOnCooldown(AMItemRegistry.BLOOD_SPRAYER.get()) ? 1.0F : 0.0F;
+                                .isOnCooldown(AMItemRegistry.BLOOD_SPRAYER.get()) ? 1.0F : 0.0F;
                     });
             ItemProperties.register(AMItemRegistry.HEMOLYMPH_BLASTER.get(),
                     ResourceLocation.withDefaultNamespace("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
                         return !ItemHemolymphBlaster.isUsable(stack)
                                 || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns()
-                                        .isOnCooldown(AMItemRegistry.HEMOLYMPH_BLASTER.get()) ? 1.0F : 0.0F;
+                                .isOnCooldown(AMItemRegistry.HEMOLYMPH_BLASTER.get()) ? 1.0F : 0.0F;
                     });
             ItemProperties.register(AMItemRegistry.TARANTULA_HAWK_ELYTRA.get(),
                     ResourceLocation.withDefaultNamespace("broken"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -349,7 +355,7 @@ public class ClientProxy extends CommonProxy {
              * return FEDORA_MODEL;
              * case 6:
              * return ELYTRA_MODEL.withAnimations(entity);
-             * 
+             *
              */
             default:
                 return null;

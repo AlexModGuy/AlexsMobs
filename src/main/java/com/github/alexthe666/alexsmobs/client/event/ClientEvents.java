@@ -23,7 +23,6 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import com.github.alexthe666.citadel.client.event.EventGetFluidRenderType;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
 import com.github.alexthe666.citadel.client.event.EventGetStarBrightness;
 import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
@@ -63,7 +62,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.api.distmarker.Dist;
@@ -405,8 +403,7 @@ public class ClientEvents {
     public void onRenderWorldLastEvent(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             if (!AMConfig.shadersCompat) {
-                // Lava vision custom fluid rendering using Access Transformer
-                // liquidBlockRenderer field is made public via accesstransformer.cfg
+                // Lava vision custom fluid rendering
                 if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)) {
                     if (!previousLavaVision) {
                         previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
@@ -465,19 +462,7 @@ public class ClientEvents {
     }
 
     private void updateAllChunks() {
-        // viewArea is private in 1.21, forcing chunk refresh via
-        // levelRenderer.allChanged()
         Minecraft.getInstance().levelRenderer.allChanged();
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public void onGetFluidRenderType(EventGetFluidRenderType event) {
-        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)
-                && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
-            event.setRenderType(RenderType.translucent());
-            // Event allowed by default;
-        }
     }
 
     @SubscribeEvent

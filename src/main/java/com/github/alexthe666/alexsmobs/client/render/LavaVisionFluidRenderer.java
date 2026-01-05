@@ -140,8 +140,8 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                             f18 = textureatlassprite1.getU(0.0F);
                             f22 = textureatlassprite1.getV(0.0F);
                             f19 = f18;
-                            f23 = textureatlassprite1.getV(16.0F);
-                            f20 = textureatlassprite1.getU(16.0F);
+                            f23 = textureatlassprite1.getV(1.0F);
+                            f20 = textureatlassprite1.getU(1.0F);
                             f24 = f23;
                             f21 = f20;
                             f25 = f22;
@@ -150,14 +150,14 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                             float f26 = (float) Mth.atan2(vec3.z, vec3.x) - Mth.HALF_PI;
                             float f27 = Mth.sin(f26) * 0.25F;
                             float f28 = Mth.cos(f26) * 0.25F;
-                            f18 = textureatlassprite.getU(8.0F + (-f28 - f27) * 16.0F);
-                            f22 = textureatlassprite.getV(8.0F + (-f28 + f27) * 16.0F);
-                            f19 = textureatlassprite.getU(8.0F + (-f28 + f27) * 16.0F);
-                            f23 = textureatlassprite.getV(8.0F + (f28 + f27) * 16.0F);
-                            f20 = textureatlassprite.getU(8.0F + (f28 + f27) * 16.0F);
-                            f24 = textureatlassprite.getV(8.0F + (f28 - f27) * 16.0F);
-                            f21 = textureatlassprite.getU(8.0F + (f28 - f27) * 16.0F);
-                            f25 = textureatlassprite.getV(8.0F + (-f28 - f27) * 16.0F);
+                            f18 = textureatlassprite.getU(0.5F + (-f28 - f27));
+                            f22 = textureatlassprite.getV(0.5F + (-f28 + f27));
+                            f19 = textureatlassprite.getU(0.5F + (-f28 + f27));
+                            f23 = textureatlassprite.getV(0.5F + (f28 + f27));
+                            f20 = textureatlassprite.getU(0.5F + (f28 + f27));
+                            f24 = textureatlassprite.getV(0.5F + (f28 - f27));
+                            f21 = textureatlassprite.getU(0.5F + (f28 - f27));
+                            f25 = textureatlassprite.getV(0.5F + (-f28 - f27));
                         }
 
                         float f49 = (f18 + f19 + f20 + f21) / 4.0F;
@@ -281,10 +281,10 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                             }
 
                             float f54 = textureatlassprite2.getU(0.0F);
-                            float f55 = textureatlassprite2.getU(8.0F);
-                            float f33 = textureatlassprite2.getV((1.0F - f44) * 16.0F * 0.5F);
-                            float f34 = textureatlassprite2.getV((1.0F - f45) * 16.0F * 0.5F);
-                            float f35 = textureatlassprite2.getV(8.0F);
+                            float f55 = textureatlassprite2.getU(0.5F);
+                            float f33 = textureatlassprite2.getV((1.0F - f44) * 0.5F);
+                            float f34 = textureatlassprite2.getV((1.0F - f45) * 0.5F);
+                            float f35 = textureatlassprite2.getV(0.5F);
                             float f36 = direction.getAxis() == Direction.Axis.Z ? f5 : f6;
                             float f37 = f4 * f36 * f;
                             float f38 = f4 * f36 * f1;
@@ -298,7 +298,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                                     f35, k);
                             this.vertexVanilla(vertexBuilderIn, d3, d2 + (double) f17, d4, f37, f38, f39, alpha, f54,
                                     f35, k);
-                            if (false) {
+                            if (true) {
                                 this.vertexVanilla(vertexBuilderIn, d3, d2 + (double) f17, d4, f37, f38, f39, alpha,
                                         f54, f35, k);
                                 this.vertexVanilla(vertexBuilderIn, d5, d2 + (double) f17, d6, f37, f38, f39, alpha,
@@ -322,7 +322,9 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
 
     private void vertexVanilla(VertexConsumer vertexBuilderIn, double x, double y, double z, float red, float green,
             float blue, float alpha, float u, float v, int packedLight) {
-        vertexBuilderIn.addVertex((float) x, (float) y, (float) z).setColor(red, green, blue, alpha).setUv(u, v)
+        vertexBuilderIn.addVertex((float) x, (float) y, (float) z)
+                .setColor((int)(red * 255), (int)(green * 255), (int)(blue * 255), (int)(alpha * 255))
+                .setUv(u, v)
                 .setLight(packedLight)
                 .setNormal(0.0F, 1.0F, 0.0F);
     }
