@@ -79,7 +79,7 @@ public class BlockHummingbirdFeeder extends Block {
         ItemStack waterBottle = AMEffectRegistry.createPotion(Potions.WATER);
         int setContent = -1;
         if(contents == 0){
-            if(itemStack.is(AMTagRegistry.HUMMINGNBIRD_FEEDER_SWEETENERS)){
+            if(itemStack.is(AMTagRegistry.HUMMINGBIRD_FEEDER_SWEETENERS)){
                 setContent = 2;
                 useItem(player, itemStack, false);
             }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameComponents(waterBottle, itemStack)){
@@ -87,7 +87,7 @@ public class BlockHummingbirdFeeder extends Block {
                 useItem(player, itemStack, true);
             }
         }else if(contents == 1){
-            if(itemStack.is(AMTagRegistry.HUMMINGNBIRD_FEEDER_SWEETENERS)){
+            if(itemStack.is(AMTagRegistry.HUMMINGBIRD_FEEDER_SWEETENERS)){
                 setContent = 3;
                 useItem(player, itemStack, false);
             }
