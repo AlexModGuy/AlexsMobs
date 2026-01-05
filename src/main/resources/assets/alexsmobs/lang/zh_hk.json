@@ -1,4 +1,4 @@
-﻿{
+{
   "itemGroup.alexsmobs": "Alex嘅生物",
   "item.alexsmobs.spawn_egg_grizzly_bear": "灰熊 生成蛋",
   "item.alexsmobs.spawn_egg_roadrunner": "走鵑 生成蛋",
@@ -345,6 +345,7 @@
   "alexsmobs.sound.subtitle.rattlesnake_loop": "響尾蛇響尾聲",
   "alexsmobs.sound.subtitle.rattlesnake_hurt": "響尾蛇嘶嘶聲",
   "alexsmobs.sound.subtitle.rattlesnake_attack": "響尾蛇撕咬",
+  "alexsmobs.sound.subtitle.endergrade_idle": "末影緩步獸：低吟",
   "alexsmobs.sound.subtitle.endergrade_hurt": "終界緩步獸嗚咽",
   "alexsmobs.sound.subtitle.lobster_hurt": "龍蝦殼破碎",
   "alexsmobs.sound.subtitle.lobster_attack": "龍蝦掐夾",
@@ -353,6 +354,7 @@
   "alexsmobs.sound.subtitle.capuchin_monkey_idle": "卷尾猴吱吱叫",
   "alexsmobs.sound.subtitle.capuchin_monkey_hurt": "卷尾猴齜牙咧嘴",
   "alexsmobs.sound.subtitle.sunbird_idle": "太陽鳥鳴叫",
+  "alexsmobs.sound.subtitle.sunbird_hurt": "曦鶴：尖叫",
   "alexsmobs.sound.subtitle.bone_serpent_idle": "骨蟒怒吼",
   "alexsmobs.sound.subtitle.bone_serpent_hurt": "骨蟒嘶嘶聲",
   "alexsmobs.sound.subtitle.centipede_walk": "洞穴蜈蚣爬行",
@@ -435,6 +437,9 @@
   "alexsmobs.sound.subtitle.mimic_octopus_idle": "擬態章魚尖叫聲",
   "alexsmobs.sound.subtitle.mimic_octopus_hurt": "擬態章魚吧唧聲",
   "alexsmobs.sound.subtitle.music_disc.daze": "Daze",
+  "alexsmobs.sound.subtitle.skreecher_detect": "賤叫怪：大吼大叫",
+  "alexsmobs.sound.subtitle.banana_slug_slime_expand_2": "黏液：結晶",
+  "alexsmobs.sound.subtitle.triops_hurt": "三葉蟲：吱吱",
   "enchantment.alexsmobs.straddle_jump": "跳躍跨板",
   "enchantment.alexsmobs.straddle_jump.desc": "增加跨板跳躍嘅高度。",
   "enchantment.alexsmobs.lavawax": "熔岩防護",
