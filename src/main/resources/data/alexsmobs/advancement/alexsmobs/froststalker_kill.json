@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:froststalker_horn"
+      "id": "alexsmobs:froststalker_horn"
     },
     "title": {
       "translate": "advancements.alexsmobs.froststalker_kill.title"

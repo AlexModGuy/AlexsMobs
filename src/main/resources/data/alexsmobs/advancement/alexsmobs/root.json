@@ -24,10 +24,6 @@
       "translate": "advancements.alexsmobs.root.title"
     }
   },
-  "requirements": [
-    [
-      "useitem"
-    ]
-  ],
+  "requirements": [["useitem"]],
   "sends_telemetry_event": true
 }

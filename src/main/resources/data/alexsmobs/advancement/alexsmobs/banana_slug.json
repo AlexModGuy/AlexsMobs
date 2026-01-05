@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:banana_slug\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:banana_slug"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.banana_slug.title"

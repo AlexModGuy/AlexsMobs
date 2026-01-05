@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:void_worm\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:void_worm"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.void_worm_summon.title"

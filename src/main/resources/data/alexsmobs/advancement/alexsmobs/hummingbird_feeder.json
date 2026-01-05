@@ -1,26 +1,28 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:hummingbird_feeder"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.hummingbird_feeder.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.hummingbird_feeder.desc"
-        }
+  "display": {
+    "icon": {
+      "id": "alexsmobs:hummingbird_feeder"
     },
-    "parent": "alexsmobs:alexsmobs/breed_hummingbird",
-    "criteria": {
-        "hummingbird_feeder": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:hummingbird_feeder"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.hummingbird_feeder.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.hummingbird_feeder.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/breed_hummingbird",
+  "criteria": {
+    "hummingbird_feeder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:hummingbird_feeder"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

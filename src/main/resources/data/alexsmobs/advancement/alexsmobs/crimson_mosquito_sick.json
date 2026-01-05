@@ -1,8 +1,17 @@
 {
   "display": {
     "icon": {
-      "item": "citadel:fancy_item",
-      "nbt": "{DisplayItem:\"minecraft:warped_fungus\", DisplayBob:0, DisplayZoom:0, DisplayScale:1, DisplaySpin:0, DisplayShake:1}"
+      "id": "citadel:fancy_item",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayItem": "minecraft:warped_fungus",
+          "DisplayBob": 0,
+          "DisplayZoom": 0,
+          "DisplayScale": 1,
+          "DisplaySpin": 0,
+          "DisplayShake": 1
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.crimson_mosquito_sick.title"

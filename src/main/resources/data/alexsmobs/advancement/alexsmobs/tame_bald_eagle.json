@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:bald_eagle\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:bald_eagle"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.tame_bald_eagle.title"

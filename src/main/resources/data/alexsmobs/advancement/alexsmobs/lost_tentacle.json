@@ -1,26 +1,28 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:lost_tentacle"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.lost_tentacle.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.lost_tentacle.desc"
-        }
+  "display": {
+    "icon": {
+      "id": "alexsmobs:lost_tentacle"
     },
-    "parent": "alexsmobs:alexsmobs/root",
-    "criteria": {
-        "capsid": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:lost_tentacle"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.lost_tentacle.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.lost_tentacle.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "capsid": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:lost_tentacle"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

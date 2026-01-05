@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:warped_toad\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:warped_toad"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.tame_warped_toad.title"

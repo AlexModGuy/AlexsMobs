@@ -1,26 +1,28 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:gustmaker"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.gustmaker.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.gustmaker.desc"
-        }
+  "display": {
+    "icon": {
+      "id": "alexsmobs:gustmaker"
     },
-    "parent": "alexsmobs:alexsmobs/guster",
-    "criteria": {
-        "gustmaker": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:gustmaker"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.gustmaker.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.gustmaker.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/guster",
+  "criteria": {
+    "gustmaker": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:gustmaker"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

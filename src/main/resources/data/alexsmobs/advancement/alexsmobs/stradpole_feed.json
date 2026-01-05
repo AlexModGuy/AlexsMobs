@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:stradpole\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:stradpole"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.stradpole_feed.title"
@@ -18,7 +22,11 @@
       "conditions": {
         "item": {
           "items": [
-            "alexsmobs:mosquito_larva"
+            {
+              "items": [
+                "alexsmobs:mosquito_larva"
+              ]
+            }
           ]
         },
         "entity": {

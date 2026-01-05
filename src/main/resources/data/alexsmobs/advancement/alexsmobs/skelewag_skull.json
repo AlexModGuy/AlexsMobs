@@ -1,27 +1,38 @@
 {
-    "display": {
-        "icon": {
-            "item": "citadel:fancy_item",
-            "nbt": "{DisplayItem:\"alexsmobs:skelewag_sword\", DisplayBob:1, DisplayZoom:0, DisplayScale:1, DisplaySpin:0, DisplayShake:0}"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.skelewag_skull.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.skelewag_skull.desc"
+  "display": {
+    "icon": {
+      "id": "citadel:fancy_item",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayItem": "alexsmobs:skelewag_sword",
+          "DisplayBob": 1,
+          "DisplayZoom": 0,
+          "DisplayScale": 1,
+          "DisplaySpin": 0,
+          "DisplayShake": 0
         }
+      }
     },
-    "parent": "alexsmobs:alexsmobs/skelewag",
-    "criteria": {
-        "skull": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:skelewag_sword"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.skelewag_skull.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.skelewag_skull.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/skelewag",
+  "criteria": {
+    "skull": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:skelewag_sword"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

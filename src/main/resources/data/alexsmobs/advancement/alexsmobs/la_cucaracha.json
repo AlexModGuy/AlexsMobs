@@ -1,8 +1,13 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:cockroach\", DisplayMobFlags:99}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:cockroach",
+          "DisplayMobFlags": 99
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.la_cucaracha.title"
@@ -19,7 +24,11 @@
       "conditions": {
         "item": {
           "items": [
-            "alexsmobs:maraca"
+            {
+              "items": [
+                "alexsmobs:maraca"
+              ]
+            }
           ]
         },
         "entity": {

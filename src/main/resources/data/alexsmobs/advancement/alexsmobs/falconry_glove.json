@@ -1,27 +1,38 @@
 {
-    "display": {
-        "icon": {
-            "item": "citadel:fancy_item",
-            "nbt": "{DisplayItem:\"alexsmobs:falconry_glove\", DisplayBob:1, DisplayZoom:0, DisplayScale:1, DisplaySpin:0, DisplayShake:0}"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.falconry_glove.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.falconry_glove.desc"
+  "display": {
+    "icon": {
+      "id": "citadel:fancy_item",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayItem": "alexsmobs:falconry_glove",
+          "DisplayBob": 1,
+          "DisplayZoom": 0,
+          "DisplayScale": 1,
+          "DisplaySpin": 0,
+          "DisplayShake": 0
         }
+      }
     },
-    "parent": "alexsmobs:alexsmobs/tame_bald_eagle",
-    "criteria": {
-        "falconry_glove": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:falconry_glove"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.falconry_glove.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.falconry_glove.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/tame_bald_eagle",
+  "criteria": {
+    "falconry_glove": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:falconry_glove"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

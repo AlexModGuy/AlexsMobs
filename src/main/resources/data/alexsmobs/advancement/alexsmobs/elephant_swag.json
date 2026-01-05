@@ -1,8 +1,13 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:elephant\", DisplayMobFlags:98}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:elephant",
+          "DisplayMobFlags": 98
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.elephant_swag.title"

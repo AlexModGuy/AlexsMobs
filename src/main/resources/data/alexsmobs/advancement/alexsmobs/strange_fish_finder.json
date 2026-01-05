@@ -1,26 +1,28 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:pupfish_locator"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.strange_fish_finder.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.strange_fish_finder.desc"
-        }
+  "display": {
+    "icon": {
+      "id": "alexsmobs:pupfish_locator"
     },
-    "parent": "alexsmobs:alexsmobs/fish_bones",
-    "criteria": {
-        "sopa_de_macaco": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:pupfish_locator"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.strange_fish_finder.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.strange_fish_finder.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/fish_bones",
+  "criteria": {
+    "sopa_de_macaco": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:pupfish_locator"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

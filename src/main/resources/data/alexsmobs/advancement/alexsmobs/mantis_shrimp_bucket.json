@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:water_bucket"
+      "id": "minecraft:water_bucket"
     },
     "title": {
       "translate": "advancements.alexsmobs.mantis_shrimp_bucket.title"
@@ -22,7 +22,7 @@
           "type": "alexsmobs:mantis_shrimp"
         },
         "player": {
-          "flags":{
+          "flags": {
             "is_sneaking": true
           }
         }

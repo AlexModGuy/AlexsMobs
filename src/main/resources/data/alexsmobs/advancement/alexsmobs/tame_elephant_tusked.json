@@ -1,8 +1,13 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:elephant\", DisplayMobFlags:99}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:elephant",
+          "DisplayMobFlags": 99
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.tame_elephant_tusked.title"
@@ -11,7 +16,7 @@
       "translate": "advancements.alexsmobs.tame_elephant_tusked.desc"
     },
     "frame": "challenge"
- },
+  },
   "parent": "alexsmobs:alexsmobs/tame_elephant",
   "criteria": {
     "tame": {

@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:capuchin_monkey\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:capuchin_monkey"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.tame_capuchin_monkey.title"

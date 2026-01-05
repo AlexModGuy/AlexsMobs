@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:tarantula_hawk\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:tarantula_hawk"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.tarantula_hawk.title"

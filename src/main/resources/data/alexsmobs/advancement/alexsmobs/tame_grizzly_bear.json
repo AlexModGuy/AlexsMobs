@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:salmon"
+      "id": "minecraft:salmon"
     },
     "title": {
       "translate": "advancements.alexsmobs.tame_grizzly_bear.title"

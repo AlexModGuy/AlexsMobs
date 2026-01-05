@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:crocodile_egg"
+      "id": "alexsmobs:crocodile_egg"
     },
     "title": {
       "translate": "advancements.alexsmobs.breed_crocodile.title"

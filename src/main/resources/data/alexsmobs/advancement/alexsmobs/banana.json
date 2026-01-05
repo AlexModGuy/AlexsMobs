@@ -1,26 +1,26 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:banana"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.banana.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.banana.desc"
-        }
+  "display": {
+    "icon": {
+      "id": "alexsmobs:banana"
     },
-    "parent": "alexsmobs:alexsmobs/root",
-    "criteria": {
-        "banana": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "tag": "alexsmobs:bananas"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.banana.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.banana.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "banana": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#alexsmobs:bananas"
+          }
+        ]
+      }
+    }
+  }
 }

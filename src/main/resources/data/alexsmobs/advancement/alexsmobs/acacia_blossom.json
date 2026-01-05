@@ -1,27 +1,29 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:acacia_blossom"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.acacia_blossom.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.acacia_blossom.desc"
-        },
-        "frame": "goal"
+  "display": {
+    "icon": {
+      "id": "alexsmobs:acacia_blossom"
     },
-    "parent": "alexsmobs:alexsmobs/root",
-    "criteria": {
-        "acacia_blossom": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:acacia_blossom"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.acacia_blossom.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.acacia_blossom.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "acacia_blossom": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:acacia_blossom"
+            ]
+          }
+        ]
+      }
     }
+  }
 }

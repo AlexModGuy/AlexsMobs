@@ -1,26 +1,28 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:mosquito_larva"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.crimson_mosquito_larva.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.crimson_mosquito_larva.desc"
-        }
+  "display": {
+    "icon": {
+      "id": "alexsmobs:mosquito_larva"
     },
-    "parent": "alexsmobs:alexsmobs/crimson_mosquito",
-    "criteria": {
-        "rat_upgrade_basic": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:mosquito_larva"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.crimson_mosquito_larva.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.crimson_mosquito_larva.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/crimson_mosquito",
+  "criteria": {
+    "rat_upgrade_basic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:mosquito_larva"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

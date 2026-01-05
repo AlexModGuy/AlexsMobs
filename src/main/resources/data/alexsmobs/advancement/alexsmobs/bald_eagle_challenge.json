@@ -1,26 +1,31 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:tab_icon",
-            "nbt": "{DisplayEntityType:\"alexsmobs:bald_eagle\", DisplayMobFlags:98}"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.bald_eagle_challenge.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.bald_eagle_challenge.desc"
-        },
-        "frame": "challenge"
-    },
-    "parent": "alexsmobs:alexsmobs/falconry_hood",
-    "criteria": {
-        "ex": {
-            "trigger": "alexsmobs:bald_eagle_challenge"
+  "display": {
+    "icon": {
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:bald_eagle",
+          "DisplayMobFlags": 98
         }
+      }
     },
-    "requirements": [
-        [
-            "ex"
-        ]
+    "title": {
+      "translate": "advancements.alexsmobs.bald_eagle_challenge.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.bald_eagle_challenge.desc"
+    },
+    "frame": "challenge"
+  },
+  "parent": "alexsmobs:alexsmobs/falconry_hood",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:bald_eagle_challenge"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
     ]
+  ]
 }
