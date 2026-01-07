@@ -437,7 +437,7 @@ public class EntityCachalotWhale extends Animal {
         if (this.isBeached()) {
             this.whaleSpeedMod = 0;
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.5, 1F, 0.5));
-            if (this.isEyeInFluid(FluidTags.WATER)) {
+            if (this.isInWaterOrBubble()) {
                 Player entity = this.level().getNearestPlayer(REWARD_PLAYER_PREDICATE, this);
                 if (this.getLastHurtByMob() != entity) {
                     rewardPlayer = entity;

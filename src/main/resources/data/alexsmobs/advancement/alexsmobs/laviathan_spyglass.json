@@ -19,13 +19,7 @@
     "spyglass_at_bison": {
       "conditions": {
         "item": {
-          "items": [
-            {
-              "items": [
-                "minecraft:spyglass"
-              ]
-            }
-          ]
+          "items": "minecraft:spyglass"
         },
         "player": [
           {
