@@ -3,9 +3,7 @@
     "icon": {
       "id": "citadel:effect_item",
       "components": {
-        "minecraft:custom_data": {
-          "DisplayEffect": "alexsmobs:ender_flu"
-        }
+        "citadel:display_effect": "alexsmobs:ender_flu"
       }
     },
     "title": {

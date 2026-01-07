@@ -3,13 +3,15 @@
     "icon": {
       "id": "citadel:fancy_item",
       "components": {
-        "minecraft:custom_data": {
-          "DisplayItem": "alexsmobs:dimensional_carver",
-          "DisplayBob": 0,
-          "DisplayZoom": 1,
-          "DisplayScale": 1,
-          "DisplaySpin": 0,
-          "DisplayShake": 0
+        "citadel:custom_render_display": {
+          "item": {
+            "id": "alexsmobs:dimensional_carver"
+          },
+          "bob": false,
+          "zoom": true,
+          "spin": false,
+          "shake": false,
+          "scale": 1.0
         }
       }
     },
