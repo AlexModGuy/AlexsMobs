@@ -352,6 +352,19 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
     public void tick() {
         super.tick();
+        // Debug: force standing state for testing if name contains "Standy"
+        if(this.hasCustomName() && this.getName().getString().contains("Standy")){
+            if(!this.isStanding()) {
+                this.setStanding(true);
+            }
+            this.standingTime = 0;
+        }
+        // Debug: force sitting state for testing if name contains "Sitty"
+        if(this.hasCustomName() && this.getName().getString().contains("Sitty")){
+            if(!this.isSitting()) {
+                this.setOrderedToSit(true);
+            }
+        }
         this.prevStandProgress = this.standProgress;
         this.prevBegProgress = this.begProgress;
         this.prevWashProgress = this.washProgress;
@@ -606,9 +619,34 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         }
     }
 
+    @Override
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
+        if (this.hasPassenger(passenger)) {
+            double passengerYOffset = 0.0D;
+            moveFunc.accept(passenger, this.getX(), this.getY() + this.getPassengersRidingOffset() + passengerYOffset, this.getZ());
+        }
+    }
 
     public double getPassengersRidingOffset() {
-        return (double) this.getBbHeight() * 0.45D;
+        double baseHeight = this.getBbHeight();
+        // Height when standing or begging (highest)
+        double standingOffset = baseHeight * 1.0D;
+        // Height when on all fours (medium)
+        double quadrupedOffset = baseHeight * 0.6D;
+        // Height when sitting (lowest)
+        double sittingOffset = baseHeight * 0.4D;
+
+        // Use synced boolean states instead of animation progress for consistent rider position
+        // Begging also makes the raccoon stand up visually, but sitting overrides it
+        if (this.isSitting()) {
+            // Sitting overrides standing/begging (same as model logic: standProgress - sitProgress)
+            return sittingOffset;
+        } else if (this.isStanding() || this.isBegging()) {
+            // Standing or begging both cause upright posture
+            return standingOffset;
+        } else {
+            return quadrupedOffset;
+        }
     }
 
     private boolean bondWithBlueJays(UUID uuid) {

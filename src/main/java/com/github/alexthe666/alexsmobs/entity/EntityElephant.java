@@ -136,19 +136,22 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     protected EntityElephant(EntityType type, Level world) {
         super(type, world);
         initElephantInventory();
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 85.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.35F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 85.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.35F).add(Attributes.STEP_HEIGHT, 1.5D);
     }
 
     @Nullable
     public static DyeColor getCarpetColor(ItemStack stack) {
-        Block lvt_1_1_ = Block.byItem(stack.getItem());
-        return lvt_1_1_ instanceof WoolCarpetBlock ? ((WoolCarpetBlock) lvt_1_1_).getColor() : null;
+        Item item = stack.getItem();
+        for (Map.Entry<DyeColor, Item> entry : DYE_COLOR_ITEM_MAP.entrySet()) {
+            if (entry.getValue() != null && entry.getValue().equals(item)) {
+                return entry.getKey();
+            }
+        }
+        Block block = Block.byItem(item);
+        return block instanceof WoolCarpetBlock ? ((WoolCarpetBlock) block).getColor() : null;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -427,13 +430,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                     launch(entity, true);
                 }
             }
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }else{
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         }
         if (!isTame() && isTrader()) {
             if (!this.level().isClientSide) {
@@ -898,13 +895,12 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
-        if (this.hasPassenger(passenger)) {
+        if (this.isPassengerOfSameVehicle(passenger) && passenger instanceof LivingEntity && !this.touchingUnloadedChunk()) {
             float standAdd = -0.3F * standProgress;
             float scale = this.isBaby() ? 0.5F : this.isTusked() ? 1.1F : 1.0F;
             float sitAdd = -0.065F * sitProgress;
             float scaleY = scale * (2.4F * sitAdd - 0.4F * standAdd);
             if (passenger instanceof AbstractVillager) {
-                AbstractVillager villager = (AbstractVillager) passenger;
                 scaleY -= 0.3F;
             }
             float radius = scale * (0.5F + standAdd);
@@ -920,8 +916,12 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY, this.getZ() + extraZ);
+            double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+            passenger.setYBodyRot(this.yBodyRot);
+            passenger.fallDistance = 0.0F;
+            moveFunc.accept(passenger, this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY + passengerYOffset, this.getZ() + extraZ);
+        } else {
+            super.positionRider(passenger, moveFunc);
         }
     }
 
@@ -940,9 +940,6 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);
@@ -957,7 +954,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         float scale = this.isBaby() ? 0.5F : this.isTusked() ? 1.1F : 1.0F;
         float f = Math.min(0.25F, this.walkAnimation.speed());
         float f1 = this.walkAnimation.position();
-        return (double) this.getBbHeight() - (0.6F * scale) - scale * ((double) (0.1F * Mth.cos(f1 * 1.4F) * 1.4F * f));
+        return (double) this.getBbHeight() - (0.2F * scale) - scale * ((double) (0.1F * Mth.cos(f1 * 1.4F) * 1.4F * f));
     }
 
     public boolean isAlliedTo(Entity entityIn) {

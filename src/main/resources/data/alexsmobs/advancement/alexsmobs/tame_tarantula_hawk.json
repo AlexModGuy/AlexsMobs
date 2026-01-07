@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:spider_eye"
+      "id": "minecraft:spider_eye"
     },
     "title": {
       "translate": "advancements.alexsmobs.tame_tarantula_hawk.title"

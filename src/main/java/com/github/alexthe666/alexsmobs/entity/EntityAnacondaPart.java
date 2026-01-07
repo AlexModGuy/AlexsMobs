@@ -28,6 +28,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -85,6 +86,11 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public boolean isNoGravity() {
         return false;
     }
@@ -96,7 +102,6 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
         prevStrangleProgess = strangleProgess;
         prevSwell = this.getSwell();
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
             final Entity parent = getParent();
@@ -216,9 +221,10 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         }
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return false; // Anaconda part can breathe underwater
+    }
 
     public boolean isPushedByFluid() {
         return false;

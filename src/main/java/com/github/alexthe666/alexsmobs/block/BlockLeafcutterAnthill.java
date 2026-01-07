@@ -13,11 +13,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -48,19 +51,19 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
         super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.75F));
     }
 
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (worldIn.getBlockEntity(pos) instanceof TileEntityLeafcutterAnthill) {
             TileEntityLeafcutterAnthill hill = (TileEntityLeafcutterAnthill) worldIn.getBlockEntity(pos);
-            ItemStack heldItem = player.getItemInHand(handIn);
             if (heldItem.getItem() == AMItemRegistry.GONGYLIDIA.get() && hill.hasQueen()) {
                 hill.releaseQueens();
                 if (!player.isCreative()) {
                     heldItem.shrink(1);
                 }
+                return ItemInteractionResult.SUCCESS;
             }
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return super.useItemOn(heldItem, state, worldIn, pos, player, handIn, hit);
     }
 
 
@@ -81,12 +84,8 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
                 if (flag) {
                     CompoundTag compoundnbt = new CompoundTag();
                     compoundnbt.put("Ants", anthivetileentity.getAnts());
-                    // TODO: NeoForge 1.21 - use DataComponents
-                    // itemstack.addTagElement("BlockEntityTag", compoundnbt);
+                    itemstack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(compoundnbt));
                 }
-                CompoundTag compoundnbt1 = new CompoundTag();
-                // TODO: NeoForge 1.21 - use DataComponents
-                // itemstack.addTagElement("BlockStateTag", compoundnbt1);
                 ItemEntity itementity = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemstack);
                 itementity.setDefaultPickUpDelay();
                 worldIn.addFreshEntity(itementity);

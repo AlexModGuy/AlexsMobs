@@ -96,7 +96,7 @@ public class ItemDimensionalCarver extends Item {
 
     }
 
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 200;
     }
 
@@ -126,24 +126,6 @@ public class ItemDimensionalCarver extends Item {
                     ((Player) player).getCooldowns().addCooldown(this, 40);
                 }
             }
-            if (count == 1 && !player.level().isClientSide) {
-                player.gameEvent(GameEvent.ITEM_INTERACT_START);
-                player.playSound(SoundEvents.GLASS_BREAK, 1, 0.5F);
-                EntityVoidPortal portal = new EntityVoidPortal(player.level(), this);
-                portal.setPos(x, y, z);
-                Direction dir = Direction.orderedByNearest(player)[0].getOpposite();
-                if (dir == Direction.UP) {
-                    dir = Direction.DOWN;
-                }
-                portal.setAttachmentFacing(dir);
-                player.level().addFreshEntity(portal);
-                onPortalOpen(player.level(), player, portal, dir);
-                itemstack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
-                flag = true;
-                if (player instanceof Player) {
-                    ((Player) player).getCooldowns().addCooldown(this, 200);
-                }
-            }
         }
         if (flag) {
             player.stopUsingItem();
@@ -154,6 +136,38 @@ public class ItemDimensionalCarver extends Item {
             resetTag.putDouble("BLOCKZ", 0);
             setCustomData(itemstack, resetTag);
         }
+    }
+
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entityLiving) {
+        CompoundTag tag = getCustomData(stack);
+        if (tag.getBoolean("HASBLOCK")) {
+            double x = tag.getDouble("BLOCKX");
+            double y = tag.getDouble("BLOCKY");
+            double z = tag.getDouble("BLOCKZ");
+            if (!level.isClientSide) {
+                entityLiving.gameEvent(GameEvent.ITEM_INTERACT_START);
+                entityLiving.playSound(SoundEvents.GLASS_BREAK, 1, 0.5F);
+                EntityVoidPortal portal = new EntityVoidPortal(level, this);
+                portal.setPos(x, y, z);
+                Direction dir = Direction.orderedByNearest(entityLiving)[0].getOpposite();
+                if (dir == Direction.UP) {
+                    dir = Direction.DOWN;
+                }
+                portal.setAttachmentFacing(dir);
+                level.addFreshEntity(portal);
+                onPortalOpen(level, entityLiving, portal, dir);
+                stack.hurtAndBreak(1, entityLiving, EquipmentSlot.MAINHAND);
+                if (entityLiving instanceof Player) {
+                    ((Player) entityLiving).getCooldowns().addCooldown(this, 200);
+                }
+            }
+        }
+        tag.putBoolean("HASBLOCK", false);
+        tag.putDouble("BLOCKX", 0);
+        tag.putDouble("BLOCKY", 0);
+        tag.putDouble("BLOCKZ", 0);
+        setCustomData(stack, tag);
+        return stack;
     }
 
 

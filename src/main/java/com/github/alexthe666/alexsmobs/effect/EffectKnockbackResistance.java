@@ -15,11 +15,12 @@ public class EffectKnockbackResistance extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity LivingEntityIn, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         return true;
     }
 
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return duration > 0;
     }
 

@@ -46,7 +46,8 @@ public class EffectFleetFooted extends MobEffect {
         }
     }
 
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         lastDuration = duration;
         return duration > 0;
     }

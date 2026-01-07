@@ -4,7 +4,12 @@
   "package": "com.github.alexthe666.alexsmobs.mixin",
   "compatibilityLevel": "JAVA_21",
   "refmap": "alexsmobs.refmap.json",
-  "mixins": ["MixinBrewingStandBlockEntity"],
+  "mixins": [
+    "AbstractArrowAccessor",
+    "MixinBlock",
+    "MixinBrewingStandBlockEntity",
+    "NoiseBasedChunkGeneratorAccessor"
+  ],
   "client": [],
   "injectors": {
     "defaultRequire": 1

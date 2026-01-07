@@ -109,7 +109,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 50D).add(Attributes.ATTACK_DAMAGE, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.FOLLOW_RANGE, 86);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 50D).add(Attributes.ATTACK_DAMAGE, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.FOLLOW_RANGE, 86).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -209,7 +209,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     //killEntity
-    public void awardKillScore(LivingEntity entity, int score, DamageSource src) {
+    @Override
+    public void awardKillScore(Entity entity, int score, DamageSource src) {
         this.heal(5);
         super.awardKillScore(entity, score, src);
     }
@@ -357,17 +358,11 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         if (!this.level().isClientSide) {
             if (isRunning() && !hasSpedUp) {
                 hasSpedUp = true;
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
                 this.setSprinting(true);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F);
             }
             if (!isRunning() && hasSpedUp) {
                 hasSpedUp = false;
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
                 this.setSprinting(false);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
             }

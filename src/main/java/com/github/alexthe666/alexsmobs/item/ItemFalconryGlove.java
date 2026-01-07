@@ -71,7 +71,7 @@ public class ItemFalconryGlove extends Item implements ILeftClick {
             }
 
             if(!playerIn.getPassengers().isEmpty()){
-                for(Entity entity : playerIn.getPassengers()){
+                for(Entity entity : new java.util.ArrayList<>(playerIn.getPassengers())){
                     if(entity instanceof IFalconry && entity instanceof Animal animal){
                         IFalconry falcon = (IFalconry)entity;
                         animal.removeVehicle();

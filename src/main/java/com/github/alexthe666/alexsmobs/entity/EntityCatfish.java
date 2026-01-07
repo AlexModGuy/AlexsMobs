@@ -40,6 +40,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -248,7 +250,29 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        // TODO: NeoForge 1.21 - Catfish bucket data needs DataComponents approach
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.putFloat("CatfishSize", this.getCatfishSize());
+            if (this.getSwallowedEntityType() != null) {
+                tag.putString("ContainedEntityType", this.getSwallowedEntityType());
+            }
+            if (this.getSwallowedData() != null) {
+                tag.put("ContainedData", this.getSwallowedData());
+            }
+            tag.putBoolean("HasSwallowedEntity", this.hasSwallowedEntity());
+            if (catfishInventory != null) {
+                final ListTag nbttaglist = new ListTag();
+                for (int i = 0; i < this.catfishInventory.getContainerSize(); ++i) {
+                    final ItemStack itemstack = this.catfishInventory.getItem(i);
+                    if (!itemstack.isEmpty()) {
+                        CompoundTag slotTag = new CompoundTag();
+                        slotTag.putByte("Slot", (byte) i);
+                        net.minecraft.nbt.Tag saved = itemstack.saveOptional(this.level().registryAccess());
+                        nbttaglist.add(saved);
+                    }
+                }
+                tag.put("Items", nbttaglist);
+            }
+        }));
     }
 
     @Override

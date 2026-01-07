@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.world;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.mixin.NoiseBasedChunkGeneratorAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -174,8 +175,9 @@ public class AMWorldData extends SavedData {
     }
 
     public int getWaterHeight(NoiseBasedChunkGenerator generator, RandomState rand, int x, int z, LevelHeightAccessor level) {
-        // Simplified for NeoForge 1.21.1 - iterateNoiseColumn and settings are not accessible
-        // Return sea level as a reasonable approximation for water height detection
-        return generator.getSeaLevel();
+        if(generator instanceof NoiseBasedChunkGeneratorAccessor accessor){
+            return accessor.invokeIterateNoiseColumn(level, rand, x, z, null, (state) -> !state.isAir()).orElse(level.getMinBuildHeight());
+        }
+        return level.getMinBuildHeight();
     }
 }

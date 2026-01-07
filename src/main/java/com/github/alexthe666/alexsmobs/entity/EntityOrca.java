@@ -373,9 +373,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return false; }
+    // Orca is a mammal and cannot breathe underwater - default behavior is correct
 
     public void baseTick() {
         int i = this.getAirSupply();

@@ -52,13 +52,12 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
     private static void vertex(VertexConsumer p_229108_0_, Matrix4f p_229108_1_, Matrix3f p_229108_2_,
             float p_229108_3_, float p_229108_4_, float p_229108_5_, int p_229108_6_, int p_229108_7_, int p_229108_8_,
             float p_229108_9_, float p_229108_10_) {
-        org.joml.Vector3f normal = new org.joml.Vector3f(0.0F, 1.0F, 0.0F);
-        normal.mul(p_229108_2_);
         org.joml.Vector4f pos = new org.joml.Vector4f(p_229108_3_, p_229108_4_, p_229108_5_, 1.0F);
         pos.mul(p_229108_1_);
-        p_229108_0_.addVertex(pos.x, pos.y, pos.z).setColor(p_229108_6_, p_229108_7_, p_229108_8_, 255)
+        // POSITION_TEX_COLOR format: position -> tex -> color
+        p_229108_0_.addVertex(pos.x, pos.y, pos.z)
                 .setUv(p_229108_9_, p_229108_10_)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(240).setNormal(normal.x, normal.y, normal.z);
+                .setColor(p_229108_6_, p_229108_7_, p_229108_8_, 255);
     }
 
     protected void setupRotations(EntityMungus entityLiving, PoseStack matrixStackIn, float ageInTicks,

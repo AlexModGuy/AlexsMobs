@@ -11,6 +11,11 @@ import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties
 import com.github.alexthe666.alexsmobs.client.render.item.CustomArmorRenderProperties;
 import com.github.alexthe666.alexsmobs.client.render.item.GhostlyPickaxeBakedModel;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderEndPirateAnchor;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderEndPirateAnchorWinch;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderEndPirateDoor;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderEndPirateFlag;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderEndPirateShipWheel;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderTransmutationTable;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
 import com.github.alexthe666.alexsmobs.client.sound.SoundBearMusicBox;
@@ -46,7 +51,11 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterRenderBuffersEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,11 +109,15 @@ public class ClientProxy extends CommonProxy {
         bus.addListener(ClientLayerRegistry::onAddLayers);
         bus.addListener(ClientProxy::setupParticles);
         bus.addListener(ClientProxy::onRegisterMenuScreens);
+        bus.addListener(ClientProxy::onRegisterRenderBuffers);
     }
 
     public void clientInit() {
         NeoForge.EVENT_BUS.register(new ClientEvents());
-        initRainbowBuffers();
+        // Set lava to translucent render layer for lava vision effect
+        ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, RenderType.translucent());
+        initializedRainbowBuffers = true;
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         EntityRenderers.register(AMEntityRegistry.GRIZZLY_BEAR.get(), RenderGrizzlyBear::new);
         EntityRenderers.register(AMEntityRegistry.ROADRUNNER.get(), RenderRoadrunner::new);
@@ -233,13 +246,13 @@ public class ClientProxy extends CommonProxy {
                     (stack, p_239428_1_, p_239428_2_, j) -> {
                         return !ItemBloodSprayer.isUsable(stack)
                                 || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns()
-                                        .isOnCooldown(AMItemRegistry.BLOOD_SPRAYER.get()) ? 1.0F : 0.0F;
+                                .isOnCooldown(AMItemRegistry.BLOOD_SPRAYER.get()) ? 1.0F : 0.0F;
                     });
             ItemProperties.register(AMItemRegistry.HEMOLYMPH_BLASTER.get(),
                     ResourceLocation.withDefaultNamespace("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
                         return !ItemHemolymphBlaster.isUsable(stack)
                                 || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns()
-                                        .isOnCooldown(AMItemRegistry.HEMOLYMPH_BLASTER.get()) ? 1.0F : 0.0F;
+                                .isOnCooldown(AMItemRegistry.HEMOLYMPH_BLASTER.get()) ? 1.0F : 0.0F;
                     });
             ItemProperties.register(AMItemRegistry.TARANTULA_HAWK_ELYTRA.get(),
                     ResourceLocation.withDefaultNamespace("broken"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -281,28 +294,22 @@ public class ClientProxy extends CommonProxy {
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID.get(), RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK.get(), RenderVoidWormBeak::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.TRANSMUTATION_TABLE.get(), RenderTransmutationTable::new);
+        // End Pirate TileEntity renderers
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR.get(), RenderEndPirateDoor::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR.get(), RenderEndPirateAnchor::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), RenderEndPirateAnchorWinch::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), RenderEndPirateShipWheel::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_FLAG.get(), RenderEndPirateFlag::new);
         // MenuScreens.register handled via RegisterMenuScreensEvent
     }
 
-    private void initRainbowBuffers() {
-        // TODO: 1.21 Fix rainbow buffers. RenderBuffers.fixedBuffers is private and
-        // BufferBuilder constructor changed.
-        /*
-         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
-         * COMBJELLY_RAINBOW_GLINT, new
-         * BufferBuilder(AMRenderTypes.COMBJELLY_RAINBOW_GLINT.bufferSize()));
-         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
-         * VOID_WORM_PORTAL_OVERLAY, new
-         * BufferBuilder(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY.bufferSize()));
-         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
-         * STATIC_PORTAL, new BufferBuilder(AMRenderTypes.STATIC_PORTAL.bufferSize()));
-         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
-         * STATIC_PARTICLE, new
-         * BufferBuilder(AMRenderTypes.STATIC_PARTICLE.bufferSize()));
-         * Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.
-         * STATIC_ENTITY, new BufferBuilder(AMRenderTypes.STATIC_ENTITY.bufferSize()));
-         * initializedRainbowBuffers = true;
-         */
+    private static void onRegisterRenderBuffers(final RegisterRenderBuffersEvent event) {
+        // Register custom render buffers for special visual effects
+        event.registerRenderBuffer(AMRenderTypes.COMBJELLY_RAINBOW_GLINT);
+        event.registerRenderBuffer(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY);
+        event.registerRenderBuffer(AMRenderTypes.STATIC_PORTAL);
+        event.registerRenderBuffer(AMRenderTypes.STATIC_PARTICLE);
+        event.registerRenderBuffer(AMRenderTypes.STATIC_ENTITY);
     }
 
     private static void onBakingCompleted(final ModelEvent.ModifyBakingResult e) {
@@ -348,7 +355,7 @@ public class ClientProxy extends CommonProxy {
              * return FEDORA_MODEL;
              * case 6:
              * return ELYTRA_MODEL.withAnimations(entity);
-             * 
+             *
              */
             default:
                 return null;

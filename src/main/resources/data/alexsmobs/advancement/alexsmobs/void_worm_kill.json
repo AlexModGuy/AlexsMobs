@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:void_worm_beak"
+      "id": "alexsmobs:void_worm_beak"
     },
     "title": {
       "translate": "advancements.alexsmobs.void_worm_kill.title"

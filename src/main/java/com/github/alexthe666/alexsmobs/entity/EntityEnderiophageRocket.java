@@ -13,9 +13,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -26,8 +30,11 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
 
     private static final EntityDataAccessor<ItemStack> DATA_FIREWORKS_ITEM = SynchedEntityData.defineId(EntityEnderiophageRocket.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<OptionalInt> DATA_ATTACHED_TARGET = SynchedEntityData.defineId(EntityEnderiophageRocket.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
-    private int phageAge = 0;
-    private int rocketLifetime = 0;
+    private static final EntityDataAccessor<Boolean> DATA_SHOT_AT_ANGLE = SynchedEntityData.defineId(EntityEnderiophageRocket.class, EntityDataSerializers.BOOLEAN);
+    private int life = 0;
+    private int lifetime = 0;
+    @Nullable
+    private LivingEntity attachedToEntity;
 
     public EntityEnderiophageRocket(EntityType p_i50164_1_, Level p_i50164_2_) {
         super(p_i50164_1_, p_i50164_2_);
@@ -38,6 +45,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         super.defineSynchedData(builder);
         builder.define(DATA_FIREWORKS_ITEM, ItemStack.EMPTY);
         builder.define(DATA_ATTACHED_TARGET, OptionalInt.empty());
+        builder.define(DATA_SHOT_AT_ANGLE, false);
     }
 
     public EntityEnderiophageRocket(Level worldIn, double x, double y, double z, ItemStack givenItem) {
@@ -48,7 +56,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         }
 
         this.setDeltaMovement(this.random.nextGaussian() * 0.001D, 0.05D, this.random.nextGaussian() * 0.001D);
-        this.rocketLifetime = 18 + this.random.nextInt(14);
+        this.lifetime = 10 + this.random.nextInt(6) + this.random.nextInt(7);
     }
 
     public EntityEnderiophageRocket(Level p_i231581_1_, @Nullable Entity p_i231581_2_, double p_i231581_3_, double p_i231581_5_, double p_i231581_7_, ItemStack p_i231581_9_) {
@@ -56,24 +64,96 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         this.setOwner(p_i231581_2_);
     }
 
-    public EntityEnderiophageRocket(Level p_i47367_1_, ItemStack p_i47367_2_, LivingEntity p_i47367_3_) {
-        this(p_i47367_1_, p_i47367_3_, p_i47367_3_.getX(), p_i47367_3_.getY(), p_i47367_3_.getZ(), p_i47367_2_);
-        this.entityData.set(DATA_ATTACHED_TARGET, OptionalInt.of(p_i47367_3_.getId()));
+    public EntityEnderiophageRocket(Level worldIn, ItemStack stack, LivingEntity attachedTo) {
+        this(worldIn, attachedTo, attachedTo.getX(), attachedTo.getY(), attachedTo.getZ(), stack);
+        this.entityData.set(DATA_ATTACHED_TARGET, OptionalInt.of(attachedTo.getId()));
+        this.attachedToEntity = attachedTo;
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+    @Nullable
+    private LivingEntity getAttachedToEntity() {
+        OptionalInt optionalint = this.entityData.get(DATA_ATTACHED_TARGET);
+        if (optionalint.isPresent()) {
+            Entity entity = this.level().getEntity(optionalint.getAsInt());
+            if (entity instanceof LivingEntity) {
+                return (LivingEntity) entity;
+            }
         }
-    */
+        return null;
+    }
 
     public void tick() {
-        super.tick();
-        ++this.phageAge;
-        if (this.level().isClientSide) {
-            this.level().addParticle(ParticleTypes.END_ROD, this.getX(), this.getY() - 0.3D, this.getZ(), this.random.nextGaussian() * 0.05D, -this.getDeltaMovement().y * 0.5D, this.random.nextGaussian() * 0.05D);
+        // Don't call super.tick() - we implement our own logic
+        if (!this.level().isClientSide) {
+            this.setSharedFlag(6, this.isCurrentlyGlowing());
+        }
+        this.baseTick();
+        
+        ++this.life;
+        
+        // Handle attached to entity (elytra boosting)
+        if (this.attachedToEntity == null) {
+            this.attachedToEntity = this.getAttachedToEntity();
+        }
+        
+        if (this.attachedToEntity != null) {
+            // We're boosting a player with elytra
+            if (this.attachedToEntity.isFallFlying()) {
+                Vec3 lookVec = this.attachedToEntity.getLookAngle();
+                Vec3 currentMotion = this.attachedToEntity.getDeltaMovement();
+                this.attachedToEntity.setDeltaMovement(
+                    currentMotion.add(
+                        lookVec.x * 0.1D + (lookVec.x * 1.5D - currentMotion.x) * 0.5D,
+                        lookVec.y * 0.1D + (lookVec.y * 1.5D - currentMotion.y) * 0.5D,
+                        lookVec.z * 0.1D + (lookVec.z * 1.5D - currentMotion.z) * 0.5D
+                    )
+                );
+                this.setPos(this.attachedToEntity.getX(), this.attachedToEntity.getY(), this.attachedToEntity.getZ());
+                
+                // Particles when boosting
+                if (this.level().isClientSide) {
+                    this.level().addParticle(ParticleTypes.END_ROD, this.getX(), this.getY() - 0.3D, this.getZ(), 
+                        this.random.nextGaussian() * 0.05D, -this.getDeltaMovement().y * 0.5D, this.random.nextGaussian() * 0.05D);
+                }
+            }
+            
+            // Check if we should explode
+            if (this.life > this.lifetime) {
+                this.explode();
+            }
+        } else {
+            // Not attached - this is a ground-launched rocket
+            // Apply upward movement
+            if (!this.onGround()) {
+                Vec3 motion = this.getDeltaMovement();
+                this.setDeltaMovement(motion.x * 1.15D, motion.y + 0.04D, motion.z * 1.15D);
+            }
+            
+            // Move the rocket
+            HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+            if (hitresult.getType() != HitResult.Type.MISS && !net.neoforged.neoforge.event.EventHooks.onProjectileImpact(this, hitresult)) {
+                this.hitTargetOrDeflectSelf(hitresult);
+            }
+            
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            
+            // Particles
+            if (this.level().isClientSide) {
+                this.level().addParticle(ParticleTypes.END_ROD, this.getX(), this.getY() - 0.3D, this.getZ(), 
+                    this.random.nextGaussian() * 0.05D, -this.getDeltaMovement().y * 0.5D, this.random.nextGaussian() * 0.05D);
+            }
+            
+            // Explode after lifetime or on collision
+            if (this.life > this.lifetime || this.horizontalCollision || this.verticalCollision) {
+                this.explode();
+            }
+        }
+    }
+    
+    private void explode() {
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte)17);
+            this.discard();
         }
     }
 

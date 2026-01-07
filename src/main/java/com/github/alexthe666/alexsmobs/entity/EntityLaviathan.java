@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
@@ -65,6 +66,7 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -115,9 +117,6 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     protected EntityLaviathan(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.setPathfindingMalus(PathType.WATER, 0.0F);
         this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
         this.setPathfindingMalus(PathType.LAVA, 0.0F);
@@ -169,7 +168,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 60D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.ARMOR, 10D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 60D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.ARMOR, 10D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.STEP_HEIGHT, 1.1D);
     }
 
     public boolean canBeCollidedWith() {
@@ -345,7 +344,8 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                 passenger.stopRiding();
             } else {
                 EntityLaviathanPart seat = seatParts[posit];
-                passenger.setPos(seat.getX(), this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, seat.getZ());
+                double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+                passenger.setPos(seat.getX(), this.getY() + this.getPassengersRidingOffset() + passengerYOffset, seat.getZ());
             }
         }
     }
@@ -396,7 +396,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                 return super.canUse() && !EntityLaviathan.this.hasHeadGear();
             }
         });
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new LaviathanBreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.fromValues(Stream.of(new Ingredient.TagValue(AMTagRegistry.LAVIATHAN_BREEDABLES), new Ingredient.TagValue(AMTagRegistry.LAVIATHAN_FOODSTUFFS))), false));
         this.goalSelector.addGoal(4, new AnimalAIFindWaterLava(this, 1.0D));
         this.goalSelector.addGoal(5, new LaviathanAIRandomSwimming(this, 1.0D, 22) {
@@ -466,9 +466,6 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         super.tickRidden(player, vec3);
         this.setRot(player.getYRot(), player.getXRot() * 0.5F);
         this.setYHeadRot(player.getYHeadRot());
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.setTarget(null);
     }
 
@@ -537,9 +534,10 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         return 4;
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return false; // Laviathan can breathe in all fluids (lava creature)
+    }
 
     public boolean isPushedByFluid() {
         return false;
@@ -1090,6 +1088,74 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             } else if (!laviathan.level().getBlockState(this.laviathan.blockPosition().above()).getFluidState().isEmpty() && laviathan.getChillTime() <= 0) {
                 this.laviathan.setDeltaMovement(this.laviathan.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
             }
+        }
+    }
+
+    static class LaviathanBreedGoal extends Goal {
+        protected final EntityLaviathan animal;
+        protected final Class<? extends Animal> partnerClass;
+        protected final Level level;
+        protected EntityLaviathan partner;
+        protected int loveTime;
+        protected final double speedModifier;
+
+        public LaviathanBreedGoal(EntityLaviathan animal, double speed) {
+            this(animal, speed, animal.getClass());
+        }
+
+        public LaviathanBreedGoal(EntityLaviathan animal, double speed, Class<? extends Animal> partnerClass) {
+            this.animal = animal;
+            this.level = animal.level();
+            this.partnerClass = partnerClass;
+            this.speedModifier = speed;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            if (!this.animal.isInLove()) {
+                return false;
+            } else {
+                this.partner = this.getFreePartner();
+                return this.partner != null;
+            }
+        }
+
+        public boolean canContinueToUse() {
+            return this.partner.isAlive() && this.partner.isInLove() && this.loveTime < 60;
+        }
+
+        public void stop() {
+            this.partner = null;
+            this.loveTime = 0;
+        }
+
+        public void tick() {
+            this.animal.getLookControl().setLookAt(this.partner, 10.0F, (float)this.animal.getMaxHeadXRot());
+            this.animal.getNavigation().moveTo(this.partner, this.speedModifier);
+            ++this.loveTime;
+            if (this.loveTime >= 60 && this.animal.distanceToSqr(this.partner) < 20.0D) {
+                this.breed();
+            }
+        }
+
+        @Nullable
+        private EntityLaviathan getFreePartner() {
+            List<EntityLaviathan> list = this.level.getEntitiesOfClass(EntityLaviathan.class, this.animal.getBoundingBox().inflate(20.0D));
+            double d0 = Double.MAX_VALUE;
+            EntityLaviathan animal = null;
+
+            for(EntityLaviathan animal1 : list) {
+                if (this.animal.canMate(animal1) && this.animal.distanceToSqr(animal1) < d0) {
+                    animal = animal1;
+                    d0 = this.animal.distanceToSqr(animal1);
+                }
+            }
+
+            return animal;
+        }
+
+        protected void breed() {
+            this.animal.spawnChildFromBreeding( (ServerLevel)this.level, this.partner);
         }
     }
 }

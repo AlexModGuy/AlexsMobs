@@ -54,12 +54,14 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
 
     private static final EntityDataAccessor<Integer> BITE_TICK = SynchedEntityData.defineId(EntityEndergrade.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EntityEndergrade.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> BOOST_TIME = SynchedEntityData.defineId(EntityEndergrade.class, EntityDataSerializers.INT);
     public float tartigradePitch = 0;
     public float prevTartigradePitch = 0;
     public float biteProgress = 0;
     public float prevBiteProgress = 0;
     public boolean stopWandering = false;
     public boolean hasItemTarget = false;
+    private int boostTimeTotal = 0;
 
     protected EntityEndergrade(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -67,7 +69,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.15F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public static boolean canEndergradeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -81,11 +83,13 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Saddled", this.isSaddled());
+        compound.putInt("BoostTime", this.entityData.get(BOOST_TIME));
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setSaddled(compound.getBoolean("Saddled"));
+        this.entityData.set(BOOST_TIME, compound.getInt("BoostTime"));
     }
 
     @Override
@@ -93,6 +97,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         super.defineSynchedData(builder);
         builder.define(BITE_TICK, 0);
         builder.define(SADDLED, false);
+        builder.define(BOOST_TIME, 0);
     }
 
     protected void registerGoals() {
@@ -109,6 +114,17 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             }
         });
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.ENDERGRADE_BREEDABLES), false) {
+            public void start() {
+                super.start();
+                EntityEndergrade.this.stopWandering = true;
+            }
+
+            public void stop() {
+                super.stop();
+                EntityEndergrade.this.stopWandering = false;
+            }
+        });
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.ENDERGRADE_FOLLOWS), false) {
             public void start() {
                 super.start();
                 EntityEndergrade.this.stopWandering = true;
@@ -183,7 +199,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
+            double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passengerYOffset, this.getZ() + extraZ);
         }
     }
 
@@ -205,6 +222,17 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         this.entityData.set(SADDLED, Boolean.valueOf(saddled));
     }
 
+    public boolean boost() {
+        if (this.entityData.get(BOOST_TIME) <= 0) {
+            int boostDuration = 100 + this.random.nextInt(40); // 5-7 seconds of boost
+            this.boostTimeTotal = boostDuration;
+            this.entityData.set(BOOST_TIME, boostDuration);
+            this.playSound(net.minecraft.sounds.SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
+            return true;
+        }
+        return false;
+    }
+
     public void tick() {
         super.tick();
         prevTartigradePitch = this.tartigradePitch;
@@ -223,6 +251,11 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             this.biteProgress++;
         } else if (biteProgress > 0) {
             biteProgress--;
+        }
+        // Handle boost time countdown
+        int currentBoostTime = this.entityData.get(BOOST_TIME);
+        if (currentBoostTime > 0) {
+            this.entityData.set(BOOST_TIME, currentBoostTime - 1);
         }
     }
 
@@ -300,9 +333,6 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);
@@ -310,7 +340,14 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     protected float getRiddenSpeed(Player rider) {
-        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.onGround() ? 0.2F : 0.8F));
+        float baseSpeed = (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.onGround() ? 0.2F : 0.8F));
+        int boostTime = this.entityData.get(BOOST_TIME);
+        if (boostTime > 0) {
+            // 使用固定的加速倍数，不依赖boostTimeTotal
+            float boostMultiplier = 2.0F;
+            return baseSpeed * boostMultiplier;
+        }
+        return baseSpeed;
     }
 
     @Override

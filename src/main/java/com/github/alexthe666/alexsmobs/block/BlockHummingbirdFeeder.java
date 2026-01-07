@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -72,13 +73,13 @@ public class BlockHummingbirdFeeder extends Block {
         return state.getValue(HANGING) ? Direction.DOWN : Direction.UP;
     }
 
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         int contents = state.getValue(CONTENTS);
         ItemStack waterBottle = AMEffectRegistry.createPotion(Potions.WATER);
-        ItemStack itemStack = player.getItemInHand(handIn);
         int setContent = -1;
         if(contents == 0){
-            if(itemStack.is(AMTagRegistry.HUMMINGNBIRD_FEEDER_SWEETENERS)){
+            if(itemStack.is(AMTagRegistry.HUMMINGBIRD_FEEDER_SWEETENERS)){
                 setContent = 2;
                 useItem(player, itemStack, false);
             }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameComponents(waterBottle, itemStack)){
@@ -86,7 +87,7 @@ public class BlockHummingbirdFeeder extends Block {
                 useItem(player, itemStack, true);
             }
         }else if(contents == 1){
-            if(itemStack.is(AMTagRegistry.HUMMINGNBIRD_FEEDER_SWEETENERS)){
+            if(itemStack.is(AMTagRegistry.HUMMINGBIRD_FEEDER_SWEETENERS)){
                 setContent = 3;
                 useItem(player, itemStack, false);
             }
@@ -98,9 +99,9 @@ public class BlockHummingbirdFeeder extends Block {
         }
         if(setContent >= 0){
             worldIn.setBlockAndUpdate(pos, state.setValue(CONTENTS, setContent));
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.FAIL;
+        return super.useItemOn(itemStack, state, worldIn, pos, player, handIn, hit);
     }
 
     public void useItem(Player playerEntity, ItemStack stack, boolean dropBottle){

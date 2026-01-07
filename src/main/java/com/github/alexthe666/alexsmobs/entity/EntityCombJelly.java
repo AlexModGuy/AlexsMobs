@@ -28,6 +28,8 @@ import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.HitResult;
@@ -252,7 +254,13 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        // TODO: NeoForge 1.21 - Custom bucket data (BucketScale, BucketVariantTag) needs DataComponents
+        // Save custom bucket data using CustomData component
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> {
+            return data.update(tag -> {
+                tag.putFloat("BucketScale", this.getJellyScale());
+                tag.putInt("BucketVariantTag", this.getVariant());
+            });
+        });
     }
 
     @Override

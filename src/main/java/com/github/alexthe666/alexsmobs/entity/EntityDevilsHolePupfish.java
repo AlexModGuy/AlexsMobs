@@ -41,6 +41,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -227,7 +229,14 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        // TODO: NeoForge 1.21 - Custom bucket data (BucketScale, BabyAge) needs DataComponents
+        // Save custom bucket data using CustomData component
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> {
+            return data.update(tag -> {
+                tag.putFloat("BucketScale", this.getPupfishScale());
+                tag.putInt("BabyAge", this.getBabyAge());
+                tag.putBoolean("BreedNextChase", this.breedNextChase);
+            });
+        });
     }
 
     @Override
@@ -238,6 +247,9 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         }
         if (compound.contains("BabyAge")){
             this.setBabyAge(compound.getInt("BabyAge"));
+        }
+        if (compound.contains("BreedNextChase")){
+            this.breedNextChase = compound.getBoolean("BreedNextChase");
         }
     }
 

@@ -202,8 +202,8 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             if (this.removeIn <= 0 && !this.level().isClientSide) {
                 this.removeIn = 0;
                 boolean drop;
-                if(this.getEnchantLevel(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) > 0){
-                    drop = returnToPlayer != null && !returnToPlayer.addItem(this.getItemBoard());
+                if(this.getEnchantLevel(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) > 0 && returnToPlayer != null){
+                    drop = !returnToPlayer.addItem(this.getItemBoard());
                 }else{
                     drop = true;
                 }
@@ -410,14 +410,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     public float getRockingAngle(float partialTicks) {
         return Mth.lerp(partialTicks, this.prevRockingAngle, this.rockingAngle);
     }
-
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
 
 
     @Override

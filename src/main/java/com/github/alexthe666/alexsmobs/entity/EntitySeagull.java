@@ -43,6 +43,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.component.MapDecorations;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -398,9 +401,11 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         boolean flag = false;
         for(ItemStack map : player.getHandSlots()){
             if(map.getItem() == Items.FILLED_MAP || map.getItem() == Items.MAP){
-                // hasTag/getTag removed in 1.21 - use DataComponents
-                // Map decoration reading disabled for 1.21 migration
-                // TODO: Implement using DataComponents.MAP_DECORATIONS
+                MapDecorations decorations = map.get(DataComponents.MAP_DECORATIONS);
+                if(decorations != null && !decorations.decorations().isEmpty()){
+                    flag = true;
+                    break;
+                }
             }
         }
         if(flag){

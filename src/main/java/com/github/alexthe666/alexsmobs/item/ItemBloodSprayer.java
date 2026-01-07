@@ -28,7 +28,7 @@ public class ItemBloodSprayer extends Item {
         super(properties);
     }
 
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return isUsable(stack) ? Integer.MAX_VALUE : 0;
     }
 
@@ -82,7 +82,8 @@ public class ItemBloodSprayer extends Item {
 
     public void onUseTick(Level worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
         if(isUsable(stack)) {
-            if (count % 2 == 0) {
+            int usedTicks = getUseDuration(stack, livingEntityIn) - count;
+            if (usedTicks % 2 == 0) {
                 boolean left = false;
                 if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
                     left = true;
@@ -96,7 +97,8 @@ public class ItemBloodSprayer extends Item {
                 if (!worldIn.isClientSide) {
                     worldIn.addFreshEntity(blood);
                 }
-                stack.hurtAndBreak(1, livingEntityIn, EquipmentSlot.MAINHAND);
+                EquipmentSlot slot = livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                stack.hurtAndBreak(1, livingEntityIn, slot);
             }
         }else{
             if(livingEntityIn instanceof Player){

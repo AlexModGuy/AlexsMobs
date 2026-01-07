@@ -31,7 +31,7 @@ public class ItemStinkRay extends Item {
         super(properties);
     }
 
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return isUsable(stack) ? 72000 : 0;
     }
 
@@ -60,7 +60,7 @@ public class ItemStinkRay extends Item {
 
     public void releaseUsing(ItemStack itemStack, Level level, LivingEntity entity, int time) {
         if (entity instanceof Player player && isUsable(itemStack)) {
-            int i = this.getUseDuration(itemStack) - time;
+            int i = this.getUseDuration(itemStack, entity) - time;
             if (i >= 10) {
                 boolean left = false;
                 if (entity.getUsedItemHand() == InteractionHand.OFF_HAND && entity.getMainArm() == HumanoidArm.RIGHT || entity.getUsedItemHand() == InteractionHand.MAIN_HAND && entity.getMainArm() == HumanoidArm.LEFT) {
@@ -75,7 +75,8 @@ public class ItemStinkRay extends Item {
                 if (!level.isClientSide) {
                     level.addFreshEntity(blood);
                 }
-                itemStack.hurtAndBreak(1, entity, EquipmentSlot.MAINHAND);
+                EquipmentSlot slot = entity.getUsedItemHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                itemStack.hurtAndBreak(1, entity, slot);
 
             }
 

@@ -24,6 +24,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -47,6 +48,11 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         multipartSize = type.getDimensions();
     }
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public boolean requiresCustomPersistence() {
         return super.requiresCustomPersistence() || this.getParent() != null;
     }
@@ -64,7 +70,6 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     @Override
     public void tick() {
         super.tick();
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
             final Entity parent = getParent();
@@ -290,9 +295,10 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         }
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return false; // Centipede body part can breathe in all fluids
+    }
 
     public float getBackOffset() {
         return 0.5F;

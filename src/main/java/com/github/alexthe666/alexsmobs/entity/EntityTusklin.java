@@ -58,6 +58,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     public static final Animation ANIMATION_BUCK = Animation.create(15);
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EntityTusklin.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> PASSIVETICKS = SynchedEntityData.defineId(EntityTusklin.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<ItemStack> SHOE_STACK = SynchedEntityData.defineId(EntityTusklin.class, EntityDataSerializers.ITEM_STACK);
     private int animationTick;
     private Animation currentAnimation;
     private int ridingTime = 0;
@@ -66,9 +67,6 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     protected EntityTusklin(EntityType<? extends Animal> type, Level level) {
         super(type, level);
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -80,7 +78,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE, 9.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE, 9.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -138,9 +136,6 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         super.tickRidden(player, vec3);
         this.setRot(player.getYRot(), player.getXRot() * 0.25F);
         this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
         this.getNavigation().stop();
         this.setTarget(null);
         this.setSprinting(true);
@@ -207,7 +202,8 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
+            double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passengerYOffset, this.getZ() + extraZ);
         }
     }
 
@@ -276,6 +272,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         super.defineSynchedData(builder);
         builder.define(SADDLED, false);
         builder.define(PASSIVETICKS, 0);
+        builder.define(SHOE_STACK, ItemStack.EMPTY);
     }
 
     public void addAdditionalSaveData(CompoundTag p_31808_) {
@@ -339,11 +336,11 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public ItemStack getShoeStack() {
-        return this.getItemBySlot(EquipmentSlot.FEET);
+        return this.entityData.get(SHOE_STACK);
     }
 
     public void setShoeStack(ItemStack shoe) {
-        this.setItemSlot(EquipmentSlot.FEET, shoe);
+        this.entityData.set(SHOE_STACK, shoe);
     }
 
     public void tick() {
@@ -408,13 +405,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                         }
                     }
                 }
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }else{
-                // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-                // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             }
             if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + this.getBbWidth() + 1.8F) {
                 if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 6) {

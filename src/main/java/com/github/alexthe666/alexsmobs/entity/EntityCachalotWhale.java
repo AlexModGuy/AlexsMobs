@@ -437,7 +437,7 @@ public class EntityCachalotWhale extends Animal {
         if (this.isBeached()) {
             this.whaleSpeedMod = 0;
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.5, 1F, 0.5));
-            if (this.isEyeInFluid(FluidTags.WATER)) {
+            if (this.isInWaterOrBubble()) {
                 Player entity = this.level().getNearestPlayer(REWARD_PLAYER_PREDICATE, this);
                 if (this.getLastHurtByMob() != entity) {
                     rewardPlayer = entity;
@@ -850,9 +850,7 @@ public class EntityCachalotWhale extends Animal {
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return false; }
+    // Cachalot whale is a mammal and cannot breathe underwater - default behavior is correct
 
     public void baseTick() {
         int i = this.getAirSupply();

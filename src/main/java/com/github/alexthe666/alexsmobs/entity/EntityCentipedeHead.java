@@ -52,13 +52,10 @@ public class EntityCentipedeHead extends Monster {
     protected EntityCentipedeHead(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.xpReward = 13;
-        // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-        // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 35.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ARMOR, 6.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F).add(Attributes.MOVEMENT_SPEED, 0.22F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 35.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ARMOR, 6.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F).add(Attributes.MOVEMENT_SPEED, 0.22F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     public static <T extends Mob> boolean canCentipedeSpawn(EntityType<EntityCentipedeHead> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -100,6 +97,11 @@ public class EntityCentipedeHead extends Monster {
 
     public int getMaxHeadYRot() {
         return 1;
+    }
+
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
     }
 
     public int getHeadRotSpeed() {
@@ -209,7 +211,6 @@ public class EntityCentipedeHead extends Monster {
 
     public void tick() {
         super.tick();
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         this.yBodyRot = Mth.clamp(this.getYRot(), this.yBodyRot - 2, this.yBodyRot + 2);
         this.yHeadRot = this.yBodyRot;
         if (this.ringBufferIndex < 0) {

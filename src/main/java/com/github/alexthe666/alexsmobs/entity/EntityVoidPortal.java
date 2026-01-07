@@ -63,14 +63,6 @@ public class EntityVoidPortal extends Entity {
         }
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     public void tick() {
         super.tick();
         if (this.tickCount == 1) {
@@ -195,12 +187,22 @@ public class EntityVoidPortal extends Entity {
     public void clearObstructions(){
         if(!hasClearedObstructions){
             if(isShattered() && this.getDestination() != null){
-                hasClearedObstructions = true;
-                for (int i = -1; i <= -1; i++){
-                    for (int j = -1; j <= -1; j++){
-                        for (int k = -1; k <= -1; k++){
-                            BlockPos toAir = this.getDestination().offset(i, j, k);
-                            level().destroyBlock(toAir, true);
+                // Only run on server side and ensure chunk is loaded to prevent deadlock
+                if(level() instanceof ServerLevel serverLevel){
+                    BlockPos destination = this.getDestination();
+                    // Check if the chunk is loaded before attempting to modify blocks
+                    // This prevents synchronous chunk loading which can cause server hangs
+                    if(serverLevel.isLoaded(destination)){
+                        hasClearedObstructions = true;
+                        for (int i = -1; i <= 1; i++){
+                            for (int j = -1; j <= 1; j++){
+                                for (int k = -1; k <= 1; k++){
+                                    BlockPos toAir = destination.offset(i, j, k);
+                                    if(serverLevel.isLoaded(toAir)){
+                                        serverLevel.destroyBlock(toAir, true);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -265,7 +267,7 @@ public class EntityVoidPortal extends Entity {
     public void link(EntityVoidPortal portal) {
         this.setSisterId(portal.getUUID());
         portal.setSisterId(this.getUUID());
-        portal.setLifespan(this.getLifespan());
+        this.setLifespan(portal.getLifespan());
         this.setDestination(portal.blockPosition());
         portal.setDestination(this.blockPosition());
     }

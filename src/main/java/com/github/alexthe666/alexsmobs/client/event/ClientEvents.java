@@ -3,8 +3,11 @@ package com.github.alexthe666.alexsmobs.client.event;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.ClientProxy;
 import com.github.alexthe666.alexsmobs.client.model.ModelRockyChestplateRolling;
+import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
 import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
+import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.client.render.RenderVineLasso;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
@@ -20,14 +23,18 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import com.github.alexthe666.citadel.client.event.EventGetFluidRenderType;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
 import com.github.alexthe666.citadel.client.event.EventGetStarBrightness;
 import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -43,6 +50,7 @@ import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -54,7 +62,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.api.distmarker.Dist;
@@ -152,7 +159,7 @@ public class ClientEvents {
             if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN) != null) {
                 float initEnd = event.getFarPlaneDistance();
                 MobEffectInstance instance = Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN);
-                EffectPowerDown powerDown = (EffectPowerDown) instance.getEffect();
+                EffectPowerDown powerDown = (EffectPowerDown) instance.getEffect().value();
                 int duration = instance.getDuration();
                 float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
                 float f = Math.min(20, (Math.min(powerDown.getActiveTime() + partialTicks, duration + partialTicks)))
@@ -200,8 +207,14 @@ public class ClientEvents {
         if (event.getEntity() instanceof WanderingTrader
                 && event.getEntity().getType() == EntityType.WANDERING_TRADER) {
             if (event.getEntity().getVehicle() instanceof EntityElephant) {
-                // Note: model field is protected in 1.21, this feature is temporarily disabled
-                // TODO: Use mixins or access transformers to re-enable model swapping
+                // Swap model to sitting villager when riding elephant
+                // Uses Access Transformer to access protected 'model' field in LivingEntityRenderer
+                if (event.getRenderer() instanceof LivingEntityRenderer livingRenderer) {
+                    if (!(livingRenderer.model instanceof ModelWanderingVillagerRider)) {
+                        livingRenderer.model = new ModelWanderingVillagerRider(
+                            Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SITTING_WANDERING_VILLAGER));
+                    }
+                }
             }
         }
         if (event.getEntity().hasEffect(AMEffectRegistry.CLINGING)
@@ -390,9 +403,21 @@ public class ClientEvents {
     public void onRenderWorldLastEvent(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             if (!AMConfig.shadersCompat) {
-                // liquidBlockRenderer is private in 1.21 - lava vision custom rendering
-                // temporarily disabled
-                // TODO: Use mixins or access transformers to re-enable custom fluid rendering
+                // Lava vision custom fluid rendering
+                if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)) {
+                    if (!previousLavaVision) {
+                        previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
+                        Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
+                        updateAllChunks();
+                    }
+                } else {
+                    if (previousLavaVision) {
+                        if (previousFluidRenderer != null) {
+                            Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = previousFluidRenderer;
+                        }
+                        updateAllChunks();
+                    }
+                }
                 previousLavaVision = Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION);
                 if (AMConfig.clingingFlipEffect) {
                     if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.CLINGING)
@@ -437,19 +462,7 @@ public class ClientEvents {
     }
 
     private void updateAllChunks() {
-        // viewArea is private in 1.21, forcing chunk refresh via
-        // levelRenderer.allChanged()
         Minecraft.getInstance().levelRenderer.allChanged();
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public void onGetFluidRenderType(EventGetFluidRenderType event) {
-        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)
-                && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
-            event.setRenderType(RenderType.translucent());
-            // Event allowed by default;
-        }
     }
 
     @SubscribeEvent
@@ -495,20 +508,17 @@ public class ClientEvents {
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, staticLevel);
                 RenderSystem.setShaderTexture(0, AMRenderTypes.STATIC_TEXTURE);
-                // Tesselator tesselator = Tesselator.getInstance();
-                // BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS,
-                // DefaultVertexFormat.POSITION_TEX);
-                // Buffer already begun
-                // float minU = 10 * staticIndexX * 0.125F;
-                // float maxU = 10 * (0.5F + staticIndexX * 0.125F);
-                // float minV = 10 * staticIndexY * 0.125F;
-                // float maxV = 10 * (0.125F + staticIndexY * 0.125F);
-                // TODO: BufferBuilder API changed in 1.21 - needs rewrite with Matrix4f or
-                // GuiGraphics
-                // bufferbuilder.addVertex(...).setUv(...);
-                // bufferbuilder.addVertex(...).setUv(...);
-                // bufferbuilder.addVertex(...).setUv(...);
-                // BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+                Tesselator tesselator = Tesselator.getInstance();
+                BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+                float minU = 10 * staticIndexX * 0.125F;
+                float maxU = 10 * (0.5F + staticIndexX * 0.125F);
+                float minV = 10 * staticIndexY * 0.125F;
+                float maxV = 10 * (0.125F + staticIndexY * 0.125F);
+                bufferbuilder.addVertex(0.0F, screenHeight, -190.0F).setUv(minU, maxV);
+                bufferbuilder.addVertex(screenWidth, screenHeight, -190.0F).setUv(maxU, maxV);
+                bufferbuilder.addVertex(screenWidth, 0.0F, -190.0F).setUv(maxU, minV);
+                bufferbuilder.addVertex(0.0F, 0.0F, -190.0F).setUv(minU, minV);
+                BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
                 RenderSystem.depthMask(true);
                 RenderSystem.enableDepthTest();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

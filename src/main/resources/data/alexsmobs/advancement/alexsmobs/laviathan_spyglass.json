@@ -2,7 +2,7 @@
   "parent": "alexsmobs:alexsmobs/root",
   "display": {
     "icon": {
-      "item": "minecraft:spyglass"
+      "id": "minecraft:spyglass"
     },
     "title": {
       "translate": "advancements.alexsmobs.laviathan_spyglass.title"
@@ -15,14 +15,11 @@
     "announce_to_chat": true,
     "hidden": false
   },
-
   "criteria": {
     "spyglass_at_bison": {
       "conditions": {
         "item": {
-          "items": [
-            "minecraft:spyglass"
-          ]
+          "items": "minecraft:spyglass"
         },
         "player": [
           {

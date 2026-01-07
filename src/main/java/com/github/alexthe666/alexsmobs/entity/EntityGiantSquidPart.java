@@ -43,6 +43,11 @@ public class EntityGiantSquidPart extends PartEntity<EntityGiantSquid> implement
     }
 
     @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
+    @Override
     public Vec3 getLeashOffset() {
         return new Vec3(0.0D, (double)this.getEyeHeight() * 0.15F, (double)(this.getBbWidth() * 0.1F));
     }

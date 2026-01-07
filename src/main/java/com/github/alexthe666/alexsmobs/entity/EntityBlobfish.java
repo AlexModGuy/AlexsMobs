@@ -34,6 +34,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -248,8 +250,13 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         Bucketable.saveDefaultDataToBucketTag(this, bucket);
-        // TODO: NeoForge 1.21 - Custom bucket data needs DataComponents approach
-        // Custom NBT data like BucketScale and Slimed should be stored in DataComponents.BUCKET_ENTITY_DATA
+        // Save custom bucket data using CustomData component
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> {
+            return data.update(tag -> {
+                tag.putFloat("BucketScale", this.getBlobfishScale());
+                tag.putBoolean("Slimed", this.isSlimed());
+            });
+        });
     }
 
     @Override

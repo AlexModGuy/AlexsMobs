@@ -1,9 +1,13 @@
 package com.github.alexthe666.alexsmobs.tileentity;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.block.BlockEndPirateAnchor;
 import com.github.alexthe666.alexsmobs.block.BlockEndPirateAnchorWinch;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -154,7 +158,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     public boolean tryPlaceAnchor(int offset) {
         BlockPos at = this.getBlockPos().below(3 + offset);
         if (BlockEndPirateAnchor.isClearForPlacement(this.level, at, anchorEW)) {
-            BlockState anchorState = null;//AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW);
+            BlockState anchorState = AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW);
             this.level.setBlock(at, anchorState, 2);
             BlockEndPirateAnchor.placeAnchor(level, at, anchorState);
             placeChainBlocks(offset);
@@ -168,7 +172,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
         BlockPos at = this.getBlockPos().below(3 + offset);
         BlockPos chainPos = at.above(3);
         while (chainPos.getY() < this.getBlockPos().getY() - 1 && isEmptyBlock(chainPos)) {
-          //  this.level.setBlock(chainPos, AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.PIECE, BlockEndPirateAnchor.PieceType.CHAIN).setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW), 3);
+            this.level.setBlock(chainPos, AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.PIECE, BlockEndPirateAnchor.PieceType.CHAIN).setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW), 3);
             chainPos = chainPos.above();
         }
     }
@@ -197,6 +201,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     public void sendDownChains() {
         recalculateChains();
         pullingUp = false;
+        syncToClient();
     }
 
     public void pullUpChains() {
@@ -205,6 +210,14 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
         }
         targetChainLength = 0;
         pullingUp = true;
+        syncToClient();
+    }
+
+    private void syncToClient() {
+        if (level != null && !level.isClientSide) {
+            setChanged();
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
     }
 
     public void onInteract(){
@@ -258,5 +271,15 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
         compound.putBoolean("EWAnchor", anchorEW);
         compound.putFloat("ChainLength", chainLength);
         compound.putInt("TargetChainLength", targetChainLength);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 }

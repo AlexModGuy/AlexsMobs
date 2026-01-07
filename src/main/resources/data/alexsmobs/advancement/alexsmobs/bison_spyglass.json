@@ -2,8 +2,12 @@
   "parent": "alexsmobs:alexsmobs/root",
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:bison\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:bison"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.bison_spyglass.title"
@@ -20,9 +24,7 @@
     "spyglass_at_bison": {
       "conditions": {
         "item": {
-          "items": [
-            "minecraft:spyglass"
-          ]
+          "items": "minecraft:spyglass"
         },
         "player": [
           {

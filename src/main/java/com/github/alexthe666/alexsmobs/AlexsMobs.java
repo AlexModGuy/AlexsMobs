@@ -78,8 +78,8 @@ public class AlexsMobs {
         AMPaintingRegistry.DEF_REG.register(modEventBus);
         AMEffectRegistry.EFFECT_DEF_REG.register(modEventBus);
         AMEffectRegistry.POTION_DEF_REG.register(modEventBus);
-        // TODO: 1.21 - Enchantments are now data-driven, no registration needed
-        // AMEnchantmentRegistry.DEF_REG.register(modEventBus);
+        // NeoForge 1.21: Enchantments are now data-driven via datapacks, no code registration needed
+        // See data/alexsmobs/enchantment/ for enchantment definitions
         AMMenuRegistry.DEF_REG.register(modEventBus);
         AMRecipeRegistry.DEF_REG.register(modEventBus);
         AMLootRegistry.DEF_REG.register(modEventBus);
@@ -140,12 +140,15 @@ public class AlexsMobs {
         // Server to Client messages
         registrar.playToClient(MessageCrowDismount.TYPE, MessageCrowDismount.CODEC, MessageCrowDismount::handle);
         registrar.playToClient(MessageCrowMountPlayer.TYPE, MessageCrowMountPlayer.CODEC, MessageCrowMountPlayer::handle);
-        registrar.playToClient(MessageMosquitoDismount.TYPE, MessageMosquitoDismount.CODEC, MessageMosquitoDismount::handle);
+        // Bidirectional - sent from client (falconry glove launch) and from server (sendMSGToAll for sync)
+        registrar.playBidirectional(MessageMosquitoDismount.TYPE, MessageMosquitoDismount.CODEC, MessageMosquitoDismount::handle);
         registrar.playToClient(MessageMosquitoMountPlayer.TYPE, MessageMosquitoMountPlayer.CODEC, MessageMosquitoMountPlayer::handle);
         registrar.playToClient(MessageKangarooEat.TYPE, MessageKangarooEat.CODEC, MessageKangarooEat::handle);
         registrar.playToClient(MessageKangarooInventorySync.TYPE, MessageKangarooInventorySync.CODEC, MessageKangarooInventorySync::handle);
-        registrar.playToClient(MessageStartDancing.TYPE, MessageStartDancing.CODEC, MessageStartDancing::handle);
-        registrar.playToClient(MessageSyncEntityPos.TYPE, MessageSyncEntityPos.CODEC, MessageSyncEntityPos::handle);
+        // Client to Server - sent from client when jukebox plays near dancing mobs (e.g., rain frog rain dance)
+        registrar.playToServer(MessageStartDancing.TYPE, MessageStartDancing.CODEC, MessageStartDancing::handle);
+        // Bidirectional - sent from client (falconry glove launch) and from server (sendMSGToAll for sync)
+        registrar.playBidirectional(MessageSyncEntityPos.TYPE, MessageSyncEntityPos.CODEC, MessageSyncEntityPos::handle);
         registrar.playToClient(MessageSendVisualFlagFromServer.TYPE, MessageSendVisualFlagFromServer.CODEC, MessageSendVisualFlagFromServer::handle);
         registrar.playToClient(MessageSetPupfishChunkOnClient.TYPE, MessageSetPupfishChunkOnClient.CODEC, MessageSetPupfishChunkOnClient::handle);
         registrar.playToClient(MessageTarantulaHawkSting.TYPE, MessageTarantulaHawkSting.CODEC, MessageTarantulaHawkSting::handle);

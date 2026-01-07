@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -140,9 +142,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            // TODO: 1.21 - setMaxUpStep removed, use STEP_HEIGHT attribute in bakeAttributes
-
-            // // setMaxUpStep removed in 1.21 - use Attributes.STEP_HEIGHT instead
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);
@@ -186,7 +185,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.setCommand(compound.getInt("KomodoCommand"));
         this.jostleCooldown = compound.getInt("JostlingCooldown");
         this.setSaddled(compound.getBoolean("Saddle"));
-
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -337,7 +335,8 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            passenger.setPos(this.getX() + extraX, this.getY() + this.getVehicleAttachmentPoint(this).y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + extraZ);
+            double passengerYOffset = passenger instanceof Player ? -0.35D : 0.0D;
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passengerYOffset, this.getZ() + extraZ);
         }
     }
 
@@ -352,23 +351,18 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         InteractionResult type = super.mobInteract(player, hand);
-
-        if(itemstack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES)){
-            if(!isTame()){
-                int size = itemstack.getCount();
-                int tameAmount = 58 + random.nextInt(16);
-                if(size > tameAmount){
-                    this.tame(player);
-                }
-                itemstack.shrink(size);
-                return InteractionResult.SUCCESS;
-            }else if(this.getHealth() <= this.getMaxHealth()){
-                usePlayerItem(player, hand, itemstack);
-                this.heal(10);
-                return InteractionResult.SUCCESS;
-            }
-        }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if(itemstack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES) && !isTame()){
+            int tameAmount = 58 + this.random.nextInt(15);
+            if(itemstack.getCount() > tameAmount){
+                this.tame(player);
+                this.level().broadcastEntityEvent(this, (byte) 7);
+            }else{
+                this.level().broadcastEntityEvent(this, (byte) 6);
+            }
+            itemstack.shrink(itemstack.getCount());
+            return InteractionResult.SUCCESS;
+        }
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)){
             if(isFood(itemstack)){
                 this.setInLoveTime(600);
@@ -421,7 +415,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         }
     }
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.23F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.23F).add(Attributes.STEP_HEIGHT, 1.0D);
     }
 
     @Nullable
@@ -490,7 +484,12 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     private void applyKnockbackFromMoose(float strength, double ratioX, double ratioZ) {
-        // TODO: ForgeHooks.onLivingKnockBack removed in 1.21 - knockback logic simplified
+        net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent event = new net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent(this, strength, ratioX, ratioZ);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+        if (event.isCanceled()) return;
+        strength = event.getStrength();
+        ratioX = event.getRatioX();
+        ratioZ = event.getRatioZ();
         if (!(strength <= 0.0F)) {
             this.hasImpulse = true;
             Vec3 vector3d = this.getDeltaMovement();

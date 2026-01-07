@@ -17,9 +17,8 @@ import org.joml.Matrix4f;
 public class AMRenderTypes extends RenderType {
 
     public static final ResourceLocation STATIC_TEXTURE = ResourceLocation.parse("alexsmobs:textures/static.png");
-    // TODO: 1.21 Find correct VertexFormat for Entities (formerly NEW_ENTITY).
-    // BLOCK is a placeholder and will crash rendering.
-    public static final VertexFormat AM_NEW_ENTITY = DefaultVertexFormat.BLOCK;
+    // Use DefaultVertexFormat.NEW_ENTITY for entity rendering
+    public static final VertexFormat AM_NEW_ENTITY = DefaultVertexFormat.NEW_ENTITY;
 
     private static boolean encounteredMultiConsumerError = false;
 
@@ -297,7 +296,7 @@ public class AMRenderTypes extends RenderType {
     public static RenderType getEyesNoFog(ResourceLocation locationIn) {
         RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(
                 locationIn, false, false);
-        return create("eyes_nofog", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, true, false,
+        return create("eyes_nofog", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 256, true, false,
                 RenderType.CompositeState.builder().setShaderState(RENDERTYPE_OUTLINE_SHADER)
                         .setTextureState(renderstateshard$texturestateshard)
                         .setTransparencyState(LIGHTNING_TRANSPARENCY).setWriteMaskState(COLOR_DEPTH_WRITE)

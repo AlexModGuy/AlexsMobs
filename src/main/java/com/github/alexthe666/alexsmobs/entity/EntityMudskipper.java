@@ -33,6 +33,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -43,6 +45,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -114,9 +117,10 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         return !worldIn.getBlockState(pos).isSuffocating(worldIn, pos);
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return false; // Mudskipper can breathe underwater
+    }
 
     protected void registerGoals() {
         super.registerGoals();
@@ -406,19 +410,20 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
 
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         if (this.hasCustomName()) {
             bucket.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, this.getCustomName());
         }
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
-        // TODO: NeoForge 1.21 - NBT replaced with DataComponents
-        // CompoundTag compound = bucket.getOrCreateTag();
-        // TODO: Use DataComponents for MudskipperData in 1.21
-        // compound.put("MudskipperData", platTag);
+        bucket.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data -> data.update(tag -> {
+            tag.put("MudskipperData", platTag);
+        }));
     }
 
     @Override
     public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
         if (compound.contains("MudskipperData")) {
             this.readAdditionalSaveData(compound.getCompound("MudskipperData"));
         }

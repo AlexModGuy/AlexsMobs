@@ -209,7 +209,8 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         if (this.hasPassenger(passenger)) {
             passenger.setYBodyRot(this.yBodyRot);
             Vec3 vec = new Vec3(0, this.getBbHeight() * 0.4F, this.getBbWidth() * -0.2F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
-            passenger.setPos(this.getX() + vec.x, this.getY() + vec.y + 0.0D /* passenger.getMyRidingOffset() removed in 1.21 */, this.getZ() + vec.z);
+            double passengerYOffset = passenger instanceof Player ? -0.35D : -0.5D;
+            passenger.setPos(this.getX() + vec.x, this.getY() + vec.y + passengerYOffset, this.getZ() + vec.z);
         }
     }
 
@@ -234,9 +235,10 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        return false; // Skelewag can breathe underwater
+    }
 
     @Override
     public int getAnimationTick() {

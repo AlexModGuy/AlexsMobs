@@ -112,8 +112,12 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
+    @Override
     public void tick() {
-        // TODO: isInsidePortal field removed in 1.21 -         isInsidePortal = false;
         if (this.tickCount > 10) {
             Entity parent = getParent();
             refreshDimensions();
@@ -173,14 +177,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     public HumanoidArm getMainArm() {
         return null;
     }
-
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
 
     public void pushEntities() {
         List<net.minecraft.world.entity.Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));

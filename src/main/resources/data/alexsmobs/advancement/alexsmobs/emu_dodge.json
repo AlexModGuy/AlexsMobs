@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:blue_banner"
+      "id": "minecraft:blue_banner"
     },
     "title": {
       "translate": "advancements.alexsmobs.emu_dodge.title"

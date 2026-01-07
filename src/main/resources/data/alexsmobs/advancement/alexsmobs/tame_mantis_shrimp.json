@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:mantis_shrimp\"}"
+      "id": "alexsmobs:tab_icon",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEntityType": "alexsmobs:mantis_shrimp"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.tame_mantis_shrimp.title"

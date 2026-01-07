@@ -16,9 +16,14 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -90,43 +95,26 @@ public class AMBlockRegistry {
                         () -> new BlockReptileEgg(AMEntityRegistry.CAIMAN));
         public static final DeferredHolder<Block, Block> TRIOPS_EGGS = registerBlockAndItem("triops_eggs",
                         () -> new BlockTriopsEggs());
-        /*
-         * public static final DeferredHolder<Block, Block> PURPUR_PLANKS =
-         * registerBlockAndItem("purpur_planks", () -> new
-         * Block(PURPUR_PLANKS_PROPERTIES));;
-         * public static final DeferredHolder<Block, Block> PURPUR_PLANKS_STAIRS =
-         * registerBlockAndItem("purpur_planks_stairs", () -> new
-         * StairBlock(PURPUR_PLANKS.get().defaultBlockState(),
-         * PURPUR_PLANKS_PROPERTIES));;
-         * public static final DeferredHolder<Block, Block> PURPUR_PLANKS_SLAB =
-         * registerBlockAndItem("purpur_planks_slab", () -> new
-         * SlabBlock(PURPUR_PLANKS_PROPERTIES));;
-         * public static final DeferredHolder<Block, Block> PURPUR_PLANKS_WALL =
-         * registerBlockAndItem("purpur_planks_wall", () -> new
-         * WallBlock(PURPUR_PLANKS_PROPERTIES));;
-         * public static final DeferredHolder<Block, Block> END_PIRATE_DOOR =
-         * registerBlockAndItem("end_pirate_door", () -> new BlockEndPirateDoor());
-         * public static final DeferredHolder<Block, Block> END_PIRATE_TRAPDOOR =
-         * registerBlockAndItem("end_pirate_trapdoor", () -> new
-         * TrapDoorBlock(BlockBehaviour.Properties.of(Material.GLASS,
-         * MaterialColor.TERRACOTTA_PURPLE).lightLevel((state) ->
-         * 3).strength(3.0F).sound(SoundType.GLASS).noOcclusion()));;
-         * public static final DeferredHolder<Block, Block> END_PIRATE_ANCHOR =
-         * registerBlockAndItem("end_pirate_anchor", () -> new BlockEndPirateAnchor());
-         * public static final DeferredHolder<Block, Block> END_PIRATE_ANCHOR_WINCH =
-         * registerBlockAndItem("end_pirate_anchor_winch", () -> new
-         * BlockEndPirateAnchorWinch());
-         * public static final DeferredHolder<Block, Block> END_PIRATE_SHIP_WHEEL =
-         * registerBlockAndItem("end_pirate_ship_wheel", () -> new
-         * BlockEndPirateShipWheel());
-         * public static final DeferredHolder<Block, Block> END_PIRATE_FLAG =
-         * registerBlockAndItem("end_pirate_flag", () -> new BlockEndPirateFlag());
-         * public static final DeferredHolder<Block, Block> PHANTOM_SAIL =
-         * registerBlockAndItem("phantom_sail", () -> new BlockEndPirateSail(false));
-         * public static final DeferredHolder<Block, Block> SPECTRE_SAIL =
-         * registerBlockAndItem("spectre_sail", () -> new BlockEndPirateSail(true));
-         * 
-         */
+
+        public static final DeferredHolder<Block, Block> PURPUR_PLANKS = registerBlockAndItem("purpur_planks",
+                        () -> new Block(PURPUR_PLANKS_PROPERTIES));
+        public static final DeferredHolder<Block, Block> PURPUR_PLANKS_STAIRS = registerBlockAndItem(
+                        "purpur_planks_stairs",
+                        () -> new StairBlock(PURPUR_PLANKS.get().defaultBlockState(), PURPUR_PLANKS_PROPERTIES));
+        public static final DeferredHolder<Block, Block> PURPUR_PLANKS_SLAB = registerBlockAndItem("purpur_planks_slab",
+                        () -> new SlabBlock(PURPUR_PLANKS_PROPERTIES));
+        public static final DeferredHolder<Block, Block> PURPUR_PLANKS_WALL = registerBlockAndItem("purpur_planks_wall",
+                        () -> new WallBlock(PURPUR_PLANKS_PROPERTIES));
+        
+        // End Pirate blocks
+        public static final DeferredHolder<Block, Block> END_PIRATE_DOOR = registerBlockAndItem("end_pirate_door", () -> new BlockEndPirateDoor());
+        public static final DeferredHolder<Block, Block> END_PIRATE_TRAPDOOR = registerBlockAndItem("end_pirate_trapdoor", () -> new TrapDoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PURPLE).lightLevel((state) -> 3).strength(3.0F).sound(SoundType.GLASS).noOcclusion()));
+        public static final DeferredHolder<Block, Block> END_PIRATE_ANCHOR = registerBlockAndItem("end_pirate_anchor", () -> new BlockEndPirateAnchor(), new Item.Properties(), true);
+        public static final DeferredHolder<Block, Block> END_PIRATE_ANCHOR_WINCH = registerBlockAndItem("end_pirate_anchor_winch", () -> new BlockEndPirateAnchorWinch(), new Item.Properties(), true);
+        public static final DeferredHolder<Block, Block> END_PIRATE_SHIP_WHEEL = registerBlockAndItem("end_pirate_ship_wheel", () -> new BlockEndPirateShipWheel(), new Item.Properties(), true);
+        public static final DeferredHolder<Block, Block> END_PIRATE_FLAG = registerBlockAndItem("end_pirate_flag", () -> new BlockEndPirateFlag());
+        public static final DeferredHolder<Block, Block> PHANTOM_SAIL = registerBlockAndItem("phantom_sail", () -> new BlockEndPirateSail(false));
+        public static final DeferredHolder<Block, Block> SPECTRE_SAIL = registerBlockAndItem("spectre_sail", () -> new BlockEndPirateSail(true));
 
         public static DeferredHolder<Block, Block> registerBlockAndItem(String name, Supplier<Block> block) {
                 return registerBlockAndItem(name, block, new Item.Properties(), false);

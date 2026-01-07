@@ -1,8 +1,12 @@
 {
   "display": {
     "icon": {
-      "item": "citadel:effect_item",
-      "nbt": "{DisplayEffect:\"alexsmobs:ender_flu\"}"
+      "id": "citadel:effect_item",
+      "components": {
+        "minecraft:custom_data": {
+          "DisplayEffect": "alexsmobs:ender_flu"
+        }
+      }
     },
     "title": {
       "translate": "advancements.alexsmobs.ender_flu.title"

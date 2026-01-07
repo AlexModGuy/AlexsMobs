@@ -216,6 +216,10 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
         super.loadAdditional(compound, registries);
         this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compound, this.stacks, registries);
+        // Initialize recipe lookup for loaded items
+        if (!this.stacks.get(0).isEmpty()) {
+            lastRecipe = AlexsMobs.PROXY.getCapsidRecipeManager().getRecipeFor(this.stacks.get(0));
+        }
     }
 
     @Override

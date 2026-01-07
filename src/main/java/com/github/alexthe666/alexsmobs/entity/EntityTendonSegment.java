@@ -47,14 +47,6 @@ public class EntityTendonSegment  extends Entity {
         super(type, level);
     }
 
-    // TODO: getAddEntityPacket override removed - entities use default packet now
-    //     @Override
-    /*
-        public Packet<ClientGamePacketListener> getAddEntityPacket() {
-            return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
-        }
-    */
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(CREATOR_ID, Optional.empty());

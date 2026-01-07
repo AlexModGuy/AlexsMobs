@@ -79,7 +79,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
         }
         for(int i = 0; i < 3; i++){
             if(tag.contains("Possibility" + i)){
-                possiblities[i] = ItemStack.parseOptional(registries, tag.getCompound("Possiblity" + i));
+                possiblities[i] = ItemStack.parseOptional(registries, tag.getCompound("Possibility" + i));
             }
         }
 
@@ -99,7 +99,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
         tag.put("PlayerTransmutationData", list);
         for(int i = 0; i < 3; i++){
             if(possiblities[i] != null && !possiblities[i].isEmpty()){
-                tag.put("Possiblity" + i, possiblities[i].save(registries));
+                tag.put("Possibility" + i, possiblities[i].save(registries));
             }
         }
     }

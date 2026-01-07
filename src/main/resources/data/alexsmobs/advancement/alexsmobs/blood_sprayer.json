@@ -1,26 +1,28 @@
 {
-    "display": {
-        "icon": {
-            "item": "alexsmobs:blood_sprayer"
-        },
-        "title": {
-            "translate": "advancements.alexsmobs.blood_sprayer.title"
-        },
-        "description": {
-            "translate": "advancements.alexsmobs.blood_sprayer.desc"
-        }
+  "display": {
+    "icon": {
+      "id": "alexsmobs:blood_sprayer"
     },
-    "parent": "alexsmobs:alexsmobs/crimson_mosquito",
-    "criteria": {
-        "blood_sprayer": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": ["alexsmobs:blood_sprayer"]
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.alexsmobs.blood_sprayer.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.blood_sprayer.desc"
     }
+  },
+  "parent": "alexsmobs:alexsmobs/crimson_mosquito",
+  "criteria": {
+    "blood_sprayer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alexsmobs:blood_sprayer"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

@@ -111,6 +111,11 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
 
+    @Override
+    public boolean canUsePortal(boolean allowVehicles) {
+        return false;
+    }
+
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.giantSquidSpawnRolls, this.getRandom(), spawnReasonIn);
     }
@@ -413,9 +418,7 @@ public class EntityGiantSquid extends WaterAnimal {
         }
     }
 
-    // TODO: 1.21 - canBreatheUnderwater is now final
-    // // canBreatheUnderwater() is final in 1.21 - use MobType.WATER instead
-    // public boolean canBreatheUnderwater() { return true; }
+    // EntityGiantSquid extends WaterAnimal which already can breathe underwater by default
 
     public boolean isPushedByFluid() {
         return false;
