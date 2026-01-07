@@ -830,14 +830,10 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         return !(over instanceof ItemEntity) && (!(over instanceof LivingEntity) || !this.isOwnedBy((LivingEntity) over));
     }
 
-    //killEntity
+    // Note: For tamed eagles, awardKillScore is called on the PLAYER (owner), not the eagle.
+    // The bald eagle challenge advancement is triggered via LivingDeathEvent in ServerEvents instead.
     @Override
     public void awardKillScore(Entity entity, int score, DamageSource src) {
-        if (this.isLaunched() && this.hasCap() && this.isTame() && this.getOwner() != null) {
-            if (this.getOwner() instanceof ServerPlayer && this.distanceTo(this.getOwner()) >= 100) {
-                AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.get().trigger((ServerPlayer) this.getOwner());
-            }
-        }
         super.awardKillScore(entity, score, src);
     }
 

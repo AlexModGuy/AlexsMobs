@@ -852,5 +852,18 @@ public class ServerEvents {
         event.addListener(AlexsMobs.PROXY.getCapsidRecipeManager());
     }
 
+    // Bald Eagle kill challenge - TamableAnimal gives kill credit to owner, not the pet
+    // so we use LivingDeathEvent to detect kills by launched eagles
+    @SubscribeEvent
+    public static void onLivingDeath(LivingDeathEvent event) {
+        if (event.getSource() != null && event.getSource().getEntity() instanceof EntityBaldEagle eagle) {
+            if (eagle.isLaunched() && eagle.hasCap() && eagle.isTame() && eagle.getOwner() instanceof ServerPlayer serverPlayer) {
+                if (eagle.distanceTo(serverPlayer) >= 100) {
+                    AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.get().trigger(serverPlayer);
+                }
+            }
+        }
+    }
+
 }
 
