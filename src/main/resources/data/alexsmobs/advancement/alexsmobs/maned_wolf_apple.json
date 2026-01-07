@@ -21,13 +21,7 @@
       "trigger": "minecraft:player_interacted_with_entity",
       "conditions": {
         "item": {
-          "items": [
-            {
-              "items": [
-                "minecraft:apple"
-              ]
-            }
-          ]
+          "items": "minecraft:apple"
         },
         "entity": {
           "type": "alexsmobs:maned_wolf"

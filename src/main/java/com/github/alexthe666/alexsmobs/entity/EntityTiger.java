@@ -209,7 +209,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     //killEntity
-    public void awardKillScore(LivingEntity entity, int score, DamageSource src) {
+    @Override
+    public void awardKillScore(Entity entity, int score, DamageSource src) {
         this.heal(5);
         super.awardKillScore(entity, score, src);
     }

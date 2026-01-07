@@ -831,7 +831,8 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     //killEntity
-    public void awardKillScore(LivingEntity entity, int score, DamageSource src) {
+    @Override
+    public void awardKillScore(Entity entity, int score, DamageSource src) {
         if (this.isLaunched() && this.hasCap() && this.isTame() && this.getOwner() != null) {
             if (this.getOwner() instanceof ServerPlayer && this.distanceTo(this.getOwner()) >= 100) {
                 AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.get().trigger((ServerPlayer) this.getOwner());
