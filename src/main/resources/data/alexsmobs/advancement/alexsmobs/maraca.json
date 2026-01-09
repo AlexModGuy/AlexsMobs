@@ -13,16 +13,7 @@
   "parent": "alexsmobs:alexsmobs/rattlesnake",
   "criteria": {
     "maraca": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "alexsmobs:maraca"
-            ]
-          }
-        ]
-      }
+      "trigger": "alexsmobs:cockroach_maraca"
     }
   }
 }

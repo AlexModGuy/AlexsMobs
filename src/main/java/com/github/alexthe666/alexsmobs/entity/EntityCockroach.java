@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFleeLight;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -406,7 +407,7 @@ public class EntityCockroach extends Animal implements Shearable, net.neoforged.
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.has(net.minecraft.core.component.DataComponents.FOOD) || stack.is(AMTagRegistry.COCKROACH_BREEDABLES);
+        return stack.getItem() == AMItemRegistry.MARACA.get() || stack.has(net.minecraft.core.component.DataComponents.FOOD) || stack.is(AMTagRegistry.COCKROACH_BREEDABLES);
     }
 
     public void travel(Vec3 vec3d) {
@@ -424,6 +425,9 @@ public class EntityCockroach extends Animal implements Shearable, net.neoforged.
     public void onGetItem(ItemEntity e) {
         if (e.getItem().getItem() == AMItemRegistry.MARACA.get()) {
             this.setMaracas(true);
+            if (e.getOwner() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                AMAdvancementTriggerRegistry.COCKROACH_MARACA.get().trigger(serverPlayer);
+            }
         } else {
             if (e.getItem().hasCraftingRemainingItem()) {
                 this.spawnAtLocation(e.getItem().getCraftingRemainingItem().copy());

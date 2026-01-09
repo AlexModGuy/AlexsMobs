@@ -23,6 +23,7 @@ public class AMAdvancementTriggerRegistry {
     public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> UNDERMINE_UNDERMINER = DEF_REG.register("undermine_underminer", AMAdvancementTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> ELEPHANT_SWAG = DEF_REG.register("elephant_swag", AMAdvancementTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> SKUNK_SPRAY = DEF_REG.register("skunk_spray", AMAdvancementTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AMAdvancementTrigger> COCKROACH_MARACA = DEF_REG.register("cockroach_maraca", AMAdvancementTrigger::new);
 
     // init() is no longer needed as triggers are registered via DeferredRegister
     public static void init(){
