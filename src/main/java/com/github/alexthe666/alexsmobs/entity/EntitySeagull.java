@@ -1,14 +1,17 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.entity.ai.SeagullAITargetSeeds;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIRevealTreasure;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIStealFromPlayers;
+import com.github.alexthe666.alexsmobs.entity.ai.SeagullAITargetSeeds;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.repack.jcodec.common.tools.MainUtils.Flag;
 import com.google.common.base.Predicate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -76,6 +79,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     public float prevAttackProgress;
     public float sitProgress;
     public float prevSitProgress;
+    public int postSeedCooldown = 0;
     public int stealCooldown = random.nextInt(2500);
     private boolean isLandNavigator;
     private int timeFlying;
@@ -88,6 +92,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     private int heldItemTime = 0;
     public int treasureSitTime;
     public UUID feederUUID = null;
+    public boolean hasEatenSeed = false; // Add this line
 
     protected EntitySeagull(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -148,6 +153,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new SeagullAITargetSeeds(this));
         this.targetSelector.addGoal(1, new SeagullAIRevealTreasure(this));
         this.targetSelector.addGoal(2, new SeagullAIStealFromPlayers(this));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
@@ -277,6 +283,10 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         } else {
             if (flyProgress > 0F)
                 flyProgress--;
+        }
+
+        if (postSeedCooldown > 0) {
+            postSeedCooldown--;
         }
 
         if (sitting) {

@@ -161,6 +161,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
         this.prevSneakProgress = sneakProgress;
         this.prevTackleProgress = tackleProgress;
         this.prevSleepProgress = sleepProgress;
+        System.out.println("Snow Leopard tick method running!"); // <- Add this line
 
         final boolean sitting = isSitting();
         final boolean slSneaking = isSLSneaking();
