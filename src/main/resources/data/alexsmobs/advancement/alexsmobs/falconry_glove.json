@@ -3,13 +3,15 @@
     "icon": {
       "id": "citadel:fancy_item",
       "components": {
-        "minecraft:custom_data": {
-          "DisplayItem": "alexsmobs:falconry_glove",
-          "DisplayBob": 1,
-          "DisplayZoom": 0,
-          "DisplayScale": 1,
-          "DisplaySpin": 0,
-          "DisplayShake": 0
+        "citadel:custom_render_display": {
+          "item": {
+            "id": "alexsmobs:falconry_glove"
+          },
+          "bob": true,
+          "zoom": false,
+          "spin": false,
+          "shake": false,
+          "scale": 1.0
         }
       }
     },

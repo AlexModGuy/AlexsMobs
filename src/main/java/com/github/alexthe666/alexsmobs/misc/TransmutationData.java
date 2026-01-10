@@ -71,8 +71,12 @@ public class TransmutationData {
         CompoundTag compound = new CompoundTag();
         ListTag listTag = new ListTag();
         for(Object2DoubleMap.Entry<ItemStack> entry : itemstackData.object2DoubleEntrySet()) {
+            ItemStack stack = entry.getKey();
+            if (stack.isEmpty()) {
+                continue; // Cannot encode empty ItemStack in 1.21+
+            }
             CompoundTag tag = new CompoundTag();
-            tag.put("Item", entry.getKey().save(registries));
+            tag.put("Item", stack.save(registries));
             tag.putDouble("Weight", entry.getDoubleValue());
             listTag.add(tag);
         }

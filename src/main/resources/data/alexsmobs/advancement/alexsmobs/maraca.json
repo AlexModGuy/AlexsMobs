@@ -17,9 +17,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "alexsmobs:maraca"
-            ]
+            "items": ["alexsmobs:maraca"]
           }
         ]
       }

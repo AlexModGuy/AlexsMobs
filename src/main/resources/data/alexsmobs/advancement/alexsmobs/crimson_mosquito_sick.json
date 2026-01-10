@@ -3,13 +3,15 @@
     "icon": {
       "id": "citadel:fancy_item",
       "components": {
-        "minecraft:custom_data": {
-          "DisplayItem": "minecraft:warped_fungus",
-          "DisplayBob": 0,
-          "DisplayZoom": 0,
-          "DisplayScale": 1,
-          "DisplaySpin": 0,
-          "DisplayShake": 1
+        "citadel:custom_render_display": {
+          "item": {
+            "id": "minecraft:warped_fungus"
+          },
+          "bob": false,
+          "zoom": false,
+          "spin": false,
+          "shake": true,
+          "scale": 1.0
         }
       }
     },
