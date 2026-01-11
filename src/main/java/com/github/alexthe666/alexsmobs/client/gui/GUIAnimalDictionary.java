@@ -23,7 +23,7 @@ public class GUIAnimalDictionary extends GuiBasicBook {
 
     public GUIAnimalDictionary(ItemStack bookStack, String page) {
         super(bookStack, Component.translatable("animal_dictionary.title"));
-        this.currentPageJSON = ResourceLocation.parse(this.getTextFileDirectory() + page + ".json");
+        this.currentPageJSON = this.getTextFileDirectory().withSuffix(page + ".json");
     }
 
     public void render(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
