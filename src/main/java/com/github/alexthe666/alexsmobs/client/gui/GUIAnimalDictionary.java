@@ -44,7 +44,7 @@ public class GUIAnimalDictionary extends GuiBasicBook {
         return ROOT;
     }
 
-    public String getTextFileDirectory() {
-        return "alexsmobs:book/animal_dictionary/";
+    public ResourceLocation getTextFileDirectory() {
+        return ResourceLocation.parse("alexsmobs:book/animal_dictionary/");
     }
 }
