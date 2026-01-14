@@ -12,6 +12,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
 public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
+    /**
+     * When true, the model will render in a static pose without interpolation animations.
+     * Used for rendering in the animal dictionary book to prevent shaking.
+     */
+    public static boolean renderStaticInBook = false;
+
     private final AdvancedModelBox root;
     private final AdvancedModelBox body;
     private final AdvancedModelBox leftArm;
@@ -154,25 +160,41 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
                                 @Override
     public void setupAnim(EntityLaviathan entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
-        float hh1 = entity.prevHeadHeight;
-        float hh2 = entity.getHeadHeight();
-        float rawHeadHeight = (hh1 + (hh2 - hh1) * partialTick) / 3F;
+        
+        float rawHeadHeight;
+        float swimProgress;
+        float biteProgress;
+        float headYaw;
+        
+        if (renderStaticInBook) {
+            // Use static values for book rendering to prevent shaking
+            rawHeadHeight = entity.getHeadHeight() / 3F;
+            swimProgress = entity.swimProgress;
+            biteProgress = entity.biteProgress;
+            headYaw = 0F; // Keep head still
+        } else {
+            float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+            float hh1 = entity.prevHeadHeight;
+            float hh2 = entity.getHeadHeight();
+            rawHeadHeight = (hh1 + (hh2 - hh1) * partialTick) / 3F;
+            swimProgress = entity.prevSwimProgress + (entity.swimProgress - entity.prevSwimProgress) * partialTick;
+            biteProgress = entity.prevBiteProgress + (entity.biteProgress - entity.prevBiteProgress) * partialTick;
+            headYaw = entity.getHeadYaw(partialTick);
+        }
+        
         float clampedNeckRot = Mth.clamp(-rawHeadHeight, -1, 1);
         float headStillProgress = 1F - Math.abs(clampedNeckRot);
-        float swimProgress = entity.prevSwimProgress + (entity.swimProgress - entity.prevSwimProgress) * partialTick;
         float onLandProgress = Math.max(0, 5F - swimProgress);
-        float biteProgress = entity.prevBiteProgress + (entity.biteProgress - entity.prevBiteProgress) * partialTick;
         this.neck.rotateAngleX += clampedNeckRot;
         this.neck.rotationPointZ += Math.abs(clampedNeckRot) * 2F;
         this.neck2.rotateAngleX -= clampedNeckRot * 0.4F;
         this.neck2.rotationPointZ += Math.abs(clampedNeckRot) * 2F;
         this.head.rotateAngleX -= clampedNeckRot * 0.6F;
         this.head.rotationPointZ += Math.abs(clampedNeckRot) * 2F;
-        this.neck.rotationPointY -= Mth.clamp(Math.abs(entity.getHeadYaw(partialTick)) / 50F, 0F, 1F);
-        this.neck.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.65F);
-        this.neck2.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.6F);
-        this.head.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.45F);
+        this.neck.rotationPointY -= Mth.clamp(Math.abs(headYaw) / 50F, 0F, 1F);
+        this.neck.rotateAngleY += Math.toRadians(headYaw * 0.65F);
+        this.neck2.rotateAngleY += Math.toRadians(headYaw * 0.6F);
+        this.head.rotateAngleY += Math.toRadians(headYaw * 0.45F);
 
         progressRotationPrev(rightLeg, onLandProgress, 0, 0, Maths.rad(-15), 5F);
         progressRotationPrev(leftLeg, onLandProgress, 0, 0, Maths.rad(15), 5F);
