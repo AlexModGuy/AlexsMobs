@@ -507,6 +507,7 @@ public class ServerEvents {
             }
         }
         try {
+
             if (AMConfig.spidersAttackFlies && entity instanceof final Spider spider) {
                 spider.targetSelector.addGoal(4,
                     new NearestAttackableTargetGoal<>(spider, EntityFly.class, 1, true, false, null));
