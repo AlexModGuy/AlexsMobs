@@ -75,7 +75,7 @@ public class BlockCapsid extends BaseEntityBlock {
                     heldItem.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
-            }else if(ItemStack.isSameItem(capsid.getItem(0), copy) && capsid.getItem(0).getMaxStackSize() > capsid.getItem(0).getCount() + copy.getCount()){
+            }else if(ItemStack.isSameItemSameTags(capsid.getItem(0), copy) && capsid.getItem(0).getMaxStackSize() > capsid.getItem(0).getCount() + copy.getCount()){
                 capsid.getItem(0).grow(1);
                 if(!player.isCreative()){
                     heldItem.shrink(1);
