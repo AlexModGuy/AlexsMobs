@@ -503,40 +503,9 @@ public class ServerEvents {
                         }
                         elephant.addElephantLoot(null, RAND.nextInt());
                     }
+
                 }
             }
-        }
-        try {
-            if (AMConfig.spidersAttackFlies && entity instanceof final Spider spider) {
-                spider.targetSelector.addGoal(4,
-                    new NearestAttackableTargetGoal<>(spider, EntityFly.class, 1, true, false, null));
-            }
-            else if (AMConfig.wolvesAttackMoose && entity instanceof final Wolf wolf) {
-                wolf.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(wolf, EntityMoose.class, false, null));
-            }
-            else if (AMConfig.polarBearsAttackSeals && entity instanceof final PolarBear bear) {
-                bear.targetSelector.addGoal(6,
-                    new NearestAttackableTargetGoal<>(bear, EntitySeal.class, 15, true, true, null));
-            }
-            else if (entity instanceof final Creeper creeper) {
-                creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntitySnowLeopard.class, 6.0F, 1.0D, 1.2D));
-                creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntityTiger.class, 6.0F, 1.0D, 1.2D));
-            }
-            else if (AMConfig.catsAndFoxesAttackJerboas
-                    && (entity instanceof Fox || entity instanceof Cat || entity instanceof Ocelot)) {
-                Mob mb = (Mob) entity;
-                mb.targetSelector.addGoal(6,
-                    new NearestAttackableTargetGoal<>(mb, EntityJerboa.class, 45, true, true, null));
-            }
-            else if (AMConfig.bunfungusTransformation && entity instanceof final Rabbit rabbit) {
-                rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES.get()), false));
-            }
-            else if (AMConfig.dolphinsAttackFlyingFish && entity instanceof final Dolphin dolphin) {
-                dolphin.targetSelector.addGoal(2,
-                    new NearestAttackableTargetGoal<>(dolphin, EntityFlyingFish.class, 70, true, true, null));
-            }
-        } catch (Exception e) {
-            AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
         }
     }
 

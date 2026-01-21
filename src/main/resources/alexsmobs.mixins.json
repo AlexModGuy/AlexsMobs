@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.alexthe666.alexsmobs.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "alexsmobs.refmap.json",
+  "mixins": [
+    "CatMixin",
+    "CreeperMixin",
+    "DolphinMixin",
+    "FoxMixin",
+    "OcelotMixin",
+    "PolarBearMixin",
+    "RabbitMixin",
+    "SpiderMixin",
+    "WolfMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
