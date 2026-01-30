@@ -76,8 +76,7 @@ public class RaccoonAIWash extends Goal {
                     this.raccoon.playSound(SoundEvents.GENERIC_SWIM, 0.7F, 0.5F + raccoon.getRandom().nextFloat());
                 }
                 washTime++;
-                if(washTime > 100 || raccoon.isHoldingSugar() && washTime > 20){
-                    this.stop();
+                if(washTime > 100 || (raccoon.isHoldingSugar() && washTime > 20)){
                     if(!raccoon.isHoldingSugar()){
                         raccoon.onEatItem();
                     }
@@ -86,6 +85,15 @@ public class RaccoonAIWash extends Goal {
                         this.raccoon.spawnAtLocation(this.raccoon.getMainHandItem().getCraftingRemainingItem());
                     }
                     this.raccoon.getMainHandItem().shrink(1);
+                    // Reset timer to 0 after consuming item to prevent immediate re-wash
+                    // stop() will be called by the framework when canContinueToUse() returns false
+                    this.raccoon.lookForWaterBeforeEatingTimer = 0;
+                    targetPos = null;
+                    waterPos = null;
+                    washTime = 0;
+                    this.raccoon.setWashPos(null);
+                    this.raccoon.setWashing(false);
+                    this.raccoon.getNavigation().stop();
                 }
             }else{
                 this.raccoon.getNavigation().moveTo(waterPos.getX(), waterPos.getY(), waterPos.getZ(), 1.2D);
