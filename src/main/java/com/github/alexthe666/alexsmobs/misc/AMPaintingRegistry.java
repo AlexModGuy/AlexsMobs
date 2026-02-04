@@ -2,14 +2,23 @@ package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.decoration.PaintingVariant;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
+/**
+ * Painting variants are now data-driven in 1.21+.
+ * The actual painting variants are defined in JSON files at:
+ * data/alexsmobs/painting_variant/nft.json
+ * data/alexsmobs/painting_variant/dog_poker.json
+ * 
+ * This class only holds ResourceKeys for reference.
+ */
 public class AMPaintingRegistry {
-    public static final DeferredRegister<PaintingVariant> DEF_REG = DeferredRegister.create(Registries.PAINTING_VARIANT, AlexsMobs.MODID);
+    public static final ResourceKey<PaintingVariant> NFT = create("nft");
+    public static final ResourceKey<PaintingVariant> DOG_POKER = create("dog_poker");
 
-    public static final DeferredHolder<PaintingVariant, PaintingVariant> NFT = DEF_REG.register("nft", () -> new PaintingVariant(32, 32, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "nft")));
-    public static final DeferredHolder<PaintingVariant, PaintingVariant> DOG_POKER = DEF_REG.register("dog_poker", () -> new PaintingVariant(32, 16, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "dog_poker")));
+    private static ResourceKey<PaintingVariant> create(String name) {
+        return ResourceKey.create(Registries.PAINTING_VARIANT, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
+    }
 }

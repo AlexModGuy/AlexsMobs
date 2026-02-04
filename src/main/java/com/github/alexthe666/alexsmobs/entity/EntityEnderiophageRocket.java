@@ -82,6 +82,21 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         return null;
     }
 
+    private boolean isAttachedToEntity() {
+        return this.entityData.get(DATA_ATTACHED_TARGET).isPresent();
+    }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        return distance < 4096.0 && !this.isAttachedToEntity();
+    }
+
+    @Override
+    public boolean shouldRender(double x, double y, double z) {
+        return super.shouldRender(x, y, z) && !this.isAttachedToEntity();
+    }
+
+    @Override
     public void tick() {
         // Don't call super.tick() - we implement our own logic
         if (!this.level().isClientSide) {
@@ -157,6 +172,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         }
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 17) {
@@ -176,7 +192,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         }
     }
 
-
+    @Override
     @OnlyIn(Dist.CLIENT)
     public ItemStack getItem() {
         return new ItemStack(AMItemRegistry.ENDERIOPHAGE_ROCKET.get());

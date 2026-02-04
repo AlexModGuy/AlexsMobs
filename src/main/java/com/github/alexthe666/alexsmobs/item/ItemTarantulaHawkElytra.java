@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -57,8 +58,9 @@ public class ItemTarantulaHawkElytra extends ArmorItem {
         return EquipmentSlot.CHEST;
     }
 
+    @Override
     @Nullable
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return "alexsmobs:textures/armor/tarantula_hawk_elytra.png";
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+        return AlexsMobs.prefix("textures/armor/tarantula_hawk_elytra.png");
     }
 }

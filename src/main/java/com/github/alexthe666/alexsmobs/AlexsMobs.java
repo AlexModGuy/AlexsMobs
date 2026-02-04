@@ -75,11 +75,8 @@ public class AlexsMobs {
         AMFeatureRegistry.DEF_REG.register(modEventBus);
         AMSoundRegistry.DEF_REG.register(modEventBus);
         AMParticleRegistry.DEF_REG.register(modEventBus);
-        AMPaintingRegistry.DEF_REG.register(modEventBus);
         AMEffectRegistry.EFFECT_DEF_REG.register(modEventBus);
         AMEffectRegistry.POTION_DEF_REG.register(modEventBus);
-        // NeoForge 1.21: Enchantments are now data-driven via datapacks, no code registration needed
-        // See data/alexsmobs/enchantment/ for enchantment definitions
         AMMenuRegistry.DEF_REG.register(modEventBus);
         AMRecipeRegistry.DEF_REG.register(modEventBus);
         AMLootRegistry.DEF_REG.register(modEventBus);
