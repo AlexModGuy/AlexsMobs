@@ -61,38 +61,36 @@ public class TileEntityTransmutationTable  extends BlockEntity {
     public void load(CompoundTag tag) {
         super.load(tag);
         totalTransmuteCount = tag.getInt("TotalCount");
+        playerToData.clear();
+        ListTag playerList = tag.getList("PlayerTransmutationData", 10);
+        for (int i = 0; i < playerList.size(); ++i) {
+            CompoundTag compoundtag = playerList.getCompound(i);
+            UUID uuid = compoundtag.getUUID("UUID");
+            if(uuid != null){
+                playerToData.put(uuid, TransmutationData.fromNBT(compoundtag.getCompound("TransmutationData")));
+            }
+        }
+        for(int i = 0; i < 3; i++){
+            if(tag.contains("Possibility" + i)){
+                possiblities[i] = ItemStack.of(tag.getCompound("Possibility" + i));
+            }
+        }
+    }
+
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt("TotalCount", totalTransmuteCount);
         ListTag list = new ListTag();
-        for(Map.Entry<UUID, TransmutationData> entry : playerToData.entrySet()){
+        for (Map.Entry<UUID, TransmutationData> entry : playerToData.entrySet()) {
             CompoundTag innerTag = new CompoundTag();
             innerTag.putUUID("UUID", entry.getKey());
             innerTag.put("TransmutationData", entry.getValue().saveAsNBT());
             list.add(innerTag);
         }
         tag.put("PlayerTransmutationData", list);
-        for(int i = 0; i < 3; i++){
-            if(tag.contains("Possibility" + i)){
-                possiblities[i] = ItemStack.of(tag.getCompound("Possiblity" + i));
-            }
-        }
-
-    }
-
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putInt("TotalCount", totalTransmuteCount);
-        ListTag list = tag.getList("PlayerTransmutationData", 10);
-        if(!list.isEmpty()){
-            for(int i = 0; i < list.size(); ++i) {
-                CompoundTag compoundtag = list.getCompound(i);
-                UUID uuid = compoundtag.getUUID("UUID");
-                if(uuid != null){
-                    playerToData.put(uuid, TransmutationData.fromNBT(compoundtag.getCompound("TransmutationData")));
-                }
-            }
-        }
-        for(int i = 0; i < 3; i++){
-            if(possiblities[i] != null && !possiblities[i].isEmpty()){
-                tag.put("Possiblity" + i, possiblities[i].serializeNBT());
+        for (int i = 0; i < 3; i++) {
+            if (possiblities[i] != null && !possiblities[i].isEmpty()) {
+                tag.put("Possibility" + i, possiblities[i].serializeNBT());
             }
         }
     }
