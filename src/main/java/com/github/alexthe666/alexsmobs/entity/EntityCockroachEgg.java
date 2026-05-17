@@ -64,6 +64,7 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
                 croc.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                 croc.finalizeSpawn((ServerLevel)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
                 croc.restrictTo(this.blockPosition(), 20);
+                croc.setBreaded(true);
                 this.level().addFreshEntity(croc);
             }
             this.level().broadcastEntityEvent(this, (byte)3);
