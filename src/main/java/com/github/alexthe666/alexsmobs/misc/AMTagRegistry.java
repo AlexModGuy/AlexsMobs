@@ -113,7 +113,7 @@ public class AMTagRegistry {
     public static final TagKey<Item> GRIZZLY_BREEDABLES = registerItemTag("grizzly_breedables");
     public static final TagKey<Item> GRIZZLY_TAMEABLES = registerItemTag("grizzly_tameables");
     public static final TagKey<Item> HUMMINGBIRD_BREEDABLES = registerItemTag("hummingbird_breedables");
-    public static final TagKey<Item> HUMMINGNBIRD_FEEDER_SWEETENERS = registerItemTag("hummingnbird_feeder_sweeteners");
+    public static final TagKey<Item> HUMMINGBIRD_FEEDER_SWEETENERS = registerItemTag("hummingbird_feeder_sweeteners");
     public static final TagKey<Item> JERBOA_BREEDABLES = registerItemTag("jerboa_breedables");
     public static final TagKey<Item> JERBOA_BEGS_FOR = registerItemTag("jerboa_begs_for");
     public static final TagKey<Item> KANGAROO_BREEDABLES = registerItemTag("kangaroo_breedables");
