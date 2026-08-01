@@ -52,9 +52,9 @@ public class CrowAIMelee extends Goal {
                 if(crow.distanceTo(target) < 2){
                     crow.peck();
                     if(target.getMobType() == MobType.UNDEAD){
-                        target.hurt(target.damageSources().generic(), 4);
+                        target.hurt(target.damageSources().generic(), 4F * (float) crow.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                     }else{
-                        target.hurt(target.damageSources().generic(), 1);
+                        target.hurt(target.damageSources().generic(), (float) crow.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                     }
 
                     stop();
