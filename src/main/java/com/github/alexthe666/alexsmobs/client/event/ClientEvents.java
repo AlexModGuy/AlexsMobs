@@ -122,7 +122,7 @@ public class ClientEvents {
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.POWER_DOWN)) {
             if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN) != null) {
                 MobEffectInstance instance = Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN);
-                EffectPowerDown powerDown = (EffectPowerDown) instance.getEffect();
+                EffectPowerDown powerDown = (EffectPowerDown) instance.getEffect().value();
                 int duration = instance.getDuration();
                 float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
                 float f = (Math.min(powerDown.getActiveTime(), duration) + partialTicks) * 0.1F;
