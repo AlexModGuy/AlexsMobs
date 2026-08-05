@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 
 public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch> implements BlockEntityRenderer<T> {
 
@@ -22,6 +23,11 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
     private static final ModelEndPirateAnchorChain CHAIN_MODEL = new ModelEndPirateAnchorChain();
 
     public RenderEndPirateAnchorWinch(Context rendererDispatcherIn) {
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(T blockEntity) {
+        return blockEntity.getRenderBoundingBox();
     }
 
     @Override

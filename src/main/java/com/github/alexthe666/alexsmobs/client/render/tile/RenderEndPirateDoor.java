@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Con
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
+import net.minecraft.world.phys.AABB;
 
 public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements BlockEntityRenderer<T> {
 
@@ -20,6 +21,11 @@ public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements B
     private static final ModelEndPirateDoor DOOR_MODEL = new ModelEndPirateDoor();
 
     public RenderEndPirateDoor(Context rendererDispatcherIn) {
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(T blockEntity) {
+        return blockEntity.getRenderBoundingBox();
     }
 
     @Override

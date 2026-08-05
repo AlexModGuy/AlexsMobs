@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 
 public class RenderEndPirateFlag<T extends TileEntityEndPirateFlag> implements BlockEntityRenderer<T> {
 
@@ -19,6 +20,11 @@ public class RenderEndPirateFlag<T extends TileEntityEndPirateFlag> implements B
     private static final ModelEndPirateFlag FLAG_MODEL = new ModelEndPirateFlag();
 
     public RenderEndPirateFlag(Context rendererDispatcherIn) {
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(T blockEntity) {
+        return blockEntity.getRenderBoundingBox();
     }
 
     @Override
