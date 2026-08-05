@@ -107,6 +107,10 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return 0.5D;
     }
 
+    protected Vec3 getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float partialTick) {
+        return new Vec3(0.0D, this.getPassengersRidingOffset(), 0.0D);
+    }
+
     public float getBoardRot(){
         return this.entityData.get(BOARD_ROT);
     }
