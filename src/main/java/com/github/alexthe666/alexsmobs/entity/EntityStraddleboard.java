@@ -77,10 +77,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return (entity.canBeCollidedWith() || entity.isPushable()) && !p_242378_0_.isPassengerOfSameVehicle(entity);
     }
 
-    protected float getEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
-        return sizeIn.height();
-    }
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(TIME_SINCE_HIT, 0);
