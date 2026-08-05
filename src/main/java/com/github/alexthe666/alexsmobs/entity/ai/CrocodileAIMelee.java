@@ -23,6 +23,10 @@ public class CrocodileAIMelee extends MeleeAttackGoal {
         return super.canContinueToUse() && crocodile.getPassengers().isEmpty();
     }
 
+    protected void checkAndPerformAttack(LivingEntity enemy) {
+        this.checkAndPerformAttack(enemy, this.mob.distanceToSqr(enemy));
+    }
+
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = getAttackReachSqr(enemy);
         if (distToEnemySqr <= d0) {
