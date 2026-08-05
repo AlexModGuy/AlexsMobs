@@ -263,7 +263,7 @@ public class EntityVoidWorm extends Monster {
         return true;
     }
 
-    public int getExperienceReward(){
+    protected int getBaseExperienceReward(){
         return this.isSplitter() ? 8 : 50;
     }
 

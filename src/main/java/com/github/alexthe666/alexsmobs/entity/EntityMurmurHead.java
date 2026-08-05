@@ -76,7 +76,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
         return flyingpathnavigation;
     }
 
-    public int getExperienceReward() {
+    protected int getBaseExperienceReward() {
         return 0;
     }
 
