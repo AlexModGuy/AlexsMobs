@@ -108,10 +108,12 @@ public class EntityTossedItem extends ThrowableItemProjectile {
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Dart", this.isDart());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setDart(compound.getBoolean("Dart"));
     }
 
