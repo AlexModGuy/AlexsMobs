@@ -155,7 +155,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     // dropAllDeathLoot has different signature in 1.21 - takes ServerLevel and DamageSource
-    protected void dropAllDeathLoot(DamageSource source) {
+    protected void dropAllDeathLoot(ServerLevel level, DamageSource source) {
 
     }
 
