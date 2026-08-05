@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -86,7 +87,7 @@ public class BlockEnderResidue extends TransparentBlock {
         p_53586_.add(AGE, SLOW_DECAY);
     }
 
-    public ItemStack getCloneItemStack(BlockGetter p_53570_, BlockPos p_53571_, BlockState p_53572_) {
+    public ItemStack getCloneItemStack(LevelReader p_53570_, BlockPos p_53571_, BlockState p_53572_) {
         return ItemStack.EMPTY;
     }
 }
