@@ -124,7 +124,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     }
 
-    public float getBrightness() {
+    public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }
 

@@ -377,7 +377,7 @@ public class EntityUnderminer extends PathfinderMob {
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
-    public float getBrightness() {
+    public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }
 
