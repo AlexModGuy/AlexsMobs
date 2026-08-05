@@ -42,7 +42,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
@@ -214,7 +214,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
         return false;
     }
 
-    public boolean canStandOnFluid(Fluid p_230285_1_) {
+    public boolean canStandOnFluid(FluidState p_230285_1_) {
         return p_230285_1_.is(FluidTags.LAVA);
     }
 

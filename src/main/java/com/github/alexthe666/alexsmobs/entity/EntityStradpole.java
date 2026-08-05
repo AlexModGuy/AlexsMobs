@@ -45,7 +45,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -371,7 +371,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
         return false;
     }
 
-    public boolean canStandOnFluid(Fluid p_230285_1_) {
+    public boolean canStandOnFluid(FluidState p_230285_1_) {
         return p_230285_1_.is(FluidTags.LAVA);
     }
 
