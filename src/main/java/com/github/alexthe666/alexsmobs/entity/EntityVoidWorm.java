@@ -259,7 +259,7 @@ public class EntityVoidWorm extends Monster {
         return null;
     }
 
-    public boolean canBeLeashed(Player player) {
+    public boolean canBeLeashed() {
         return true;
     }
 
