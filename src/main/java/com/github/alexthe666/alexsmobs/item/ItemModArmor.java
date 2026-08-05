@@ -1,15 +1,12 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
@@ -17,6 +14,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.NeoForgeMod;
 
@@ -24,10 +22,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemModArmor extends ArmorItem {
-    private Multimap<Holder<Attribute>, AttributeModifier> attributeMapCroc;
-    private Multimap<Holder<Attribute>, AttributeModifier> attributeMapMoose;
-    private Multimap<Holder<Attribute>, AttributeModifier> attributeMapFlyingFish;
-    private Multimap<Holder<Attribute>, AttributeModifier> attributeMapKimono;
+    private ItemAttributeModifiers attributeMapCroc;
+    private ItemAttributeModifiers attributeMapMoose;
+    private ItemAttributeModifiers attributeMapFlyingFish;
+    private ItemAttributeModifiers attributeMapKimono;
     private final AMArmorMaterial amMaterial;
 
     public ItemModArmor(AMArmorMaterial armorMaterial, ArmorItem.Type slot) {
@@ -77,76 +75,81 @@ public class ItemModArmor extends ArmorItem {
     }
 
     private void buildCrocAttributes(AMArmorMaterial materialIn) {
-        ImmutableMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        EquipmentSlotGroup slotGroup = EquipmentSlotGroup.bySlot(this.type.getSlot());
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "armor_croc_" + type.getName());
-        builder.put(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(NeoForgeMod.SWIM_SPEED, new AttributeModifier(id, 1.0, AttributeModifier.Operation.ADD_VALUE));
+        builder.add(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(id, 1.0, AttributeModifier.Operation.ADD_VALUE), slotGroup);
         float knockbackResistance = materialIn.getKnockbackResistance();
         if (knockbackResistance > 0) {
-            builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, knockbackResistance, AttributeModifier.Operation.ADD_VALUE));
+            builder.add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, knockbackResistance, AttributeModifier.Operation.ADD_VALUE), slotGroup);
         }
         attributeMapCroc = builder.build();
     }
 
     private void buildFlyingFishAttributes(AMArmorMaterial materialIn) {
-        ImmutableMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        EquipmentSlotGroup slotGroup = EquipmentSlotGroup.bySlot(this.type.getSlot());
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "armor_flyingfish_" + type.getName());
-        builder.put(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(NeoForgeMod.SWIM_SPEED, new AttributeModifier(id, 0.5, AttributeModifier.Operation.ADD_VALUE));
+        builder.add(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(id, 0.5, AttributeModifier.Operation.ADD_VALUE), slotGroup);
         attributeMapFlyingFish = builder.build();
     }
 
     private void buildMooseAttributes(AMArmorMaterial materialIn) {
-        ImmutableMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        EquipmentSlotGroup slotGroup = EquipmentSlotGroup.bySlot(this.type.getSlot());
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "armor_moose_" + type.getName());
-        builder.put(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(id, 2.0, AttributeModifier.Operation.ADD_VALUE));
+        builder.add(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(id, 2.0, AttributeModifier.Operation.ADD_VALUE), slotGroup);
         float knockbackResistance = materialIn.getKnockbackResistance();
         if (knockbackResistance > 0) {
-            builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, knockbackResistance, AttributeModifier.Operation.ADD_VALUE));
+            builder.add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, knockbackResistance, AttributeModifier.Operation.ADD_VALUE), slotGroup);
         }
         attributeMapMoose = builder.build();
     }
 
     private void buildKimonoAttributes(AMArmorMaterial materialIn) {
-        ImmutableMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        EquipmentSlotGroup slotGroup = EquipmentSlotGroup.bySlot(this.type.getSlot());
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "armor_kimono_" + type.getName());
-        builder.put(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE));
-        builder.put(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(id, 2.0, AttributeModifier.Operation.ADD_VALUE));
-        builder.put(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(id, 2.0, AttributeModifier.Operation.ADD_VALUE));
+        builder.add(Attributes.ARMOR, new AttributeModifier(id, materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, materialIn.getToughness(), AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(id, 2.0, AttributeModifier.Operation.ADD_VALUE), slotGroup);
+        builder.add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(id, 2.0, AttributeModifier.Operation.ADD_VALUE), slotGroup);
         attributeMapKimono = builder.build();
     }
 
-    public Multimap<Holder<Attribute>, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        if (amMaterial == AMItemRegistry.CROCODILE_ARMOR_MATERIAL && equipmentSlot == this.type.getSlot()) {
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers() {
+        if (amMaterial == AMItemRegistry.CROCODILE_ARMOR_MATERIAL) {
             if (attributeMapCroc == null) {
                 buildCrocAttributes(AMItemRegistry.CROCODILE_ARMOR_MATERIAL);
             }
             return attributeMapCroc;
         }
-        if (amMaterial == AMItemRegistry.MOOSE_ARMOR_MATERIAL && equipmentSlot == this.type.getSlot()) {
+        if (amMaterial == AMItemRegistry.MOOSE_ARMOR_MATERIAL) {
             if (attributeMapMoose == null) {
                 buildMooseAttributes(AMItemRegistry.MOOSE_ARMOR_MATERIAL);
             }
             return attributeMapMoose;
         }
-        if (amMaterial == AMItemRegistry.FLYING_FISH_MATERIAL && equipmentSlot == this.type.getSlot()) {
+        if (amMaterial == AMItemRegistry.FLYING_FISH_MATERIAL) {
             if (attributeMapFlyingFish == null) {
                 buildFlyingFishAttributes(AMItemRegistry.FLYING_FISH_MATERIAL);
             }
             return attributeMapFlyingFish;
         }
-        if (amMaterial == AMItemRegistry.KIMONO_MATERIAL && equipmentSlot == this.type.getSlot()) {
+        if (amMaterial == AMItemRegistry.KIMONO_MATERIAL) {
             if (attributeMapKimono == null) {
                 buildKimonoAttributes(AMItemRegistry.KIMONO_MATERIAL);
             }
             return attributeMapKimono;
         }
-        return ImmutableMultimap.of();
+        return super.getDefaultAttributeModifiers();
     }
 
     @Nullable
