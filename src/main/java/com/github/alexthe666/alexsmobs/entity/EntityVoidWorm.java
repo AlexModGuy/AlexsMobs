@@ -486,7 +486,7 @@ public class EntityVoidWorm extends Monster {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
-            reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+            reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setSegmentCount(25 + random.nextInt(15));
         this.setXRot(0.0F);
         this.setBaseMaxHealth(AMConfig.voidWormMaxHealth, true);
