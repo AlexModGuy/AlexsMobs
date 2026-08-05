@@ -620,7 +620,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         return AMEntityRegistry.BALD_EAGLE.get().create(p_241840_1_);
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

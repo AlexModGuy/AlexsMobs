@@ -134,7 +134,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         builder.define(HAND_SIDE, true);
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

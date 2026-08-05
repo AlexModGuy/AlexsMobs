@@ -147,7 +147,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         }
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

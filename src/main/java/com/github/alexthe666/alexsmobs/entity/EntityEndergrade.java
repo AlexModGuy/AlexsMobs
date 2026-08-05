@@ -259,7 +259,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         }
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

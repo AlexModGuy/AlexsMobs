@@ -451,7 +451,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         return prev;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

@@ -370,7 +370,7 @@ public class EntityUnderminer extends PathfinderMob {
         });
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

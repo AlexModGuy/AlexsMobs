@@ -96,7 +96,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         return true;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

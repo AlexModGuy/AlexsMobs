@@ -492,7 +492,7 @@ public class EntityPotoo extends Animal implements IFalconry {
         return null;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 
