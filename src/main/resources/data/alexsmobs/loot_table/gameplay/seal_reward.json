@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:barter",
+  "type": "minecraft:gift",
   "pools": [
     {
       "rolls": 1,
