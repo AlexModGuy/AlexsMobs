@@ -772,6 +772,10 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             super(EntityGrizzlyBear.this, 1.25D, true);
         }
 
+        protected void checkAndPerformAttack(LivingEntity enemy) {
+            this.checkAndPerformAttack(enemy, this.mob.distanceToSqr(enemy));
+        }
+
         protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
             double d0 = this.getAttackReachSqr(enemy);
             if (distToEnemySqr <= d0) {

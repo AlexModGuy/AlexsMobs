@@ -378,7 +378,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         return !this.getMainHandItem().isEmpty();
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 
 public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> implements BlockEntityRenderer<T> {
 
@@ -21,6 +22,11 @@ public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> im
     private static final ModelEndPirateShipWheel WHEEL_MODEL = new ModelEndPirateShipWheel();
 
     public RenderEndPirateShipWheel(Context rendererDispatcherIn) {
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(T blockEntity) {
+        return blockEntity.getRenderBoundingBox();
     }
 
     @Override

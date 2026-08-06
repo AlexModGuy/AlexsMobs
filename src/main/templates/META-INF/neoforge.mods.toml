@@ -28,13 +28,12 @@ config = "${mod_id}.mixins.json"
     ordering="NONE"
     side="BOTH"
 
-# Citadel dependency - update when available for 1.21.1
-#[[dependencies.${mod_id}]]
-#    modId="citadel"
-#    type="required"
-#    versionRange="[2.6.0,)"
-#    ordering="AFTER"
-#    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="citadel"
+    type="required"
+    versionRange="[2.7.0,)"
+    ordering="AFTER"
+    side="BOTH"
 
 [modproperties.${mod_id}]
     catalogueItemIcon="alexsmobs:bear_dust"

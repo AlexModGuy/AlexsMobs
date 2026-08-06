@@ -171,7 +171,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
         return this.isBaby() ? sizeIn.height() * 0.5F : sizeIn.height() * 0.5F;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

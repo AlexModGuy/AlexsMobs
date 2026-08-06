@@ -209,7 +209,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         return SoundEvents.FISH_SWIM;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

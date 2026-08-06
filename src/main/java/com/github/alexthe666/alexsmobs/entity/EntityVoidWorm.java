@@ -155,7 +155,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     // dropAllDeathLoot has different signature in 1.21 - takes ServerLevel and DamageSource
-    protected void dropAllDeathLoot(DamageSource source) {
+    protected void dropAllDeathLoot(ServerLevel level, DamageSource source) {
 
     }
 
@@ -259,11 +259,11 @@ public class EntityVoidWorm extends Monster {
         return null;
     }
 
-    public boolean canBeLeashed(Player player) {
+    public boolean canBeLeashed() {
         return true;
     }
 
-    public int getExperienceReward(){
+    protected int getBaseExperienceReward(){
         return this.isSplitter() ? 8 : 50;
     }
 
@@ -486,7 +486,7 @@ public class EntityVoidWorm extends Monster {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
-            reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+            reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setSegmentCount(25 + random.nextInt(15));
         this.setXRot(0.0F);
         this.setBaseMaxHealth(AMConfig.voidWormMaxHealth, true);

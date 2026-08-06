@@ -337,7 +337,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
-            reason, @Nullable SpawnGroupData data, @Nullable CompoundTag dataTag) {
+            reason, @Nullable SpawnGroupData data) {
         this.setArctic(this.isBiomeArctic(worldIn, this.blockPosition()));
         int i;
         if (data instanceof SealGroupData) {

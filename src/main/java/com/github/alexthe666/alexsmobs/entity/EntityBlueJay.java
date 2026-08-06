@@ -139,7 +139,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         return stack.is(AMTagRegistry.BLUE_JAY_BREEDABLES);
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

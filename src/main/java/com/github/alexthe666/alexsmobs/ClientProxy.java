@@ -415,7 +415,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void updateBiomeVisuals(int x, int z) {
-        Minecraft.getInstance().levelRenderer.setBlocksDirty(x - 32, 0, x - 32, z + 32, 255, z + 32);
+        Minecraft.getInstance().levelRenderer.setBlocksDirty(x - 32, 0, z - 32, x + 32, 255, z + 32);
     }
 
     public static void setupParticles(RegisterParticleProvidersEvent registry) {

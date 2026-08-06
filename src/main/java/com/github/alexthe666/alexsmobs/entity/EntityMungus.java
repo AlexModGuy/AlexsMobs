@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMungusBiomeChange;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.alexsmobs.mixin.LevelChunkSectionAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -312,8 +313,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         int j = chunk.getSectionIndex(QuartPos.toBlock(l));
         LevelChunkSection section = chunk.getSection(j);
         if(section != null){
-            // section.biomes is private in 1.21 - biome modification needs different approach
-                // section.biomes = container;
+            ((LevelChunkSectionAccessor) section).setBiomes(container);
         }
     }
 

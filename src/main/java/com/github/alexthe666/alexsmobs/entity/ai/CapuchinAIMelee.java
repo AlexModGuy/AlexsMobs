@@ -22,6 +22,10 @@ public class CapuchinAIMelee extends MeleeAttackGoal {
         return super.canContinueToUse() && !monkey.attackDecision;
     }
 
+    protected void checkAndPerformAttack(LivingEntity enemy) {
+        this.checkAndPerformAttack(enemy, this.mob.distanceToSqr(enemy));
+    }
+
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = getAttackReachSqr(enemy);
         if (distToEnemySqr <= d0) {

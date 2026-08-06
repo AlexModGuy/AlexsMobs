@@ -203,7 +203,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         return 0.5F;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

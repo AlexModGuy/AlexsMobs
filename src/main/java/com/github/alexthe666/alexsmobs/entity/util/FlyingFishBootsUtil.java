@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.util;
 
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.mixin.LivingEntityAccessor;
 import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.github.alexthe666.citadel.server.message.PropertiesMessage;
 import net.minecraft.nbt.CompoundTag;
@@ -47,9 +48,7 @@ public class FlyingFishBootsUtil {
     public static void tickFlyingFishBoots(LivingEntity fishy) {
         int boostTime = getBoostTicks(fishy);
         if(boostTime <= 15 && fishy.isInWaterOrBubble() && !fishy.onGround()){
-            // In 1.21+, we check if player is trying to swim up instead of directly accessing input
-            boolean isJumping = fishy instanceof Player player && player.isSwimming() && player.getDeltaMovement().y > 0;
-            if(fishy.getFluidHeight(FluidTags.WATER) < 0.4F && isJumping &&( !(fishy instanceof Player) || !((Player) fishy).getAbilities().flying)){
+            if(fishy.getFluidHeight(FluidTags.WATER) < 0.4F && ((LivingEntityAccessor) fishy).getJumping() &&( !(fishy instanceof Player) || !((Player) fishy).getAbilities().flying)){
                 final RandomSource rand = fishy.getRandom();
                 boostTime = MIN_BOOST_TIME;
                 Vec3 forward = new Vec3(0, 0.0F, 0.5F + rand.nextFloat() * 1.2F).xRot(-fishy.getXRot() * Mth.DEG_TO_RAD).yRot(-fishy.getYHeadRot() * Mth.DEG_TO_RAD);

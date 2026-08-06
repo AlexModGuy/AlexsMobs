@@ -66,8 +66,8 @@ neoForge {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    // Citadel dependency - use local Citadel jar from sibling project
-    implementation files('../Citadel/build/libs/citadel-1.21.1-2.7.0.jar')
+    // Citadel dependency - resolved from Curse Maven
+    implementation "curse.maven:citadel-331936:${citadel_file_id}"
     
     // JEI for 1.21.1 (optional, for recipe viewing)
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"

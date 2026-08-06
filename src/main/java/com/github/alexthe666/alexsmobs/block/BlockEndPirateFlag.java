@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -23,7 +24,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockEndPirateFlag extends BaseEntityBlock {
     public static final MapCodec<BlockEndPirateFlag> CODEC = simpleCodec(p -> new BlockEndPirateFlag());
@@ -84,7 +84,7 @@ public class BlockEndPirateFlag extends BaseEntityBlock {
         return createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_FLAG.get(), TileEntityEndPirateFlag::commonTick);
     }
 
-    public void animateTick(BlockState p_53094_, Level p_53095_, BlockPos p_53096_, Random p_53097_) {
+    public void animateTick(BlockState p_53094_, Level p_53095_, BlockPos p_53096_, RandomSource p_53097_) {
         if (p_53097_.nextInt(5) == 0) {
             final double d0 = (double)p_53096_.getX() + 0.55D - (double)(p_53097_.nextFloat() * 0.1F);
             final double d1 = (double)p_53096_.getY() + 0.55D - (double)(p_53097_.nextFloat() * 0.1F);

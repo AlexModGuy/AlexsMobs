@@ -370,14 +370,14 @@ public class EntityUnderminer extends PathfinderMob {
         });
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
-    public float getBrightness() {
+    public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }
 

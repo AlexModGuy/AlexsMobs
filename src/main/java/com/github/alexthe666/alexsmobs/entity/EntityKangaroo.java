@@ -418,6 +418,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     @Override
     public void onAddedToLevel() {
         // onAddedToWorld removed in 1.21;
+        super.onAddedToLevel();
         updateClientInventory();
     }
 
@@ -793,7 +794,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         return 0.5F;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

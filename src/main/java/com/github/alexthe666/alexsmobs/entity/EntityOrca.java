@@ -365,7 +365,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
-            reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+            reason, @Nullable SpawnGroupData spawnDataIn) {
         this.setAirSupply(this.getMaxAirSupply());
         this.setVariant(determineVariant(this.blockPosition()));
         this.setXRot(0.0F);

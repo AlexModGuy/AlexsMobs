@@ -76,7 +76,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
         return stack.is(AMTagRegistry.SNOW_LEOPARD_BREEDABLES);
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

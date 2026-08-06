@@ -119,7 +119,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
-    public float getBrightness() {
+    public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }
 
@@ -127,7 +127,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         return true;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

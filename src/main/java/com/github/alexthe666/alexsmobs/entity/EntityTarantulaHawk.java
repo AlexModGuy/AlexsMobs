@@ -492,7 +492,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

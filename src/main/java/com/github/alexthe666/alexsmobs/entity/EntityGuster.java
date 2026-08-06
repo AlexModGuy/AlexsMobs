@@ -117,7 +117,7 @@ public class EntityGuster extends Monster {
         return new GroundPathNavigatorWide(this, worldIn);
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

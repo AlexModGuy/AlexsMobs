@@ -156,6 +156,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         matrixstack.mulPose(Axis.XP.rotationDegrees((float) (-xRot)));
         matrixstack.mulPose(Axis.YP.rotationDegrees((float) yRot));
         matrixstack.mulPose(Axis.ZP.rotationDegrees((float) zRot));
+        Lighting.setupForEntityInInventory();
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         quaternion1.conjugate();
         entityrenderdispatcher.overrideCameraOrientation(quaternion1);

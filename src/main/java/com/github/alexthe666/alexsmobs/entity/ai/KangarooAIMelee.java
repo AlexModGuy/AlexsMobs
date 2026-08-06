@@ -103,6 +103,10 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         return blockpos;
     }
 
+    protected void checkAndPerformAttack(LivingEntity enemy) {
+        this.checkAndPerformAttack(enemy, this.mob.distanceToSqr(enemy));
+    }
+
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = getAttackReachSqr(enemy) + 5D;
         if (distToEnemySqr <= d0) {

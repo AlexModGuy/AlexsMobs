@@ -280,7 +280,7 @@ public class EntityJerboa extends Animal {
         return horizontalCollision ? super.getJumpPower() + 0.2F : 0.25F + random.nextFloat() * 0.15F;
     }
 
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 

@@ -39,8 +39,8 @@ public class EffectFleetFooted extends MobEffect {
         return true;
     }
 
-    public void removeAttributeModifiers(LivingEntity livingEntity, AttributeMap attributeMap, int level) {
-        AttributeInstance modifiableattributeinstance = livingEntity.getAttribute(Attributes.MOVEMENT_SPEED);
+    public void removeAttributeModifiers(AttributeMap attributeMap) {
+        AttributeInstance modifiableattributeinstance = attributeMap.getInstance(Attributes.MOVEMENT_SPEED);
         if(modifiableattributeinstance != null && modifiableattributeinstance.hasModifier(SPRINT_JUMP_SPEED_MODIFIER)){
             modifiableattributeinstance.removeModifier(SPRINT_JUMP_SPEED_MODIFIER);
         }

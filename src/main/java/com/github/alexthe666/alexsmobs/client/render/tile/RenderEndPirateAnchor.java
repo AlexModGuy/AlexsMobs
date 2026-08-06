@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 
 public class RenderEndPirateAnchor<T extends TileEntityEndPirateAnchor> implements BlockEntityRenderer<T> {
 
@@ -20,6 +21,11 @@ public class RenderEndPirateAnchor<T extends TileEntityEndPirateAnchor> implemen
     protected static final ModelEndPirateAnchor ANCHOR_MODEL = new ModelEndPirateAnchor();
 
     public RenderEndPirateAnchor(Context rendererDispatcherIn) {
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(T blockEntity) {
+        return blockEntity.getRenderBoundingBox();
     }
 
     @Override
