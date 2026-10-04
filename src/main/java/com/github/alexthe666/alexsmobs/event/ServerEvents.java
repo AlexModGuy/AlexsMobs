@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.event;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.component.AMDataComponentRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
@@ -719,8 +720,7 @@ public class ServerEvents {
         }
         final ItemStack boots = entity.getItemBySlot(EquipmentSlot.FEET);
         if (!boots.isEmpty() && boots.has(DataComponents.CUSTOM_DATA)
-                && boots.get(DataComponents.CUSTOM_DATA).contains("BisonFur")
-                && boots.get(DataComponents.CUSTOM_DATA).copyTag().getBoolean("BisonFur")) {
+                && boots.has(AMDataComponentRegistry.BISON_FUR)) {
             BlockPos posBelow = new BlockPos((int) event.getEntity().getX(),
                     (int) (entity.getBoundingBox().minY - 0.1F), (int) entity.getZ());
             if (entity.level().getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
@@ -839,8 +839,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
-        CompoundTag tag = event.getItemStack().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag.contains("BisonFur") && tag.getBoolean("BisonFur")) {
+        if (event.getItemStack().has(AMDataComponentRegistry.BISON_FUR)) {
             event.getToolTip()
                     .add(Component.translatable("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.AQUA));
         }

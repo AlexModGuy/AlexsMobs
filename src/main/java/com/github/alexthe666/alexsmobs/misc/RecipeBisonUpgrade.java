@@ -1,10 +1,15 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.component.AMDataComponentRegistry;
+
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -32,19 +37,15 @@ public class RecipeBisonUpgrade extends CustomRecipe {
         if(fur == 1){
             for (int j = 0; j < container.size(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
-                CustomData customData = itemstack1.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-                CompoundTag tag = customData.copyTag();
-                boolean notFurred = !tag.getBoolean("BisonFur");
-                if (!itemstack1.isEmpty() && notFurred && itemstack1.getEquipmentSlot() == EquipmentSlot.FEET) {
+                boolean notFurred = !itemstack1.has(AMDataComponentRegistry.BISON_FUR);
+                Equipable equipable = Equipable.get(itemstack1);
+                if (!itemstack1.isEmpty() && notFurred && (itemstack1.getEquipmentSlot() == EquipmentSlot.FEET || (equipable != null && equipable.getEquipmentSlot() == EquipmentSlot.FEET))) {
                     boots = itemstack1;
                 }
             }
             if(!boots.isEmpty()){
                 ItemStack stack = boots.copy();
-                CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-                CompoundTag tag = customData.copyTag();
-                tag.putBoolean("BisonFur", true);
-                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                stack.set(AMDataComponentRegistry.BISON_FUR, Unit.INSTANCE);
                 return stack;
             }
         }
