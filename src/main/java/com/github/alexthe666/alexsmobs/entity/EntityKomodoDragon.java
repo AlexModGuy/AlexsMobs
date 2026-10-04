@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -426,7 +427,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES) || stack.getFoodProperties(this) != null && true /* isMeat removed */;
+        return stack.is(AMTagRegistry.KOMODO_DRAGON_TAMEABLES) || stack.getFoodProperties(this) != null && stack.is(ItemTags.MEAT);
     }
 
     public boolean isSaddled() {
