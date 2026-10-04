@@ -120,41 +120,24 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     public LivingEntity getControllingPassenger() {
         return null;
     }
-    protected void tickLeash() {
-        // tickLeash() removed in 1.21 - Restored manually
-        Entity lvt_1_1_ = this.getLeashHolder();
-        if (lvt_1_1_ != null && lvt_1_1_.level() == this.level()) {
-            this.restrictTo(lvt_1_1_.blockPosition(), 5);
-            float lvt_2_1_ = this.distanceTo(lvt_1_1_);
-            if (this.isSitting()) {
-                if (lvt_2_1_ > 10.0F) {
-                    this.dropLeash(true, true);
-                }
 
-                return;
-            }
+    @Override
+    public void leashTooFarBehaviour() {
+        super.leashTooFarBehaviour();
+        this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
+    }
 
-            // onLeashDistance() removed in 1.21
-            if (lvt_2_1_ > 10.0F) {
-                this.dropLeash(true, true);
-                this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
-            } else if (lvt_2_1_ > 6.0F) {
-                double lvt_3_1_ = (lvt_1_1_.getX() - this.getX()) / (double) lvt_2_1_;
-                double lvt_5_1_ = (lvt_1_1_.getY() - this.getY()) / (double) lvt_2_1_;
-                double lvt_7_1_ = (lvt_1_1_.getZ() - this.getZ()) / (double) lvt_2_1_;
-                this.setDeltaMovement(this.getDeltaMovement().add(Math.copySign(lvt_3_1_ * lvt_3_1_ * 0.4D, lvt_3_1_), Math.copySign(lvt_5_1_ * lvt_5_1_ * 0.4D, lvt_5_1_), Math.copySign(lvt_7_1_ * lvt_7_1_ * 0.4D, lvt_7_1_)));
-            } else {
-                this.goalSelector.enableControlFlag(Goal.Flag.MOVE);
-                float lvt_3_2_ = 2.0F;
-                try {
-                    Vec3 lvt_4_1_ = (new Vec3(lvt_1_1_.getX() - this.getX(), lvt_1_1_.getY() - this.getY(), lvt_1_1_.getZ() - this.getZ())).normalize().scale(Math.max(lvt_2_1_ - 2.0F, 0.0F));
-                    this.getNavigation().moveTo(this.getX() + lvt_4_1_.x, this.getY() + lvt_4_1_.y, this.getZ() + lvt_4_1_.z, this.followLeashSpeed());
-                } catch (Exception e) {
+    @Override
+    public void closeRangeLeashBehaviour(Entity entity) {
+        this.goalSelector.enableControlFlag(Goal.Flag.MOVE);
+        float f = 2.0F;
+        float g = this.distanceTo(entity);
 
-                }
-            }
+        try {
+            Vec3 vec3 = (new Vec3(entity.getX() - this.getX(), entity.getY() - this.getY(), entity.getZ() - this.getZ())).normalize().scale(Math.max(g - f, 0.0F));
+            this.getNavigation().moveTo(this.getX() + vec3.x, this.getY() + vec3.y, this.getZ() + vec3.z, this.followLeashSpeed());
+        } catch (Exception e) {
         }
-
     }
 
     public boolean forcedSit() {
@@ -697,7 +680,6 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     public void customServerAiStep() {
         super.customServerAiStep();
-        tickLeash();
 
         if (this.currentMoveTypeDuration > 0) {
             --this.currentMoveTypeDuration;
