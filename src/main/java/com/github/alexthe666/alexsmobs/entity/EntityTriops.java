@@ -46,6 +46,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -379,9 +380,8 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
             } else {
                 executionCooldown = 50 + random.nextInt(50);
                 List<EntityTriops> list = EntityTriops.this.level().getEntitiesOfClass(EntityTriops.class, EntityTriops.this.getBoundingBox().inflate(10, 8, 10), EntitySelector.NO_SPECTATORS.and(validBreedPartner));
-                list.sort(Comparator.comparingDouble(EntityTriops.this::distanceToSqr));
                 if (!list.isEmpty()) {
-                    EntityTriops closestPupfish = list.get(0);
+                    EntityTriops closestPupfish = Collections.min(list, Comparator.comparingDouble(EntityTriops.this::distanceToSqr));
                     if (closestPupfish != null) {
                         breedPartner = closestPupfish;
                         breedPartner.breedWith = EntityTriops.this;

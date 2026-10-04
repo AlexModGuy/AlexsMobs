@@ -53,6 +53,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -576,9 +577,8 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
                 executionCooldown = 50 + random.nextInt(50);
                 if (!this.catfish.isFull()) {
                     final List<Entity> list = catfish.level().getEntitiesOfClass(Entity.class, catfish.getBoundingBox().inflate(8, 8, 8), EntitySelector.NO_SPECTATORS.and(entity -> entity != catfish && catfish.isFood(entity)));
-                    list.sort(Comparator.comparingDouble(catfish::distanceToSqr));
                     if (!list.isEmpty()) {
-                        food = list.get(0);
+                        food = Collections.min(list, Comparator.comparingDouble(catfish::distanceToSqr));
                         return true;
                     }
                 }
