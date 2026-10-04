@@ -914,6 +914,9 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         }
 
         protected boolean searchForDestination() {
+            if (CrowFearedBlockSearch.noneFeared(EntityCrow.this)) {
+                return false;
+            }
             int lvt_1_1_ = this.searchLength;
             //int lvt_2_1_ = this.verticalSearchRange;
             BlockPos lvt_3_1_ = EntityCrow.this.blockPosition();
