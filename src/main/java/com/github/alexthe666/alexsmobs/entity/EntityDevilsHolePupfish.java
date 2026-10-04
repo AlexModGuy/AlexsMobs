@@ -54,6 +54,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -396,9 +397,8 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
                 executionCooldown = 50 + random.nextInt(50);
                 if(pupfish.chasePartner == null || !pupfish.chasePartner.isAlive()){
                     List<EntityDevilsHolePupfish> list = pupfish.level().getEntitiesOfClass(EntityDevilsHolePupfish.class, pupfish.getBoundingBox().inflate(10, 8, 10), EntitySelector.NO_SPECTATORS.and(validChasePartner));
-                    list.sort(Comparator.comparingDouble(pupfish::distanceToSqr));
                     if(!list.isEmpty()){
-                        EntityDevilsHolePupfish closestPupfish = list.get(0);
+                        EntityDevilsHolePupfish closestPupfish = Collections.min(list, Comparator.comparingDouble(pupfish::distanceToSqr));
                         if(closestPupfish != null){
                             pupfish.chasePartner = closestPupfish;
                             closestPupfish.chasePartner = pupfish;
