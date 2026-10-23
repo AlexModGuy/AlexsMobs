@@ -41,7 +41,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity> extends 
 
     @ModifyArg(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V"), index = 2)
     private int modifyColorForTigerStealth(int color, @Local(argsOnly = true) T entity, @Local(argsOnly = true, ordinal = 1) float partialTicks) {
-        if (entity instanceof EntityTiger tiger && (Object) this instanceof RenderTiger) {
+        if (entity instanceof EntityTiger tiger && (Object) this instanceof RenderTiger && tiger.isStealth()) {
             float stealthLevel = tiger.prevStealthProgress
                 + (tiger.stealthProgress - tiger.prevStealthProgress) * partialTicks;
 
