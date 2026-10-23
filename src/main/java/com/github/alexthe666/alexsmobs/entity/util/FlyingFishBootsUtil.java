@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.util;
 
+import com.github.alexthe666.alexsmobs.attachment.AMAttachmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
-import com.github.alexthe666.citadel.server.message.PropertiesMessage;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -13,31 +10,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class FlyingFishBootsUtil {
 
-    private static final String BOOST_TICKS = "FlyingFishBoostAlexsMobs";
     private static final int MIN_BOOST_TIME = 35;
 
     public static void setBoostTicks(LivingEntity entity, int ticks) {
-        CompoundTag lassoedTag = CitadelEntityData.getOrCreateCitadelTag(entity);
-        lassoedTag.putInt(BOOST_TICKS, ticks);
-
-        CitadelEntityData.setCitadelTag(entity, lassoedTag);
-        if (!entity.level().isClientSide) {
-            PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new PropertiesMessage("CitadelPatreonConfig", lassoedTag, entity.getId()));
-        } else {
-            PacketDistributor.sendToServer(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, entity.getId()));
-        }
+        entity.setData(AMAttachmentRegistry.FLYING_FISH_BOOST, ticks);
     }
 
     public static int getBoostTicks(LivingEntity entity) {
-        CompoundTag lassoedTag = CitadelEntityData.getOrCreateCitadelTag(entity);
-        if (lassoedTag.contains(BOOST_TICKS)) {
-            return lassoedTag.getInt(BOOST_TICKS);
-        }
-        return 0;
+        return entity.getData(AMAttachmentRegistry.FLYING_FISH_BOOST);
     }
 
     public static boolean isWearing(LivingEntity entity) {
