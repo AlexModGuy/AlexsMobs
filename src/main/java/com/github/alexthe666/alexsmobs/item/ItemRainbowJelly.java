@@ -1,10 +1,17 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +29,7 @@ public class ItemRainbowJelly extends Item {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
-        int i = RainbowUtil.getRainbowTypeFromStack(stack);
+        RainbowType i = RainbowUtil.getRainbowTypeFromStack(stack);
         if (RainbowUtil.getRainbowType(target) != i) {
             RainbowUtil.setRainbowType(target, i);
             RandomSource random = playerIn.getRandom();
@@ -56,12 +63,26 @@ public class ItemRainbowJelly extends Item {
     }
 
     public boolean isFoil(ItemStack stack) {
-        return super.isFoil(stack) || RainbowUtil.getRainbowTypeFromStack(stack) > 1;
+        return super.isFoil(stack) || RainbowUtil.getRainbowTypeFromStack(stack) != null;
     }
 
-    public enum RainbowType {
-        RAINBOW, TRANS, NONBI, BI, ACE, WEEZER, BRAZIL;
+    public enum RainbowType implements StringRepresentable {
+        RAINBOW("rainbow"), TRANS("trans"), NONBI("non_binary"), BI("bi"), ACE("ace"),
+        WEEZER("weezer"), BRAZIL("brazil");
 
+        public static final Codec<RainbowType> CODEC = StringRepresentable.fromEnum(RainbowType::values);
+        public static final StreamCodec<ByteBuf, RainbowType> STREAM_CODEC = ByteBufCodecs.idMapper(ByIdMap.continuous(RainbowType::ordinal, RainbowType.values(), ByIdMap.OutOfBoundsStrategy.ZERO), RainbowType::ordinal);
+
+        private final String serializedName;
+
+        RainbowType(String serializedName) {
+            this.serializedName = serializedName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serializedName;
+        }
 
         public static RainbowType getFromString(String name) {
             if (name.contains("nonbi") || name.contains("non-bi")) {

@@ -1,5 +1,10 @@
 package com.github.alexthe666.alexsmobs;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.function.Supplier;
+
+import com.github.alexthe666.alexsmobs.attachment.AMAttachmentRegistry;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
@@ -8,22 +13,41 @@ import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.event.ServerEvents;
 import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.AMArmorMaterial;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.message.*;
-import com.github.alexthe666.alexsmobs.misc.*;
+import com.github.alexthe666.alexsmobs.message.MessageCrowDismount;
+import com.github.alexthe666.alexsmobs.message.MessageCrowMountPlayer;
+import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
+import com.github.alexthe666.alexsmobs.message.MessageInteractMultipart;
+import com.github.alexthe666.alexsmobs.message.MessageKangarooEat;
+import com.github.alexthe666.alexsmobs.message.MessageKangarooInventorySync;
+import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
+import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
+import com.github.alexthe666.alexsmobs.message.MessageMungusBiomeChange;
+import com.github.alexthe666.alexsmobs.message.MessageSendVisualFlagFromServer;
+import com.github.alexthe666.alexsmobs.message.MessageSetPupfishChunkOnClient;
+import com.github.alexthe666.alexsmobs.message.MessageStartDancing;
+import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
+import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
+import com.github.alexthe666.alexsmobs.message.MessageTarantulaHawkSting;
+import com.github.alexthe666.alexsmobs.message.MessageTransmuteFromMenu;
+import com.github.alexthe666.alexsmobs.message.MessageUpdateCapsid;
+import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
+import com.github.alexthe666.alexsmobs.message.MessageUpdateTransmutablesToDisplay;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBannerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMCreativeTabRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMLootRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMRecipeRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.world.AMFeatureRegistry;
 import com.github.alexthe666.alexsmobs.world.AMLeafcutterAntBiomeModifier;
 import com.github.alexthe666.alexsmobs.world.AMMobSpawnBiomeModifier;
 import com.github.alexthe666.alexsmobs.world.AMMobSpawnStructureModifier;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -39,9 +63,9 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.function.Supplier;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
 @Mod(AlexsMobs.MODID)
 public class AlexsMobs {
@@ -83,6 +107,7 @@ public class AlexsMobs {
         AMBannerRegistry.DEF_REG.register(modEventBus);
         AMCreativeTabRegistry.DEF_REG.register(modEventBus);
         AMAdvancementTriggerRegistry.DEF_REG.register(modEventBus);
+        AMAttachmentRegistry.DEF_REG.register(modEventBus);
         
         // Biome modifiers
         AMMobSpawnBiomeModifier.BIOME_MODIFIER_SERIALIZERS.register(modEventBus);
