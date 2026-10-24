@@ -16,18 +16,13 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.RenderNameTagEvent;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -56,6 +51,7 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
         this.addLayer(new LayerUnderminerItem(this));
     }
 
+    @Override
     protected void scale(EntityUnderminer entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
         matrixStackIn.scale(0.925F, 0.925F, 0.925F);
     }
@@ -71,124 +67,31 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
                     Vec3 vector3d = Vec3.atLowerCornerOf(pos);
                     Vec3 vector3dCorner = Vec3.atLowerCornerOf(pos).add(1, 1, 1);
                     return camera.isVisible(new AABB(vector3d.x, vector3d.y, vector3d.z, vector3dCorner.x,
-                            vector3dCorner.y, vector3dCorner.z));
+                        vector3dCorner.y, vector3dCorner.z));
                 }
             }
             return false;
         }
     }
 
+    @Override
     protected float getFlipDegrees(EntityUnderminer entityUnderminer) {
         return 0.0F;
     }
 
-    public void render(EntityUnderminer entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
-            MultiBufferSource bufferIn, int packedLightIn) {
-        if (net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(
-                new net.neoforged.neoforge.client.event.RenderLivingEvent.Pre<EntityUnderminer, EntityModel<EntityUnderminer>>(
-                        entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn)).isCanceled())
-            return;
-        matrixStackIn.pushPose();
-        this.model.attackTime = this.getAttackAnim(entityIn, partialTicks);
-
-        boolean shouldSit = entityIn.isPassenger()
-                && (entityIn.getVehicle() != null && entityIn.getVehicle().shouldRiderSit());
-        this.model.riding = shouldSit;
-        this.model.young = entityIn.isBaby();
-        float f = Mth.rotLerp(partialTicks, entityIn.yBodyRotO, entityIn.yBodyRot);
-        float f1 = Mth.rotLerp(partialTicks, entityIn.yHeadRotO, entityIn.yHeadRot);
-        float f2 = f1 - f;
-        if (shouldSit && entityIn.getVehicle() instanceof LivingEntity) {
-            LivingEntity livingentity = (LivingEntity) entityIn.getVehicle();
-            f = Mth.rotLerp(partialTicks, livingentity.yBodyRotO, livingentity.yBodyRot);
-            f2 = f1 - f;
-            float f3 = Mth.wrapDegrees(f2);
-            if (f3 < -85.0F) {
-                f3 = -85.0F;
-            }
-
-            if (f3 >= 85.0F) {
-                f3 = 85.0F;
-            }
-
-            f = f1 - f3;
-            if (f3 * f3 > 2500.0F) {
-                f += f3 * 0.2F;
-            }
-
-            f2 = f1 - f;
-        }
-
-        float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
-        if (entityIn.getPose() == Pose.SLEEPING) {
-            Direction direction = entityIn.getBedOrientation();
-            if (direction != null) {
-                float f4 = entityIn.getEyeHeight(Pose.STANDING) - 0.1F;
-                matrixStackIn.translate((float) (-direction.getStepX()) * f4, 0.0D,
-                        (float) (-direction.getStepZ()) * f4);
-            }
-        }
-
-        float f7 = this.getBob(entityIn, partialTicks);
-        this.setupRotations(entityIn, matrixStackIn, f7, f, partialTicks, 1.0F);
-        matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-        this.scale(entityIn, matrixStackIn, partialTicks);
-        matrixStackIn.translate(0.0D, -1.501F, 0.0D);
-        float f8 = 0.0F;
-        float f5 = 0.0F;
-        if (!shouldSit && entityIn.isAlive()) {
-            f8 = entityIn.walkAnimation.speed(partialTicks);
-            f5 = entityIn.walkAnimation.position(partialTicks);
-            if (entityIn.isBaby()) {
-                f5 *= 3.0F;
-            }
-
-            if (f8 > 1.0F) {
-                f8 = 1.0F;
-            }
-        }
+    public void setupDwarfModel(EntityUnderminer entityIn) {
         if (entityIn.isDwarf()) {
             this.model = DWARF_MODEL;
         } else {
             this.model = NORMAL_MODEL;
         }
-        this.model.prepareMobModel(entityIn, f5, f8, partialTicks);
-        this.model.setupAnim(entityIn, f5, f8, f7, f2, f6);
-        Minecraft minecraft = Minecraft.getInstance();
-        boolean flag = this.isBodyVisible(entityIn);
-        boolean flag1 = !flag && !entityIn.isInvisibleTo(minecraft.player);
-        boolean flag2 = minecraft.shouldEntityAppearGlowing(entityIn);
-        RenderType rendertype = this.getRenderType(entityIn, flag, flag1, flag2);
-        if (rendertype != null && !entityIn.isFullyHidden()) {
-            float hide = (entityIn.prevHidingProgress
-                    + (entityIn.hidingProgress - entityIn.prevHidingProgress) * partialTicks) * 0.1F;
-            float alpha = (1F - hide) * 0.6F;
-            this.shadowRadius = 0.9F * alpha;
-            int i = getOverlayCoords(entityIn, this.getWhiteOverlayProgress(entityIn, partialTicks));
-            this.renderUnderminerModel(matrixStackIn, bufferIn, rendertype, partialTicks, packedLightIn, i,
-                    flag1 ? 0.15F : Mth.clamp(alpha, 0, 1), entityIn);
-        } else {
-            this.shadowRadius = 0;
-        }
-        if (!entityIn.isSpectator()) {
-            for (RenderLayer layerrenderer : this.layers) {
-                layerrenderer.render(matrixStackIn, bufferIn, packedLightIn, entityIn, f5, f8, partialTicks, f7, f2,
-                        f6);
-            }
-        }
+    }
 
-        matrixStackIn.popPose();
-        RenderNameTagEvent renderNameplateEvent = new RenderNameTagEvent(entityIn, entityIn.getDisplayName(), this,
-                matrixStackIn, bufferIn, packedLightIn, partialTicks);
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(renderNameplateEvent);
-        if (renderNameplateEvent.canRender().isTrue()
-                || (renderNameplateEvent.canRender().isDefault()
-                        && this.shouldShowName(entityIn))) {
-            this.renderNameTag(entityIn, renderNameplateEvent.getContent(), matrixStackIn, bufferIn, packedLightIn, partialTicks);
-        }
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(
-                new net.neoforged.neoforge.client.event.RenderLivingEvent.Post<EntityUnderminer, EntityModel<EntityUnderminer>>(
-                        entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn));
+    @Override
+    public void render(EntityUnderminer entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
+        this.setupDwarfModel(entityIn);
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
         BlockPos miningPos = entityIn.getMiningPos();
         if (miningPos != null) {
@@ -206,16 +109,13 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
                     bufferIn.getBuffer(DESTROY_TYPES.get(progress)), posestack$pose,
                     1.0F);
 
-            net.neoforged.neoforge.client.model.data.ModelData modelData = entityIn.level().getModelDataManager()
-                    .getAt(miningPos);
             Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(entityIn.level().getBlockState(miningPos),
-                    miningPos, entityIn.level(), matrixStackIn, vertexconsumer1,
-                    modelData == null ? net.neoforged.neoforge.client.model.data.ModelData.EMPTY : modelData);
+                miningPos, entityIn.level(), matrixStackIn, vertexconsumer1);
             matrixStackIn.popPose();
         }
     }
 
-    private void renderUnderminerModel(PoseStack matrixStackIn, MultiBufferSource source, RenderType defRenderType,
+    public void renderUnderminerModel(PoseStack matrixStackIn, MultiBufferSource source, RenderType defRenderType,
             float partialTicks, int packedLightIn, int overlayColors, float alphaIn, EntityUnderminer entityIn) {
         boolean hurt = Math.max(entityIn.hurtTime, entityIn.deathTime) > 0;
         this.model.renderToBuffer(matrixStackIn, source.getBuffer(defRenderType), packedLightIn,

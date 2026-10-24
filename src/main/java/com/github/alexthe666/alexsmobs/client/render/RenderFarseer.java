@@ -21,12 +21,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.RenderNameTagEvent;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
@@ -81,116 +80,19 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         return new Vec3(d0, d1, d2);
     }
 
-    public void render(EntityFarseer entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
-            MultiBufferSource bufferIn, int packedLightIn) {
-        if (net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(
-                new net.neoforged.neoforge.client.event.RenderLivingEvent.Pre<EntityFarseer, ModelFarseer>(entityIn,
-                        this, partialTicks, matrixStackIn, bufferIn, packedLightIn)).isCanceled())
-            return;
-        LivingEntity laserTarget = entityIn.getLaserTarget();
-        float faceCameraAmount = entityIn.getFacingCameraAmount(partialTicks);
-        Quaternionf camera = this.entityRenderDispatcher.cameraOrientation();
-
-        matrixStackIn.pushPose();
-        this.model.attackTime = this.getAttackAnim(entityIn, partialTicks);
-
-        boolean shouldSit = entityIn.isPassenger()
-                && (entityIn.getVehicle() != null && entityIn.getVehicle().shouldRiderSit());
-        this.model.riding = shouldSit;
-        this.model.young = entityIn.isBaby();
-        float f = Mth.rotLerp(partialTicks, entityIn.yBodyRotO, entityIn.yBodyRot);
-        float f1 = Mth.rotLerp(partialTicks, entityIn.yHeadRotO, entityIn.yHeadRot);
-        float f2 = f1 - f;
-        if (shouldSit && entityIn.getVehicle() instanceof LivingEntity) {
-            LivingEntity livingentity = (LivingEntity) entityIn.getVehicle();
-            f = Mth.rotLerp(partialTicks, livingentity.yBodyRotO, livingentity.yBodyRot);
-            f2 = f1 - f;
-            float f3 = Mth.wrapDegrees(f2);
-            if (f3 < -85.0F) {
-                f3 = -85.0F;
-            }
-
-            if (f3 >= 85.0F) {
-                f3 = 85.0F;
-            }
-
-            f = f1 - f3;
-            if (f3 * f3 > 2500.0F) {
-                f += f3 * 0.2F;
-            }
-
-            f2 = f1 - f;
-        }
-
-        float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
-        if (entityIn.getPose() == Pose.SLEEPING) {
-            Direction direction = entityIn.getBedOrientation();
-            if (direction != null) {
-                float f4 = entityIn.getEyeHeight(Pose.STANDING) - 0.1F;
-                matrixStackIn.translate((float) (-direction.getStepX()) * f4, 0.0D,
-                        (float) (-direction.getStepZ()) * f4);
-            }
-        }
-
-        float f7 = this.getBob(entityIn, partialTicks);
-        if (faceCameraAmount != 0) {
-            matrixStackIn.mulPose(camera);
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
-        }
-        this.setupRotations(entityIn, matrixStackIn, f7, f, partialTicks, partialTicks);
-        matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-        this.scale(entityIn, matrixStackIn, partialTicks);
-        matrixStackIn.translate(0.0D, -1.501F, 0.0D);
-        float f8 = 0.0F;
-        float f5 = 0.0F;
-        if (!shouldSit && entityIn.isAlive()) {
-            f8 = entityIn.walkAnimation.position(partialTicks);
-            f5 = entityIn.walkAnimation.position() - entityIn.walkAnimation.speed() * (1.0F - partialTicks);
-            if (entityIn.isBaby()) {
-                f5 *= 3.0F;
-            }
-
-            if (f8 > 1.0F) {
-                f8 = 1.0F;
-            }
-        }
-
-        this.model.prepareMobModel(entityIn, f5, f8, partialTicks);
-        this.model.setupAnim(entityIn, f5, f8, f7, f2, f6);
-        Minecraft minecraft = Minecraft.getInstance();
-        boolean flag = this.isBodyVisible(entityIn);
-        boolean flag1 = !flag && !entityIn.isInvisibleTo(minecraft.player);
-        boolean flag2 = minecraft.shouldEntityAppearGlowing(entityIn);
-        RenderType rendertype = this.getRenderType(entityIn, flag, flag1, flag2);
+    public void setupFarseerAnims(EntityFarseer entityIn, float f5, float f8, float f7, float f2, float f6) {
         EYE_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
         SCARS_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
         AFTERIMAGE_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
-        if (rendertype != null) {
-            float portalLevel = entityIn.getFarseerOpacity(partialTicks);
-            this.shadowRadius = 0.9F * portalLevel;
-            int i = getOverlayCoords(entityIn, this.getWhiteOverlayProgress(entityIn, partialTicks));
-            this.renderFarseerModel(matrixStackIn, bufferIn, rendertype, partialTicks, packedLightIn, i,
-                    flag1 ? 0.15F : Mth.clamp(portalLevel, 0, 1), entityIn);
-        }
-        if (!entityIn.isSpectator()) {
-            for (RenderLayer layerrenderer : this.layers) {
-                layerrenderer.render(matrixStackIn, bufferIn, packedLightIn, entityIn, f5, f8, partialTicks, f7, f2,
-                        f6);
-            }
-        }
+    }
 
-        matrixStackIn.popPose();
-        RenderNameTagEvent renderNameplateEvent = new RenderNameTagEvent(entityIn, entityIn.getDisplayName(), this,
-                matrixStackIn, bufferIn, packedLightIn, partialTicks);
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(renderNameplateEvent);
-        if (renderNameplateEvent.canRender().isTrue()
-                || (renderNameplateEvent.canRender().isDefault()
-                        && this.shouldShowName(entityIn))) {
-            this.renderNameTag(entityIn, renderNameplateEvent.getContent(), matrixStackIn, bufferIn, packedLightIn, partialTicks);
-        }
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(
-                new net.neoforged.neoforge.client.event.RenderLivingEvent.Post<EntityFarseer, ModelFarseer>(entityIn,
-                        this, partialTicks, matrixStackIn, bufferIn, packedLightIn));
+    @Override
+    public void render(EntityFarseer entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int packedLightIn) {
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+
+        LivingEntity laserTarget = entityIn.getLaserTarget();
+        Quaternionf camera = this.entityRenderDispatcher.cameraOrientation();
 
         // emergence portal
         if (entityIn.getAnimation() == EntityFarseer.ANIMATION_EMERGE) {
@@ -260,7 +162,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
 
     }
 
-    private void renderFarseerModel(PoseStack matrixStackIn, MultiBufferSource source, RenderType defRenderType,
+    public void renderFarseerModel(PoseStack matrixStackIn, MultiBufferSource source, RenderType defRenderType,
             float partialTicks, int packedLightIn, int overlayColors, float alphaIn, EntityFarseer entityIn) {
         // In 1.21, merged vertex consumers with different formats can cause issues
         // Render using just the textures without the static overlay effect
@@ -268,7 +170,6 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             VertexConsumer staticyInsides = source.getBuffer(RenderType.entityTranslucent(TEXTURE_EYE));
             EYE_MODEL.renderToBuffer(matrixStackIn, staticyInsides, packedLightIn, NO_OVERLAY, -1);
         }
-        VertexConsumer consumer;
         float hurt = Math.max(entityIn.hurtTime, entityIn.deathTime);
         float defAlpha = alphaIn * 0.2F;
         float afterimageSpeed = 0.3F;
