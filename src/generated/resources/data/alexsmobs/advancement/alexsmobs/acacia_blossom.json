@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "acacia_blossom": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:acacia_blossom"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.acacia_blossom.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:acacia_blossom"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.acacia_blossom.title"
+    }
+  },
+  "requirements": [
+    [
+      "acacia_blossom"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

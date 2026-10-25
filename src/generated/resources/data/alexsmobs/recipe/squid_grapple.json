@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:crossbow"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "T": {
+      "item": "alexsmobs:lost_tentacle"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "CBC",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:squid_grapple"
+  }
+}

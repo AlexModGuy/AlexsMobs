@@ -1,0 +1,38 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "rainbow_jelly": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:rainbow_jelly"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.rainbow_jelly.desc"
+    },
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:comb_jelly"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.rainbow_jelly.title"
+    }
+  },
+  "requirements": [
+    [
+      "rainbow_jelly"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lobster_tail": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:lobster_tail"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:cooked_lobster_tail"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lobster_tail"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:cooked_lobster_tail"
+    ]
+  }
+}

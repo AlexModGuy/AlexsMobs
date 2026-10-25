@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:saddle"
+    },
+    "S": {
+      "item": "alexsmobs:straddlite"
+    }
+  },
+  "pattern": [
+    "EES",
+    "S  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:straddle_saddle"
+  }
+}

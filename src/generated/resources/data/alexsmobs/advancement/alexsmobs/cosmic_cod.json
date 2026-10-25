@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/capsid",
+  "criteria": {
+    "cosmic_cod": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:cosmic_cod"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.cosmic_cod.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:cosmic_cod"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.cosmic_cod.title"
+    }
+  },
+  "requirements": [
+    [
+      "cosmic_cod"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

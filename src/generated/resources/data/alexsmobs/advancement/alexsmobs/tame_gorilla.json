@@ -1,0 +1,42 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "tame": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "alexsmobs:gorilla"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.tame_gorilla.desc"
+    },
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:gorilla"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_gorilla.title"
+    }
+  },
+  "requirements": [
+    [
+      "tame"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:cockroach_wing"
+  }
+}

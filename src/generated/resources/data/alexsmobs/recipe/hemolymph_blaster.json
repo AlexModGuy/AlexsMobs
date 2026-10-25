@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "alexsmobs:blood_sprayer"
+    },
+    "C": {
+      "item": "alexsmobs:mimicream"
+    },
+    "M": {
+      "item": "alexsmobs:warped_muscle"
+    },
+    "P": {
+      "item": "alexsmobs:mosquito_proboscis"
+    },
+    "S": {
+      "item": "alexsmobs:hemolymph_sac"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "CBP",
+    "M  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:hemolymph_blaster"
+  }
+}

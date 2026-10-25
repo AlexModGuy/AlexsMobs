@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/spiked_scute",
+  "criteria": {
+    "spiked_turtle_shell": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:spiked_turtle_shell"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.spiked_turtle_shell.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:spiked_turtle_shell"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.spiked_turtle_shell.title"
+    }
+  },
+  "requirements": [
+    [
+      "spiked_turtle_shell"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

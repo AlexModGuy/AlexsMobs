@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/rainbow_jelly",
+  "criteria": {
+    "rainbow_glass": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:rainbow_glass"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.rainbow_glass.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:rainbow_glass"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.rainbow_glass.title"
+    }
+  },
+  "requirements": [
+    [
+      "rainbow_glass"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

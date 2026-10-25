@@ -1,0 +1,16 @@
+{
+  "values": {
+    "alexsmobs:acacia_blossom": {
+      "chance": 0.65
+    },
+    "alexsmobs:banana": {
+      "chance": 0.65
+    },
+    "alexsmobs:banana_peel": {
+      "chance": 1.0
+    },
+    "alexsmobs:gongylidia": {
+      "chance": 0.9
+    }
+  }
+}

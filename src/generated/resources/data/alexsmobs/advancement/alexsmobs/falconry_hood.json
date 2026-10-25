@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/falconry_glove",
+  "criteria": {
+    "falconry_hood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:falconry_hood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.falconry_hood.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:falconry_hood"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.falconry_hood.title"
+    }
+  },
+  "requirements": [
+    [
+      "falconry_hood"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

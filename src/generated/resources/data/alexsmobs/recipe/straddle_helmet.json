@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "minecraft:string"
+    },
+    "S": {
+      "item": "alexsmobs:straddlite"
+    }
+  },
+  "pattern": [
+    " S ",
+    "S S",
+    "L L"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:straddle_helmet"
+  }
+}

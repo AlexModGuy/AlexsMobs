@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "alexsmobs:guster_eye"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:cut_sandstone"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SES",
+    "SRS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:gustmaker"
+  }
+}

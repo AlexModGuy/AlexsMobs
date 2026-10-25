@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "alexsmobs:flying_fish"
+    },
+    "S": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "S S",
+    "F F"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:flying_fish_boots"
+  }
+}

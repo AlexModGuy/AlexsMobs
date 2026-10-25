@@ -1,0 +1,42 @@
+{
+  "parent": "alexsmobs:alexsmobs/warped_mosco_kill",
+  "criteria": {
+    "hemolymph_blaster": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:hemolymph_blaster"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.hemolymph_blaster.desc"
+    },
+    "icon": {
+      "components": {
+        "citadel:custom_render_display": {
+          "item": {
+            "count": 1,
+            "id": "alexsmobs:hemolymph_blaster"
+          },
+          "zoom": true
+        }
+      },
+      "count": 1,
+      "id": "citadel:fancy_item"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.hemolymph_blaster.title"
+    }
+  },
+  "requirements": [
+    [
+      "hemolymph_blaster"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

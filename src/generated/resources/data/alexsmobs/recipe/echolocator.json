@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "echolocator",
+  "key": {
+    "A": {
+      "item": "alexsmobs:ambergris"
+    },
+    "C": {
+      "item": "alexsmobs:cachalot_whale_tooth"
+    },
+    "P": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "CPC",
+    "PAP",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:echolocator"
+  }
+}

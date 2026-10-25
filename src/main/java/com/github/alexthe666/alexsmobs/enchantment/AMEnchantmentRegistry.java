@@ -1,9 +1,14 @@
 package com.github.alexthe666.alexsmobs.enchantment;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 /**
@@ -23,6 +28,51 @@ public class AMEnchantmentRegistry {
     }
     
     public static void init() {
-        AlexsMobs.LOGGER.info("AMEnchantmentRegistry: Enchantments are now data-driven in 1.21");
+    }
+
+    public static void bootstrap(BootstrapContext<Enchantment> context) {
+        context.register(STRADDLE_JUMP, Enchantment.enchantment(
+                Enchantment.definition(
+                    HolderSet.direct(AMItemRegistry.STRADDLEBOARD),
+                    5, 3,
+                    new Enchantment.Cost(15, 9), new Enchantment.Cost(65, 9),
+                    4,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .build(STRADDLE_JUMP.location()));
+
+        context.register(STRADDLE_LAVAWAX, Enchantment.enchantment(
+                Enchantment.definition(
+                    HolderSet.direct(AMItemRegistry.STRADDLEBOARD),
+                    5, 1,
+                    new Enchantment.Cost(15, 9), new Enchantment.Cost(65, 9),
+                    4,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .build(STRADDLE_LAVAWAX.location()));
+
+        context.register(STRADDLE_SERPENTFRIEND, Enchantment.enchantment(
+                Enchantment.definition(
+                    HolderSet.direct(AMItemRegistry.STRADDLEBOARD),
+                    5, 1,
+                    new Enchantment.Cost(15, 9), new Enchantment.Cost(65, 9),
+                    4,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .build(STRADDLE_SERPENTFRIEND.location()));
+
+        context.register(STRADDLE_BOARDRETURN, Enchantment.enchantment(
+                Enchantment.definition(
+                    HolderSet.direct(AMItemRegistry.STRADDLEBOARD),
+                    5, 1,
+                    new Enchantment.Cost(15, 9), new Enchantment.Cost(65, 9),
+                    4,
+                    EquipmentSlotGroup.MAINHAND
+                )
+            )
+            .build(STRADDLE_BOARDRETURN.location()));
     }
 }

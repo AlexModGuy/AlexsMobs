@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "group": "cooked_kangaroo_meat",
+  "ingredient": {
+    "item": "alexsmobs:kangaroo_meat"
+  },
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:cooked_kangaroo_meat"
+  }
+}

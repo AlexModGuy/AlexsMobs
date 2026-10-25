@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/skelewag",
+  "criteria": {
+    "fish_bones": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:fish_bones"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.fish_bones.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:fish_bones"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.fish_bones.title"
+    }
+  },
+  "requirements": [
+    [
+      "fish_bones"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "lost_tentacle": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:lost_tentacle"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.lost_tentacle.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:lost_tentacle"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.lost_tentacle.title"
+    }
+  },
+  "requirements": [
+    [
+      "lost_tentacle"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

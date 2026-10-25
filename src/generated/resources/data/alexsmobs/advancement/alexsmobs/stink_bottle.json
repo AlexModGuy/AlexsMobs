@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/skunk",
+  "criteria": {
+    "stink_bottle": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:stink_bottle"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.stink_bottle.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:stink_bottle"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.stink_bottle.title"
+    }
+  },
+  "requirements": [
+    [
+      "stink_bottle"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

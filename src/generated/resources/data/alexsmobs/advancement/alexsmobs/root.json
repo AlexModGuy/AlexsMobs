@@ -1,0 +1,31 @@
+{
+  "criteria": {
+    "useitem": {
+      "conditions": {
+        "item": {
+          "items": "alexsmobs:animal_dictionary"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "display": {
+    "background": "alexsmobs:textures/advancement_background.png",
+    "description": {
+      "translate": "advancements.alexsmobs.root.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:animal_dictionary"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "useitem"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

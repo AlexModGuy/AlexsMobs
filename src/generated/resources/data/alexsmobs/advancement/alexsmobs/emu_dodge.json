@@ -1,0 +1,26 @@
+{
+  "parent": "alexsmobs:alexsmobs/emu",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:emu_dodge"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.emu_dodge.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:blue_banner"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.emu_dodge.title"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/pupfish_locator",
+  "criteria": {
+    "devils_hole_pupfish_bucket": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:devils_hole_pupfish_bucket"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.devils_hole_pupfish_bucket.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:devils_hole_pupfish_bucket"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.devils_hole_pupfish_bucket.title"
+    }
+  },
+  "requirements": [
+    [
+      "devils_hole_pupfish_bucket"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

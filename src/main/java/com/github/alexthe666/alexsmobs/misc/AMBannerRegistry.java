@@ -1,20 +1,28 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMBannerRegistry {
+    public static final ResourceKey<BannerPattern> BEAR = key("bear");
+    public static final ResourceKey<BannerPattern> AUSTRALIA_0 = key("australia_0");
+    public static final ResourceKey<BannerPattern> AUSTRALIA_1 = key("australia_1");
+    public static final ResourceKey<BannerPattern> NEW_MEXICO = key("new_mexico");
+    public static final ResourceKey<BannerPattern> BRAZIL = key("brazil");
 
-    public static final DeferredRegister<BannerPattern> DEF_REG = DeferredRegister.create(Registries.BANNER_PATTERN, AlexsMobs.MODID);
+    private static ResourceKey<BannerPattern> key(String name) {
+        return ResourceKey.create(Registries.BANNER_PATTERN, AlexsMobs.prefix(name));
+    }
 
-    static{
-        DEF_REG.register("bear", () ->  new BannerPattern(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "bear"), "bear"));
-        DEF_REG.register("australia_0", () ->  new BannerPattern(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "australia_0"), "australia_0"));
-        DEF_REG.register("australia_1", () ->  new BannerPattern(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "australia_1"), "australia_1"));
-        DEF_REG.register("new_mexico", () ->  new BannerPattern(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "new_mexico"), "new_mexico"));
-        DEF_REG.register("brazil", () ->  new BannerPattern(ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "brazil"), "brazil"));
+    public static void bootstrap(BootstrapContext<BannerPattern> context) {
+        context.register(BEAR, new BannerPattern(BEAR.location(), BEAR.location().getPath()));
+        context.register(AUSTRALIA_0, new BannerPattern(AUSTRALIA_0.location(), AUSTRALIA_0.location().getPath()));
+        context.register(AUSTRALIA_1, new BannerPattern(AUSTRALIA_1.location(), AUSTRALIA_1.location().getPath()));
+        context.register(NEW_MEXICO, new BannerPattern(NEW_MEXICO.location(), NEW_MEXICO.location().getPath()));
+        context.register(BRAZIL, new BannerPattern(BRAZIL.location(), BRAZIL.location().getPath()));
     }
 }

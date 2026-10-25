@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "chorus_on_a_stick",
+  "ingredients": [
+    {
+      "tag": "c:tools/fishing_rod"
+    },
+    {
+      "item": "minecraft:chorus_fruit"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:chorus_on_a_stick"
+  }
+}

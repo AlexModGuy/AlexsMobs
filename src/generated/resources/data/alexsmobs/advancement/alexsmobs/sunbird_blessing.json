@@ -1,0 +1,37 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "all_effects": {
+      "conditions": {
+        "effects": {
+          "alexsmobs:sunbird_blessing": {}
+        }
+      },
+      "trigger": "minecraft:effects_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.sunbird_blessing.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:sunbird"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.sunbird_blessing.title"
+    }
+  },
+  "requirements": [
+    [
+      "all_effects"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

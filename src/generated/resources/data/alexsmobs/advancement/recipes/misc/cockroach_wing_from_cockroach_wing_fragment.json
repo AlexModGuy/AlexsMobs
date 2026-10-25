@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cockroach_wing_fragment": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:cockroach_wing_fragment"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:cockroach_wing_from_cockroach_wing_fragment"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_cockroach_wing_fragment"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:cockroach_wing_from_cockroach_wing_fragment"
+    ]
+  }
+}

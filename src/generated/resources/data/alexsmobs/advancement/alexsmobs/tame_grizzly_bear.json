@@ -1,0 +1,42 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "tame": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "alexsmobs:grizzly_bear"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.tame_grizzly_bear.desc"
+    },
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:grizzly_bear"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_grizzly_bear.title"
+    }
+  },
+  "requirements": [
+    [
+      "tame"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

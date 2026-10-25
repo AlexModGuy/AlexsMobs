@@ -1,0 +1,43 @@
+{
+  "parent": "alexsmobs:alexsmobs/froststalker_helmet",
+  "criteria": {
+    "breed": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "alexsmobs:froststalker"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.breed_froststalker.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:froststalker"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.breed_froststalker.title"
+    }
+  },
+  "requirements": [
+    [
+      "breed"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

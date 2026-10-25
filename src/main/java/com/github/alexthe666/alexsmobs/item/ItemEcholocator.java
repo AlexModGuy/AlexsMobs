@@ -1,15 +1,21 @@
 package com.github.alexthe666.alexsmobs.item;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.component.AMDataComponentRegistry;
+import com.github.alexthe666.alexsmobs.component.CavePos;
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotEcho;
 import com.github.alexthe666.alexsmobs.message.MessageSetPupfishChunkOnClient;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.google.common.base.Predicates;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.StructureTags;
@@ -22,15 +28,9 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.gameevent.GameEvent;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ItemEcholocator extends Item {
 
@@ -77,12 +77,10 @@ public class ItemEcholocator extends Item {
         return world.getBlockState(checkPos).isAir() && world.getBrightness(LightLayer.SKY, checkPos) == 0 && world.getBrightness(LightLayer.BLOCK, checkPos) < 4;
     }
 
+    @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player livingEntityIn, InteractionHand handIn) {
         ItemStack stack = livingEntityIn.getItemInHand(handIn);
-        boolean left = false;
-        if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
-            left = true;
-        }
+        boolean left = livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT;
         EntityCachalotEcho whaleEcho = new EntityCachalotEcho(worldIn, livingEntityIn, !left, type == EchoType.PUPFISH);
         if (!worldIn.isClientSide && worldIn instanceof ServerLevel) {
             BlockPos playerPos = livingEntityIn.blockPosition();
@@ -101,12 +99,11 @@ public class ItemEcholocator extends Item {
                     }
                 }
             }else{
-                CompoundTag nbt = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-                if(nbt.contains("CavePos") && nbt.getBoolean("ValidCavePos")){
-                    pos = BlockPos.of(nbt.getLong("CavePos"));
+                CavePos cavePos = stack.get(AMDataComponentRegistry.CAVE_POS);
+                if(cavePos != null && cavePos.isValid()){
+                    pos = cavePos.pos();
                     if(isCaveAir(worldIn, pos) || 1000000 < pos.distSqr(playerPos)){
-                        nbt.putBoolean("ValidCavePos", false);
-                        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+                        stack.set(AMDataComponentRegistry.CAVE_POS, new CavePos(pos, false));
                     }
                 }else{
                     for (BlockPos portalPos : portals) {
@@ -115,9 +112,7 @@ public class ItemEcholocator extends Item {
                         }
                     }
                     if(pos != null){
-                        nbt.putLong("CavePos", pos.asLong());
-                        nbt.putBoolean("ValidCavePos", true);
-                        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+                        stack.set(AMDataComponentRegistry.CAVE_POS, new CavePos(pos, true));
                     }
                 }
 
@@ -130,7 +125,7 @@ public class ItemEcholocator extends Item {
                 whaleEcho.shoot(d0, d1, d2, 0.4F, 0.3F);
                 worldIn.addFreshEntity(whaleEcho);
                 livingEntityIn.gameEvent(GameEvent.ITEM_INTERACT_START);
-                worldIn.playSound((Player)null, whaleEcho.getX(), whaleEcho.getY(), whaleEcho.getZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                worldIn.playSound(null, whaleEcho.getX(), whaleEcho.getY(), whaleEcho.getZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                 stack.hurtAndBreak(1, livingEntityIn, EquipmentSlot.MAINHAND);
             }
         }

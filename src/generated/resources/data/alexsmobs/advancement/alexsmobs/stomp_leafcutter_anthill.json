@@ -1,0 +1,31 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:stomp_leafcutter_anthill"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.stomp_leafcutter_anthill.desc"
+    },
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:leafcutter_ant"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.stomp_leafcutter_anthill.title"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

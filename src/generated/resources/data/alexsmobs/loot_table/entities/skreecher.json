@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "alexsmobs:skreecher_soul"
+        }
+      ],
+      "name": "skreecher",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "alexsmobs:entities/skreecher"
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "centipede_leggings",
+  "key": {
+    "S": {
+      "item": "alexsmobs:centipede_leg"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:centipede_leggings"
+  }
+}

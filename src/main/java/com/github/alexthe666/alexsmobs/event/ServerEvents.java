@@ -1,8 +1,17 @@
 package com.github.alexthe666.alexsmobs.event;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.component.AMDataComponentRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
@@ -13,80 +22,30 @@ import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ILeftClick;
-import com.github.alexthe666.alexsmobs.item.ItemGhostlyPickaxe;
 import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
-import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
+import com.github.alexthe666.alexsmobs.mixin.AbstractArrowAccessor;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
-import com.github.alexthe666.alexsmobs.mixin.AbstractArrowAccessor;
-import com.github.alexthe666.alexsmobs.mixin.NoiseBasedChunkGeneratorAccessor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.TicketType;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Spider;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.npc.WanderingTrader;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.phys.*;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.enchanting.EnchantedEntityLootEvent;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.MobDespawnEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -98,16 +57,85 @@ import net.neoforged.neoforge.event.village.WandererTradesEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.antlr.v4.runtime.misc.Triple;
 
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.TicketType;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.entity.animal.Ocelot;
+import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.WanderingTrader;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ScaffoldingBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 @EventBusSubscriber(modid = AlexsMobs.MODID)
 public class ServerEvents {
 
     public static final UUID ALEX_UUID = UUID.fromString("71363abe-fd03-49c9-940d-aae8b8209b7c");
     public static final UUID CARRO_UUID = UUID.fromString("98905d4a-1cbc-41a4-9ded-2300404e2290");
-    private static final net.minecraft.resources.ResourceLocation SAND_SPEED_MODIFIER = net.minecraft.resources.ResourceLocation.parse("alexsmobs:sand_speed_bonus");
-    private static final net.minecraft.resources.ResourceLocation SNEAK_SPEED_MODIFIER = net.minecraft.resources.ResourceLocation.parse("alexsmobs:sneak_speed_bonus");
+    private static final ResourceLocation SAND_SPEED_MODIFIER = ResourceLocation.parse("alexsmobs:sand_speed_bonus");
+    private static final ResourceLocation SNEAK_SPEED_MODIFIER = ResourceLocation.parse("alexsmobs:sneak_speed_bonus");
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER,
             0.1F, AttributeModifier.Operation.ADD_VALUE);
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER,
@@ -260,10 +288,8 @@ public class ServerEvents {
         if (event.getRayTraceResult() instanceof EntityHitResult hitResult
                 && hitResult.getEntity() instanceof EntityEmu emu && !event.getEntity().level().isClientSide) {
             if (event.getEntity() instanceof AbstractArrow arrow) {
-                // In 1.21, setPierceLevel is private - arrow piercing is handled via item properties
-                // Restored using Mixin Accessor
                 if(arrow instanceof AbstractArrowAccessor accessor){
-                    accessor.invokeSetPierceLevel((byte) (accessor.invokeGetPierceLevel() + 1));
+                    accessor.invokeSetPierceLevel((byte) (arrow.getPierceLevel() + 1));
                 }
             }
             if ((emu.getAnimation() == EntityEmu.ANIMATION_DODGE_RIGHT
@@ -315,7 +341,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onTradeSetup(VillagerTradesEvent event) {
         if (event.getType() == VillagerProfession.FISHERMAN) {
-            VillagerTrades.ItemListing ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS.get(), 20, 3,
+            VillagerTrades.ItemListing ambergrisTrade = new VillagerTrades.EmeraldForItems(AMItemRegistry.AMBERGRIS.get(), 20, 3,
                     4);
             final var list = event.getTrades().get(2);
             list.add(ambergrisTrade);
@@ -328,24 +354,24 @@ public class ServerEvents {
         if (AMConfig.wanderingTraderOffers) {
             List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
             List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ANIMAL_DICTIONARY.get(), 4, 1, 2, 1));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ACACIA_BLOSSOM.get(), 3, 2, 2, 1));
+            genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.ANIMAL_DICTIONARY.get(), 4, 1, 2, 1));
+            genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.ACACIA_BLOSSOM.get(), 3, 2, 2, 1));
             if (AMConfig.cockroachSpawnWeight > 0) {
-                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.COCKROACH_OOTHECA.get(), 2, 1, 2, 1));
+                genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.COCKROACH_OOTHECA.get(), 2, 1, 2, 1));
             }
             if (AMConfig.blobfishSpawnWeight > 0) {
-                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOBFISH_BUCKET.get(), 4, 1, 3, 1));
+                genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.BLOBFISH_BUCKET.get(), 4, 1, 3, 1));
             }
             if (AMConfig.crocodileSpawnWeight > 0) {
-                genericTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.CROCODILE_EGG.get().asItem(), 6, 1, 2, 1));
+                genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMBlockRegistry.CROCODILE_EGG.get().asItem(), 6, 1, 2, 1));
             }
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BEAR_FUR.get(), 1, 1, 2, 1));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_SCUTE.get(), 5, 1, 2, 1));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ROADRUNNER_FEATHER.get(), 1, 2, 2, 2));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.MOSQUITO_LARVA.get(), 1, 3, 5, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.SOMBRERO.get(), 20, 1, 1, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.BANANA_PEEL.get(), 1, 2, 1, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC.get(), 5, 2, 3, 1));
+            genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.BEAR_FUR.get(), 1, 1, 2, 1));
+            genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.CROCODILE_SCUTE.get(), 5, 1, 2, 1));
+            genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.ROADRUNNER_FEATHER.get(), 1, 2, 2, 2));
+            genericTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.MOSQUITO_LARVA.get(), 1, 3, 5, 1));
+            rareTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.SOMBRERO.get(), 20, 1, 1, 1));
+            rareTrades.add(new VillagerTrades.ItemsForEmeralds(AMBlockRegistry.BANANA_PEEL.get(), 1, 2, 1, 1));
+            rareTrades.add(new VillagerTrades.ItemsForEmeralds(AMItemRegistry.BLOOD_SAC.get(), 5, 2, 3, 1));
         }
     }
 
@@ -505,20 +531,14 @@ public class ServerEvents {
                     .add(new ItemEntity(event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(),
                             event.getEntity().getZ(), new ItemStack(AMItemRegistry.VINE_LASSO.get())));
         }
-        // Snow Leopard looting boost: +2 looting level (LootingLevelEvent was removed in 1.21)
-        // When a snow leopard kills an entity, increase drop counts to simulate looting
-        DamageSource src = event.getSource();
-        if (src != null && src.getEntity() instanceof EntitySnowLeopard) {
-            for (ItemEntity itemEntity : event.getDrops()) {
-                ItemStack stack = itemEntity.getItem();
-                // Only increase stackable items, not equipment or special items
-                if (stack.getMaxStackSize() > 1 && stack.getCount() < stack.getMaxStackSize()) {
-                    // Add extra items based on looting level 2 (random 0-2 extra)
-                    int extraItems = RAND.nextInt(3); // 0, 1, or 2 extra items
-                    if (extraItems > 0) {
-                        stack.grow(extraItems);
-                    }
-                }
+    }
+
+    @SubscribeEvent
+    public static void onLootLevelEvent(EnchantedEntityLootEvent event) {
+        DamageSource src = event.getDamageSource();
+        if (src != null && event.getEnchantment().is(Enchantments.LOOTING)) {
+            if (src.getEntity() instanceof EntitySnowLeopard) {
+                event.setEnchantmentLevel(event.getEnchantmentLevel() + 2);
             }
         }
     }
@@ -561,7 +581,7 @@ public class ServerEvents {
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntityTiger.class, 6.0F, 1.0D, 1.2D));
             } else if (AMConfig.catsAndFoxesAttackJerboas
                     && (entity instanceof Fox || entity instanceof Cat || entity instanceof Ocelot)) {
-                Mob mb = (Mob) entity;
+                Mob mb = entity;
                 mb.targetSelector.addGoal(6,
                         new NearestAttackableTargetGoal<>(mb, EntityJerboa.class, 45, true, true, null));
             } else if (AMConfig.bunfungusTransformation && entity instanceof final Rabbit rabbit) {
@@ -653,19 +673,18 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onLivingSetTargetEvent(LivingChangeTargetEvent event) {
         if (event.getNewAboutToBeSetTarget() != null && event.getEntity() instanceof Mob mob) {
-            if (mob.getType().is(net.minecraft.tags.EntityTypeTags.ARTHROPOD)) {
+            if (mob.getType().is(EntityTypeTags.ARTHROPOD)) {
                 if (event.getNewAboutToBeSetTarget().hasEffect(AMEffectRegistry.BUG_PHEROMONES)
                         && event.getEntity().getLastHurtByMob() != event.getNewAboutToBeSetTarget()) {
                     event.setCanceled(true);
                     return;
                 }
             }
-            if (mob.getType().is(net.minecraft.tags.EntityTypeTags.UNDEAD)
+            if (mob.getType().is(EntityTypeTags.UNDEAD)
                     && !mob.getType().is(AMTagRegistry.IGNORES_KIMONO)) {
                 if (event.getNewAboutToBeSetTarget().getItemBySlot(EquipmentSlot.CHEST).is(AMItemRegistry.UNSETTLING_KIMONO.get())
                         && event.getEntity().getLastHurtByMob() != event.getNewAboutToBeSetTarget()) {
                     event.setCanceled(true);
-                    return;
                 }
             }
         }
@@ -718,9 +737,8 @@ public class ServerEvents {
             }
         }
         final ItemStack boots = entity.getItemBySlot(EquipmentSlot.FEET);
-        if (!boots.isEmpty() && boots.has(DataComponents.CUSTOM_DATA)
-                && boots.get(DataComponents.CUSTOM_DATA).contains("BisonFur")
-                && boots.get(DataComponents.CUSTOM_DATA).copyTag().getBoolean("BisonFur")) {
+        if (!boots.isEmpty()
+                && boots.has(AMDataComponentRegistry.BISON_FUR)) {
             BlockPos posBelow = new BlockPos((int) event.getEntity().getX(),
                     (int) (entity.getBoundingBox().minY - 0.1F), (int) entity.getZ());
             if (entity.level().getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
@@ -739,7 +757,7 @@ public class ServerEvents {
                 Vec3 motion = entity.getDeltaMovement();
                 double d2 = 0.1D;
                 BlockState feetBlockState = entity.level().getBlockState(entity.blockPosition());
-                if (entity.isShiftKeyDown() || !(feetBlockState.getBlock() instanceof net.minecraft.world.level.block.ScaffoldingBlock)
+                if (entity.isShiftKeyDown() || !(feetBlockState.getBlock() instanceof ScaffoldingBlock)
                         && entity.isSuppressingSlidingDownLadder()) {
                     d2 = 0.0D;
                 }
@@ -826,7 +844,7 @@ public class ServerEvents {
                         flag = true;
                     }
                     if (flag) {
-                        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                             EquipmentSlot slot = event.getEntity().getUsedItemHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                             event.getEntity().getUseItem().hurtAndBreak(1, serverPlayer.serverLevel(), serverPlayer,
                                     item -> serverPlayer.onEquippedItemBroken(item, slot));
@@ -839,8 +857,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
-        CompoundTag tag = event.getItemStack().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if (tag.contains("BisonFur") && tag.getBoolean("BisonFur")) {
+        if (event.getItemStack().has(AMDataComponentRegistry.BISON_FUR)) {
             event.getToolTip()
                     .add(Component.translatable("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.AQUA));
         }

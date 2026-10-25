@@ -2,14 +2,13 @@ package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
@@ -26,6 +25,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
     /**
      * Used to check if a recipe matches current crafting inventory
      */
+    @Override
     public boolean matches(CraftingInput inv, Level worldIn) {
         if (!AMConfig.mimicreamRepair) {
             return false;
@@ -57,6 +57,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
     /**
      * Returns an Item that is the result of this recipe
      */
+    @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) {
         ItemStack damageableStack = ItemStack.EMPTY;
         int mimicreamCount = 0;
@@ -78,11 +79,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
             ItemStack itemstack2 = damageableStack.copy();
 
             if (damageableStack.is(AMItemRegistry.GHOSTLY_PICKAXE.get())) {
-                CustomData.update(DataComponents.CUSTOM_DATA, itemstack2, tag -> {
-                    if (tag.contains("Items")) {
-                        tag.remove("Items");
-                    }
-                });
+                itemstack2.remove(DataComponents.CONTAINER);
             }
             ItemEnchantments enchantments = itemstack2.getOrDefault(DataComponents.ENCHANTMENTS,
                     ItemEnchantments.EMPTY);
@@ -96,8 +93,9 @@ public class RecipeMimicreamRepair extends CustomRecipe {
         }
     }
 
-    public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
+    @Override
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i) {
             ItemStack itemstack = inv.getItem(i);
@@ -114,6 +112,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
         return nonnulllist;
     }
 
+    @Override
     public RecipeSerializer<?> getSerializer() {
         return AMRecipeRegistry.MIMICREAM_RECIPE.get();
     }
@@ -121,6 +120,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
     /**
      * Used to determine if this recipe can fit in a grid of the given width/height
      */
+    @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width >= 3 && height >= 3;
     }

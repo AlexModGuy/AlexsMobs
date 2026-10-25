@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "alexsmobs:kangaroo_hide"
+    },
+    {
+      "item": "alexsmobs:kangaroo_hide"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:leather"
+  }
+}

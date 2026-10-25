@@ -1,0 +1,45 @@
+{
+  "parent": "alexsmobs:alexsmobs/straddler",
+  "criteria": {
+    "tame": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "alexsmobs:stradpole"
+            }
+          }
+        ],
+        "item": {
+          "items": "alexsmobs:mosquito_larva"
+        }
+      },
+      "trigger": "minecraft:player_interacted_with_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.stradpole_feed.desc"
+    },
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:stradpole"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.stradpole_feed.title"
+    }
+  },
+  "requirements": [
+    [
+      "tame"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

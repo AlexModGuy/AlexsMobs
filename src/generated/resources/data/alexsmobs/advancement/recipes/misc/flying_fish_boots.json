@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flying_fish": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:flying_fish"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:flying_fish_boots"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_flying_fish"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:flying_fish_boots"
+    ]
+  }
+}

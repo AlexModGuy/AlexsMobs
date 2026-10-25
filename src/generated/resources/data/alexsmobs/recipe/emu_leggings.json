@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "emu_leggings",
+  "key": {
+    "F": {
+      "item": "alexsmobs:emu_feather"
+    },
+    "K": {
+      "item": "alexsmobs:kangaroo_hide"
+    }
+  },
+  "pattern": [
+    "FKF",
+    "K K",
+    "F F"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:emu_leggings"
+  }
+}

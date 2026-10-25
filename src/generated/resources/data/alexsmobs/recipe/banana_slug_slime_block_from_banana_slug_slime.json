@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    },
+    {
+      "item": "alexsmobs:banana_slug_slime"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:banana_slug_slime_block"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "alexsmobs:alexsmobs/crimson_mosquito",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:mosquito_sick"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.crimson_mosquito_sick.desc"
+    },
+    "icon": {
+      "components": {
+        "citadel:custom_render_display": {
+          "item": {
+            "count": 1,
+            "id": "minecraft:warped_fungus"
+          },
+          "shake": true
+        }
+      },
+      "count": 1,
+      "id": "citadel:fancy_item"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.crimson_mosquito_sick.title"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

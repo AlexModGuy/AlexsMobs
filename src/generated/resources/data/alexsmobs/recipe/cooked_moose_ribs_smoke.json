@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.15,
+  "group": "cooked_moose_ribs",
+  "ingredient": {
+    "item": "alexsmobs:moose_ribs"
+  },
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:cooked_moose_ribs"
+  }
+}

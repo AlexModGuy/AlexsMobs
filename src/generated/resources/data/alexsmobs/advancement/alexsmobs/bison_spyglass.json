@@ -1,0 +1,51 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "spyglass_at_bison": {
+      "conditions": {
+        "item": {
+          "items": "minecraft:spyglass"
+        },
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "minecraft:player",
+                "looking_at": {
+                  "type": "alexsmobs:bison"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:using_item"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.bison_spyglass.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:bison"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.bison_spyglass.title"
+    }
+  },
+  "requirements": [
+    [
+      "spyglass_at_bison"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

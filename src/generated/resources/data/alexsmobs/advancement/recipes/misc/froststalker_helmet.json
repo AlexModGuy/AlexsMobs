@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_froststalker_horn": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:froststalker_horn"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:froststalker_helmet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_froststalker_horn"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:froststalker_helmet"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_moose_antler": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:moose_antler"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:moose_headgear"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_moose_antler"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:moose_headgear"
+    ]
+  }
+}

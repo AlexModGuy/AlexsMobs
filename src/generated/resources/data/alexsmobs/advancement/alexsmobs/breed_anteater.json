@@ -1,0 +1,42 @@
+{
+  "parent": "alexsmobs:alexsmobs/leafcutter_ant_pupa",
+  "criteria": {
+    "breed": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "alexsmobs:anteater"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.breed_anteater.desc"
+    },
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:anteater"
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.breed_anteater.title"
+    }
+  },
+  "requirements": [
+    [
+      "breed"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

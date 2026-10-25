@@ -1,0 +1,32 @@
+{
+  "parent": "alexsmobs:alexsmobs/tame_elephant",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:elephant_swag"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.elephant_swag.desc"
+    },
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:elephant",
+          "flags": 98
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.elephant_swag.title"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,11 +1,11 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.component.AMDataComponentRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidPortal;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -33,16 +32,6 @@ public class ItemDimensionalCarver extends Item {
 
     public ItemDimensionalCarver(Item.Properties props) {
         super(props);
-    }
-
-    // Helper methods for 1.21 DataComponents NBT replacement
-    private static CompoundTag getCustomData(ItemStack stack) {
-        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
-        return customData != null ? customData.copyTag() : new CompoundTag();
-    }
-    
-    private static void setCustomData(ItemStack stack, CompoundTag tag) {
-        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
 
     protected static BlockHitResult rayTracePortal(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
@@ -66,6 +55,7 @@ public class ItemDimensionalCarver extends Item {
         return 1; // fix for incompatibility with other mods
     }
 
+    @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
         if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
@@ -75,35 +65,30 @@ public class ItemDimensionalCarver extends Item {
             HitResult raytraceresult = rayTracePortal(worldIn, playerIn, ClipContext.Fluid.ANY);
             Direction dir = Direction.orderedByNearest(playerIn)[0];
 
-            double x = raytraceresult.getLocation().x - dir.getNormal().getX() * 0.1F;
-            double y = raytraceresult.getLocation().y - dir.getNormal().getY() * 0.1F;
-            double z = raytraceresult.getLocation().z - dir.getNormal().getZ() * 0.1F;
-            CompoundTag tag = getCustomData(itemstack);
-            if (tag.getBoolean("HASBLOCK")) {
-                x = tag.getDouble("BLOCKX");
-                y = tag.getDouble("BLOCKY");
-                z = tag.getDouble("BLOCKZ");
+            Vec3 position;
+            if (itemstack.has(AMDataComponentRegistry.POSITION)) {
+                position = itemstack.get(AMDataComponentRegistry.POSITION);
             } else {
-                tag.putBoolean("HASBLOCK", true);
-                tag.putDouble("BLOCKX", x);
-                tag.putDouble("BLOCKY", y);
-                tag.putDouble("BLOCKZ", z);
-                setCustomData(itemstack, tag);
+                position = raytraceresult.getLocation().subtract(Vec3.atLowerCornerOf(dir.getNormal()).scale(0.1));
+                itemstack.set(AMDataComponentRegistry.POSITION, position);
             }
-            worldIn.addParticle(AMParticleRegistry.INVERT_DIG.get(), x, y, z, playerIn.getId(), 0, 0);
+            worldIn.addParticle(AMParticleRegistry.INVERT_DIG.get(), position.x(), position.y(), position.z(), playerIn.getId(), 0, 0);
             return InteractionResultHolder.consume(itemstack);
         }
 
     }
 
+    @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 200;
     }
 
+    @Override
     public float getXpRepairRatio(ItemStack stack) {
         return 100F;
     }
 
+    @Override
     public void onUseTick(Level level, LivingEntity player, ItemStack itemstack, int count) {
         player.swing(player.getUsedItemHand());
         RandomSource random = player.getRandom();
@@ -112,11 +97,11 @@ public class ItemDimensionalCarver extends Item {
             player.playSound(SoundEvents.NETHERITE_BLOCK_HIT, 1, 0.5F + random.nextFloat());
         }
         boolean flag = false;
-        CompoundTag tag = getCustomData(itemstack);
-        if (tag.getBoolean("HASBLOCK")) {
-            double x = tag.getDouble("BLOCKX");
-            double y = tag.getDouble("BLOCKY");
-            double z = tag.getDouble("BLOCKZ");
+        if (itemstack.has(AMDataComponentRegistry.POSITION)) {
+            Vec3 position = itemstack.get(AMDataComponentRegistry.POSITION);
+            double x = position.x();
+            double y = position.y();
+            double z = position.z();
             if (random.nextFloat() < 0.2) {
                 player.level().addParticle(AMParticleRegistry.WORM_PORTAL.get(), x + random.nextGaussian() * 0.1F, y + random.nextGaussian() * 0.1F, z + random.nextGaussian() * 0.1F, random.nextGaussian() * 0.1F, -0.1F, random.nextGaussian() * 0.1F);
             }
@@ -129,26 +114,19 @@ public class ItemDimensionalCarver extends Item {
         }
         if (flag) {
             player.stopUsingItem();
-            CompoundTag resetTag = getCustomData(itemstack);
-            resetTag.putBoolean("HASBLOCK", false);
-            resetTag.putDouble("BLOCKX", 0);
-            resetTag.putDouble("BLOCKY", 0);
-            resetTag.putDouble("BLOCKZ", 0);
-            setCustomData(itemstack, resetTag);
+            itemstack.remove(AMDataComponentRegistry.POSITION);
         }
     }
 
+    @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entityLiving) {
-        CompoundTag tag = getCustomData(stack);
-        if (tag.getBoolean("HASBLOCK")) {
-            double x = tag.getDouble("BLOCKX");
-            double y = tag.getDouble("BLOCKY");
-            double z = tag.getDouble("BLOCKZ");
+        if (stack.has(AMDataComponentRegistry.POSITION)) {
+            Vec3 position = stack.get(AMDataComponentRegistry.POSITION);
             if (!level.isClientSide) {
                 entityLiving.gameEvent(GameEvent.ITEM_INTERACT_START);
                 entityLiving.playSound(SoundEvents.GLASS_BREAK, 1, 0.5F);
                 EntityVoidPortal portal = new EntityVoidPortal(level, this);
-                portal.setPos(x, y, z);
+                portal.setPos(position);
                 Direction dir = Direction.orderedByNearest(entityLiving)[0].getOpposite();
                 if (dir == Direction.UP) {
                     dir = Direction.DOWN;
@@ -162,25 +140,17 @@ public class ItemDimensionalCarver extends Item {
                 }
             }
         }
-        tag.putBoolean("HASBLOCK", false);
-        tag.putDouble("BLOCKX", 0);
-        tag.putDouble("BLOCKY", 0);
-        tag.putDouble("BLOCKZ", 0);
-        setCustomData(stack, tag);
+        stack.remove(AMDataComponentRegistry.POSITION);
         return stack;
     }
 
 
+    @Override
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        CompoundTag tag = getCustomData(stack);
-        tag.putBoolean("HASBLOCK", false);
-        tag.putDouble("BLOCKX", 0);
-        tag.putDouble("BLOCKY", 0);
-        tag.putDouble("BLOCKZ", 0);
-        setCustomData(stack, tag);
-
+        stack.remove(AMDataComponentRegistry.POSITION);
     }
 
+    @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return !ItemStack.isSameItem(oldStack, newStack);
     }
@@ -189,8 +159,7 @@ public class ItemDimensionalCarver extends Item {
         portal.setLifespan(1200);
         ResourceKey<Level> respawnDimension = Level.OVERWORLD;
         BlockPos respawnPosition = player.getSleepingPos().isPresent() ? player.getSleepingPos().get() : player.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, BlockPos.ZERO);
-        if (player instanceof ServerPlayer) {
-            ServerPlayer serverPlayer = (ServerPlayer) player;
+        if (player instanceof ServerPlayer serverPlayer) {
             respawnDimension = serverPlayer.getRespawnDimension();
             if (serverPlayer.getRespawnPosition() != null) {
                 respawnPosition = serverPlayer.getRespawnPosition();

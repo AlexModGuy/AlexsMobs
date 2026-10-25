@@ -1,29 +1,34 @@
 package com.github.alexthe666.alexsmobs;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.function.Supplier;
+
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.component.AMDataComponentRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.event.ServerEvents;
 import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.AMArmorMaterial;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.*;
-import com.github.alexthe666.alexsmobs.misc.*;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMCreativeTabRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMLootRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMRecipeRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.world.AMFeatureRegistry;
 import com.github.alexthe666.alexsmobs.world.AMLeafcutterAntBiomeModifier;
 import com.github.alexthe666.alexsmobs.world.AMMobSpawnBiomeModifier;
 import com.github.alexthe666.alexsmobs.world.AMMobSpawnStructureModifier;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -39,9 +44,9 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.function.Supplier;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
 @Mod(AlexsMobs.MODID)
 public class AlexsMobs {
@@ -69,6 +74,7 @@ public class AlexsMobs {
         AMBlockRegistry.DEF_REG.register(modEventBus);
         AMEntityRegistry.DEF_REG.register(modEventBus);
         AMItemRegistry.DEF_REG.register(modEventBus);
+        AMDataComponentRegistry.DEF_REG.register(modEventBus);
         AMArmorMaterial.ARMOR_MATERIALS.register(modEventBus);
         AMTileEntityRegistry.DEF_REG.register(modEventBus);
         AMPointOfInterestRegistry.DEF_REG.register(modEventBus);
@@ -80,7 +86,6 @@ public class AlexsMobs {
         AMMenuRegistry.DEF_REG.register(modEventBus);
         AMRecipeRegistry.DEF_REG.register(modEventBus);
         AMLootRegistry.DEF_REG.register(modEventBus);
-        AMBannerRegistry.DEF_REG.register(modEventBus);
         AMCreativeTabRegistry.DEF_REG.register(modEventBus);
         AMAdvancementTriggerRegistry.DEF_REG.register(modEventBus);
         

@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    },
+    {
+      "item": "alexsmobs:bison_fur"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:bison_fur_block"
+  }
+}

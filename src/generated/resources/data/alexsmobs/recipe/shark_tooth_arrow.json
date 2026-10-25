@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "K": {
+      "item": "minecraft:kelp"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "T": {
+      "item": "alexsmobs:shark_tooth"
+    }
+  },
+  "pattern": [
+    "TSK"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:shark_tooth_arrow"
+  }
+}

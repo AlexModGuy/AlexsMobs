@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:barter",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:clay_ball",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alexsmobs:maggot",
+          "weight": 7
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "alexsmobs:gameplay/platypus_reward"
+}

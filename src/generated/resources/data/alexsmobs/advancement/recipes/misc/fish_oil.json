@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_blobfish": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:blobfish"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:fish_oil"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_blobfish"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:fish_oil"
+    ]
+  }
+}

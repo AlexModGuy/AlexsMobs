@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "banana": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:banana"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.banana.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:banana"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.banana.title"
+    }
+  },
+  "requirements": [
+    [
+      "banana"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

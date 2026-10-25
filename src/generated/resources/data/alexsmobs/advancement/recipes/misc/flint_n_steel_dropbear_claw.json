@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dropbear_claw": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:dropbear_claw"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:flint_n_steel_dropbear_claw"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_dropbear_claw"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:flint_n_steel_dropbear_claw"
+    ]
+  }
+}

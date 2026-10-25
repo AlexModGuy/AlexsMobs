@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_banana_peel": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:banana_peel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:sopa_de_macaco"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_banana_peel"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:sopa_de_macaco"
+    ]
+  }
+}

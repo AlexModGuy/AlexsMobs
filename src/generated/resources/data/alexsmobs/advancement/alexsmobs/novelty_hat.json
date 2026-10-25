@@ -1,0 +1,42 @@
+{
+  "parent": "alexsmobs:alexsmobs/skelewag_skull",
+  "criteria": {
+    "novelty_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:novelty_hat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.novelty_hat.desc"
+    },
+    "icon": {
+      "components": {
+        "citadel:custom_render_display": {
+          "item": {
+            "count": 1,
+            "id": "alexsmobs:novelty_hat"
+          },
+          "zoom": true
+        }
+      },
+      "count": 1,
+      "id": "citadel:fancy_item"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.novelty_hat.title"
+    }
+  },
+  "requirements": [
+    [
+      "novelty_hat"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

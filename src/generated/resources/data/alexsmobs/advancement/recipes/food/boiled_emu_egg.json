@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_emu_egg": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:emu_egg"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:boiled_emu_egg"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_emu_egg"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:boiled_emu_egg"
+    ]
+  }
+}

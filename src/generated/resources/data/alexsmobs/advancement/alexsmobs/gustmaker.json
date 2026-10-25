@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/guster",
+  "criteria": {
+    "gustmaker": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:gustmaker"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.gustmaker.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:gustmaker"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.gustmaker.title"
+    }
+  },
+  "requirements": [
+    [
+      "gustmaker"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/falconry_hood",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:bald_eagle_challenge"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.bald_eagle_challenge.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "alexsmobs:display_entity": {
+          "entity_type": "alexsmobs:bald_eagle",
+          "flags": 98
+        }
+      },
+      "count": 1,
+      "id": "alexsmobs:tab_icon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.bald_eagle_challenge.title"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rattlesnake_rattle": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:rattlesnake_rattle"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:maraca"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rattlesnake_rattle"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:maraca"
+    ]
+  }
+}

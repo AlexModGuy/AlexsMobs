@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/soul_vulture",
+  "criteria": {
+    "soul_heart": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:soul_heart"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.soul_heart.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:soul_heart"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.soul_heart.title"
+    }
+  },
+  "requirements": [
+    [
+      "soul_heart"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

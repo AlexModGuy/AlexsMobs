@@ -3,38 +3,48 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
-import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
+import com.github.alexthe666.alexsmobs.entity.EntityEmuEgg;
+import com.github.alexthe666.alexsmobs.entity.EntityEnderiophageRocket;
+import com.github.alexthe666.alexsmobs.entity.EntitySharkToothArrow;
+import com.github.alexthe666.alexsmobs.entity.EntityTossedItem;
+import com.github.alexthe666.alexsmobs.misc.AMProjectileDispenseBehavior;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.server.block.LecternBooks;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
-import com.github.alexthe666.alexsmobs.misc.AMProjectileDispenseBehavior;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.JukeboxSong;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BannerPatternItem;
+import net.minecraft.world.item.DispensibleContainerItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.JukeboxSong;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AMItemRegistry {
     public static final AMArmorMaterial ROADRUNNER_ARMOR_MATERIAL = new AMArmorMaterial("roadrunner", 18, new int[]{3, 3, 3, 3}, 20, SoundEvents.ARMOR_EQUIP_TURTLE, 0);
@@ -53,172 +63,175 @@ public class AMItemRegistry {
     public static final AMArmorMaterial NOVELTY_HAT_MATERIAL = new AMArmorMaterial("novelty_hat", 10, new int[]{2, 2, 2, 2}, 30, SoundEvents.ARMOR_EQUIP_LEATHER, 0F);
     public static final AMArmorMaterial KIMONO_MATERIAL = new AMArmorMaterial("kimono", 8, new int[]{3, 3, 3, 3}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0F);
 
-    public static final DeferredRegister<Item> DEF_REG = DeferredRegister.create(Registries.ITEM, AlexsMobs.MODID);
+    public static final DeferredRegister.Items DEF_REG = DeferredRegister.createItems(AlexsMobs.MODID);
 
     static{
         initSpawnEggs();
     }
 
-    public static final DeferredHolder<Item, Item> TAB_ICON = DEF_REG.register("tab_icon", () -> new ItemTabIcon(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> ANIMAL_DICTIONARY = DEF_REG.register("animal_dictionary", () -> new ItemAnimalDictionary(new Item.Properties().stacksTo(1)));
-    public static final DeferredHolder<Item, Item> BEAR_FUR = DEF_REG.register("bear_fur", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> BEAR_DUST = DEF_REG.register("bear_dust", () -> new ItemBearDust(new Item.Properties().rarity(Rarity.EPIC)));
-    public static final DeferredHolder<Item, Item> ROADRUNNER_FEATHER = DEF_REG.register("roadrunner_feather", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> ROADDRUNNER_BOOTS = DEF_REG.register("roadrunner_boots", () -> new ItemModArmor(ROADRUNNER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS));
-    public static final DeferredHolder<Item, Item> LAVA_BOTTLE = DEF_REG.register("lava_bottle", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final DeferredHolder<Item, Item> BONE_SERPENT_TOOTH = DEF_REG.register("bone_serpent_tooth", () -> new Item(new Item.Properties().fireResistant()));
-    public static final DeferredHolder<Item, Item> GAZELLE_HORN = DEF_REG.register("gazelle_horn", () -> new Item(new Item.Properties().fireResistant()));
-    public static final DeferredHolder<Item, Item> CROCODILE_SCUTE = DEF_REG.register("crocodile_scute", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> CROCODILE_CHESTPLATE = DEF_REG.register("crocodile_chestplate", () -> new ItemModArmor(CROCODILE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE));
-    public static final DeferredHolder<Item, Item> MAGGOT = DEF_REG.register("maggot", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).build())));
-    public static final DeferredHolder<Item, Item> BANANA = DEF_REG.register("banana", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.3F).build())));
-    public static final DeferredHolder<Item, Item> ANCIENT_DART = DEF_REG.register("ancient_dart", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
-    public static final DeferredHolder<Item, Item> HALO = DEF_REG.register("halo", () -> new ItemInventoryOnly(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> BLOOD_SAC = DEF_REG.register("blood_sac", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> TAB_ICON = DEF_REG.register("tab_icon", () -> new ItemTabIcon(new Item.Properties()));
+    public static final DeferredItem<Item> ANIMAL_DICTIONARY = DEF_REG.register("animal_dictionary", () -> new ItemAnimalDictionary(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> BEAR_FUR = DEF_REG.register("bear_fur", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> BEAR_DUST = DEF_REG.register("bear_dust", () -> new ItemBearDust(new Item.Properties().rarity(Rarity.EPIC)));
+    public static final DeferredItem<Item> ROADRUNNER_FEATHER = DEF_REG.register("roadrunner_feather", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> ROADDRUNNER_BOOTS = DEF_REG.register("roadrunner_boots", () -> new ItemModArmor(ROADRUNNER_ARMOR_MATERIAL, ArmorItem.Type.BOOTS));
+    public static final DeferredItem<Item> LAVA_BOTTLE = DEF_REG.register("lava_bottle", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> BONE_SERPENT_TOOTH = DEF_REG.register("bone_serpent_tooth", () -> new Item(new Item.Properties().fireResistant()));
+    public static final DeferredItem<Item> GAZELLE_HORN = DEF_REG.register("gazelle_horn", () -> new Item(new Item.Properties().fireResistant()));
+    public static final DeferredItem<Item> CROCODILE_SCUTE = DEF_REG.register("crocodile_scute", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CROCODILE_CHESTPLATE = DEF_REG.register("crocodile_chestplate", () -> new ItemModArmor(CROCODILE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE));
+    public static final DeferredItem<Item> MAGGOT = DEF_REG.register("maggot", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).build())));
+    public static final DeferredItem<Item> BANANA = DEF_REG.register("banana", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.3F).build())));
+    public static final DeferredItem<Item> ANCIENT_DART = DEF_REG.register("ancient_dart", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<Item> HALO = DEF_REG.register("halo", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> BLOOD_SAC = DEF_REG.register("blood_sac", () -> new Item(new Item.Properties()));
 
-    public static final DeferredHolder<Item, Item> MOSQUITO_PROBOSCIS = DEF_REG.register("mosquito_proboscis", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> BLOOD_SPRAYER = DEF_REG.register("blood_sprayer", () -> new ItemBloodSprayer(new Item.Properties().durability(100)));
-    public static final DeferredHolder<Item, Item> RATTLESNAKE_RATTLE = DEF_REG.register("rattlesnake_rattle", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> CHORUS_ON_A_STICK = DEF_REG.register("chorus_on_a_stick", () -> new ItemChorusOnAStick(new Item.Properties().stacksTo(1)));
-    public static final DeferredHolder<Item, Item> SHARK_TOOTH = DEF_REG.register("shark_tooth", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SHARK_TOOTH_ARROW = DEF_REG.register("shark_tooth_arrow", () -> new ItemModArrow(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> LOBSTER_TAIL = DEF_REG.register("lobster_tail", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4F).build())));
-    public static final DeferredHolder<Item, Item> COOKED_LOBSTER_TAIL = DEF_REG.register("cooked_lobster_tail", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.65F).build())));
-    public static final DeferredHolder<Item, Item> LOBSTER_BUCKET = DEF_REG.register("lobster_bucket", () -> new ItemModFishBucket(AMEntityRegistry.LOBSTER, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> KOMODO_SPIT = DEF_REG.register("komodo_spit", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> KOMODO_SPIT_BOTTLE = DEF_REG.register("komodo_spit_bottle", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> POISON_BOTTLE = DEF_REG.register("poison_bottle", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SOPA_DE_MACACO = DEF_REG.register("sopa_de_macaco", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.4F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
-    public static final DeferredHolder<Item, Item> CENTIPEDE_LEG = DEF_REG.register("centipede_leg", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> CENTIPEDE_LEGGINGS = DEF_REG.register("centipede_leggings", () -> new ItemModArmor(CENTIPEDE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS));
-    public static final DeferredHolder<Item, Item> MOSQUITO_LARVA = DEF_REG.register("mosquito_larva", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> MOOSE_ANTLER = DEF_REG.register("moose_antler", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> MOOSE_HEADGEAR = DEF_REG.register("moose_headgear", () -> new ItemModArmor(MOOSE_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> MOOSE_RIBS = DEF_REG.register("moose_ribs", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.6F).build())));
-    public static final DeferredHolder<Item, Item> COOKED_MOOSE_RIBS = DEF_REG.register("cooked_moose_ribs", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.85F).build())));
-    public static final DeferredHolder<Item, Item> MIMICREAM = DEF_REG.register("mimicream", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> RACCOON_TAIL = DEF_REG.register("raccoon_tail", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FRONTIER_CAP = DEF_REG.register("frontier_cap", () -> new ItemModArmor(RACCOON_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> BLOBFISH = DEF_REG.register("blobfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).effect(new MobEffectInstance(MobEffects.POISON, 120, 0), 1F).build())));
-    public static final DeferredHolder<Item, Item> BLOBFISH_BUCKET = DEF_REG.register("blobfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.BLOBFISH, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FISH_OIL = DEF_REG.register("fish_oil", () -> new ItemFishOil(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).food(new FoodProperties.Builder().nutrition(0).saturationModifier(0.2F).build())));
-    public static final DeferredHolder<Item, Item> MARACA = DEF_REG.register("maraca", () -> new ItemMaraca(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SOMBRERO = DEF_REG.register("sombrero", () -> new ItemModArmor(SOMBRERO_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> COCKROACH_WING_FRAGMENT = DEF_REG.register("cockroach_wing_fragment", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> COCKROACH_WING = DEF_REG.register("cockroach_wing", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> COCKROACH_OOTHECA = DEF_REG.register("cockroach_ootheca", () -> new ItemAnimalEgg(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> ACACIA_BLOSSOM = DEF_REG.register("acacia_blossom", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SOUL_HEART = DEF_REG.register("soul_heart", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPIKED_SCUTE = DEF_REG.register("spiked_scute", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SPIKED_TURTLE_SHELL = DEF_REG.register("spiked_turtle_shell", () -> new ItemModArmor(SPIKED_TURTLE_SHELL_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> SHRIMP_FRIED_RICE = DEF_REG.register("shrimp_fried_rice", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(12).saturationModifier(1F).build())));
-    public static final DeferredHolder<Item, Item> GUSTER_EYE = DEF_REG.register("guster_eye", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> POCKET_SAND = DEF_REG.register("pocket_sand", () -> new ItemPocketSand(new Item.Properties().durability(220)));
-    public static final DeferredHolder<Item, Item> WARPED_MUSCLE = DEF_REG.register("warped_muscle", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> HEMOLYMPH_SAC = DEF_REG.register("hemolymph_sac", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> HEMOLYMPH_BLASTER = DEF_REG.register("hemolymph_blaster", () -> new ItemHemolymphBlaster(new Item.Properties().durability(150)));
-    public static final DeferredHolder<Item, Item> WARPED_MIXTURE = DEF_REG.register("warped_mixture", () -> new Item(new Item.Properties().rarity(Rarity.RARE).stacksTo(1).craftRemainder(Items.GLASS_BOTTLE)));
-    public static final DeferredHolder<Item, Item> STRADDLITE = DEF_REG.register("straddlite", () -> new Item(new Item.Properties().fireResistant()));
-    public static final DeferredHolder<Item, Item> STRADPOLE_BUCKET = DEF_REG.register("stradpole_bucket", () -> new ItemModFishBucket(AMEntityRegistry.STRADPOLE, Fluids.LAVA, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> STRADDLEBOARD = DEF_REG.register("straddleboard", () -> new ItemStraddleboard(new Item.Properties().fireResistant().durability(220)));
-    public static final DeferredHolder<Item, Item> EMU_EGG = DEF_REG.register("emu_egg", () -> new ItemAnimalEgg(new Item.Properties().stacksTo(8)));
-    public static final DeferredHolder<Item, Item> BOILED_EMU_EGG = DEF_REG.register("boiled_emu_egg", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1F).build())));
-    public static final DeferredHolder<Item, Item> EMU_FEATHER = DEF_REG.register("emu_feather", () -> new Item(new Item.Properties().fireResistant()));
-    public static final DeferredHolder<Item, Item> EMU_LEGGINGS = DEF_REG.register("emu_leggings", () -> new ItemModArmor(EMU_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS));
-    public static final DeferredHolder<Item, Item> PLATYPUS_BUCKET = DEF_REG.register("platypus_bucket", () -> new ItemModFishBucket(AMEntityRegistry.PLATYPUS, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FEDORA = DEF_REG.register("fedora", () -> new ItemModArmor(FEDORA_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> DROPBEAR_CLAW = DEF_REG.register("dropbear_claw", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> KANGAROO_MEAT = DEF_REG.register("kangaroo_meat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6F).build())));
-    public static final DeferredHolder<Item, Item> COOKED_KANGAROO_MEAT = DEF_REG.register("cooked_kangaroo_meat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.85F).build())));
-    public static final DeferredHolder<Item, Item> KANGAROO_HIDE = DEF_REG.register("kangaroo_hide", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> KANGAROO_BURGER = DEF_REG.register("kangaroo_burger", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(12).saturationModifier(1F).build())));
-    public static final DeferredHolder<Item, Item> AMBERGRIS = DEF_REG.register("ambergris", () -> new ItemFuel(new Item.Properties(), 12800));
-    public static final DeferredHolder<Item, Item> CACHALOT_WHALE_TOOTH = DEF_REG.register("cachalot_whale_tooth", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> ECHOLOCATOR = DEF_REG.register("echolocator", () -> new ItemEcholocator(new Item.Properties().durability(100), ItemEcholocator.EchoType.ECHOLOCATION));
-    public static final DeferredHolder<Item, Item> ENDOLOCATOR = DEF_REG.register("endolocator", () -> new ItemEcholocator(new Item.Properties().durability(25), ItemEcholocator.EchoType.ENDER));
-    public static final DeferredHolder<Item, Item> GONGYLIDIA = DEF_REG.register("gongylidia", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(1.2F).build())));
-    public static final DeferredHolder<Item, Item> LEAFCUTTER_ANT_PUPA = DEF_REG.register("leafcutter_ant_pupa", () -> new ItemLeafcutterPupa(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> ENDERIOPHAGE_ROCKET = DEF_REG.register("enderiophage_rocket", () -> new ItemEnderiophageRocket(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FALCONRY_GLOVE_INVENTORY = DEF_REG.register("falconry_glove_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FALCONRY_GLOVE_HAND = DEF_REG.register("falconry_glove_hand", () -> new ItemInventoryOnly(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FALCONRY_GLOVE = DEF_REG.register("falconry_glove", () -> new ItemFalconryGlove(new Item.Properties().stacksTo(1)));
-    public static final DeferredHolder<Item, Item> FALCONRY_HOOD = DEF_REG.register("falconry_hood", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> TARANTULA_HAWK_WING_FRAGMENT = DEF_REG.register("tarantula_hawk_wing_fragment", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> TARANTULA_HAWK_WING = DEF_REG.register("tarantula_hawk_wing", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> TARANTULA_HAWK_ELYTRA = DEF_REG.register("tarantula_hawk_elytra", () -> new ItemTarantulaHawkElytra(new Item.Properties().durability(800).rarity(Rarity.UNCOMMON), TARANTULA_HAWK_ELYTRA_MATERIAL.getHolder()));
-    public static final DeferredHolder<Item, Item> MYSTERIOUS_WORM = DEF_REG.register("mysterious_worm", () -> new ItemMysteriousWorm(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredHolder<Item, Item> VOID_WORM_MANDIBLE = DEF_REG.register("void_worm_mandible", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> VOID_WORM_EYE = DEF_REG.register("void_worm_eye", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredHolder<Item, Item> DIMENSIONAL_CARVER = DEF_REG.register("dimensional_carver", () -> new ItemDimensionalCarver(new Item.Properties().durability(20).rarity(Rarity.EPIC)));
-    public static final DeferredHolder<Item, Item> SHATTERED_DIMENSIONAL_CARVER = DEF_REG.register("shattered_dimensional_carver", () -> new ItemShatteredDimensionalCarver(new Item.Properties().durability(4).rarity(Rarity.RARE)));
-    public static final DeferredHolder<Item, Item> SERRATED_SHARK_TOOTH = DEF_REG.register("serrated_shark_tooth", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FRILLED_SHARK_BUCKET = DEF_REG.register("frilled_shark_bucket", () -> new ItemModFishBucket(AMEntityRegistry.FRILLED_SHARK, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SHIELD_OF_THE_DEEP = DEF_REG.register("shield_of_the_deep", () -> new ItemShieldOfTheDeep(new Item.Properties().durability(400).rarity(Rarity.UNCOMMON)));
-    public static final DeferredHolder<Item, Item> MIMIC_OCTOPUS_BUCKET = DEF_REG.register("mimic_octopus_bucket", () -> new ItemModFishBucket(AMEntityRegistry.MIMIC_OCTOPUS, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FROSTSTALKER_HORN = DEF_REG.register("froststalker_horn", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FROSTSTALKER_HELMET = DEF_REG.register("froststalker_helmet", () -> new ItemModArmor(FROSTSTALKER_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> PIGSHOES = DEF_REG.register("pigshoes", () -> new ItemPigshoes(new Item.Properties().stacksTo(1)));
-    public static final DeferredHolder<Item, Item> STRADDLE_HELMET = DEF_REG.register("straddle_helmet", () -> new Item(new Item.Properties().fireResistant()));
-    public static final DeferredHolder<Item, Item> STRADDLE_SADDLE = DEF_REG.register("straddle_saddle", () -> new Item(new Item.Properties().fireResistant()));
-    public static final DeferredHolder<Item, Item> COSMIC_COD = DEF_REG.register("cosmic_cod", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.3F).effect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU, 12000), 0.15F).build())));
-    public static final DeferredHolder<Item, Item> SHED_SNAKE_SKIN = DEF_REG.register("shed_snake_skin", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> VINE_LASSO_INVENTORY = DEF_REG.register("vine_lasso_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> VINE_LASSO_HAND = DEF_REG.register("vine_lasso_hand", () -> new ItemInventoryOnly(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> VINE_LASSO = DEF_REG.register("vine_lasso", () -> new ItemVineLasso(new Item.Properties().stacksTo(1)));
-    public static final DeferredHolder<Item, Item> ROCKY_SHELL = DEF_REG.register("rocky_shell", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> ROCKY_CHESTPLATE = DEF_REG.register("rocky_chestplate", () -> new ItemModArmor(ROCKY_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE));
-    public static final DeferredHolder<Item, Item> POTTED_FLUTTER = DEF_REG.register("potted_flutter", () -> new ItemFlutterPot(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> TERRAPIN_BUCKET = DEF_REG.register("terrapin_bucket", () -> new ItemModFishBucket(AMEntityRegistry.TERRAPIN, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> COMB_JELLY_BUCKET = DEF_REG.register("comb_jelly_bucket", () -> new ItemModFishBucket(AMEntityRegistry.COMB_JELLY, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> RAINBOW_JELLY = DEF_REG.register("rainbow_jelly", () -> new ItemRainbowJelly(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).build())));
-    public static final DeferredHolder<Item, Item> COSMIC_COD_BUCKET = DEF_REG.register("cosmic_cod_bucket", () -> new ItemCosmicCodBucket(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> MUNGAL_SPORES = DEF_REG.register("mungal_spores", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> BISON_FUR = DEF_REG.register("bison_fur", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> LOST_TENTACLE = DEF_REG.register("lost_tentacle", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SQUID_GRAPPLE = DEF_REG.register("squid_grapple", () -> new ItemSquidGrapple(new Item.Properties().durability(450)));
-    public static final DeferredHolder<Item, Item> DEVILS_HOLE_PUPFISH_BUCKET = DEF_REG.register("devils_hole_pupfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.DEVILS_HOLE_PUPFISH, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> PUPFISH_LOCATOR = DEF_REG.register("pupfish_locator", () -> new ItemEcholocator(new Item.Properties().durability(200), ItemEcholocator.EchoType.PUPFISH));
-    public static final DeferredHolder<Item, Item> SMALL_CATFISH_BUCKET = DEF_REG.register("small_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> MEDIUM_CATFISH_BUCKET = DEF_REG.register("medium_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> LARGE_CATFISH_BUCKET = DEF_REG.register("large_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> RAW_CATFISH = DEF_REG.register("raw_catfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).build())));
-    public static final DeferredHolder<Item, Item> COOKED_CATFISH = DEF_REG.register("cooked_catfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.5F).build())));
-    public static final DeferredHolder<Item, Item> FLYING_FISH = DEF_REG.register("flying_fish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
-    public static final DeferredHolder<Item, Item> FLYING_FISH_BOOTS = DEF_REG.register("flying_fish_boots", () -> new ItemModArmor(FLYING_FISH_MATERIAL, ArmorItem.Type.BOOTS));
-    public static final DeferredHolder<Item, Item> FLYING_FISH_BUCKET = DEF_REG.register("flying_fish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.FLYING_FISH, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FISH_BONES = DEF_REG.register("fish_bones", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SKELEWAG_SWORD_INVENTORY = DEF_REG.register("skelewag_sword_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SKELEWAG_SWORD_HAND = DEF_REG.register("skelewag_sword_hand", () -> new ItemInventoryOnly(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> SKELEWAG_SWORD = DEF_REG.register("skelewag_sword", () -> new ItemSkelewagSword(new Item.Properties().stacksTo(1).durability(430)));
-    public static final DeferredHolder<Item, Item> NOVELTY_HAT = DEF_REG.register("novelty_hat", () -> new ItemModArmor(NOVELTY_HAT_MATERIAL, ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> MUDSKIPPER_BUCKET = DEF_REG.register("mudskipper_bucket", () -> new ItemModFishBucket(AMEntityRegistry.MUDSKIPPER, Fluids.WATER, new Item.Properties()));
-    public static final DeferredHolder<Item, Item> FARSEER_ARM = DEF_REG.register("farseer_arm", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredHolder<Item, Item> SKREECHER_SOUL = DEF_REG.register("skreecher_soul", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> GHOSTLY_PICKAXE = DEF_REG.register("ghostly_pickaxe", () -> new ItemGhostlyPickaxe(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> ELASTIC_TENDON = DEF_REG.register("elastic_tendon", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> TENDON_WHIP = DEF_REG.register("tendon_whip", () -> new ItemTendonWhip(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> UNSETTLING_KIMONO = DEF_REG.register("unsettling_kimono", () -> new ItemModArmor(KIMONO_MATERIAL, ArmorItem.Type.CHESTPLATE));
-    public static final DeferredHolder<Item, Item> STINK_BOTTLE = DEF_REG.register("stink_bottle", () -> new ItemStinkBottle(AMBlockRegistry.SKUNK_SPRAY, new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<Item> MOSQUITO_PROBOSCIS = DEF_REG.register("mosquito_proboscis", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> BLOOD_SPRAYER = DEF_REG.register("blood_sprayer", () -> new ItemBloodSprayer(new Item.Properties().durability(100)));
+    public static final DeferredItem<Item> RATTLESNAKE_RATTLE = DEF_REG.register("rattlesnake_rattle", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CHORUS_ON_A_STICK = DEF_REG.register("chorus_on_a_stick", () -> new ItemChorusOnAStick(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> SHARK_TOOTH = DEF_REG.register("shark_tooth", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SHARK_TOOTH_ARROW = DEF_REG.register("shark_tooth_arrow", () -> new ItemModArrow(new Item.Properties()));
+    public static final DeferredItem<Item> LOBSTER_TAIL = DEF_REG.register("lobster_tail", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4F).build())));
+    public static final DeferredItem<Item> COOKED_LOBSTER_TAIL = DEF_REG.register("cooked_lobster_tail", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.65F).build())));
+    public static final DeferredItem<Item> LOBSTER_BUCKET = DEF_REG.register("lobster_bucket", () -> new ItemModFishBucket(AMEntityRegistry.LOBSTER, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> KOMODO_SPIT = DEF_REG.register("komodo_spit", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> KOMODO_SPIT_BOTTLE = DEF_REG.register("komodo_spit_bottle", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> POISON_BOTTLE = DEF_REG.register("poison_bottle", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SOPA_DE_MACACO = DEF_REG.register("sopa_de_macaco", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.4F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
+    public static final DeferredItem<Item> CENTIPEDE_LEG = DEF_REG.register("centipede_leg", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CENTIPEDE_LEGGINGS = DEF_REG.register("centipede_leggings", () -> new ItemModArmor(CENTIPEDE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS));
+    public static final DeferredItem<Item> MOSQUITO_LARVA = DEF_REG.register("mosquito_larva", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> MOOSE_ANTLER = DEF_REG.register("moose_antler", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> MOOSE_HEADGEAR = DEF_REG.register("moose_headgear", () -> new ItemModArmor(MOOSE_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
+    public static final DeferredItem<Item> MOOSE_RIBS = DEF_REG.register("moose_ribs", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.6F).build())));
+    public static final DeferredItem<Item> COOKED_MOOSE_RIBS = DEF_REG.register("cooked_moose_ribs", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.85F).build())));
+    public static final DeferredItem<Item> MIMICREAM = DEF_REG.register("mimicream", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> RACCOON_TAIL = DEF_REG.register("raccoon_tail", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> FRONTIER_CAP = DEF_REG.register("frontier_cap", () -> new ItemModArmor(RACCOON_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
+    public static final DeferredItem<Item> BLOBFISH = DEF_REG.register("blobfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).effect(new MobEffectInstance(MobEffects.POISON, 120, 0), 1F).build())));
+    public static final DeferredItem<Item> BLOBFISH_BUCKET = DEF_REG.register("blobfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.BLOBFISH, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> FISH_OIL = DEF_REG.register("fish_oil", () -> new ItemFishOil(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).food(new FoodProperties.Builder().nutrition(0).saturationModifier(0.2F).build())));
+    public static final DeferredItem<Item> MARACA = DEF_REG.register("maraca", () -> new ItemMaraca(new Item.Properties()));
+    public static final DeferredItem<Item> SOMBRERO = DEF_REG.register("sombrero", () -> new ItemModArmor(SOMBRERO_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
+    public static final DeferredItem<Item> COCKROACH_WING_FRAGMENT = DEF_REG.register("cockroach_wing_fragment", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> COCKROACH_WING = DEF_REG.register("cockroach_wing", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> COCKROACH_OOTHECA = DEF_REG.register("cockroach_ootheca", () -> new ItemAnimalEgg(new Item.Properties()));
+    public static final DeferredItem<Item> ACACIA_BLOSSOM = DEF_REG.register("acacia_blossom", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SOUL_HEART = DEF_REG.register("soul_heart", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SPIKED_SCUTE = DEF_REG.register("spiked_scute", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SPIKED_TURTLE_SHELL = DEF_REG.register("spiked_turtle_shell", () -> new ItemModArmor(SPIKED_TURTLE_SHELL_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
+    public static final DeferredItem<Item> SHRIMP_FRIED_RICE = DEF_REG.register("shrimp_fried_rice", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(12).saturationModifier(1F).build())));
+    public static final DeferredItem<Item> GUSTER_EYE = DEF_REG.register("guster_eye", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> POCKET_SAND = DEF_REG.register("pocket_sand", () -> new ItemPocketSand(new Item.Properties().durability(220)));
+    public static final DeferredItem<Item> WARPED_MUSCLE = DEF_REG.register("warped_muscle", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> HEMOLYMPH_SAC = DEF_REG.register("hemolymph_sac", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> HEMOLYMPH_BLASTER = DEF_REG.register("hemolymph_blaster", () -> new ItemHemolymphBlaster(new Item.Properties().durability(150)));
+    public static final DeferredItem<Item> WARPED_MIXTURE = DEF_REG.register("warped_mixture", () -> new Item(new Item.Properties().rarity(Rarity.RARE).stacksTo(1).craftRemainder(Items.GLASS_BOTTLE)));
+    public static final DeferredItem<Item> STRADDLITE = DEF_REG.register("straddlite", () -> new Item(new Item.Properties().fireResistant()));
+    public static final DeferredItem<Item> STRADPOLE_BUCKET = DEF_REG.register("stradpole_bucket", () -> new ItemModFishBucket(AMEntityRegistry.STRADPOLE, Fluids.LAVA, new Item.Properties()));
+    public static final DeferredItem<Item> STRADDLEBOARD = DEF_REG.register("straddleboard", () -> new ItemStraddleboard(new Item.Properties().fireResistant().durability(220)));
+    public static final DeferredItem<Item> EMU_EGG = DEF_REG.register("emu_egg", () -> new ItemAnimalEgg(new Item.Properties().stacksTo(8)));
+    public static final DeferredItem<Item> BOILED_EMU_EGG = DEF_REG.register("boiled_emu_egg", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1F).build())));
+    public static final DeferredItem<Item> EMU_FEATHER = DEF_REG.register("emu_feather", () -> new Item(new Item.Properties().fireResistant()));
+    public static final DeferredItem<Item> EMU_LEGGINGS = DEF_REG.register("emu_leggings", () -> new ItemModArmor(EMU_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS));
+    public static final DeferredItem<Item> PLATYPUS_BUCKET = DEF_REG.register("platypus_bucket", () -> new ItemModFishBucket(AMEntityRegistry.PLATYPUS, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> FEDORA = DEF_REG.register("fedora", () -> new ItemModArmor(FEDORA_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
+    public static final DeferredItem<Item> DROPBEAR_CLAW = DEF_REG.register("dropbear_claw", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> KANGAROO_MEAT = DEF_REG.register("kangaroo_meat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6F).build())));
+    public static final DeferredItem<Item> COOKED_KANGAROO_MEAT = DEF_REG.register("cooked_kangaroo_meat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.85F).build())));
+    public static final DeferredItem<Item> KANGAROO_HIDE = DEF_REG.register("kangaroo_hide", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> KANGAROO_BURGER = DEF_REG.register("kangaroo_burger", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(12).saturationModifier(1F).build())));
+    public static final DeferredItem<Item> AMBERGRIS = DEF_REG.register("ambergris", () -> new ItemFuel(new Item.Properties(), 12800));
+    public static final DeferredItem<Item> CACHALOT_WHALE_TOOTH = DEF_REG.register("cachalot_whale_tooth", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> ECHOLOCATOR = DEF_REG.register("echolocator", () -> new ItemEcholocator(new Item.Properties().durability(100), ItemEcholocator.EchoType.ECHOLOCATION));
+    public static final DeferredItem<Item> ENDOLOCATOR = DEF_REG.register("endolocator", () -> new ItemEcholocator(new Item.Properties().durability(25), ItemEcholocator.EchoType.ENDER));
+    public static final DeferredItem<Item> GONGYLIDIA = DEF_REG.register("gongylidia", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(1.2F).build())));
+    public static final DeferredItem<Item> LEAFCUTTER_ANT_PUPA = DEF_REG.register("leafcutter_ant_pupa", () -> new ItemLeafcutterPupa(new Item.Properties()));
+    public static final DeferredItem<Item> ENDERIOPHAGE_ROCKET = DEF_REG.register("enderiophage_rocket", () -> new ItemEnderiophageRocket(new Item.Properties()));
+    public static final DeferredItem<Item> FALCONRY_GLOVE_INVENTORY = DEF_REG.register("falconry_glove_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> FALCONRY_GLOVE_HAND = DEF_REG.register("falconry_glove_hand", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> FALCONRY_GLOVE = DEF_REG.register("falconry_glove", () -> new ItemFalconryGlove(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> FALCONRY_HOOD = DEF_REG.register("falconry_hood", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> TARANTULA_HAWK_WING_FRAGMENT = DEF_REG.register("tarantula_hawk_wing_fragment", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> TARANTULA_HAWK_WING = DEF_REG.register("tarantula_hawk_wing", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> TARANTULA_HAWK_ELYTRA = DEF_REG.register("tarantula_hawk_elytra", () -> new ItemTarantulaHawkElytra(new Item.Properties().durability(800).rarity(Rarity.UNCOMMON), TARANTULA_HAWK_ELYTRA_MATERIAL.getHolder()));
+    public static final DeferredItem<Item> MYSTERIOUS_WORM = DEF_REG.register("mysterious_worm", () -> new ItemMysteriousWorm(new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> VOID_WORM_MANDIBLE = DEF_REG.register("void_worm_mandible", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> VOID_WORM_EYE = DEF_REG.register("void_worm_eye", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> DIMENSIONAL_CARVER = DEF_REG.register("dimensional_carver", () -> new ItemDimensionalCarver(new Item.Properties().durability(20).rarity(Rarity.EPIC)));
+    public static final DeferredItem<Item> SHATTERED_DIMENSIONAL_CARVER = DEF_REG.register("shattered_dimensional_carver", () -> new ItemShatteredDimensionalCarver(new Item.Properties().durability(4).rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> SERRATED_SHARK_TOOTH = DEF_REG.register("serrated_shark_tooth", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> FRILLED_SHARK_BUCKET = DEF_REG.register("frilled_shark_bucket", () -> new ItemModFishBucket(AMEntityRegistry.FRILLED_SHARK, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> SHIELD_OF_THE_DEEP = DEF_REG.register("shield_of_the_deep", () -> new ItemShieldOfTheDeep(new Item.Properties().durability(400).rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<Item> MIMIC_OCTOPUS_BUCKET = DEF_REG.register("mimic_octopus_bucket", () -> new ItemModFishBucket(AMEntityRegistry.MIMIC_OCTOPUS, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> FROSTSTALKER_HORN = DEF_REG.register("froststalker_horn", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> FROSTSTALKER_HELMET = DEF_REG.register("froststalker_helmet", () -> new ItemModArmor(FROSTSTALKER_ARMOR_MATERIAL, ArmorItem.Type.HELMET));
+    public static final DeferredItem<Item> PIGSHOES = DEF_REG.register("pigshoes", () -> new ItemPigshoes(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> STRADDLE_HELMET = DEF_REG.register("straddle_helmet", () -> new Item(new Item.Properties().fireResistant()));
+    public static final DeferredItem<Item> STRADDLE_SADDLE = DEF_REG.register("straddle_saddle", () -> new Item(new Item.Properties().fireResistant()));
+    public static final DeferredItem<Item> COSMIC_COD = DEF_REG.register("cosmic_cod", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.3F).effect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU, 12000), 0.15F).build())));
+    public static final DeferredItem<Item> SHED_SNAKE_SKIN = DEF_REG.register("shed_snake_skin", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> VINE_LASSO_INVENTORY = DEF_REG.register("vine_lasso_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> VINE_LASSO_HAND = DEF_REG.register("vine_lasso_hand", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> VINE_LASSO = DEF_REG.register("vine_lasso", () -> new ItemVineLasso(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> ROCKY_SHELL = DEF_REG.register("rocky_shell", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> ROCKY_CHESTPLATE = DEF_REG.register("rocky_chestplate", () -> new ItemModArmor(ROCKY_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE));
+    public static final DeferredItem<Item> POTTED_FLUTTER = DEF_REG.register("potted_flutter", () -> new ItemFlutterPot(new Item.Properties()));
+    public static final DeferredItem<Item> TERRAPIN_BUCKET = DEF_REG.register("terrapin_bucket", () -> new ItemModFishBucket(AMEntityRegistry.TERRAPIN, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> COMB_JELLY_BUCKET = DEF_REG.register("comb_jelly_bucket", () -> new ItemModFishBucket(AMEntityRegistry.COMB_JELLY, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> RAINBOW_JELLY = DEF_REG.register("rainbow_jelly", () -> new ItemRainbowJelly(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).build())));
+    public static final DeferredItem<Item> COSMIC_COD_BUCKET = DEF_REG.register("cosmic_cod_bucket", () -> new ItemCosmicCodBucket(new Item.Properties()));
+    public static final DeferredItem<Item> MUNGAL_SPORES = DEF_REG.register("mungal_spores", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> BISON_FUR = DEF_REG.register("bison_fur", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> LOST_TENTACLE = DEF_REG.register("lost_tentacle", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SQUID_GRAPPLE = DEF_REG.register("squid_grapple", () -> new ItemSquidGrapple(new Item.Properties().durability(450)));
+    public static final DeferredItem<Item> DEVILS_HOLE_PUPFISH_BUCKET = DEF_REG.register("devils_hole_pupfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.DEVILS_HOLE_PUPFISH, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> PUPFISH_LOCATOR = DEF_REG.register("pupfish_locator", () -> new ItemEcholocator(new Item.Properties().durability(200), ItemEcholocator.EchoType.PUPFISH));
+    public static final DeferredItem<Item> SMALL_CATFISH_BUCKET = DEF_REG.register("small_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> MEDIUM_CATFISH_BUCKET = DEF_REG.register("medium_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> LARGE_CATFISH_BUCKET = DEF_REG.register("large_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> RAW_CATFISH = DEF_REG.register("raw_catfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).build())));
+    public static final DeferredItem<Item> COOKED_CATFISH = DEF_REG.register("cooked_catfish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.5F).build())));
+    public static final DeferredItem<Item> FLYING_FISH = DEF_REG.register("flying_fish", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
+    public static final DeferredItem<Item> FLYING_FISH_BOOTS = DEF_REG.register("flying_fish_boots", () -> new ItemModArmor(FLYING_FISH_MATERIAL, ArmorItem.Type.BOOTS));
+    public static final DeferredItem<Item> FLYING_FISH_BUCKET = DEF_REG.register("flying_fish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.FLYING_FISH, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> FISH_BONES = DEF_REG.register("fish_bones", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SKELEWAG_SWORD_INVENTORY = DEF_REG.register("skelewag_sword_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> SKELEWAG_SWORD_HAND = DEF_REG.register("skelewag_sword_hand", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> SKELEWAG_SWORD = DEF_REG.register("skelewag_sword", () -> new ItemSkelewagSword(new Item.Properties().stacksTo(1).durability(430)));
+    public static final DeferredItem<Item> NOVELTY_HAT = DEF_REG.register("novelty_hat", () -> new ItemModArmor(NOVELTY_HAT_MATERIAL, ArmorItem.Type.HELMET));
+    public static final DeferredItem<Item> MUDSKIPPER_BUCKET = DEF_REG.register("mudskipper_bucket", () -> new ItemModFishBucket(AMEntityRegistry.MUDSKIPPER, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> FARSEER_ARM = DEF_REG.register("farseer_arm", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> SKREECHER_SOUL = DEF_REG.register("skreecher_soul", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> GHOSTLY_PICKAXE = DEF_REG.register("ghostly_pickaxe", () -> new ItemGhostlyPickaxe(new Item.Properties()));
+    public static final DeferredItem<Item> ELASTIC_TENDON = DEF_REG.register("elastic_tendon", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> TENDON_WHIP = DEF_REG.register("tendon_whip", () -> new ItemTendonWhip(new Item.Properties()));
+    public static final DeferredItem<Item> UNSETTLING_KIMONO = DEF_REG.register("unsettling_kimono", () -> new ItemModArmor(KIMONO_MATERIAL, ArmorItem.Type.CHESTPLATE));
+    public static final DeferredItem<Item> STINK_BOTTLE = DEF_REG.register("stink_bottle", () -> new ItemStinkBottle(AMBlockRegistry.SKUNK_SPRAY, new Item.Properties().stacksTo(16)));
 
-    public static final DeferredHolder<Item, Item> STINK_RAY_HAND = DEF_REG.register("stink_ray_hand", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> STINK_RAY_HAND = DEF_REG.register("stink_ray_hand", () -> new ItemInventoryOnly(new Item.Properties()));
 
-    public static final DeferredHolder<Item, Item> STINK_RAY_INVENTORY = DEF_REG.register("stink_ray_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> STINK_RAY_INVENTORY = DEF_REG.register("stink_ray_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
 
-    public static final DeferredHolder<Item, Item> STINK_RAY_EMPTY_HAND = DEF_REG.register("stink_ray_empty_hand", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> STINK_RAY_EMPTY_HAND = DEF_REG.register("stink_ray_empty_hand", () -> new ItemInventoryOnly(new Item.Properties()));
 
-    public static final DeferredHolder<Item, Item> STINK_RAY_EMPTY_INVENTORY = DEF_REG.register("stink_ray_empty_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
+    public static final DeferredItem<Item> STINK_RAY_EMPTY_INVENTORY = DEF_REG.register("stink_ray_empty_inventory", () -> new ItemInventoryOnly(new Item.Properties()));
 
-    public static final DeferredHolder<Item, Item> STINK_RAY = DEF_REG.register("stink_ray", () -> new ItemStinkRay(new Item.Properties().durability(5)));
-    public static final DeferredHolder<Item, Item> BANANA_SLUG_SLIME = DEF_REG.register("banana_slug_slime", () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> MOSQUITO_REPELLENT_STEW = DEF_REG.register("mosquito_repellent_stew", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).alwaysEdible().saturationModifier(0.3F).effect(() -> new MobEffectInstance(AMEffectRegistry.MOSQUITO_REPELLENT, 24000), 1.0F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
-    public static final DeferredHolder<Item, Item> TRIOPS_BUCKET = DEF_REG.register("triops_bucket", () -> new ItemModFishBucket(AMEntityRegistry.TRIOPS, Fluids.WATER, new Item.Properties()));
+    public static final DeferredItem<Item> STINK_RAY = DEF_REG.register("stink_ray", () -> new ItemStinkRay(new Item.Properties().durability(5)));
+    public static final DeferredItem<Item> BANANA_SLUG_SLIME = DEF_REG.register("banana_slug_slime", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> MOSQUITO_REPELLENT_STEW = DEF_REG.register("mosquito_repellent_stew", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).alwaysEdible().saturationModifier(0.3F).effect(() -> new MobEffectInstance(AMEffectRegistry.MOSQUITO_REPELLENT, 24000), 1.0F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
+    public static final DeferredItem<Item> TRIOPS_BUCKET = DEF_REG.register("triops_bucket", () -> new ItemModFishBucket(AMEntityRegistry.TRIOPS, Fluids.WATER, new Item.Properties()));
 
-    // Music discs - in 1.21+, use jukeboxPlayable component in item properties
-    // The jukebox songs are data-driven and defined in data/alexsmobs/jukebox_song/
     public static final ResourceKey<JukeboxSong> JUKEBOX_SONG_THIME = ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath("alexsmobs", "thime"));
     public static final ResourceKey<JukeboxSong> JUKEBOX_SONG_DAZE = ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath("alexsmobs", "daze"));
-    public static final DeferredHolder<Item, Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JUKEBOX_SONG_THIME)));
-    public static final DeferredHolder<Item, Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JUKEBOX_SONG_DAZE)));
+    public static final DeferredItem<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JUKEBOX_SONG_THIME)));
+    public static final DeferredItem<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JUKEBOX_SONG_DAZE)));
+
+    public static void bootstrapJukebox(BootstrapContext<JukeboxSong> context) {
+        context.register(JUKEBOX_SONG_THIME, new JukeboxSong(AMSoundRegistry.MUSIC_DISC_THIME, Component.translatable(JUKEBOX_SONG_THIME.location().toLanguageKey("jukebox_song")), 204f, 14));
+        context.register(JUKEBOX_SONG_DAZE, new JukeboxSong(AMSoundRegistry.MUSIC_DISC_DAZE, Component.translatable(JUKEBOX_SONG_DAZE.location().toLanguageKey("jukebox_song")), 180f, 15));
+    }
 
     public static void initSpawnEggs() {
         DEF_REG.register("spawn_egg_grizzly_bear", () -> new DeferredSpawnEggItem(AMEntityRegistry.GRIZZLY_BEAR, 0X693A2C, 0X976144, new Item.Properties()));
@@ -310,20 +323,17 @@ public class AMItemRegistry {
         DEF_REG.register("spawn_egg_blue_jay", () -> new DeferredSpawnEggItem(AMEntityRegistry.BLUE_JAY, 0X5FB7FE, 0X293B42, new Item.Properties()));
         DEF_REG.register("spawn_egg_caiman", () -> new DeferredSpawnEggItem(AMEntityRegistry.CAIMAN, 0X5C5631, 0XBBC45C, new Item.Properties()));
         DEF_REG.register("spawn_egg_triops", () -> new DeferredSpawnEggItem(AMEntityRegistry.TRIOPS, 0X967954, 0XCA7150, new Item.Properties()));
-        registerPatternItem("bear");
-        registerPatternItem("australia_0");
-        registerPatternItem("australia_1");
-        registerPatternItem("new_mexico");
-        registerPatternItem("brazil");
+
         for(int i = 0; i <= 10; i++){
             DEF_REG.register("dimensional_carver_shard_" + i, () -> new ItemInventoryOnly(new Item.Properties()));
         }
     }
 
-    private static void registerPatternItem(String name) {
-        TagKey<BannerPattern> bannerPatternTagKey = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, "pattern_for_" + name));
-        DEF_REG.register("banner_pattern_" + name, () -> new BannerPatternItem(bannerPatternTagKey, (new Item.Properties()).stacksTo(1)));
-    }
+    public static final DeferredItem<BannerPatternItem> BANNER_PATTERN_AUSTRALIA_0 = DEF_REG.register("banner_pattern_australia_0", () -> new BannerPatternItem(AMTagRegistry.BANNER_PATTERN_AUSTRALIA_0, new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<BannerPatternItem> BANNER_PATTERN_AUSTRALIA_1 = DEF_REG.register("banner_pattern_australia_1", () -> new BannerPatternItem(AMTagRegistry.BANNER_PATTERN_AUSTRALIA_1, new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<BannerPatternItem> BANNER_PATTERN_BEAR = DEF_REG.register("banner_pattern_bear", () -> new BannerPatternItem(AMTagRegistry.BANNER_PATTERN_BEAR, new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<BannerPatternItem> BANNER_PATTERN_BRAZIL = DEF_REG.register("banner_pattern_brazil", () -> new BannerPatternItem(AMTagRegistry.BANNER_PATTERN_BRAZIL, new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<BannerPatternItem> BANNER_PATTERN_NEW_MEXICO = DEF_REG.register("banner_pattern_new_mexico", () -> new BannerPatternItem(AMTagRegistry.BANNER_PATTERN_NEW_MEXICO, new Item.Properties().stacksTo(1)));
 
     public static void init() {
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(CROCODILE_SCUTE.get()));
@@ -347,6 +357,7 @@ public class AMItemRegistry {
             /**
              * Return the projectile entity spawned by this dispense behavior.
              */
+            @Override
             protected Projectile getProjectile(Level worldIn, Position position, ItemStack stackIn) {
                 EntitySharkToothArrow entityarrow = new EntitySharkToothArrow(AMEntityRegistry.SHARK_TOOTH_ARROW.get(), position.x(), position.y(), position.z(), worldIn);
                 entityarrow.pickup = EntitySharkToothArrow.Pickup.ALLOWED;
@@ -354,6 +365,7 @@ public class AMItemRegistry {
             }
         });
         DispenserBlock.registerBehavior(ANCIENT_DART.get(), new AMProjectileDispenseBehavior() {
+            @Override
             protected Projectile getProjectile(Level worldIn, Position position, ItemStack stackIn) {
                 EntityTossedItem tossedItem = new EntityTossedItem(worldIn, position.x(), position.y(), position.z());
                 tossedItem.setDart(true);
@@ -361,18 +373,21 @@ public class AMItemRegistry {
             }
         });
         DispenserBlock.registerBehavior(COCKROACH_OOTHECA.get(), new AMProjectileDispenseBehavior() {
+            @Override
             protected Projectile getProjectile(Level worldIn, Position position, ItemStack stackIn) {
                 EntityCockroachEgg entityarrow = new EntityCockroachEgg(worldIn, position.x(), position.y(), position.z());
                 return entityarrow;
             }
         });
         DispenserBlock.registerBehavior(EMU_EGG.get(), new AMProjectileDispenseBehavior() {
+            @Override
             protected Projectile getProjectile(Level worldIn, Position position, ItemStack stackIn) {
                 EntityEmuEgg entityarrow = new EntityEmuEgg(worldIn, position.x(), position.y(), position.z());
                 return entityarrow;
             }
         });
         DispenserBlock.registerBehavior(ENDERIOPHAGE_ROCKET.get(), new AMProjectileDispenseBehavior() {
+            @Override
             protected Projectile getProjectile(Level worldIn, Position position, ItemStack stackIn) {
                 EntityEnderiophageRocket entityarrow = new EntityEnderiophageRocket(worldIn, position.x(), position.y(), position.z(), stackIn);
                 return entityarrow;
@@ -381,12 +396,13 @@ public class AMItemRegistry {
         DispenseItemBehavior bucketDispenseBehavior = new DefaultDispenseItemBehavior() {
             private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
+            @Override
             public ItemStack execute(BlockSource blockSource, ItemStack stack) {
                 DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem)stack.getItem();
                 BlockPos blockpos = blockSource.pos().relative(blockSource.state().getValue(DispenserBlock.FACING));
                 Level level = blockSource.level();
-                if (dispensiblecontaineritem.emptyContents((Player)null, level, blockpos, (BlockHitResult)null)) {
-                    dispensiblecontaineritem.checkExtraContent((Player)null, level, stack, blockpos);
+                if (dispensiblecontaineritem.emptyContents(null, level, blockpos, null)) {
+                    dispensiblecontaineritem.checkExtraContent(null, level, stack, blockpos);
                     return new ItemStack(Items.BUCKET);
                 } else {
                     return this.defaultDispenseItemBehavior.dispense(blockSource, stack);
@@ -408,10 +424,6 @@ public class AMItemRegistry {
         DispenserBlock.registerBehavior(LARGE_CATFISH_BUCKET.get(), bucketDispenseBehavior);
         DispenserBlock.registerBehavior(FLYING_FISH_BUCKET.get(), bucketDispenseBehavior);
         DispenserBlock.registerBehavior(MUDSKIPPER_BUCKET.get(), bucketDispenseBehavior);
-        ComposterBlock.COMPOSTABLES.put(BANANA.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(AMBlockRegistry.BANANA_PEEL.get().asItem(), 1F);
-        ComposterBlock.COMPOSTABLES.put(ACACIA_BLOSSOM.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(GONGYLIDIA.get(), 0.9F);
     }
 
 }

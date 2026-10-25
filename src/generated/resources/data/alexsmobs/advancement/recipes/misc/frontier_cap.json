@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bear_fur": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:bear_fur"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:frontier_cap"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_bear_fur"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:frontier_cap"
+    ]
+  }
+}

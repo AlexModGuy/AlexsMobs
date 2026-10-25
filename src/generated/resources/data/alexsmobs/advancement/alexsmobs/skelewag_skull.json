@@ -1,0 +1,42 @@
+{
+  "parent": "alexsmobs:alexsmobs/skelewag",
+  "criteria": {
+    "skelewag_skull": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:skelewag_sword"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.skelewag_skull.desc"
+    },
+    "icon": {
+      "components": {
+        "citadel:custom_render_display": {
+          "bob": true,
+          "item": {
+            "count": 1,
+            "id": "alexsmobs:skelewag_sword"
+          }
+        }
+      },
+      "count": 1,
+      "id": "citadel:fancy_item"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.skelewag_skull.title"
+    }
+  },
+  "requirements": [
+    [
+      "skelewag_skull"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

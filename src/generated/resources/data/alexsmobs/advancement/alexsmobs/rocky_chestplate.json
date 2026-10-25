@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/rocky_shell",
+  "criteria": {
+    "rocky_chestplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:rocky_chestplate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.rocky_chestplate.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:rocky_chestplate"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.rocky_chestplate.title"
+    }
+  },
+  "requirements": [
+    [
+      "rocky_chestplate"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

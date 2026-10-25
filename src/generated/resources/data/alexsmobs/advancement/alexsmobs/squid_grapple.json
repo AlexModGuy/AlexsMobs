@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/lost_tentacle",
+  "criteria": {
+    "squid_grapple": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:squid_grapple"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.squid_grapple.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:squid_grapple"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.squid_grapple.title"
+    }
+  },
+  "requirements": [
+    [
+      "squid_grapple"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

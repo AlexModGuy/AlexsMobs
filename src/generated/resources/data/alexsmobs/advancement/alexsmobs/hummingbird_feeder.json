@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/breed_hummingbird",
+  "criteria": {
+    "hummingbird_feeder": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:hummingbird_feeder"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.hummingbird_feeder.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:hummingbird_feeder"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.hummingbird_feeder.title"
+    }
+  },
+  "requirements": [
+    [
+      "hummingbird_feeder"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

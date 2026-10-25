@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fish_bones": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:fish_bones"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:bonemeal_from_fish_bones"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fish_bones"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:bonemeal_from_fish_bones"
+    ]
+  }
+}

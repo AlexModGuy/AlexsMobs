@@ -1,0 +1,37 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "ex": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "alexsmobs:froststalker"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.froststalker_kill.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:froststalker_horn"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.froststalker_kill.title"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

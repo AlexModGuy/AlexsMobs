@@ -8,9 +8,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class AMTagRegistry {
+    public static final TagKey<Block> AM_SPAWNS = registerBlockTag("am_spawns");
+    public static final TagKey<Item> ANIMAL_DICTIONARY_INGREDIENT = registerItemTag("animal_dictionary_ingredient");
+
     public static final TagKey<Item> INSECT_ITEMS = registerItemTag("insect_items");
     public static final TagKey<Block> GRIZZLY_BEEHIVE = registerBlockTag("grizzly_beehive");
     public static final TagKey<Item> GRIZZLY_FOODSTUFFS = registerItemTag("grizzly_foodstuffs");
@@ -230,6 +234,12 @@ public class AMTagRegistry {
     public static final TagKey<Biome> SKREECHERS_CAN_SPAWN_WARDENS = registerBiomeTag("skreechers_can_spawn_wardens");
     public static final TagKey<Biome> SPAWNS_MURMURS_IGNORE_HEIGHT = registerBiomeTag("spawns_murmurs_ignore_height");
 
+    public static final TagKey<BannerPattern> BANNER_PATTERN_AUSTRALIA_0 = registerBannerPattern("pattern_for_australia_0");
+    public static final TagKey<BannerPattern> BANNER_PATTERN_AUSTRALIA_1 = registerBannerPattern("pattern_for_australia_1");
+    public static final TagKey<BannerPattern> BANNER_PATTERN_BEAR = registerBannerPattern("pattern_for_bear");
+    public static final TagKey<BannerPattern> BANNER_PATTERN_BRAZIL = registerBannerPattern("pattern_for_brazil");
+    public static final TagKey<BannerPattern> BANNER_PATTERN_NEW_MEXICO = registerBannerPattern("pattern_for_new_mexico");
+
     public static final TagKey<Structure> SPAWNS_UNDERMINERS = registerStructureTag("spawns_underminers");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
@@ -250,5 +260,9 @@ public class AMTagRegistry {
 
     private static TagKey<Structure> registerStructureTag(String name) {
         return TagKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(AlexsMobs.MODID, name));
+    }
+
+    private static TagKey<BannerPattern> registerBannerPattern(String name) {
+        return TagKey.create(Registries.BANNER_PATTERN, AlexsMobs.prefix(name));
     }
 }

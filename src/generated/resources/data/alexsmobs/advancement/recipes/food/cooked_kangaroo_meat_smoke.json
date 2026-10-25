@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_kangaroo_meat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:kangaroo_meat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:cooked_kangaroo_meat_smoke"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_kangaroo_meat"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:cooked_kangaroo_meat_smoke"
+    ]
+  }
+}

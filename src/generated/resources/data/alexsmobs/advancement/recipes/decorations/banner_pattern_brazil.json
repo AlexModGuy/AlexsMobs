@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_banner_pattern_brazil": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:shed_snake_skin"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:banner_pattern_brazil"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_banner_pattern_brazil"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:banner_pattern_brazil"
+    ]
+  }
+}

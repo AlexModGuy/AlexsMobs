@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "crocodile_chestplate",
+  "key": {
+    "S": {
+      "item": "alexsmobs:crocodile_scute"
+    }
+  },
+  "pattern": [
+    "S S",
+    "SSS",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:crocodile_chestplate"
+  }
+}

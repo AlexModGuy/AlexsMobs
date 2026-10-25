@@ -1,0 +1,43 @@
+{
+  "parent": "alexsmobs:alexsmobs/tame_capuchin_monkey",
+  "criteria": {
+    "sopa_de_macaco": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:sopa_de_macaco"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.sopa_de_macaco.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "citadel:custom_render_display": {
+          "bob": true,
+          "item": {
+            "count": 1,
+            "id": "alexsmobs:sopa_de_macaco"
+          }
+        }
+      },
+      "count": 1,
+      "id": "citadel:fancy_item"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.sopa_de_macaco.title"
+    }
+  },
+  "requirements": [
+    [
+      "sopa_de_macaco"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

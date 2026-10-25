@@ -1,14 +1,15 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import java.util.List;
+
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.world.entity.EntityType;
 
-import java.util.List;
+import net.minecraft.world.entity.EntityType;
 
 public class AMMobIcons {
 
-    private static final List<Pair<EntityType, Float>> MOB_ICONS = List.<Pair<EntityType, Float>>of(
+    private static final List<Pair<EntityType<?>, Float>> MOB_ICONS = List.<Pair<EntityType<?>, Float>>of(
             new Pair<>(AMEntityRegistry.GRIZZLY_BEAR.get(), 0.6F),
             new Pair<>(AMEntityRegistry.ROADRUNNER.get(), 0.8F),
             new Pair<>(AMEntityRegistry.BONE_SERPENT.get(), 0.55F),
@@ -100,7 +101,7 @@ public class AMMobIcons {
             new Pair<>(AMEntityRegistry.TRIOPS.get(), 0.95F)
     );
 
-    public static List<Pair<EntityType, Float>> getMobIcons() {
+    public static List<Pair<EntityType<?>, Float>> getMobIcons() {
         return MOB_ICONS;
     }
 

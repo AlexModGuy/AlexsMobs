@@ -1,12 +1,23 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.client.model.*;
+import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchor;
+import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchorWinch;
+import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateShipWheel;
+import com.github.alexthe666.alexsmobs.client.model.ModelMysteriousWorm;
+import com.github.alexthe666.alexsmobs.client.model.ModelShieldOfTheDeep;
+import com.github.alexthe666.alexsmobs.client.model.ModelTransmutationTable;
+import com.github.alexthe666.alexsmobs.component.AMDataComponentRegistry;
+import com.github.alexthe666.alexsmobs.component.DisplayEntity;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemStinkRay;
-import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
 import com.github.alexthe666.alexsmobs.item.ItemVineLasso;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Lighting;
@@ -15,6 +26,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
+import org.joml.Quaternionf;
+
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
@@ -23,24 +36,16 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-import org.joml.Quaternionf;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
@@ -70,8 +75,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ModelTransmutationTable TRANSMUTATION_TABLE_OVERLAY_MODEL = new ModelTransmutationTable(0.01F);
     private static List<ItemStack> DIMENSIONAL_CARVER_SHARDS;
 
-    private final Map<String, Entity> renderedEntites = new HashMap<>();
-    private final List<EntityType> blockedRenderEntities = new ArrayList<>();
+    private final Map<EntityType<?>, Entity> renderedEntites = new HashMap<>();
+    private final List<EntityType<?>> blockedRenderEntities = new ArrayList<>();
 
     public AMItemstackRenderer() {
         super(null, null);
@@ -81,8 +86,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         ticksExisted++;
     }
 
-    private static float getScaleFor(EntityType type, List<Pair<EntityType, Float>> mobIcons) {
-        for (Pair<EntityType, Float> pair : mobIcons) {
+    private static float getScaleFor(EntityType<?> type, List<Pair<EntityType<?>, Float>> mobIcons) {
+        for (Pair<EntityType<?>, Float> pair : mobIcons) {
             if (pair.getFirst() == type) {
                 return pair.getSecond();
             }
@@ -297,9 +302,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             for (int i = 0; i < shards.size(); i++) {
                 matrixStackIn.pushPose();
                 ItemStack shard = shards.get(i);
-                matrixStackIn.translate((float) Math.sin(f * 0.15F + i * 1F) * 0.035F,
-                        -(float) Math.cos(f * 0.15F + i * 1F) * 0.035F,
-                        (float) Math.cos(f * 0.15F + i * 0.5F + Math.PI / 2F) * 0.025F);
+                matrixStackIn.translate(Mth.sin(f * 0.15F + i * 1F) * 0.035F,
+                        -Mth.cos(f * 0.15F + i * 1F) * 0.035F,
+                        Mth.cos(f * 0.15F + i * 0.5F + Mth.PI / 2F) * 0.025F);
                 Minecraft.getInstance().getItemRenderer().renderStatic(shard, transformType,
                         transformType == ItemDisplayContext.GROUND ? combinedLightIn : 240, combinedOverlayIn,
                         matrixStackIn, bufferIn, level, 0);
@@ -360,54 +365,53 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON.get()) {
             Entity fakeEntity = null;
-            List<Pair<EntityType, Float>> mobIcons = AMMobIcons.getMobIcons();
+            List<Pair<EntityType<?>, Float>> mobIcons = AMMobIcons.getMobIcons();
             int entityIndex = (tick / 40) % (mobIcons.size());
             float scale = 1.0F;
             int flags = 0;
             if (level != null) {
-                if (ItemTabIcon.hasCustomEntityDisplay(itemStackIn)) {
-                    CompoundTag tag = itemStackIn.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-                    flags = tag.getInt("DisplayMobFlags");
-                    String index = ItemTabIcon.getCustomDisplayEntityString(itemStackIn);
-                    EntityType local = ItemTabIcon.getEntityType(tag);
+                if (itemStackIn.has(AMDataComponentRegistry.DISPLAY_ENTITY)) {
+                    DisplayEntity displayEntity = itemStackIn.get(AMDataComponentRegistry.DISPLAY_ENTITY);
+                    flags = displayEntity.flags();
+                    EntityType<?> local = displayEntity.entityType();
                     scale = getScaleFor(local, mobIcons);
-                    if (tag.getFloat("DisplayMobScale") > 0) {
-                        scale = tag.getFloat("DisplayMobScale");
+                    if (displayEntity.scale().isPresent()) {
+                        scale = displayEntity.scale().orElseThrow();
                     }
-                    if (this.renderedEntites.get(index) == null && !blockedRenderEntities.contains(local)) {
+                    if (this.renderedEntites.get(local) == null && !blockedRenderEntities.contains(local)) {
                         try {
                             Entity entity = local.create(level);
                             if (entity instanceof EntityBlobfish) {
                                 ((EntityBlobfish) entity).setDepressurized(true);
                             }
-                            this.renderedEntites.put(local.getDescriptionId(), entity);
+                            this.renderedEntites.put(local, entity);
                             fakeEntity = entity;
                         } catch (Exception e) {
                             blockedRenderEntities.add(local);
                             AlexsMobs.LOGGER.error("Could not render item for entity: " + local);
                         }
                     } else {
-                        fakeEntity = this.renderedEntites.get(local.getDescriptionId());
+                        fakeEntity = this.renderedEntites.get(local);
                     }
                 } else {
-                    EntityType type = mobIcons.get(entityIndex).getFirst();
+                    EntityType<?> type = mobIcons.get(entityIndex).getFirst();
                     scale = mobIcons.get(entityIndex).getSecond();
                     if (type != null) {
-                        if (this.renderedEntites.get(type.getDescriptionId()) == null
+                        if (this.renderedEntites.get(type) == null
                                 && !blockedRenderEntities.contains(type)) {
                             try {
                                 Entity entity = type.create(level);
                                 if (entity instanceof EntityBlobfish) {
                                     ((EntityBlobfish) entity).setDepressurized(true);
                                 }
-                                this.renderedEntites.put(type.getDescriptionId(), entity);
+                                this.renderedEntites.put(type, entity);
                                 fakeEntity = entity;
                             } catch (Exception e) {
                                 blockedRenderEntities.add(type);
                                 AlexsMobs.LOGGER.error("Could not render item for entity: " + type);
                             }
                         } else {
-                            fakeEntity = this.renderedEntites.get(type.getDescriptionId());
+                            fakeEntity = this.renderedEntites.get(type);
                         }
                     }
                 }
@@ -435,11 +439,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 }
             }
             if (fakeEntity instanceof EntityBaldEagle) {
-                if (flags == 98) {
-                    ((EntityBaldEagle) fakeEntity).setCap(true);
-                } else {
-                    ((EntityBaldEagle) fakeEntity).setCap(false);
-                }
+                ((EntityBaldEagle) fakeEntity).setCap(flags == 98);
             }
             if (fakeEntity instanceof EntityVoidWorm) {
                 matrixStackIn.translate(0, 0.5F, 0);

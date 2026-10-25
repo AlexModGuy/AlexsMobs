@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "banner_pattern",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "alexsmobs:bear_fur"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:banner_pattern_bear"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/underminer",
+  "criteria": {
+    "ghostly_pickaxe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:ghostly_pickaxe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.ghostly_pickaxe.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:ghostly_pickaxe"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.ghostly_pickaxe.title"
+    }
+  },
+  "requirements": [
+    [
+      "ghostly_pickaxe"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

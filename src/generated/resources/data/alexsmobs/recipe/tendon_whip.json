@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "alexsmobs:dropbear_claw"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "T": {
+      "item": "alexsmobs:elastic_tendon"
+    }
+  },
+  "pattern": [
+    " CC",
+    "TTC",
+    "ST "
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:tendon_whip"
+  }
+}

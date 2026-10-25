@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "alexsmobs:echolocator"
+    },
+    "B": {
+      "item": "alexsmobs:fish_bones"
+    },
+    "S": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "pattern": [
+    "SBS",
+    "BAB",
+    "SBS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:pupfish_locator"
+  }
+}

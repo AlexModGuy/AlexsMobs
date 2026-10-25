@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/stink_bottle",
+  "criteria": {
+    "stink_ray": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:stink_ray"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.stink_ray.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:stink_ray"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.stink_ray.title"
+    }
+  },
+  "requirements": [
+    [
+      "stink_ray"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

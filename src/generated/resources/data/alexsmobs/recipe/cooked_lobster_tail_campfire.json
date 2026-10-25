@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.15,
+  "group": "cooked_lobster_tail",
+  "ingredient": {
+    "item": "alexsmobs:lobster_tail"
+  },
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:cooked_lobster_tail"
+  }
+}

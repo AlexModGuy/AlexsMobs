@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "blood_sprayer",
+  "key": {
+    "B": {
+      "item": "minecraft:nether_brick"
+    },
+    "P": {
+      "item": "alexsmobs:mosquito_proboscis"
+    },
+    "S": {
+      "item": "alexsmobs:blood_sac"
+    }
+  },
+  "pattern": [
+    "SS ",
+    "BBP",
+    "B  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:blood_sprayer"
+  }
+}

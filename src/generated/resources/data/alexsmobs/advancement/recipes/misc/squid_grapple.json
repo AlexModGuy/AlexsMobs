@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lost_tentacle": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:lost_tentacle"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:squid_grapple"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lost_tentacle"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:squid_grapple"
+    ]
+  }
+}

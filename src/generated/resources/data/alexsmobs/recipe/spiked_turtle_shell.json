@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:turtle_helmet"
+    },
+    "H": {
+      "item": "alexsmobs:spiked_scute"
+    }
+  },
+  "pattern": [
+    "HHH",
+    "HCH"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:spiked_turtle_shell"
+  }
+}

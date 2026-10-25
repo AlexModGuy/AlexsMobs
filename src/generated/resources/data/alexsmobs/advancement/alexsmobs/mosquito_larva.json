@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/crimson_mosquito",
+  "criteria": {
+    "mosquito_larva": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:mosquito_larva"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.mosquito_larva.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:mosquito_larva"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.mosquito_larva.title"
+    }
+  },
+  "requirements": [
+    [
+      "mosquito_larva"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

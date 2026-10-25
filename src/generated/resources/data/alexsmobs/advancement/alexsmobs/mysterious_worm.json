@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/capsid",
+  "criteria": {
+    "mysterious_worm": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:mysterious_worm"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.mysterious_worm.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:mysterious_worm"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.mysterious_worm.title"
+    }
+  },
+  "requirements": [
+    [
+      "mysterious_worm"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

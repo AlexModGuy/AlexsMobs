@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_spiked_scute": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:spiked_scute"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:spiked_turtle_shell"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_spiked_scute"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:spiked_turtle_shell"
+    ]
+  }
+}

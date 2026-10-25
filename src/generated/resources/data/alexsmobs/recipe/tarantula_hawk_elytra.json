@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:elytra"
+    },
+    "W": {
+      "item": "alexsmobs:tarantula_hawk_wing"
+    }
+  },
+  "pattern": [
+    "WEW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:tarantula_hawk_elytra"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_skreecher_soul": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:skreecher_soul"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:sculk_boomer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_skreecher_soul"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:sculk_boomer"
+    ]
+  }
+}

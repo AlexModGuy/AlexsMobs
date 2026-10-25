@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "S": {
+      "item": "alexsmobs:stink_bottle"
+    }
+  },
+  "pattern": [
+    "SS ",
+    "IIH",
+    "I  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:stink_ray"
+  }
+}

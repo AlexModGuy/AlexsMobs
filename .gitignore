@@ -25,3 +25,5 @@ run
 forge*changelog.txt
 
 .vscode
+/scripts/
+src/generated/resources/.cache

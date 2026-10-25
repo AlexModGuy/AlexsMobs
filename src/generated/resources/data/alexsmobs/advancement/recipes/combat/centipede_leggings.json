@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_centipede_leggings": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:centipede_leg"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:centipede_leggings"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_centipede_leggings"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:centipede_leggings"
+    ]
+  }
+}

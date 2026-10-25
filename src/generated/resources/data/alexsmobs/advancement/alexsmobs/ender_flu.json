@@ -1,0 +1,34 @@
+{
+  "parent": "alexsmobs:alexsmobs/enderiophage",
+  "criteria": {
+    "all_effects": {
+      "conditions": {
+        "effects": {
+          "alexsmobs:ender_flu": {}
+        }
+      },
+      "trigger": "minecraft:effects_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.ender_flu.desc"
+    },
+    "icon": {
+      "components": {
+        "citadel:display_effect": "alexsmobs:ender_flu"
+      },
+      "count": 1,
+      "id": "citadel:effect_item"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.ender_flu.title"
+    }
+  },
+  "requirements": [
+    [
+      "all_effects"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

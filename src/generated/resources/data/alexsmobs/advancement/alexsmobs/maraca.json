@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/rattlesnake",
+  "criteria": {
+    "maraca": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:maraca"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.maraca.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:maraca"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.maraca.title"
+    }
+  },
+  "requirements": [
+    [
+      "maraca"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_banner_pattern_australia_1": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:emu_feather"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:banner_pattern_australia_1"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_banner_pattern_australia_1"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:banner_pattern_australia_1"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_banner_pattern_new_mexico": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:tarantula_hawk_wing_fragment"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:banner_pattern_new_mexico"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_banner_pattern_new_mexico"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:banner_pattern_new_mexico"
+    ]
+  }
+}

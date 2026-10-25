@@ -1,0 +1,33 @@
+{
+  "parent": "alexsmobs:alexsmobs/fish_bones",
+  "criteria": {
+    "pupfish_locator": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:pupfish_locator"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.alexsmobs.pupfish_locator.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "alexsmobs:pupfish_locator"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.pupfish_locator.title"
+    }
+  },
+  "requirements": [
+    [
+      "pupfish_locator"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

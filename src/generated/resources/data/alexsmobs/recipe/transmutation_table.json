@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "S": {
+      "item": "alexsmobs:farseer_arm"
+    }
+  },
+  "pattern": [
+    " N ",
+    "S S",
+    "OOO"
+  ],
+  "result": {
+    "count": 1,
+    "id": "alexsmobs:transmutation_table"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rainbow_jelly": {
+      "conditions": {
+        "items": [
+          {
+            "items": "alexsmobs:rainbow_jelly"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "alexsmobs:rainbow_glass"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rainbow_jelly"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "alexsmobs:rainbow_glass"
+    ]
+  }
+}
